@@ -1,0 +1,30 @@
+input_dir: powerlyrics
+output_dir: powerlyrics/Gen
+# Not needed for coordinator pattern.
+# ib:
+#   inputs: .
+#   outputs:
+#     - templateName: scenes-swift5
+#       output: Storyboards Scenes.gen.swift
+#     - templateName: segues-swift5
+#       output: Storyboards Segues.gen.swift
+xcassets:
+  inputs:
+    - Assets.xcassets
+    - Colors.xcassets
+  outputs:
+    templateName: swift5
+    output: Assets.gen.swift
+strings:
+  inputs:
+    - Base.lproj
+  outputs:
+    templateName: structured-swift5
+    output: Strings.gen.swift
+    params:
+      enumName: Strings
+fonts:
+  inputs: Fonts
+  outputs:
+    templateName: swift5
+    output: Fonts.gen.swift
