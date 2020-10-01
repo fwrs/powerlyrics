@@ -1,5 +1,5 @@
-input_dir: powerlyrics
-output_dir: powerlyrics/Gen
+input_dir: powerlyrics/Assets
+output_dir: powerlyrics/Assets/Gen
 # Not needed for coordinator pattern.
 # ib:
 #   inputs: .
@@ -17,7 +17,7 @@ xcassets:
     output: Assets.gen.swift
 strings:
   inputs:
-    - Base.lproj
+    - en.lproj
   outputs:
     templateName: structured-swift5
     output: Strings.gen.swift

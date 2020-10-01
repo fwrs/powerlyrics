@@ -10,9 +10,11 @@ import Swinject
 class Spot: Assembly {
     
     override func assemble(container: Container) {
+        
         container.register(SpotifyProvider.self) { _ in
             SpotifyProvider()
         }
+        
     }
     
 }

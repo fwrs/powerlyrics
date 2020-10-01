@@ -12,6 +12,7 @@ import UIKit
 class Assembly: Swinject.Assembly {
     
     required init() {}
+    
     func assemble(container: Container) {}
     
 }
@@ -43,6 +44,7 @@ struct ClassInfo: CustomStringConvertible, Equatable {
     static func == (lhs: ClassInfo, rhs: ClassInfo) -> Bool {
         lhs.className == rhs.className
     }
+    
 }
 
 class Config {
@@ -87,6 +89,7 @@ class Config {
 class BaseAssembly: Assembly {
     
     override func assemble(container: Container) {
+        
         container.register(AppDelegate.self) { _ in
             UIApplication.shared.delegate as! AppDelegate
         }.inObjectScope(.container)
@@ -97,9 +100,10 @@ class BaseAssembly: Assembly {
         
         container.register(UIWindow.self) { resolver in
             let window = resolver.resolve(SceneDelegate.self)!.window!
-            window.tintColor = .red
+            window.tintColor = .tintColor
             return window
         }.inObjectScope(.container)
+        
     }
     
 }

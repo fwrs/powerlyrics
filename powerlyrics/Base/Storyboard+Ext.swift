@@ -8,13 +8,17 @@
 import UIKit
 
 public extension ViewController {
+    
     static func create() -> Self {
         UIStoryboard.createController(Self.self)
     }
+    
 }
 
 public protocol StoryboardIdentifiable {
+    
     static var storyboardIdentifier: String { get }
+    
 }
 
 extension ViewController: StoryboardIdentifiable { }

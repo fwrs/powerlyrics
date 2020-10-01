@@ -8,6 +8,7 @@
 import UIKit
 
 extension UILabel {
+    
     @IBInspectable var localizedTextKey: String? {
         get { nil }
         set(key) {
@@ -18,9 +19,11 @@ extension UILabel {
             }
         }
     }
+    
 }
 
 extension UIButton {
+    
     @IBInspectable var localizedNormalTitleKey: String? {
         get { nil }
         set(key) {
@@ -32,9 +35,11 @@ extension UIButton {
             
         }
     }
+    
 }
 
 extension UITextField {
+    
     @IBInspectable var localizedPlaceholderKey: String? {
         get { nil }
         set(key) {
@@ -45,7 +50,9 @@ extension UITextField {
             }
         }
     }
+    
     @IBInspectable var localizedTextKey: String? {
+        
         get { nil }
         set(key) {
             if let key = key {
@@ -55,9 +62,11 @@ extension UITextField {
             }
         }
     }
+    
 }
 
 extension UINavigationItem {
+    
     @IBInspectable var localizedTitleKey: String? {
         get { nil }
         set(key) {
@@ -68,9 +77,11 @@ extension UINavigationItem {
             }
         }
     }
+    
 }
 
 extension UITabBarItem {
+    
     @IBInspectable var localizedTitleKey: String? {
         get { nil }
         set(key) {
@@ -81,9 +92,11 @@ extension UITabBarItem {
             }
         }
     }
+    
 }
 
 extension UIViewController {
+    
     @IBInspectable var localizedTitleKey: String? {
         get { nil }
         set(key) {
@@ -94,9 +107,11 @@ extension UIViewController {
             }
         }
     }
+    
 }
 
 extension UISearchBar {
+    
     @IBInspectable var localizedPlaceholderKey: String? {
         get { nil }
         set(key) {
@@ -107,9 +122,11 @@ extension UISearchBar {
             }
         }
     }
+    
 }
 
 extension UIBarButtonItem {
+    
     @IBInspectable var localizedTitleKey: String? {
         get { nil }
         set(key) {
@@ -120,9 +137,11 @@ extension UIBarButtonItem {
             }
         }
     }
+    
 }
 
 extension UISegmentedControl {
+    
     @IBInspectable var localizedTitlesKey: String? {
         get { nil }
         set(key) {
@@ -133,4 +152,5 @@ extension UISegmentedControl {
             }
         }
     }
+    
 }

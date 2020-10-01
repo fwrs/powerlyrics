@@ -10,10 +10,13 @@ import Moya
 public typealias SpotifyProvider = MoyaProvider<Spotify>
 
 public enum Spotify {
+    
     case someRequest
+    
 }
 
 extension Spotify: TargetType {
+    
     public var baseURL: URL {
         URL(string: "https://api.spotify.com")!
     }
@@ -46,4 +49,5 @@ extension Spotify: TargetType {
     public var headers: [String: String]? {
         ["Content-type": "application/json"]
     }
+    
 }

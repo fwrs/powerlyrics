@@ -9,12 +9,14 @@ import Foundation
 import KeychainAccess
 
 protocol KeychainStorageProtocol: class {
+    
     func setEncodable<T: Encodable>(_ value: T?, for key: KeychainStorage.Key)
     func getDecodable<T: Decodable>(for key: KeychainStorage.Key) -> T?
     func getString(for key: KeychainStorage.Key) -> String?
     func setString(_ value: String?, for key: KeychainStorage.Key)
     func delete(for key: KeychainStorage.Key)
     func reset()
+    
 }
 
 final class KeychainStorage: KeychainStorageProtocol {
@@ -100,4 +102,5 @@ final class KeychainStorage: KeychainStorageProtocol {
             self.delete(for: key)
         }
     }
+    
 }

@@ -11,13 +11,15 @@ import UIKit
 class CoordinatorsAssembly: Assembly {
     
     override func assemble(container: Container) {
+        
         container.register(AppCoordinator.self) { resolver in
             AppCoordinator(window: resolver.resolve(UIWindow.self)!, resolver: resolver)
         }
         
-        container.register(SampleCoordinator.self) { (resolver, router: Router) in
-            SampleCoordinator(router: router, resolver: resolver)
+        container.register(HomeCoordinator.self) { (resolver, router: Router) in
+            HomeCoordinator(router: router, resolver: resolver)
         }
+        
     }
     
 }
