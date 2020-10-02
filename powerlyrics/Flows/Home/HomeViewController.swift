@@ -5,36 +5,35 @@
 //  Created by Ilya Kulinkovich on 10/1/20.
 //
 
+import Bond
+import ReactiveKit
 import UIKit
 
 class HomeViewController: ViewController, HomeScene {
     
     // MARK: - Outlets
     
-    @IBOutlet weak var tableView: UITableView!
-    
-    @IBOutlet private weak var navBarLabel: UILabel!
-    
-    @IBOutlet private var navBarStackView: UIStackView!
+    @IBOutlet private weak var tableView: TableView!
     
     // MARK: - Instance properties
     
-    var flowSample: DefaultAction?
-    
     var viewModel: HomeViewModel!
+    
+    // MARK: - Flows
+    
+    var flowSample: DefaultAction?
     
     // MARK: - Lifecycle
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        setupNavigationBar()
-        setupView()
+        setupObservers()
     }
     
     // MARK: - Actions
     
-    @IBAction private func addAccountPressed(_ sender: Any) {
+    @IBAction private func addAccountPressed(_ sender: UIBarButtonItem) {
         flowSample?()
     }
     
@@ -42,18 +41,22 @@ class HomeViewController: ViewController, HomeScene {
 
 extension HomeViewController {
     
-    // MARK: - View setup
+    // MARK: - Setup
     
-    func setupNavigationBar() {
-        navigationItem.leftBarButtonItem = UIBarButtonItem(customView: navBarStackView)
-        navigationItem.rightBarButtonItem = UIBarButtonItem(
-            image: UIImage(systemName: "person.crop.circle.badge.plus"),
-            style: .plain,
-            target: self,
-            action: #selector(addAccountPressed)
-        )
+    func setupObservers() {
+        viewModel.songs.bind(to: tableView, cellType: SongCell.self) { (cell, cellViewModel) in
+            cell.configure(with: cellViewModel)
+        }
+        let refreshControl = tableView.setRefreshControl { [self] in
+            guard !viewModel.isLoading.value else { return }
+            delay(0.2) {
+                tableView.refreshControl?.endRefreshing()
+            }
+        }
+        viewModel.isLoading.bind(to: refreshControl.reactive.refreshing)
+        tableView.reactive.selectedRowIndexPath.observeNext { [self] indexPath in
+            tableView.deselectRow(at: indexPath, animated: true)
+        }.dispose(in: disposeBag)
     }
-
-    func setupView() {}
     
 }

@@ -23,7 +23,7 @@ class ServicesAssembly: Assembly {
             return encoder
         }
         
-        container.register(JSONDecoder.self) { resolver in
+        container.register(JSONDecoder.self) { _ in
             let df = DateFormatter()
             df.calendar = Calendar(identifier: .iso8601)
             df.dateFormat = "yyyy-MM-dd HH:mm:ss"

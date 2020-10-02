@@ -21,7 +21,10 @@ class Router: UINavigationController {
     }
     
     func configureNavigationbar() {
-        
+        navigationBar.titleTextAttributes = [
+            .font: FontFamily.RobotoMono.semiBold.font(size: 17)
+        ]
+        navigationBar.prefersLargeTitles = false
     }
     
     func push(_ viewController: UIViewController?, animated: Bool) {

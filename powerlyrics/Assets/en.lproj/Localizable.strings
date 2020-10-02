@@ -7,8 +7,27 @@
 */
 
 "appName" = "powerlyrics";
+
+/* tab bar */
+
 "tabBar.home" = "Home";
 "tabBar.search" = "Search";
 "tabBar.home" = "Home";
 "tabBar.genremap" = "GenreMap";
 "tabBar.profile" = "Profile";
+
+/* home */
+
+"home.navBar.connectToSpotify" = "Connect to Spotify";
+
+/* search */
+
+"search.title" = "search";
+
+/* genremap */
+
+"genremap.title" = "genremap";
+
+/* genremap */
+
+"profile.title" = "profile";

@@ -29,4 +29,8 @@ class HomeCoordinator: Coordinator {
         router.push(scene, animated: false)
     }
     
+    override var rootViewController: UIViewController {
+        router
+    }
+    
 }

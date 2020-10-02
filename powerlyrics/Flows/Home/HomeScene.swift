@@ -8,7 +8,5 @@
 import Foundation
 
 protocol HomeScene: ViewController {
-    
     var flowSample: DefaultAction? { get set }
-    
 }

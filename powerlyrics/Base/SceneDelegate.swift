@@ -14,8 +14,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     
     private var resolver: Resolver = Config.getResolver()
     
-    lazy var appCoordinator: AppCoordinator = {
-        resolver.resolve(AppCoordinator.self)!
+    lazy var tabBarCoordinator: TabBarCoordinator = {
+        resolver.resolve(TabBarCoordinator.self)!
     }()
 
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
@@ -23,8 +23,10 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         window = UIWindow(frame: windowScene.coordinateSpace.bounds)
         window?.makeKeyAndVisible()
         window?.windowScene = windowScene
+        
+        UIView.appearance().tintColor = .tintColor
 
-        appCoordinator.start()
+        tabBarCoordinator.start()
     }
 
 }

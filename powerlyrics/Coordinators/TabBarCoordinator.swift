@@ -21,32 +21,35 @@ class TabBarCoordinator: Coordinator {
     
     override func start() {
         let tabBarController = UITabBarController()
-        tabBarController.viewControllers = []
-
-        let homeTab = createNavigationController(withTitle: Strings.TabBar.home)
-        let homeCoordinator = resolver.resolve(HomeCoordinator.self, argument: homeTab)!
         
-        childCoordinators = [homeCoordinator]
-        homeCoordinator.start()
-
-        let rootViewControllers = [homeTab]
-        tabBarController.setViewControllers(rootViewControllers, animated: false)
+        childCoordinators = [
+            /* Home */
+            resolver.resolve(
+                HomeCoordinator.self,
+                argument: Router()
+            ),
+            /* Search */
+            resolver.resolve(
+                SearchCoordinator.self,
+                argument: Router()
+            ),
+            /* GenreMap */
+            resolver.resolve(
+                GenreMapCoordinator.self,
+                argument: Router()
+            ),
+            /* Profile */
+            resolver.resolve(
+                ProfileCoordinator.self,
+                argument: Router()
+            )
+        ].compactMap { $0 }
+        
+        childCoordinators.forEach { $0.start() }
+        
+        tabBarController.setViewControllers(childCoordinators.map { $0.rootViewController }, animated: false)
 
         window.rootViewController = tabBarController
-    }
-
-    // MARK: - Creating tabs
-    
-    func createNavigationController(withTitle title: String) -> Router {
-        let navController = Router()
-
-        navController.tabBarItem = UITabBarItem(
-            title: title,
-            image: UIImage(systemName: "music.note.house"),
-            selectedImage: nil
-        )
-
-        return navController
     }
     
 }

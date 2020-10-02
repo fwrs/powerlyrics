@@ -9,9 +9,9 @@ import Foundation
 
 import Swinject
 
-class Coordinator: NSObject, CoordinatorProtocol {
+class Coordinator: NSObject {
     
-    var childCoordinators: [CoordinatorProtocol] = []
+    var childCoordinators: [Coordinator] = []
     
     let resolver: Resolver
     
@@ -21,6 +21,10 @@ class Coordinator: NSObject, CoordinatorProtocol {
     
     func start() {
         
+    }
+    
+    var rootViewController: UIViewController {
+        fatalError("Inaccessible")
     }
     
 }
