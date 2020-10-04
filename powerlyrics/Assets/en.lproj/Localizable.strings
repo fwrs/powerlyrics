@@ -31,3 +31,7 @@
 /* genremap */
 
 "profile.title" = "profile";
+
+/* lyrics */
+
+"lyrics.title" = "lyrics";

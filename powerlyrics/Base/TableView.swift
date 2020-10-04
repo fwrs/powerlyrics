@@ -15,21 +15,38 @@ class TableView: UITableView {
         refreshControlHandle?()
     }
     
+    private var customRefreshControl: UIRefreshControl?
+    
     // MARK: - Public Api
     
-    @discardableResult public func setRefreshControl(_ completion: DefaultAction?) -> UIRefreshControl {
+    @discardableResult public func setRefreshControl(_ completion: @escaping DefaultAction) -> UIRefreshControl {
+        if let control = customRefreshControl { return control }
         refreshControlHandle = completion
         let newControl = UIRefreshControl()
         newControl.addTarget(self, action: #selector(refreshControlPulled), for: .valueChanged)
-        refreshControl = newControl
+        addSubview(newControl)
+        customRefreshControl = newControl
         return newControl
+    }
+    
+    @discardableResult public func setRefreshControl() -> UIRefreshControl {
+        setRefreshControl { [self] in
+            delay(0.5) {
+                set(refreshing: false)
+            }
+        }
+    }
+    
+    public func unsetRefreshControl() {
+        customRefreshControl?.removeFromSuperview()
+        customRefreshControl = nil
     }
     
     public func set(refreshing: Bool) {
         if refreshing {
-            refreshControl?.beginRefreshing()
+            customRefreshControl?.beginRefreshing()
         } else {
-            refreshControl?.endRefreshing()
+            customRefreshControl?.endRefreshing()
         }
     }
     

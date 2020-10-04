@@ -17,14 +17,18 @@ class HomeCoordinator: Coordinator {
         super.init(resolver: resolver)
     }
     
-    func showSample() {
-        print("ok")
+    func showLyrics(for song: Song) {
+        let lyricsCoordinator = resolver.resolve(LyricsCoordinator.self, arguments: Router(), rootViewController, { [self] in
+            childCoordinators.removeAll { $0.isKind(of: LyricsCoordinator.self) }
+        }, song)!
+        childCoordinators.append(lyricsCoordinator)
+        lyricsCoordinator.start()
     }
     
     override func start() {
         let scene = resolver.resolve(HomeScene.self)
-        scene?.flowSample = { [weak self] in
-            self?.showSample()
+        scene?.flowLyrics = { [weak self] song in
+            self?.showLyrics(for: song)
         }
         router.push(scene, animated: false)
     }

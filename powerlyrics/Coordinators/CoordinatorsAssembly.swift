@@ -36,6 +36,12 @@ class CoordinatorsAssembly: Assembly {
             ProfileCoordinator(router: router, resolver: resolver)
         }
         
+        // MARK: - Supplementary screens
+        
+        container.register(LyricsCoordinator.self) { (resolver, router: Router, base: UIViewController, dismissCompletion: @escaping DefaultAction, song: Song) in
+            LyricsCoordinator(router: router, resolver: resolver, base: base, dismissCompletion: dismissCompletion, song: song)
+        }
+        
     }
     
 }

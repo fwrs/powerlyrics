@@ -6,6 +6,7 @@
 //
 
 import Bond
+import Haptica
 import ReactiveKit
 import UIKit
 
@@ -15,48 +16,71 @@ class HomeViewController: ViewController, HomeScene {
     
     @IBOutlet private weak var tableView: TableView!
     
+    @IBOutlet private weak var activityIndicator: UIActivityIndicatorView!
+    
     // MARK: - Instance properties
     
     var viewModel: HomeViewModel!
     
+    private var lastSelectedIndexPath: IndexPath?
+    
     // MARK: - Flows
     
-    var flowSample: DefaultAction?
+    var flowLyrics: DefaultSongAction?
     
     // MARK: - Lifecycle
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        setupView()
         setupObservers()
     }
-    
-    // MARK: - Actions
-    
-    @IBAction private func addAccountPressed(_ sender: UIBarButtonItem) {
-        flowSample?()
-    }
-    
+
 }
 
 extension HomeViewController {
     
     // MARK: - Setup
     
+    func setupView() {}
+    
     func setupObservers() {
         viewModel.songs.bind(to: tableView, cellType: SongCell.self) { (cell, cellViewModel) in
             cell.configure(with: cellViewModel)
         }
-        let refreshControl = tableView.setRefreshControl { [self] in
-            guard !viewModel.isLoading.value else { return }
-            delay(0.2) {
-                tableView.refreshControl?.endRefreshing()
+        viewModel.isLoading.bind(to: activityIndicator.reactive.isAnimating).dispose(in: disposeBag)
+        viewModel.isLoading.observeNext { [self] loading in
+            if loading {
+                tableView.unsetRefreshControl()
+            } else {
+                tableView.setRefreshControl()
+                scrollToTop()
             }
-        }
-        viewModel.isLoading.bind(to: refreshControl.reactive.refreshing)
+        }.dispose(in: disposeBag)
+        navigationItem.rightBarButtonItem?.reactive.tap.throttle(for: 0.5).observeNext { _ in
+            Haptic.play(".")
+        }.dispose(in: disposeBag)
         tableView.reactive.selectedRowIndexPath.observeNext { [self] indexPath in
+            lastSelectedIndexPath = indexPath
             tableView.deselectRow(at: indexPath, animated: true)
+            let songViewModel = viewModel.songs[indexPath.item]
+            flowLyrics?(Song(name: songViewModel.songName, artistName: songViewModel.artistName, albumArt: songViewModel.albumArt))
         }.dispose(in: disposeBag)
     }
     
+}
+
+extension HomeViewController: TranslationAnimationView {
+    
+    var translationViews: [UIView] {
+        guard let indexPath = lastSelectedIndexPath,
+              let container = (tableView.cellForRow(at: indexPath) as? SongCell)?.songContainer else { return [] }
+        return [container]
+    }
+    
+    var isInteractiveDismissal: Bool { true }
+    
+    var interactionController: TranslationAnimationInteractor? { nil }
+
 }

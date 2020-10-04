@@ -43,8 +43,8 @@ extension UIView {
         radius: CGFloat,
         offset: CGSize = .zero,
         opacity: Float = 0.5,
-        spread: Float = 0,
-        viewCornerRadius: Float = 0,
+        spread: CGFloat = 0,
+        viewCornerRadius: CGFloat = 0,
         viewSquircle: Bool = false
     ) {
         layer.shadowColor = color.cgColor

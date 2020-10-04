@@ -5,6 +5,7 @@ PODS:
     - ReactiveKit (~> 3.14)
   - Differ (1.4.5)
   - Haptica (3.0.2)
+  - IQKeyboardManager (6.5.6)
   - KeychainAccess (4.2.1)
   - Kingfisher (5.15.5):
     - Kingfisher/Core (= 5.15.5)
@@ -16,20 +17,20 @@ PODS:
     - ReactiveSwift (~> 6.0)
   - ReactiveKit (3.17.4)
   - ReactiveSwift (6.4.0)
-  - Realm (5.4.7):
-    - Realm/Headers (= 5.4.7)
-  - Realm/Headers (5.4.7)
-  - RealmSwift (5.4.7):
-    - Realm (= 5.4.7)
+  - Realm (5.3.6):
+    - Realm/Headers (= 5.3.6)
+  - Realm/Headers (5.3.6)
+  - RealmSwift (5.3.6):
+    - Realm (= 5.3.6)
   - SwiftGen (6.3.0)
   - SwiftLint (0.40.2)
   - Swinject (2.7.1)
-  - Typist (1.4.2)
 
 DEPENDENCIES:
   - Alamofire
   - Bond
   - Haptica
+  - IQKeyboardManager
   - KeychainAccess
   - Kingfisher
   - Moya/ReactiveSwift
@@ -38,7 +39,6 @@ DEPENDENCIES:
   - SwiftGen
   - SwiftLint
   - Swinject
-  - Typist
 
 SPEC REPOS:
   trunk:
@@ -46,6 +46,7 @@ SPEC REPOS:
     - Bond
     - Differ
     - Haptica
+    - IQKeyboardManager
     - KeychainAccess
     - Kingfisher
     - Moya
@@ -56,25 +57,24 @@ SPEC REPOS:
     - SwiftGen
     - SwiftLint
     - Swinject
-    - Typist
 
 SPEC CHECKSUMS:
   Alamofire: 814429acc853c6c54ff123fc3d2ef66803823ce0
   Bond: 9e7d901cf4ed825b6004a93dd0a7f1c7479e2834
   Differ: 3b6bd78e2b20cc795d9a86f7641d087524e4273e
   Haptica: dc206651beeca25ab4744c633fbf0ae4d1e86baf
+  IQKeyboardManager: 2a6e97afdafc7becf0cb17a9a8d795e3a980717f
   KeychainAccess: 9b07f665298d13c3a85881bd3171f6f49b8151c1
   Kingfisher: e3ec347a5ab8817b7585ef46923a2d2b9a7d8fbe
   Moya: 5b45dacb75adb009f97fde91c204c1e565d31916
   ReactiveKit: f9f9e079efa39312c597bf1508ef4810d111ce76
   ReactiveSwift: 7555791a608c0679563a3f72546f971b2a06de98
-  Realm: 4bfc08e376b2e30c84ec3200ebe715574da05cc0
-  RealmSwift: ed40f371b62e8677141939e05b44a0c1a0a2d965
+  Realm: cd400dd7e5b5bb5c8ae9842eecd73792369e6ec0
+  RealmSwift: 99a16dbdee5d6dfb3d91d56088a9f8c15c0871d1
   SwiftGen: 3d5024a47ea79e408cded20763d7a17d18a4548c
   SwiftLint: 1216c910d27c2633ade33b4f071bb6b930982e62
   Swinject: ddf78b8486dd9b71a667b852cad919ab4484478e
-  Typist: 06465ab9867782aa6c81e38f073dfc01dab73deb
 
-PODFILE CHECKSUM: 28b4d5d8f8b48f76df3b3f23286c4f991efbeca3
+PODFILE CHECKSUM: 074a137d8cf2dbbd81893aa70ffe881960032cef
 
 COCOAPODS: 1.9.3

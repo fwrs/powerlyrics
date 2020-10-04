@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17156" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17125"/>
+        <capability name="Image references" minToolsVersion="12.0"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--lyrics-->
+        <scene sceneID="m53-aE-XMH">
+            <objects>
+                <viewController storyboardIdentifier="LyricsViewController" interfaceStyle="dark" id="QSr-X0-TRS" customClass="LyricsViewController" customModule="powerlyrics" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="S94-To-ayu">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="YcT-f2-syl">
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                            </tableView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6Aa-Sj-Gx6">
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="250"/>
+                                <subviews>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fLV-pl-iEb">
+                                        <rect key="frame" x="0.0" y="88" width="175" height="90"/>
+                                        <subviews>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="96y-dm-XQN">
+                                                <rect key="frame" x="16" y="16" width="58" height="58"/>
+                                                <subviews>
+                                                    <imageView clipsSubviews="YES" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="7Be-CF-hCO">
+                                                        <rect key="frame" x="0.0" y="0.0" width="58" height="58"/>
+                                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="width" constant="58" id="EjI-VM-sHV"/>
+                                                            <constraint firstAttribute="height" priority="750" constant="58" id="gKv-vO-h5a"/>
+                                                        </constraints>
+                                                        <userDefinedRuntimeAttributes>
+                                                            <userDefinedRuntimeAttribute type="number" keyPath="squircleCorners">
+                                                                <real key="value" value="8"/>
+                                                            </userDefinedRuntimeAttribute>
+                                                        </userDefinedRuntimeAttributes>
+                                                    </imageView>
+                                                </subviews>
+                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="bottom" secondItem="7Be-CF-hCO" secondAttribute="bottom" id="237-uc-HDB"/>
+                                                    <constraint firstItem="7Be-CF-hCO" firstAttribute="top" secondItem="96y-dm-XQN" secondAttribute="top" id="YTI-dk-yWG"/>
+                                                    <constraint firstItem="7Be-CF-hCO" firstAttribute="leading" secondItem="96y-dm-XQN" secondAttribute="leading" id="vog-X3-WiX"/>
+                                                    <constraint firstAttribute="trailing" secondItem="7Be-CF-hCO" secondAttribute="trailing" id="xCW-UL-cYk"/>
+                                                </constraints>
+                                            </view>
+                                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="fga-YF-Uqr">
+                                                <rect key="frame" x="89" y="26.5" width="86" height="37.5"/>
+                                                <subviews>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Song name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nAN-jD-PoW">
+                                                        <rect key="frame" x="0.0" y="0.0" width="86" height="20.5"/>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Artist name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Lth-xb-hLF">
+                                                        <rect key="frame" x="0.0" y="20.5" width="86" height="17"/>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                        <color key="textColor" systemColor="secondaryLabelColor"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
+                                                </subviews>
+                                            </stackView>
+                                        </subviews>
+                                        <viewLayoutGuide key="safeArea" id="K4a-dP-7E2"/>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <constraints>
+                                            <constraint firstItem="96y-dm-XQN" firstAttribute="top" secondItem="fLV-pl-iEb" secondAttribute="top" constant="16" id="2Hx-pG-ddH"/>
+                                            <constraint firstItem="fga-YF-Uqr" firstAttribute="leading" secondItem="96y-dm-XQN" secondAttribute="trailing" constant="15" id="IwF-05-VSB"/>
+                                            <constraint firstItem="fga-YF-Uqr" firstAttribute="centerY" secondItem="96y-dm-XQN" secondAttribute="centerY" id="Nan-bi-qnx"/>
+                                            <constraint firstItem="96y-dm-XQN" firstAttribute="leading" secondItem="fLV-pl-iEb" secondAttribute="leading" constant="16" id="aYV-A9-ZDq"/>
+                                            <constraint firstAttribute="trailing" secondItem="fga-YF-Uqr" secondAttribute="trailing" id="cbM-aP-bB9"/>
+                                            <constraint firstAttribute="bottom" secondItem="96y-dm-XQN" secondAttribute="bottom" constant="16" id="n7Y-qg-0jW"/>
+                                        </constraints>
+                                    </view>
+                                </subviews>
+                                <color key="backgroundColor" red="0.16078431372549018" green="0.16078431372549018" blue="0.16078431372549018" alpha="0.46999999999999997" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="250" id="O9q-9J-CXA"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="2cb-bH-5Lw"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="6Aa-Sj-Gx6" firstAttribute="top" secondItem="S94-To-ayu" secondAttribute="top" id="46P-Ng-k9h"/>
+                            <constraint firstAttribute="trailing" secondItem="YcT-f2-syl" secondAttribute="trailing" id="Rgg-oa-BXX"/>
+                            <constraint firstItem="6Aa-Sj-Gx6" firstAttribute="leading" secondItem="S94-To-ayu" secondAttribute="leading" id="Va3-Rs-L3o"/>
+                            <constraint firstItem="YcT-f2-syl" firstAttribute="top" secondItem="S94-To-ayu" secondAttribute="top" id="bZb-Wk-vTP"/>
+                            <constraint firstItem="fLV-pl-iEb" firstAttribute="top" secondItem="2cb-bH-5Lw" secondAttribute="top" id="fV7-KZ-4r7"/>
+                            <constraint firstAttribute="bottom" secondItem="YcT-f2-syl" secondAttribute="bottom" id="knX-MG-OLQ"/>
+                            <constraint firstItem="YcT-f2-syl" firstAttribute="leading" secondItem="S94-To-ayu" secondAttribute="leading" id="lz7-hz-rMw"/>
+                            <constraint firstAttribute="trailing" secondItem="6Aa-Sj-Gx6" secondAttribute="trailing" id="tqa-zg-Juk"/>
+                            <constraint firstItem="fLV-pl-iEb" firstAttribute="leading" secondItem="2cb-bH-5Lw" secondAttribute="leading" id="zWz-qq-Yuy"/>
+                        </constraints>
+                    </view>
+                    <toolbarItems/>
+                    <navigationItem key="navigationItem" title="lyrics" id="xCa-WV-pI1">
+                        <barButtonItem key="leftBarButtonItem" title="Item" id="Qrs-5K-JM0">
+                            <imageReference key="image" image="xmark.circle.fill" catalog="system" renderingMode="template"/>
+                            <color key="tintColor" name="GrayButtonColor"/>
+                        </barButtonItem>
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="string" keyPath="localizedTitleKey" value="lyrics.title"/>
+                        </userDefinedRuntimeAttributes>
+                    </navigationItem>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
+                    <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
+                    <connections>
+                        <outlet property="albumArtContainerView" destination="96y-dm-XQN" id="ViD-aF-tjf"/>
+                        <outlet property="albumArtImageView" destination="7Be-CF-hCO" id="ZS2-GL-hZQ"/>
+                        <outlet property="artistLabel" destination="Lth-xb-hLF" id="TFv-uV-oXe"/>
+                        <outlet property="songLabel" destination="nAN-jD-PoW" id="O9E-xn-DHI"/>
+                        <outlet property="songView" destination="fLV-pl-iEb" id="lB4-rr-a3b"/>
+                        <outlet property="tableView" destination="YcT-f2-syl" id="AYf-ow-1eM"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Nbh-BN-aNh" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="72" y="67"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="xmark.circle.fill" catalog="system" width="128" height="121"/>
+        <namedColor name="GrayButtonColor">
+            <color red="0.66699999570846558" green="0.66699999570846558" blue="0.66699999570846558" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <systemColor name="secondaryLabelColor">
+            <color red="0.23529411764705882" green="0.23529411764705882" blue="0.2627450980392157" alpha="0.59999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
+</document>

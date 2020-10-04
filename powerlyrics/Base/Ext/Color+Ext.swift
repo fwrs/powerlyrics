@@ -12,9 +12,13 @@ extension UIColor {
     @nonobjc class var tintColor: UIColor {
         Asset.Colors.tintColor.color
     }
-
+    
     @nonobjc class var darkTintColor: UIColor {
         Asset.Colors.darkTintColor.color
+    }
+    
+    @nonobjc class var grayButtonColor: UIColor {
+        Asset.Colors.grayButtonColor.color
     }
 
 }

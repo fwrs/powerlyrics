@@ -22,6 +22,10 @@
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <inset key="separatorInset" minX="16" minY="0.0" maxX="0.0" maxY="0.0"/>
+                        <activityIndicatorView key="tableFooterView" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="large" id="SXI-BW-2yw">
+                            <rect key="frame" x="0.0" y="0.0" width="414" height="44"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        </activityIndicatorView>
                     </tableView>
                     <tabBarItem key="tabBarItem" title="Home" image="music.note.house" catalog="system" id="spK-Pb-qOa">
                         <userDefinedRuntimeAttributes>
@@ -67,14 +71,12 @@
                             <userDefinedRuntimeAttributes>
                                 <userDefinedRuntimeAttribute type="string" keyPath="localizedTitleKey" value="home.navBar.connectToSpotify"/>
                             </userDefinedRuntimeAttributes>
-                            <connections>
-                                <action selector="addAccountPressed:" destination="glh-Ct-83S" id="bh6-OJ-FfK"/>
-                            </connections>
                         </barButtonItem>
                     </navigationItem>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
                     <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
+                        <outlet property="activityIndicator" destination="SXI-BW-2yw" id="eyT-Bm-HfL"/>
                         <outlet property="tableView" destination="UOY-eG-g9T" id="leg-k0-9P4"/>
                     </connections>
                 </viewController>

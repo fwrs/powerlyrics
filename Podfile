@@ -29,7 +29,7 @@ target 'powerlyrics' do
   pod 'Swinject'
 
   # Keyboard manager
-  pod 'Typist'
+  pod 'IQKeyboardManager'
   
   # Networking
   pod 'Moya/ReactiveSwift'

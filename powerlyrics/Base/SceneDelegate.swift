@@ -5,6 +5,7 @@
 //  Created by Ilya Kulinkovich on 10/1/20.
 //
 
+import IQKeyboardManager
 import Swinject
 import UIKit
 
@@ -24,7 +25,14 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         window?.makeKeyAndVisible()
         window?.windowScene = windowScene
         
+        // MARK: - Config
+        
         UIView.appearance().tintColor = .tintColor
+        
+        IQKeyboardManager.shared().shouldResignOnTouchOutside = true
+        IQKeyboardManager.shared().isEnableAutoToolbar = false
+        
+        // MARK: - Start
 
         tabBarCoordinator.start()
     }

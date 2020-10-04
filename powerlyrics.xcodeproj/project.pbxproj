@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		1AABCF2EE18E67E1DF1D500A /* Pods_powerlyrics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 981D2A391044EE49BC1E8220 /* Pods_powerlyrics.framework */; };
+		B2AC80FDC946A0F6B41E6DD9 /* Pods_powerlyrics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9284D0F2E443A8660A545FBD /* Pods_powerlyrics.framework */; };
 		B829C5EC25262BBF005E48BA /* IB+Localization.swift in Sources */ = {isa = PBXBuildFile; fileRef = B829C5EB25262BBF005E48BA /* IB+Localization.swift */; };
 		B82A6F2025267DA100A567B1 /* RobotoMono-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B82A6F1625267D9A00A567B1 /* RobotoMono-Medium.ttf */; };
 		B82A6F2125267DA100A567B1 /* RobotoMono-SemiBoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B82A6F1D25267D9B00A567B1 /* RobotoMono-SemiBoldItalic.ttf */; };
@@ -26,7 +26,9 @@
 		B84D9A2525279015000D62BB /* TableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B84D9A2425279015000D62BB /* TableViewCell.swift */; };
 		B84D9A2925279C92000D62BB /* BezierPath+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = B84D9A2825279C92000D62BB /* BezierPath+Ext.swift */; };
 		B8526C6F252689CF005FC7D3 /* ServicesAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8526C6E252689CF005FC7D3 /* ServicesAssembly.swift */; };
+		B861E7A62528A7AA00A7C864 /* ImagePreviewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B861E7A52528A7AA00A7C864 /* ImagePreviewController.swift */; };
 		B8624FC4252627330096EEF3 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = B8624FC6252627330096EEF3 /* Localizable.strings */; };
+		B8698E05252938DD0043F3AA /* TranslationAnimation.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8698E04252938DD0043F3AA /* TranslationAnimation.swift */; };
 		B86F6E0825260894003296B0 /* Storyboard+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = B86F6E0725260894003296B0 /* Storyboard+Ext.swift */; };
 		B86F6E0D25260A03003296B0 /* HomeViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B86F6E0C25260A03003296B0 /* HomeViewController.storyboard */; };
 		B86F6E1125260B3D003296B0 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B86F6E1025260B3D003296B0 /* ViewController.swift */; };
@@ -44,7 +46,14 @@
 		B86F6E8D25262237003296B0 /* NetworkAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = B86F6E8C25262237003296B0 /* NetworkAssembly.swift */; };
 		B86F6E91252622C3003296B0 /* Tokens.swift in Sources */ = {isa = PBXBuildFile; fileRef = B86F6E90252622C3003296B0 /* Tokens.swift */; };
 		B86F6EAA252624F0003296B0 /* Colors.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B86F6EA9252624F0003296B0 /* Colors.xcassets */; };
+		B888BA542529310C00189CFF /* Song.swift in Sources */ = {isa = PBXBuildFile; fileRef = B888BA532529310C00189CFF /* Song.swift */; };
 		B8AFCD00252661D000F18A4E /* Color+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8AFCCFF252661D000F18A4E /* Color+Ext.swift */; };
+		B8B9D45B252906E100E77A09 /* LyricsAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8B9D45A252906E100E77A09 /* LyricsAssembly.swift */; };
+		B8B9D45E252906E900E77A09 /* LyricsScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8B9D45D252906E900E77A09 /* LyricsScene.swift */; };
+		B8B9D461252906F200E77A09 /* LyricsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8B9D460252906F200E77A09 /* LyricsViewController.swift */; };
+		B8B9D464252906FF00E77A09 /* LyricsViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B8B9D463252906FF00E77A09 /* LyricsViewController.storyboard */; };
+		B8B9D4672529088800E77A09 /* LyricsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8B9D4662529088800E77A09 /* LyricsViewModel.swift */; };
+		B8B9D46A252909BA00E77A09 /* LyricsCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8B9D469252909BA00E77A09 /* LyricsCoordinator.swift */; };
 		B8C8BCD32525ED6000E55708 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8C8BCD22525ED6000E55708 /* AppDelegate.swift */; };
 		B8C8BCD52525ED6000E55708 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8C8BCD42525ED6000E55708 /* SceneDelegate.swift */; };
 		B8C8BCDC2525ED6100E55708 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B8C8BCDB2525ED6100E55708 /* Assets.xcassets */; };
@@ -52,6 +61,7 @@
 		B8C8BCF52525EEBE00E55708 /* HomeCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8C8BCF42525EEBE00E55708 /* HomeCoordinator.swift */; };
 		B8C8BCFB2525EED900E55708 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8C8BCFA2525EED900E55708 /* HomeViewController.swift */; };
 		B8C8BD012525EF2800E55708 /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8C8BD002525EF2800E55708 /* HomeViewModel.swift */; };
+		B8DCAB972528DB4900C399FE /* SearchBinder.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8DCAB962528DB4900C399FE /* SearchBinder.swift */; };
 		B8DEAB522527254C00C9F96D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B8DEAB512527254C00C9F96D /* LaunchScreen.storyboard */; };
 		B8DEAB552527295700C9F96D /* SearchCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8DEAB542527295700C9F96D /* SearchCoordinator.swift */; };
 		B8DEAB582527296700C9F96D /* GenreMapCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8DEAB572527296700C9F96D /* GenreMapCoordinator.swift */; };
@@ -83,8 +93,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		560D860A9031B75E26D9220C /* Pods-powerlyrics.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-powerlyrics.debug.xcconfig"; path = "Target Support Files/Pods-powerlyrics/Pods-powerlyrics.debug.xcconfig"; sourceTree = "<group>"; };
-		981D2A391044EE49BC1E8220 /* Pods_powerlyrics.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_powerlyrics.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		732E23230B68FF10CE2113B9 /* Pods-powerlyrics.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-powerlyrics.release.xcconfig"; path = "Target Support Files/Pods-powerlyrics/Pods-powerlyrics.release.xcconfig"; sourceTree = "<group>"; };
+		9284D0F2E443A8660A545FBD /* Pods_powerlyrics.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_powerlyrics.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B829C5EB25262BBF005E48BA /* IB+Localization.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "IB+Localization.swift"; sourceTree = "<group>"; };
 		B82A6F1225267D9A00A567B1 /* RobotoMono-ExtraLightItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "RobotoMono-ExtraLightItalic.ttf"; sourceTree = "<group>"; };
 		B82A6F1325267D9A00A567B1 /* RobotoMono-LightItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "RobotoMono-LightItalic.ttf"; sourceTree = "<group>"; };
@@ -103,7 +113,9 @@
 		B84D9A2425279015000D62BB /* TableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewCell.swift; sourceTree = "<group>"; };
 		B84D9A2825279C92000D62BB /* BezierPath+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BezierPath+Ext.swift"; sourceTree = "<group>"; };
 		B8526C6E252689CF005FC7D3 /* ServicesAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServicesAssembly.swift; sourceTree = "<group>"; };
+		B861E7A52528A7AA00A7C864 /* ImagePreviewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePreviewController.swift; sourceTree = "<group>"; };
 		B8624FC5252627330096EEF3 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		B8698E04252938DD0043F3AA /* TranslationAnimation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TranslationAnimation.swift; sourceTree = "<group>"; };
 		B86F6E0725260894003296B0 /* Storyboard+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Storyboard+Ext.swift"; sourceTree = "<group>"; };
 		B86F6E0C25260A03003296B0 /* HomeViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = HomeViewController.storyboard; sourceTree = "<group>"; };
 		B86F6E1025260B3D003296B0 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -124,7 +136,14 @@
 		B86F6E95252623AE003296B0 /* swiftlint.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = swiftlint.yml; sourceTree = SOURCE_ROOT; };
 		B86F6E96252623B7003296B0 /* swiftgen.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = swiftgen.yml; sourceTree = SOURCE_ROOT; };
 		B86F6EA9252624F0003296B0 /* Colors.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Colors.xcassets; sourceTree = "<group>"; };
+		B888BA532529310C00189CFF /* Song.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Song.swift; sourceTree = "<group>"; };
 		B8AFCCFF252661D000F18A4E /* Color+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+Ext.swift"; sourceTree = "<group>"; };
+		B8B9D45A252906E100E77A09 /* LyricsAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LyricsAssembly.swift; sourceTree = "<group>"; };
+		B8B9D45D252906E900E77A09 /* LyricsScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LyricsScene.swift; sourceTree = "<group>"; };
+		B8B9D460252906F200E77A09 /* LyricsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LyricsViewController.swift; sourceTree = "<group>"; };
+		B8B9D463252906FF00E77A09 /* LyricsViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LyricsViewController.storyboard; sourceTree = "<group>"; };
+		B8B9D4662529088800E77A09 /* LyricsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LyricsViewModel.swift; sourceTree = "<group>"; };
+		B8B9D469252909BA00E77A09 /* LyricsCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LyricsCoordinator.swift; sourceTree = "<group>"; };
 		B8C8BCCF2525ED6000E55708 /* powerlyrics.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = powerlyrics.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B8C8BCD22525ED6000E55708 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B8C8BCD42525ED6000E55708 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -134,6 +153,7 @@
 		B8C8BCF42525EEBE00E55708 /* HomeCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeCoordinator.swift; sourceTree = "<group>"; };
 		B8C8BCFA2525EED900E55708 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		B8C8BD002525EF2800E55708 /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
+		B8DCAB962528DB4900C399FE /* SearchBinder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBinder.swift; sourceTree = "<group>"; };
 		B8DEAB512527254C00C9F96D /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		B8DEAB542527295700C9F96D /* SearchCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchCoordinator.swift; sourceTree = "<group>"; };
 		B8DEAB572527296700C9F96D /* GenreMapCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenreMapCoordinator.swift; sourceTree = "<group>"; };
@@ -163,7 +183,7 @@
 		B8FE33D8252637AD000CC6E4 /* Assets.gen.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Assets.gen.swift; sourceTree = "<group>"; };
 		B8FE33DB252637AD000CC6E4 /* Fonts.gen.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Fonts.gen.swift; sourceTree = "<group>"; };
 		B8FE33DC252637AD000CC6E4 /* Strings.gen.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Strings.gen.swift; sourceTree = "<group>"; };
-		E2B4C09C2E498066F447F936 /* Pods-powerlyrics.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-powerlyrics.release.xcconfig"; path = "Target Support Files/Pods-powerlyrics/Pods-powerlyrics.release.xcconfig"; sourceTree = "<group>"; };
+		BC9B9A025EF8CD53D34D45FC /* Pods-powerlyrics.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-powerlyrics.debug.xcconfig"; path = "Target Support Files/Pods-powerlyrics/Pods-powerlyrics.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -171,18 +191,26 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1AABCF2EE18E67E1DF1D500A /* Pods_powerlyrics.framework in Frameworks */,
+				B2AC80FDC946A0F6B41E6DD9 /* Pods_powerlyrics.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		677F9C567ACD93311D07ED78 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				9284D0F2E443A8660A545FBD /* Pods_powerlyrics.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		B0243314C09F2298D22D2CFD /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				560D860A9031B75E26D9220C /* Pods-powerlyrics.debug.xcconfig */,
-				E2B4C09C2E498066F447F936 /* Pods-powerlyrics.release.xcconfig */,
+				BC9B9A025EF8CD53D34D45FC /* Pods-powerlyrics.debug.xcconfig */,
+				732E23230B68FF10CE2113B9 /* Pods-powerlyrics.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -223,9 +251,30 @@
 			path = Fonts;
 			sourceTree = "<group>";
 		};
+		B861E7A82528A7AF00A7C864 /* ImagePreviewController */ = {
+			isa = PBXGroup;
+			children = (
+				B861E7A52528A7AA00A7C864 /* ImagePreviewController.swift */,
+			);
+			path = ImagePreviewController;
+			sourceTree = "<group>";
+		};
+		B861E7AA2528A97900A7C864 /* Lyrics */ = {
+			isa = PBXGroup;
+			children = (
+				B8B9D45A252906E100E77A09 /* LyricsAssembly.swift */,
+				B8B9D45D252906E900E77A09 /* LyricsScene.swift */,
+				B8B9D460252906F200E77A09 /* LyricsViewController.swift */,
+				B8B9D463252906FF00E77A09 /* LyricsViewController.storyboard */,
+				B8B9D4662529088800E77A09 /* LyricsViewModel.swift */,
+			);
+			path = Lyrics;
+			sourceTree = "<group>";
+		};
 		B86A46492526873E00394D3B /* Shared */ = {
 			isa = PBXGroup;
 			children = (
+				B861E7A82528A7AF00A7C864 /* ImagePreviewController */,
 				B86A464A2526874C00394D3B /* SongCell */,
 			);
 			path = Shared;
@@ -255,6 +304,7 @@
 				B86F6E2925261344003296B0 /* Actions.swift */,
 				B86F6E522526175C003296B0 /* Coordinator.swift */,
 				B8E20D1225275AC100D0E04C /* Misc.swift */,
+				B8698E04252938DD0043F3AA /* TranslationAnimation.swift */,
 			);
 			path = Base;
 			sourceTree = "<group>";
@@ -274,6 +324,7 @@
 		B86F6E1B252611FB003296B0 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				B888BA532529310C00189CFF /* Song.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -313,7 +364,7 @@
 				B8C8BCD12525ED6000E55708 /* powerlyrics */,
 				B8C8BCD02525ED6000E55708 /* Products */,
 				B0243314C09F2298D22D2CFD /* Pods */,
-				FDBCE0CCE4F673F10C2248AC /* Frameworks */,
+				677F9C567ACD93311D07ED78 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -352,6 +403,7 @@
 				B8DEAB542527295700C9F96D /* SearchCoordinator.swift */,
 				B8DEAB572527296700C9F96D /* GenreMapCoordinator.swift */,
 				B8DEAB5B2527297300C9F96D /* ProfileCoordinator.swift */,
+				B8B9D469252909BA00E77A09 /* LyricsCoordinator.swift */,
 			);
 			path = Coordinators;
 			sourceTree = "<group>";
@@ -363,6 +415,7 @@
 				B8E20CE125272BB200D0E04C /* Search */,
 				B8E20CE225272BBA00D0E04C /* GenreMap */,
 				B8E20CE325272BC500D0E04C /* Profile */,
+				B861E7AA2528A97900A7C864 /* Lyrics */,
 			);
 			path = Flows;
 			sourceTree = "<group>";
@@ -375,6 +428,7 @@
 				B8E20CEB25272BEA00D0E04C /* SearchViewController.swift */,
 				B8E20CEE25272BF200D0E04C /* SearchViewController.storyboard */,
 				B8E20CF125272BFE00D0E04C /* SearchViewModel.swift */,
+				B8DCAB962528DB4900C399FE /* SearchBinder.swift */,
 			);
 			path = Search;
 			sourceTree = "<group>";
@@ -417,14 +471,6 @@
 			path = Ext;
 			sourceTree = "<group>";
 		};
-		FDBCE0CCE4F673F10C2248AC /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				981D2A391044EE49BC1E8220 /* Pods_powerlyrics.framework */,
-			);
-			name = Frameworks;
-			sourceTree = "<group>";
-		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -432,13 +478,13 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = B8C8BCE32525ED6100E55708 /* Build configuration list for PBXNativeTarget "powerlyrics" */;
 			buildPhases = (
-				E04120C6C18B6D06E54D89A4 /* [CP] Check Pods Manifest.lock */,
+				86D112A0240CE4C0C3A47A89 /* [CP] Check Pods Manifest.lock */,
 				B8C8BCCB2525ED6000E55708 /* Sources */,
 				B8C8BCCC2525ED6000E55708 /* Frameworks */,
 				B8C8BCCD2525ED6000E55708 /* Resources */,
-				654330952C5860C881D397FD /* [CP] Embed Pods Frameworks */,
 				B86F6EA725262403003296B0 /* Swiftlint */,
 				B8624FC92526290F0096EEF3 /* Swiftgen */,
+				1D88B4021D4FAD5DEDDE0E21 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -496,6 +542,7 @@
 				B82A6F2925267DA100A567B1 /* RobotoMono-SemiBold.ttf in Resources */,
 				B82A6F2425267DA100A567B1 /* RobotoMono-Italic.ttf in Resources */,
 				B82A6F2525267DA100A567B1 /* RobotoMono-Light.ttf in Resources */,
+				B8B9D464252906FF00E77A09 /* LyricsViewController.storyboard in Resources */,
 				B82A6F2B25267DA100A567B1 /* RobotoMono-MediumItalic.ttf in Resources */,
 				B82A6F2225267DA100A567B1 /* RobotoMono-ExtraLight.ttf in Resources */,
 				B8E20CFD25272C4E00D0E04C /* GenreMapViewController.storyboard in Resources */,
@@ -514,7 +561,7 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		654330952C5860C881D397FD /* [CP] Embed Pods Frameworks */ = {
+		1D88B4021D4FAD5DEDDE0E21 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -529,6 +576,28 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-powerlyrics/Pods-powerlyrics-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		86D112A0240CE4C0C3A47A89 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-powerlyrics-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
 		B8624FC92526290F0096EEF3 /* Swiftgen */ = {
@@ -567,28 +636,6 @@
 			shellPath = /bin/sh;
 			shellScript = "${PODS_ROOT}/SwiftLint/swiftlint --config swiftlint.yml\n";
 		};
-		E04120C6C18B6D06E54D89A4 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-powerlyrics-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -601,6 +648,8 @@
 				B8C8BCFB2525EED900E55708 /* HomeViewController.swift in Sources */,
 				B86F6E19252611E7003296B0 /* HomeAssembly.swift in Sources */,
 				B8E20D0425272C5A00D0E04C /* ProfileScene.swift in Sources */,
+				B8B9D45E252906E900E77A09 /* LyricsScene.swift in Sources */,
+				B8698E05252938DD0043F3AA /* TranslationAnimation.swift in Sources */,
 				B829C5EC25262BBF005E48BA /* IB+Localization.swift in Sources */,
 				B8526C6F252689CF005FC7D3 /* ServicesAssembly.swift in Sources */,
 				B84D9A2925279C92000D62BB /* BezierPath+Ext.swift in Sources */,
@@ -609,10 +658,13 @@
 				B8E20CFB25272C4E00D0E04C /* GenreMapViewController.swift in Sources */,
 				B8C8BD012525EF2800E55708 /* HomeViewModel.swift in Sources */,
 				B8DEAB552527295700C9F96D /* SearchCoordinator.swift in Sources */,
+				B8B9D45B252906E100E77A09 /* LyricsAssembly.swift in Sources */,
+				B8DCAB972528DB4900C399FE /* SearchBinder.swift in Sources */,
 				B8C8BCF52525EEBE00E55708 /* HomeCoordinator.swift in Sources */,
 				B8FE33DD252637AD000CC6E4 /* Assets.gen.swift in Sources */,
 				B8E20D1325275AC100D0E04C /* Misc.swift in Sources */,
 				B8DEAB5C2527297300C9F96D /* ProfileCoordinator.swift in Sources */,
+				B8B9D46A252909BA00E77A09 /* LyricsCoordinator.swift in Sources */,
 				B86F6E1125260B3D003296B0 /* ViewController.swift in Sources */,
 				B86F6E8A252620AA003296B0 /* Spotify.swift in Sources */,
 				B8FE33E1252637AD000CC6E4 /* Strings.gen.swift in Sources */,
@@ -625,9 +677,12 @@
 				B86F6E27252612E0003296B0 /* HomeScene.swift in Sources */,
 				B86F6E662526199D003296B0 /* BaseAssembly.swift in Sources */,
 				B8C8BCD32525ED6000E55708 /* AppDelegate.swift in Sources */,
+				B888BA542529310C00189CFF /* Song.swift in Sources */,
 				B8AFCD00252661D000F18A4E /* Color+Ext.swift in Sources */,
+				B861E7A62528A7AA00A7C864 /* ImagePreviewController.swift in Sources */,
 				B8DEAB582527296700C9F96D /* GenreMapCoordinator.swift in Sources */,
 				B8E20CEC25272BEA00D0E04C /* SearchViewController.swift in Sources */,
+				B8B9D461252906F200E77A09 /* LyricsViewController.swift in Sources */,
 				B86F6E2A25261344003296B0 /* Actions.swift in Sources */,
 				B86F6E6A25261CB3003296B0 /* Router.swift in Sources */,
 				B84D9A2525279015000D62BB /* TableViewCell.swift in Sources */,
@@ -638,6 +693,7 @@
 				B86F6E8D25262237003296B0 /* NetworkAssembly.swift in Sources */,
 				B86F6E0825260894003296B0 /* Storyboard+Ext.swift in Sources */,
 				B8E20CFC25272C4E00D0E04C /* GenreMapScene.swift in Sources */,
+				B8B9D4672529088800E77A09 /* LyricsViewModel.swift in Sources */,
 				B8FE33E0252637AD000CC6E4 /* Fonts.gen.swift in Sources */,
 				B8E20CE925272BE200D0E04C /* SearchScene.swift in Sources */,
 				B8E20D0625272C5A00D0E04C /* ProfileViewController.swift in Sources */,
@@ -780,7 +836,7 @@
 		};
 		B8C8BCE42525ED6100E55708 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 560D860A9031B75E26D9220C /* Pods-powerlyrics.debug.xcconfig */;
+			baseConfigurationReference = BC9B9A025EF8CD53D34D45FC /* Pods-powerlyrics.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -800,7 +856,7 @@
 		};
 		B8C8BCE52525ED6100E55708 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = E2B4C09C2E498066F447F936 /* Pods-powerlyrics.release.xcconfig */;
+			baseConfigurationReference = 732E23230B68FF10CE2113B9 /* Pods-powerlyrics.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
