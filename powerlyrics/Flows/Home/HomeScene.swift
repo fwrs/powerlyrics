@@ -9,4 +9,5 @@ import Foundation
 
 protocol HomeScene: ViewController {
     var flowLyrics: DefaultSongAction? { get set }
+    var flowSetup: DefaultSetupModeAction? { get set }
 }

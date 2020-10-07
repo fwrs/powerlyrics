@@ -7,7 +7,7 @@
 
 import UIKit
 
-class SearchViewController: ViewController, SearchScene, UISearchBarDelegate {
+class SearchViewController: ViewController, SearchScene {
     
     // MARK: - Outlets
     
@@ -45,7 +45,7 @@ extension SearchViewController {
         let appearance = UINavigationBarAppearance()
         appearance.configureWithDefaultBackground()
         navigationItem.scrollEdgeAppearance = appearance
-        searchController.searchBar.delegate = self
+        addKeyboardDidHideNotification()
     }
     
     func setupObservers() {

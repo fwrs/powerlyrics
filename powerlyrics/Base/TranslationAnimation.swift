@@ -9,8 +9,12 @@ import UIKit
 
 protocol TranslationAnimationView {
     var translationViews: [UIView] { get }
-    var isInteractiveDismissal: Bool { get }
-    var interactionController: TranslationAnimationInteractor? { get }
+    var translationInteractor: TranslationAnimationInteractor? { get }
+    var completelyMoveAway: Bool { get }
+}
+
+extension TranslationAnimationView {
+    var completelyMoveAway: Bool { false }
 }
 
 class TranslationAnimation: NSObject, UIViewControllerAnimatedTransitioning {
@@ -25,11 +29,14 @@ class TranslationAnimation: NSObject, UIViewControllerAnimatedTransitioning {
     let duration: TimeInterval
     
     let interactionController: TranslationAnimationInteractor?
+    
+    let inNavigationController: Bool
 
-    init(type: TransitionType, duration: TimeInterval, interactionController: TranslationAnimationInteractor? = nil) {
+    init(type: TransitionType, duration: TimeInterval, interactionController: TranslationAnimationInteractor? = nil, inNavigationController: Bool = false) {
         self.type = type
         self.duration = duration
         self.interactionController = interactionController
+        self.inNavigationController = inNavigationController
         super.init()
     }
     
@@ -77,9 +84,15 @@ class TranslationAnimation: NSObject, UIViewControllerAnimatedTransitioning {
         
         if type == .present {
             toVC.view.transform = .init(translationX: toVC.view.frame.width, y: 0)
+            if fromVC.completelyMoveAway {
+                toVC.view.alpha = 0
+            }
         } else {
-            toVC.view.alpha = 0.5
-            toVC.view.transform = .init(translationX: -(fromVC.view.bounds.width / 3), y: 0)
+            if toVC.completelyMoveAway {
+                toVC.view.alpha = 0
+            }
+            toVC.view.alpha = toVC.completelyMoveAway ? 0 : 0.5
+            toVC.view.transform = .init(translationX: -(toVC.view.bounds.width / (toVC.completelyMoveAway ? 1 : 3)), y: 0)
         }
         
         let animationsClosure = {
@@ -88,18 +101,25 @@ class TranslationAnimation: NSObject, UIViewControllerAnimatedTransitioning {
                 snapshot.alpha = 1
             }
 
-            zip(fromSnapshots, frames).forEach { snapshot, frame in
+            zip(fromSnapshots, frames).forEach { [self] snapshot, frame in
                 snapshot.frame = frame.1
-                snapshot.alpha = 0
+                snapshot.alpha = inNavigationController ? 1 : 0
             }
 
             if self.type == .present {
                 toVC.view.transform = .identity
-                fromVC.view.alpha = 0.5
-                fromVC.view.transform = .init(translationX: -(fromVC.view.bounds.width / 3), y: 0)
+                fromVC.view.alpha = fromVC.completelyMoveAway ? 0 : 0.5
+                fromVC.view.transform = .init(translationX: -(fromVC.view.bounds.width / (fromVC.completelyMoveAway ? 1 : 3)), y: 0)
+                if fromVC.completelyMoveAway {
+                    toVC.view.alpha = 1
+                }
             } else {
                 fromVC.view.transform = .init(translationX: fromVC.view.frame.width, y: 0)
                 toVC.view.alpha = 1
+                if toVC.completelyMoveAway {
+                    fromVC.view.alpha = 0
+                    toVC.view.alpha = 1
+                }
                 toVC.view.transform = .identity
             }
         }
@@ -121,7 +141,7 @@ class TranslationAnimation: NSObject, UIViewControllerAnimatedTransitioning {
         if transitionContext.isInteractive {
             UIView.animate(withDuration: transitionDuration(using: transitionContext), delay: 0, options: .curveLinear, animations: animationsClosure, completion: completionClosure)
         } else {
-            UIView.animate(withDuration: transitionDuration(using: transitionContext), delay: 0, usingSpringWithDamping: 0.85, initialSpringVelocity: 0, animations: animationsClosure, completion: completionClosure)
+            UIView.animate(withDuration: transitionDuration(using: transitionContext), delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 0, options: type == .present ? .curveEaseOut : .curveEaseIn, animations: animationsClosure, completion: completionClosure)
         }
     }
     
@@ -139,12 +159,8 @@ extension UITabBarController: TranslationAnimationView {
         (selectedViewController as! TranslationAnimationView).translationViews
     }
     
-    var isInteractiveDismissal: Bool {
-        (selectedViewController as! TranslationAnimationView).isInteractiveDismissal
-    }
-    
-    var interactionController: TranslationAnimationInteractor? {
-        (selectedViewController as! TranslationAnimationView).interactionController
+    var translationInteractor: TranslationAnimationInteractor? {
+        (selectedViewController as! TranslationAnimationView).translationInteractor
     }
     
 }
@@ -155,12 +171,8 @@ extension Router: TranslationAnimationView {
         (topViewController as! TranslationAnimationView).translationViews
     }
     
-    var isInteractiveDismissal: Bool {
-        (topViewController as! TranslationAnimationView).isInteractiveDismissal
-    }
-    
-    var interactionController: TranslationAnimationInteractor? {
-        (topViewController as! TranslationAnimationView).interactionController
+    var translationInteractor: TranslationAnimationInteractor? {
+        (topViewController as! TranslationAnimationView).translationInteractor
     }
     
 }
@@ -171,44 +183,50 @@ class TranslationAnimationInteractor: UIPercentDrivenInteractiveTransition {
 
     private var shouldCompleteTransition = false
     private weak var viewController: UIViewController!
+    private var pop: Bool
+    
+    var gesture: UIScreenEdgePanGestureRecognizer?
 
-    init(viewController: UIViewController) {
+    init(viewController: UIViewController, pop: Bool = false) {
+        self.pop = pop
         super.init()
         self.viewController = viewController
         prepareGestureRecognizer(in: viewController.view)
     }
     
     private func prepareGestureRecognizer(in view: UIView) {
-        let gesture = UIScreenEdgePanGestureRecognizer(target: self,
-                                                       action: #selector(handleGesture(_:)))
-        gesture.edges = .left
-        view.addGestureRecognizer(gesture)
+        let newGesture = UIScreenEdgePanGestureRecognizer(
+            target: self,
+            action: #selector(handleGesture(_:))
+        )
+        newGesture.edges = .left
+        view.addGestureRecognizer(newGesture)
+        gesture = newGesture
     }
 
     @objc func handleGesture(_ gestureRecognizer: UIScreenEdgePanGestureRecognizer) {
-        // 1
         let translation = gestureRecognizer.translation(in: gestureRecognizer.view!.superview!)
-        var progress = (translation.x / 350)
+        var progress = (translation.x / 395)
         progress = CGFloat(fminf(fmaxf(Float(progress), 0.0), 1.0))
         
         switch gestureRecognizer.state {
         
-        // 2
         case .began:
             interactionInProgress = true
-            viewController.dismiss(animated: true, completion: nil)
+            if pop {
+                viewController.navigationController?.popViewController(animated: true)
+            } else {
+                viewController.dismiss(animated: true, completion: nil)
+            }
             
-        // 3
         case .changed:
-            shouldCompleteTransition = progress > 0.5
+            shouldCompleteTransition = progress > 0.3
             update(progress)
             
-        // 4
         case .cancelled:
             interactionInProgress = false
             cancel()
             
-        // 5
         case .ended:
             interactionInProgress = false
             if shouldCompleteTransition {

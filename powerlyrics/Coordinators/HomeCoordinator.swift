@@ -25,10 +25,21 @@ class HomeCoordinator: Coordinator {
         lyricsCoordinator.start()
     }
     
+    func showSetup(mode: SetupMode) {
+        let setupCoordinator = resolver.resolve(SetupCoordinator.self, arguments: Router(), rootViewController, { [self] in
+            childCoordinators.removeAll { $0.isKind(of: SetupCoordinator.self) }
+        }, mode)!
+        childCoordinators.append(setupCoordinator)
+        setupCoordinator.start()
+    }
+    
     override func start() {
         let scene = resolver.resolve(HomeScene.self)
         scene?.flowLyrics = { [weak self] song in
             self?.showLyrics(for: song)
+        }
+        scene?.flowSetup = { [weak self] mode in
+            self?.showSetup(mode: mode)
         }
         router.push(scene, animated: false)
     }

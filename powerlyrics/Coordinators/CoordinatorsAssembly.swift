@@ -42,6 +42,10 @@ class CoordinatorsAssembly: Assembly {
             LyricsCoordinator(router: router, resolver: resolver, base: base, dismissCompletion: dismissCompletion, song: song)
         }
         
+        container.register(SetupCoordinator.self) { (resolver, router: Router, base: UIViewController, dismissCompletion: @escaping DefaultAction, mode: SetupMode) in
+            SetupCoordinator(mode: mode, router: router, resolver: resolver, base: base, dismissCompletion: dismissCompletion)
+        }
+        
     }
     
 }

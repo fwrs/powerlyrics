@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17156" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17125"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="RobotoMono-Regular.ttf">
+            <string>RobotoMono-Regular</string>
+        </array>
+    </customFonts>
+    <scenes>
+        <!--Setup Init View Controller-->
+        <scene sceneID="d87-TQ-MCH">
+            <objects>
+                <viewController storyboardIdentifier="SetupInitViewController" interfaceStyle="dark" id="mjG-hh-iaC" customClass="SetupInitViewController" customModule="powerlyrics" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="4ll-nT-gZG">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="842"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="IconUI" translatesAutoresizingMaskIntoConstraints="NO" id="iSh-pB-TKo">
+                                <rect key="frame" x="167" y="192.5" width="80" height="106"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="80" id="FK8-JQ-PfM"/>
+                                    <constraint firstAttribute="width" secondItem="iSh-pB-TKo" secondAttribute="height" multiplier="80:106" id="MGi-Tu-3u8"/>
+                                </constraints>
+                            </imageView>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="yac-oI-iJv">
+                                <rect key="frame" x="120" y="330" width="174" height="67.5"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Welcome to" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cNO-5X-k1x">
+                                        <rect key="frame" x="25.5" y="0.0" width="123" height="27.5"/>
+                                        <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="23"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="powerlyrics" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Z7z-oG-ccM">
+                                        <rect key="frame" x="0.0" y="27.5" width="174" height="40"/>
+                                        <fontDescription key="fontDescription" name="RobotoMono-Regular" family="Roboto Mono" pointSize="34"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                            </stackView>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="6.5" translatesAutoresizingMaskIntoConstraints="NO" id="J09-yS-CR0">
+                                <rect key="frame" x="44" y="661.5" width="326" height="98.5"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ab5-JQ-ryD">
+                                        <rect key="frame" x="0.0" y="0.0" width="326" height="46"/>
+                                        <color key="backgroundColor" name="DarkTintColor"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="46" id="dZ1-sE-3lf"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                                        <state key="normal" title="Sign in and connect to Spotify">
+                                            <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        </state>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="squircleCorners">
+                                                <real key="value" value="13"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3ZD-uC-fb4">
+                                        <rect key="frame" x="0.0" y="52.5" width="326" height="46"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="46" id="z3Y-uH-qWm"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                        <state key="normal" title="Connect to Spotify later">
+                                            <color key="titleColor" name="TintColor"/>
+                                        </state>
+                                    </button>
+                                </subviews>
+                            </stackView>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="mqb-D3-UcX"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="mqb-D3-UcX" firstAttribute="bottom" secondItem="J09-yS-CR0" secondAttribute="bottom" constant="48" id="DFJ-hU-PYk"/>
+                            <constraint firstItem="mqb-D3-UcX" firstAttribute="trailing" secondItem="J09-yS-CR0" secondAttribute="trailing" constant="44" id="K1h-fR-aF6"/>
+                            <constraint firstItem="iSh-pB-TKo" firstAttribute="centerX" secondItem="mqb-D3-UcX" secondAttribute="centerX" id="aBe-2C-FxC"/>
+                            <constraint firstItem="yac-oI-iJv" firstAttribute="centerY" secondItem="mqb-D3-UcX" secondAttribute="centerY" multiplier="0.9" id="c9E-Qe-l47"/>
+                            <constraint firstItem="J09-yS-CR0" firstAttribute="leading" secondItem="mqb-D3-UcX" secondAttribute="leading" constant="44" id="hxJ-zK-6PD"/>
+                            <constraint firstItem="yac-oI-iJv" firstAttribute="top" secondItem="iSh-pB-TKo" secondAttribute="bottom" constant="31.5" id="wit-Td-Q3z"/>
+                            <constraint firstItem="yac-oI-iJv" firstAttribute="centerX" secondItem="mqb-D3-UcX" secondAttribute="centerX" id="yum-sL-Ane"/>
+                        </constraints>
+                    </view>
+                    <modalPageSheetSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+                    <connections>
+                        <outlet property="brandingStackView" destination="yac-oI-iJv" id="vA9-QY-ZRR"/>
+                        <outlet property="buttonsStackView" destination="J09-yS-CR0" id="HMB-NI-Fzb"/>
+                        <outlet property="mainButton" destination="ab5-JQ-ryD" id="XVx-yv-7OT"/>
+                        <outlet property="secondaryButton" destination="3ZD-uC-fb4" id="sfG-oD-pM1"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Fse-X7-fJW" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-49" y="66"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="IconUI" width="132" height="174"/>
+        <namedColor name="DarkTintColor">
+            <color red="0.81999999284744263" green="0.54900002479553223" blue="0.33700001239776611" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="TintColor">
+            <color red="0.9179999828338623" green="0.68199998140335083" blue="0.49799999594688416" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
+</document>

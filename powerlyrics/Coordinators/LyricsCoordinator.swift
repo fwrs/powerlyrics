@@ -48,11 +48,11 @@ class LyricsCoordinator: Coordinator {
 extension LyricsCoordinator: UIViewControllerTransitioningDelegate {
     
     func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-        TranslationAnimation(type: .dismiss, duration: 0.4, interactionController: (dismissed as? TranslationAnimationView)?.interactionController)
+        TranslationAnimation(type: .dismiss, duration: 0.5, interactionController: (dismissed as? TranslationAnimationView)?.translationInteractor)
     }
     
     func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-        TranslationAnimation(type: .present, duration: 0.4)
+        TranslationAnimation(type: .present, duration: 0.5)
     }
     
     func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {

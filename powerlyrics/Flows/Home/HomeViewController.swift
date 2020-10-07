@@ -28,6 +28,8 @@ class HomeViewController: ViewController, HomeScene {
     
     var flowLyrics: DefaultSongAction?
     
+    var flowSetup: DefaultSetupModeAction?
+    
     // MARK: - Lifecycle
 
     override func viewDidLoad() {
@@ -35,6 +37,8 @@ class HomeViewController: ViewController, HomeScene {
 
         setupView()
         setupObservers()
+        
+        flowSetup?(.initial)
     }
 
 }
@@ -58,12 +62,14 @@ extension HomeViewController {
                 scrollToTop()
             }
         }.dispose(in: disposeBag)
-        navigationItem.rightBarButtonItem?.reactive.tap.throttle(for: 0.5).observeNext { _ in
+        navigationItem.rightBarButtonItem?.reactive.tap.throttle(for: 0.5).observeNext { [self] _ in
             Haptic.play(".")
+            flowSetup?(.manual)
         }.dispose(in: disposeBag)
         tableView.reactive.selectedRowIndexPath.observeNext { [self] indexPath in
             lastSelectedIndexPath = indexPath
             tableView.deselectRow(at: indexPath, animated: true)
+            Haptic.play(".")
             let songViewModel = viewModel.songs[indexPath.item]
             flowLyrics?(Song(name: songViewModel.songName, artistName: songViewModel.artistName, albumArt: songViewModel.albumArt))
         }.dispose(in: disposeBag)
@@ -79,8 +85,6 @@ extension HomeViewController: TranslationAnimationView {
         return [container]
     }
     
-    var isInteractiveDismissal: Bool { true }
-    
-    var interactionController: TranslationAnimationInteractor? { nil }
+    var translationInteractor: TranslationAnimationInteractor? { nil }
 
 }

@@ -11,6 +11,10 @@ import UIKit
 
 class LyricsViewController: ViewController, LyricsScene {
     
+    fileprivate enum Constants {
+        static let albumArtShadowOpacity: Float = 0.5
+    }
+    
     // MARK: - Outlets
     
     @IBOutlet private weak var tableView: UITableView!
@@ -29,11 +33,7 @@ class LyricsViewController: ViewController, LyricsScene {
 
     var viewModel: LyricsViewModel!
     
-    var viewTranslation = CGPoint(x: 0, y: 0)
-    
-    var isInteractiveDismissal: Bool = true
-    
-    var swipeInteractionController: TranslationAnimationInteractor?
+    var translationInteractor: TranslationAnimationInteractor?
     
     // MARK: - Flows
     
@@ -47,29 +47,6 @@ class LyricsViewController: ViewController, LyricsScene {
         setupView()
         setupObservers()
     }
-    
-    // MARK: - Actions
-    
-//    @objc func handleDismiss(_ sender: UIPanGestureRecognizer) {
-//        switch sender.state {
-//        case .changed:
-//            viewTranslation = sender.translation(in: view)
-//            UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 1, options: .curveEaseOut, animations: { [self] in
-//                navigationController?.view.transform = CGAffineTransform(translationX: self.viewTranslation.x, y: 0)
-//            })
-//        case .ended:
-//            if viewTranslation.x < 50 {
-//                UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 1, options: .curveEaseOut, animations: { [self] in
-//                    navigationController?.view.transform = .identity
-//                })
-//            } else {
-//                dismiss(animated: true, completion: nil)
-//                isInteractiveDismissal = false
-//            }
-//        default:
-//            break
-//        }
-//    }
     
 }
 
@@ -98,16 +75,17 @@ extension LyricsViewController {
             color: .black,
             radius: 6,
             offset: CGSize(width: .zero, height: 3),
-            opacity: 0.5,
+            opacity: Constants.albumArtShadowOpacity,
             viewCornerRadius: 8,
             viewSquircle: true
         )
         
         tableView.contentInset = UIEdgeInsets(top: 220 - safeAreaInsets.top, left: .zero, bottom: .zero, right: .zero)
         
-//        navigationController?.view.addGestureRecognizer(UIPanGestureRecognizer(target: self, action: #selector(handleDismiss)))
+        let interaction = UIContextMenuInteraction(delegate: self)
+        albumArtImageView.addInteraction(interaction)
         
-        swipeInteractionController = TranslationAnimationInteractor(viewController: self)
+        translationInteractor = TranslationAnimationInteractor(viewController: self)
     }
     
     func setupObservers() {
@@ -131,8 +109,31 @@ extension LyricsViewController: TranslationAnimationView {
         [songView]
     }
     
-    var interactionController: TranslationAnimationInteractor? {
-        swipeInteractionController
+}
+
+extension LyricsViewController: UIContextMenuInteractionDelegate {
+    
+    func contextMenuInteraction(
+        _ interaction: UIContextMenuInteraction,
+        configurationForMenuAtLocation location: CGPoint
+    ) -> UIContextMenuConfiguration? {
+        UIView.animate(withDuration: 0.2, delay: 0.5) { [self] in
+            albumArtContainerView.layer.shadowOpacity = 0
+        }
+        
+        return UIContextMenuConfiguration(
+            identifier: nil,
+            previewProvider: { ImagePreviewController(self.albumArtImageView.image) },
+            actionProvider: { suggestedActions in
+                UIMenu(children: suggestedActions)
+            }
+        )
+    }
+    
+    func contextMenuInteraction(_ interaction: UIContextMenuInteraction, willEndFor configuration: UIContextMenuConfiguration, animator: UIContextMenuInteractionAnimating?) {
+        UIView.animate(withDuration: 0.2, delay: 0.3) { [self] in
+            albumArtContainerView.layer.shadowOpacity = Constants.albumArtShadowOpacity
+        }
     }
     
 }

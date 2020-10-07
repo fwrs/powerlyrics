@@ -92,3 +92,17 @@ extension UIView {
     }
     
 }
+
+extension UIView {
+    
+    @IBInspectable var rotate: CGFloat {
+        get {
+            let radians: Double = atan2( Double(transform.b), Double(transform.a))
+            return CGFloat(radians) * (CGFloat(180) / .pi)
+        }
+        set {
+            transform = .init(rotationAngle: newValue / 180.0 * .pi)
+        }
+    }
+    
+}

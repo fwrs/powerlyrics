@@ -55,3 +55,20 @@ public extension String {
     }
     
 }
+
+extension CGFloat {
+    var radians: CGFloat {
+        CGFloat.pi * (self / 180)
+    }
+}
+
+extension RangeReplaceableCollection {
+    
+    mutating func rotateRight(positions: Int) {
+        let index = self.index(endIndex, offsetBy: -positions, limitedBy: startIndex) ?? startIndex
+        let slice = self[index...]
+        removeSubrange(index...)
+        insert(contentsOf: slice, at: startIndex)
+    }
+    
+}
