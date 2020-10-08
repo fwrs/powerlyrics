@@ -17,7 +17,7 @@ class LyricsViewController: ViewController, LyricsScene {
     
     // MARK: - Outlets
     
-    @IBOutlet private weak var tableView: UITableView!
+    @IBOutlet private weak var tableView: TableView!
     
     @IBOutlet private weak var songView: UIView!
     
@@ -123,7 +123,7 @@ extension LyricsViewController: UIContextMenuInteractionDelegate {
         
         return UIContextMenuConfiguration(
             identifier: nil,
-            previewProvider: { ImagePreviewController(self.albumArtImageView.image) },
+            previewProvider: { [self] in ImagePreviewController(albumArtImageView.image) },
             actionProvider: { suggestedActions in
                 UIMenu(children: suggestedActions)
             }

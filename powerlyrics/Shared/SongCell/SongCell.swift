@@ -68,7 +68,7 @@ extension SongCell: UIContextMenuInteractionDelegate {
         
         return UIContextMenuConfiguration(
             identifier: nil,
-            previewProvider: { ImagePreviewController(self.albumArtImageView.image) },
+            previewProvider: { [self] in ImagePreviewController(albumArtImageView.image) },
             actionProvider: { suggestedActions in
                 UIMenu(children: suggestedActions)
             }

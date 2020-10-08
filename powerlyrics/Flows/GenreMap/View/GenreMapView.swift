@@ -54,7 +54,7 @@ class GenreMapView: UIView {
     func addBehavior() {
         shapeLayer?.removeFromSuperlayer()
         let baseInset: CGFloat = 95
-        let path = roseGraph(inset: baseInset, rect: bounds, values: [1.0/8, 2.0/8, 3.0/8, 4.0/8, 5.0/8, 6.0/8, 7.0/8, 8.0/8].map { _ in 0 })
+        let path = roseGraph(inset: baseInset, rect: bounds, values: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0].map { _ in 0 })
         shapeLayer = CAShapeLayer()
 
         shapeLayer.path = path.cgPath
@@ -74,7 +74,7 @@ class GenreMapView: UIView {
     }
     
     func animatePathChange() {
-        let values = [1.0/8, 2.0/8, 3.0/8, 4.0/8, 5.0/8, 6.0/8, 7.0/8, 8.0/8]
+        let values = [1.85/8, 5.05/8, 6.09/8, 7.64/8, 4.12/8, 1.60/8, 7.01/8, 6.22/8]
         var prevDelay = 0.0
         for i in 0..<8 {
             delay((prevDelay + pow(0.9, Double(i+1))) / 20) { [self] in

@@ -30,6 +30,13 @@ class SearchViewController: ViewController, SearchScene {
         setupObservers()
     }
     
+    // MARK: - Actions
+    
+    override func keyboardWillHide(notification: Notification) {
+        super.keyboardWillHide(notification: notification)
+        searchController.isActive = false
+    }
+    
 }
 
 extension SearchViewController {
@@ -45,7 +52,7 @@ extension SearchViewController {
         let appearance = UINavigationBarAppearance()
         appearance.configureWithDefaultBackground()
         navigationItem.scrollEdgeAppearance = appearance
-        addKeyboardDidHideNotification()
+        addKeyboardWillHideNotification()
     }
     
     func setupObservers() {
@@ -63,7 +70,7 @@ extension SearchViewController {
         }.dispose(in: disposeBag)
         viewModel.songs.bind(to: tableView, cellType: SongCell.self, using: SearchBinder()) { (cell, cellViewModel) in
             cell.configure(with: cellViewModel)
-        }
+        }.dispose(in: disposeBag)
         tableView.reactive.selectedRowIndexPath.observeNext { [self] indexPath in
             tableView.deselectRow(at: indexPath, animated: true)
         }.dispose(in: disposeBag)

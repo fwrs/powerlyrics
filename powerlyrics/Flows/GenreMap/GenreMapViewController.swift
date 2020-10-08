@@ -31,15 +31,18 @@ class GenreMapViewController: ViewController, GenreMapScene {
         super.viewDidLoad()
 
         setupView()
+        genreMapView.addBehavior()
+        genreMapBackgroundView.alpha = 0
+        genreMapView.alpha = 0
+        descriptionLabel.alpha = 0
+        for i in 0..<8 {
+            genreMapButtons[i].alpha = 0
+        }
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         if shouldAnimate {
-            genreMapView.addBehavior()
-            genreMapBackgroundView.alpha = 0
-            genreMapView.alpha = 0
-            descriptionLabel.alpha = 0
             UIView.animate(withDuration: 0.5, delay: 0.1, options: .curveEaseOut) { [self] in
                 genreMapBackgroundView.alpha = 1
             }
@@ -50,15 +53,14 @@ class GenreMapViewController: ViewController, GenreMapScene {
                 genreMapView.animatePathChange()
             }
             for i in 0..<8 {
-                genreMapButtons[i].alpha = 0
                 UIView.animate(withDuration: 0.5 + (Double(i) / 10), delay: 0.1 + 0.05 * Double(i) + pow(0.95, Double(i))/20, options: .curveEaseOut) { [self] in
                     genreMapButtons[i].alpha = 1
                 }
             }
-            UIView.animate(withDuration: 0.7, delay: 0.5, options: .curveEaseIn) { [self] in
+            UIView.animate(withDuration: 0.55, delay: 0.45, options: .curveEaseIn) { [self] in
                 descriptionLabel.alpha = 1
             }
-//            shouldAnimate = false
+            shouldAnimate = false
         }
     }
     

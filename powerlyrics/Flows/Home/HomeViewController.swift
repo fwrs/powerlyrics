@@ -52,7 +52,7 @@ extension HomeViewController {
     func setupObservers() {
         viewModel.songs.bind(to: tableView, cellType: SongCell.self) { (cell, cellViewModel) in
             cell.configure(with: cellViewModel)
-        }
+        }.dispose(in: disposeBag)
         viewModel.isLoading.bind(to: activityIndicator.reactive.isAnimating).dispose(in: disposeBag)
         viewModel.isLoading.observeNext { [self] loading in
             if loading {

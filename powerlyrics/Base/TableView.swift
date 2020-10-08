@@ -19,18 +19,20 @@ class TableView: UITableView {
     
     // MARK: - Public Api
     
-    @discardableResult public func setRefreshControl(_ completion: @escaping DefaultAction) -> UIRefreshControl {
+    @discardableResult public func setRefreshControl(top: CGFloat = 0, _ completion: @escaping DefaultAction) -> UIRefreshControl {
         if let control = customRefreshControl { return control }
         refreshControlHandle = completion
         let newControl = UIRefreshControl()
         newControl.addTarget(self, action: #selector(refreshControlPulled), for: .valueChanged)
-        addSubview(newControl)
         customRefreshControl = newControl
+        let refreshView = UIView(frame: CGRect(x: .zero, y: top, width: .zero, height: .zero))
+        addSubview(refreshView)
+        refreshView.addSubview(newControl)
         return newControl
     }
     
-    @discardableResult public func setRefreshControl() -> UIRefreshControl {
-        setRefreshControl { [self] in
+    @discardableResult public func setRefreshControl(top: CGFloat = 0) -> UIRefreshControl {
+        setRefreshControl(top: top) { [self] in
             delay(0.5) {
                 set(refreshing: false)
             }
@@ -48,6 +50,14 @@ class TableView: UITableView {
         } else {
             customRefreshControl?.endRefreshing()
         }
+    }
+    
+    func register<T>(_: T.Type) {
+        register(UINib(nibName: String(describing: T.self), bundle: nil), forCellReuseIdentifier: String(describing: T.self))
+    }
+    
+    func dequeue<T>(_: T.Type, indexPath: IndexPath) -> T {
+        dequeueReusableCell(withIdentifier: String(describing: T.self), for: indexPath) as! T
     }
     
 }
