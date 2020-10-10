@@ -147,9 +147,9 @@
                                 </constraints>
                             </view>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5ju-dN-qOT">
-                                <rect key="frame" x="20" y="104" width="374" height="91"/>
+                                <rect key="frame" x="20" y="104" width="354" height="86"/>
                                 <string key="text">Your genremap shows how diverse your music taste is. This graph is populated based on your liked music. Tap on a genre to learn more. 🎵</string>
-                                <fontDescription key="fontDescription" type="system" pointSize="19"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="18"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
@@ -159,12 +159,18 @@
                         <color key="tintColor" name="TintColor"/>
                         <constraints>
                             <constraint firstItem="H2j-x3-U2c" firstAttribute="trailing" secondItem="chX-eS-asc" secondAttribute="trailing" id="G1q-0M-Myd"/>
-                            <constraint firstItem="H2j-x3-U2c" firstAttribute="trailing" secondItem="5ju-dN-qOT" secondAttribute="trailing" constant="20" id="LkQ-Bc-Xzr"/>
-                            <constraint firstItem="chX-eS-asc" firstAttribute="centerY" secondItem="H2j-x3-U2c" secondAttribute="centerY" multiplier="1.1" id="RGA-hn-AUv"/>
+                            <constraint firstItem="chX-eS-asc" firstAttribute="centerY" secondItem="H2j-x3-U2c" secondAttribute="centerY" multiplier="1.17" id="Kv6-Wl-oeV"/>
+                            <constraint firstItem="H2j-x3-U2c" firstAttribute="trailing" secondItem="5ju-dN-qOT" secondAttribute="trailing" constant="40" id="LkQ-Bc-Xzr"/>
+                            <constraint firstItem="chX-eS-asc" firstAttribute="centerY" secondItem="H2j-x3-U2c" secondAttribute="centerY" multiplier="1.1" priority="750" id="RGA-hn-AUv"/>
                             <constraint firstItem="5ju-dN-qOT" firstAttribute="top" secondItem="H2j-x3-U2c" secondAttribute="top" constant="16" id="uiB-ox-7LA"/>
                             <constraint firstItem="chX-eS-asc" firstAttribute="leading" secondItem="H2j-x3-U2c" secondAttribute="leading" id="y5E-Hx-tE4"/>
                             <constraint firstItem="5ju-dN-qOT" firstAttribute="leading" secondItem="H2j-x3-U2c" secondAttribute="leading" constant="20" id="zuE-Xb-2DN"/>
                         </constraints>
+                        <variation key="default">
+                            <mask key="constraints">
+                                <exclude reference="Kv6-Wl-oeV"/>
+                            </mask>
+                        </variation>
                     </view>
                     <tabBarItem key="tabBarItem" title="GenreMap" image="staroflife" catalog="system" id="3yY-uH-0jL">
                         <userDefinedRuntimeAttributes>
@@ -182,6 +188,7 @@
                         <outlet property="descriptionLabel" destination="5ju-dN-qOT" id="Qzg-Hu-N3h"/>
                         <outlet property="genreMapBackgroundView" destination="chX-eS-asc" id="1c9-8r-X3q"/>
                         <outlet property="genreMapView" destination="st3-wX-gh2" id="O64-B8-ct5"/>
+                        <outlet property="secondaryMapAlignmentConstraint" destination="Kv6-Wl-oeV" id="Wmb-ig-iOq"/>
                         <outletCollection property="genreMapButtons" destination="fOa-RY-QAE" collectionClass="NSMutableArray" id="xpW-Pr-8VJ"/>
                         <outletCollection property="genreMapButtons" destination="VSD-uF-qOY" collectionClass="NSMutableArray" id="q0T-F4-Spm"/>
                         <outletCollection property="genreMapButtons" destination="m0e-wq-6BZ" collectionClass="NSMutableArray" id="RpP-gs-Yq3"/>

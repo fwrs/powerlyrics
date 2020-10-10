@@ -9,9 +9,9 @@ target 'powerlyrics' do
   # Suppress warnings
   inhibit_all_warnings!
 
-  # Pods for powerlyrics
+  # Pods for powerlyrics:
   
-  # Project
+  # Project management
   pod 'SwiftLint'
   pod 'SwiftGen'
 
@@ -21,6 +21,9 @@ target 'powerlyrics' do
   # Data binding
   pod 'ReactiveKit'
   pod 'Bond'
+  
+  # Labels with links and formatting
+  pod 'ActiveLabel'
 
   # Realm data storage
   pod 'RealmSwift'

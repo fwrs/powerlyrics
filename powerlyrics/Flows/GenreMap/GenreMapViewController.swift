@@ -19,6 +19,8 @@ class GenreMapViewController: ViewController, GenreMapScene {
     
     @IBOutlet private weak var descriptionLabel: UILabel!
     
+    @IBOutlet private weak var secondaryMapAlignmentConstraint: NSLayoutConstraint!
+    
     // MARK: - Instance properties
     
     var viewModel: GenreMapViewModel!
@@ -72,6 +74,10 @@ extension GenreMapViewController {
     
     // MARK: - Setup
 
-    func setupView() {}
+    func setupView() {
+        if !UIDevice.current.hasNotch {
+            secondaryMapAlignmentConstraint.isActive = true
+        }
+    }
     
 }

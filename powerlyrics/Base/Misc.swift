@@ -72,3 +72,11 @@ extension RangeReplaceableCollection {
     }
     
 }
+
+extension UIDevice {
+    
+    var hasNotch: Bool {
+        UIApplication.shared.windows.first { $0.isKeyWindow }!.safeAreaInsets.bottom > 0
+    }
+    
+}

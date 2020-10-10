@@ -1,4 +1,5 @@
 PODS:
+  - ActiveLabel (1.1.0)
   - Alamofire (5.2.2)
   - Bond (7.6.6):
     - Differ (~> 1.4)
@@ -27,6 +28,7 @@ PODS:
   - Swinject (2.7.1)
 
 DEPENDENCIES:
+  - ActiveLabel
   - Alamofire
   - Bond
   - Haptica
@@ -42,6 +44,7 @@ DEPENDENCIES:
 
 SPEC REPOS:
   trunk:
+    - ActiveLabel
     - Alamofire
     - Bond
     - Differ
@@ -59,6 +62,7 @@ SPEC REPOS:
     - Swinject
 
 SPEC CHECKSUMS:
+  ActiveLabel: 5e3f4de79a1952d4604b845a0610d4776e4b82b3
   Alamofire: 814429acc853c6c54ff123fc3d2ef66803823ce0
   Bond: 9e7d901cf4ed825b6004a93dd0a7f1c7479e2834
   Differ: 3b6bd78e2b20cc795d9a86f7641d087524e4273e
@@ -75,6 +79,6 @@ SPEC CHECKSUMS:
   SwiftLint: 1216c910d27c2633ade33b4f071bb6b930982e62
   Swinject: ddf78b8486dd9b71a667b852cad919ab4484478e
 
-PODFILE CHECKSUM: 074a137d8cf2dbbd81893aa70ffe881960032cef
+PODFILE CHECKSUM: b54e93ecd7d96d539c6ded767a93057998620ad6
 
 COCOAPODS: 1.9.3

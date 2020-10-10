@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		B2AC80FDC946A0F6B41E6DD9 /* Pods_powerlyrics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9284D0F2E443A8660A545FBD /* Pods_powerlyrics.framework */; };
+		18DF76FFB6DFB055F4902DCE /* Pods_powerlyrics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 99C05FCB56F25F0F780F4D68 /* Pods_powerlyrics.framework */; };
 		B801AB25252FB28D0027B3BC /* ActionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B801AB23252FB28D0027B3BC /* ActionCell.swift */; };
 		B801AB26252FB28D0027B3BC /* ActionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B801AB24252FB28D0027B3BC /* ActionCell.xib */; };
 		B801AB29252FB2980027B3BC /* ActionCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B801AB28252FB2980027B3BC /* ActionCellViewModel.swift */; };
@@ -121,8 +121,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		732E23230B68FF10CE2113B9 /* Pods-powerlyrics.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-powerlyrics.release.xcconfig"; path = "Target Support Files/Pods-powerlyrics/Pods-powerlyrics.release.xcconfig"; sourceTree = "<group>"; };
-		9284D0F2E443A8660A545FBD /* Pods_powerlyrics.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_powerlyrics.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		43579130F674C8A1626D1485 /* Pods-powerlyrics.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-powerlyrics.release.xcconfig"; path = "Target Support Files/Pods-powerlyrics/Pods-powerlyrics.release.xcconfig"; sourceTree = "<group>"; };
+		949195280A3CD03A53067E41 /* Pods-powerlyrics.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-powerlyrics.debug.xcconfig"; path = "Target Support Files/Pods-powerlyrics/Pods-powerlyrics.debug.xcconfig"; sourceTree = "<group>"; };
+		99C05FCB56F25F0F780F4D68 /* Pods_powerlyrics.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_powerlyrics.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B801AB23252FB28D0027B3BC /* ActionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionCell.swift; sourceTree = "<group>"; };
 		B801AB24252FB28D0027B3BC /* ActionCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ActionCell.xib; sourceTree = "<group>"; };
 		B801AB28252FB2980027B3BC /* ActionCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionCellViewModel.swift; sourceTree = "<group>"; };
@@ -239,7 +240,6 @@
 		B8FE33D8252637AD000CC6E4 /* Assets.gen.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Assets.gen.swift; sourceTree = "<group>"; };
 		B8FE33DB252637AD000CC6E4 /* Fonts.gen.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Fonts.gen.swift; sourceTree = "<group>"; };
 		B8FE33DC252637AD000CC6E4 /* Strings.gen.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Strings.gen.swift; sourceTree = "<group>"; };
-		BC9B9A025EF8CD53D34D45FC /* Pods-powerlyrics.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-powerlyrics.debug.xcconfig"; path = "Target Support Files/Pods-powerlyrics/Pods-powerlyrics.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -247,26 +247,18 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B2AC80FDC946A0F6B41E6DD9 /* Pods_powerlyrics.framework in Frameworks */,
+				18DF76FFB6DFB055F4902DCE /* Pods_powerlyrics.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		677F9C567ACD93311D07ED78 /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				9284D0F2E443A8660A545FBD /* Pods_powerlyrics.framework */,
-			);
-			name = Frameworks;
-			sourceTree = "<group>";
-		};
 		B0243314C09F2298D22D2CFD /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				BC9B9A025EF8CD53D34D45FC /* Pods-powerlyrics.debug.xcconfig */,
-				732E23230B68FF10CE2113B9 /* Pods-powerlyrics.release.xcconfig */,
+				949195280A3CD03A53067E41 /* Pods-powerlyrics.debug.xcconfig */,
+				43579130F674C8A1626D1485 /* Pods-powerlyrics.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -460,7 +452,7 @@
 				B8C8BCD12525ED6000E55708 /* powerlyrics */,
 				B8C8BCD02525ED6000E55708 /* Products */,
 				B0243314C09F2298D22D2CFD /* Pods */,
-				677F9C567ACD93311D07ED78 /* Frameworks */,
+				ECD32DFCF2A55670DA6ED45F /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -619,6 +611,14 @@
 			path = SetupManual;
 			sourceTree = "<group>";
 		};
+		ECD32DFCF2A55670DA6ED45F /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				99C05FCB56F25F0F780F4D68 /* Pods_powerlyrics.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -626,13 +626,13 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = B8C8BCE32525ED6100E55708 /* Build configuration list for PBXNativeTarget "powerlyrics" */;
 			buildPhases = (
-				86D112A0240CE4C0C3A47A89 /* [CP] Check Pods Manifest.lock */,
+				7F18CFE82CE436BC357B210F /* [CP] Check Pods Manifest.lock */,
 				B8C8BCCB2525ED6000E55708 /* Sources */,
 				B8C8BCCC2525ED6000E55708 /* Frameworks */,
 				B8C8BCCD2525ED6000E55708 /* Resources */,
 				B86F6EA725262403003296B0 /* Swiftlint */,
 				B8624FC92526290F0096EEF3 /* Swiftgen */,
-				1D88B4021D4FAD5DEDDE0E21 /* [CP] Embed Pods Frameworks */,
+				7C343C2BB0A2F35DE6CCF9C5 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -715,7 +715,7 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		1D88B4021D4FAD5DEDDE0E21 /* [CP] Embed Pods Frameworks */ = {
+		7C343C2BB0A2F35DE6CCF9C5 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -732,7 +732,7 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-powerlyrics/Pods-powerlyrics-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		86D112A0240CE4C0C3A47A89 /* [CP] Check Pods Manifest.lock */ = {
+		7F18CFE82CE436BC357B210F /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -1012,7 +1012,7 @@
 		};
 		B8C8BCE42525ED6100E55708 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = BC9B9A025EF8CD53D34D45FC /* Pods-powerlyrics.debug.xcconfig */;
+			baseConfigurationReference = 949195280A3CD03A53067E41 /* Pods-powerlyrics.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -1032,7 +1032,7 @@
 		};
 		B8C8BCE52525ED6100E55708 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 732E23230B68FF10CE2113B9 /* Pods-powerlyrics.release.xcconfig */;
+			baseConfigurationReference = 43579130F674C8A1626D1485 /* Pods-powerlyrics.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
