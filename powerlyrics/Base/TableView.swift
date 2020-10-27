@@ -17,9 +17,18 @@ class TableView: UITableView {
     
     private var customRefreshControl: UIRefreshControl?
     
-    // MARK: - Public Api
+    override var refreshControl: UIRefreshControl? {
+        get {
+            customRefreshControl
+        }
+        set {
+            customRefreshControl = newValue
+        }
+    }
     
-    @discardableResult public func setRefreshControl(top: CGFloat = 0, _ completion: @escaping DefaultAction) -> UIRefreshControl {
+    // MARK: - Public API
+    
+    @discardableResult func setRefreshControl(top: CGFloat = 0, _ completion: @escaping DefaultAction) -> UIRefreshControl {
         if let control = customRefreshControl { return control }
         refreshControlHandle = completion
         let newControl = UIRefreshControl()
@@ -31,7 +40,7 @@ class TableView: UITableView {
         return newControl
     }
     
-    @discardableResult public func setRefreshControl(top: CGFloat = 0) -> UIRefreshControl {
+    @discardableResult func setRefreshControl(top: CGFloat = 0) -> UIRefreshControl {
         setRefreshControl(top: top) { [self] in
             delay(0.5) {
                 set(refreshing: false)
@@ -39,12 +48,12 @@ class TableView: UITableView {
         }
     }
     
-    public func unsetRefreshControl() {
+    func unsetRefreshControl() {
         customRefreshControl?.removeFromSuperview()
         customRefreshControl = nil
     }
     
-    public func set(refreshing: Bool) {
+    func set(refreshing: Bool) {
         if refreshing {
             customRefreshControl?.beginRefreshing()
         } else {

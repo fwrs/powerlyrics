@@ -14,9 +14,7 @@ enum SongCellAccessory: Equatable {
 }
 
 struct SongCellViewModel: Equatable {
-    let songName: String
-    let artistName: String
-    var albumArt: UIImage?
+    let song: Shared.Song
     var accessory: SongCellAccessory?
     var shouldDisplayDominantColor: Bool = false
 }

@@ -11,32 +11,42 @@ import ReactiveKit
 enum SearchSection {
     case closestMatch
     
-    var localizedDescription: String {
+    var localizedTitle: String {
         "Closest Match"
     }
 }
 
-struct SearchViewModel {
+class SearchViewModel: ViewModel {
     
     let songs = MutableObservableArray2D(Array2D<SearchSection, SongCellViewModel>())
     
-    let isLoading = Observable(false)
+    let geniusProvider: GeniusProvider
     
-    init() {
-        songs.append(Array2D.Node.section(Array2D.Section(
-            metadata: .closestMatch,
-            items: [SongCellViewModel(songName: "init", artistName: "init")]
-        )))
+    init(geniusProvider: GeniusProvider) {
+        self.geniusProvider = geniusProvider
     }
     
     func search(for query: String) {
         isLoading.value = true
-        delay(1) {
-            songs.append(Array2D.Node.section(Array2D.Section(
-                metadata: .closestMatch,
-                items: [SongCellViewModel(songName: query, artistName: "init")]
-            )))
-            isLoading.value = false
+        geniusProvider.reactive
+            .request(.searchSongs(query: query))
+            .map(Genius.SearchResponse.self)
+            .start { [self] event in
+                switch event {
+                case .value(let response):
+                    isLoading.value = false
+                    songs.removeAll()
+                    songs.appendSection(.closestMatch)
+                    let newSongs = response.response.hits.map { $0.result.asSharedSong }
+                    for song in newSongs {
+                        songs.appendItem(SongCellViewModel(song: song), toSectionAt: 0)
+                    }
+                case .failed(let error):
+                    print(error)
+                default:
+                    break
+                }
+            
         }
     }
     

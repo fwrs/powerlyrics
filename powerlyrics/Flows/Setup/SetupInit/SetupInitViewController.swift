@@ -27,6 +27,8 @@ class SetupInitViewController: ViewController, SetupInitScene {
     
     var flowDismiss: DefaultAction?
     
+    var flowSpotifyLogin: DefaultAction?
+    
     var flowOfflineSetup: DefaultAction?
     
     // MARK: - Lifecycle
@@ -57,6 +59,9 @@ extension SetupInitViewController {
     }
     
     func setupObservers() {
+        mainButton.reactive.tap.observeNext { [self] _ in
+            flowSpotifyLogin?()
+        }.dispose(in: disposeBag)
         secondaryButton.reactive.tap.observeNext { [self] _ in
             flowOfflineSetup?()
         }.dispose(in: disposeBag)

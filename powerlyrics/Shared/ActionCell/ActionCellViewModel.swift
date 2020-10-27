@@ -15,7 +15,10 @@ enum ActionCellAction: Equatable {
     case seeTrendingSongs
     
     var localizedTitle: String {
-        "Action"
+        if self == .signOut {
+            return "Sign Out"
+        }
+        return "Action"
     }
 }
 

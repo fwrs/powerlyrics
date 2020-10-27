@@ -39,6 +39,9 @@ target 'powerlyrics' do
   pod 'Alamofire'
   pod 'Kingfisher'
   
+  # HTML scraping
+  pod 'SwiftSoup'
+  
   # Token storage
   pod 'KeychainAccess'
   

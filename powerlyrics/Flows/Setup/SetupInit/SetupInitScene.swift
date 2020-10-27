@@ -9,5 +9,6 @@ import Foundation
 
 protocol SetupInitScene: ViewController {
     var flowDismiss: DefaultAction? { get set }
+    var flowSpotifyLogin: DefaultAction? { get set }
     var flowOfflineSetup: DefaultAction? { get set }
 }

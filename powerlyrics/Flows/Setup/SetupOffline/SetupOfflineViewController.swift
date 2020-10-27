@@ -29,6 +29,8 @@ class SetupOfflineViewController: ViewController, SetupOfflineScene {
     
     var flowDismiss: DefaultAction?
     
+    var flowSpotifyLoginOffline: DefaultAction?
+    
     // MARK: - Lifecycle
 
     override func viewDidLoad() {
@@ -86,7 +88,7 @@ extension SetupOfflineViewController {
     
     func setupObservers() {
         mainButton.reactive.tap.observeNext { [self] _ in
-            flowDismiss?()
+            flowSpotifyLoginOffline?()
         }.dispose(in: disposeBag)
     }
     

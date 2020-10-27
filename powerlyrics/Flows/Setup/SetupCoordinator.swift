@@ -26,12 +26,15 @@ class SetupCoordinator: Coordinator {
     let dismissCompletion: DefaultAction
     
     var interactionController: UIPercentDrivenInteractiveTransition?
+    
+    let spotifyProvider: SpotifyProvider
 
-    init(mode: SetupMode, router: Router, resolver: Resolver, base: UIViewController, dismissCompletion: @escaping DefaultAction) {
+    init(mode: SetupMode, router: Router, resolver: Resolver, base: UIViewController, spotifyProvider: SpotifyProvider, dismissCompletion: @escaping DefaultAction) {
         self.mode = mode
         self.router = router
         self.base = base
         self.dismissCompletion = dismissCompletion
+        self.spotifyProvider = spotifyProvider
         super.init(resolver: resolver)
         let appearance = UINavigationBarAppearance()
         appearance.configureWithTransparentBackground()
@@ -50,6 +53,9 @@ class SetupCoordinator: Coordinator {
         }
         scene.flowOfflineSetup = { [self] in
             showOfflineSetup()
+        }
+        scene.flowSpotifyLogin = { [self] in
+            spotifyProvider.login(from: scene)
         }
         router.push(scene, animated: false)
         base.present(router, animated: true)
@@ -72,6 +78,15 @@ class SetupCoordinator: Coordinator {
             base.dismiss(animated: true, completion: {
                 dismissCompletion()
             })
+        }
+        scene.flowSpotifyLoginOffline = { [self] in
+            spotifyProvider.loginWithoutUser { success in
+                if success {
+                    base.dismiss(animated: true, completion: {
+                        dismissCompletion()
+                    })
+                }
+            }
         }
         router.push(scene, animated: true)
     }

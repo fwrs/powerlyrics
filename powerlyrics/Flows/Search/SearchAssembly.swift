@@ -12,8 +12,8 @@ class SearchAssembly: Assembly {
 
     override func assemble(container: Container) {
         
-        container.register(SearchViewModel.self) { _ in
-            SearchViewModel()
+        container.register(SearchViewModel.self) { resolver in
+            SearchViewModel(geniusProvider: resolver.resolve(GeniusProvider.self)!)
         }
         
         container.register(SearchScene.self) { resolver in

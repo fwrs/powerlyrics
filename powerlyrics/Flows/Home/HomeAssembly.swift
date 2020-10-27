@@ -12,8 +12,8 @@ class HomeAssembly: Assembly {
 
     override func assemble(container: Container) {
         
-        container.register(HomeViewModel.self) { _ in
-            HomeViewModel()
+        container.register(HomeViewModel.self) { resolver in
+            HomeViewModel(spotifyProvider: resolver.resolve(SpotifyProvider.self)!)
         }
         
         container.register(HomeScene.self) { resolver in

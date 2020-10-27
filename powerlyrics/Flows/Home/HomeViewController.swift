@@ -38,7 +38,11 @@ class HomeViewController: ViewController, HomeScene {
         setupView()
         setupObservers()
         
-        flowSetup?(.initial)
+        if viewModel.shouldSignUp {
+            flowSetup?(.initial)
+        } else {
+            viewModel.loadData()
+        }
     }
 
 }
@@ -47,18 +51,30 @@ extension HomeViewController {
     
     // MARK: - Setup
     
-    func setupView() {}
+    func setupView() {
+        tableView.register(SongCell.self)
+        tableView.register(ActionCell.self)
+    }
     
     func setupObservers() {
-        viewModel.songs.bind(to: tableView, cellType: SongCell.self) { (cell, cellViewModel) in
-            cell.configure(with: cellViewModel)
+        viewModel.items.bind(to: tableView, using: HomeBinder())
+        viewModel.isRefreshing.observeNext { [self] refreshing in
+            if refreshing {
+                tableView.refreshControl?.beginRefreshing()
+            } else {
+                delay(0.5) {
+                    tableView.refreshControl?.endRefreshing()
+                }
+            }
         }.dispose(in: disposeBag)
-        viewModel.isLoading.bind(to: activityIndicator.reactive.isAnimating).dispose(in: disposeBag)
         viewModel.isLoading.observeNext { [self] loading in
+            activityIndicator.isHidden = !loading
             if loading {
                 tableView.unsetRefreshControl()
             } else {
-                tableView.setRefreshControl()
+                tableView.setRefreshControl { [self] in
+                    viewModel.loadData(refresh: true)
+                }
                 scrollToTop()
             }
         }.dispose(in: disposeBag)
@@ -70,8 +86,10 @@ extension HomeViewController {
             lastSelectedIndexPath = indexPath
             tableView.deselectRow(at: indexPath, animated: true)
             Haptic.play(".")
-            let songViewModel = viewModel.songs[indexPath.item]
-            flowLyrics?(Song(name: songViewModel.songName, artistName: songViewModel.artistName, albumArt: songViewModel.albumArt))
+            let cell = viewModel.items[itemAt: indexPath]
+            if case .song(let viewModel) = cell {
+                flowLyrics?(viewModel.song)
+            }
         }.dispose(in: disposeBag)
     }
     

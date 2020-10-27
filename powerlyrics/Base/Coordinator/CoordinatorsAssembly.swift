@@ -38,12 +38,19 @@ class CoordinatorsAssembly: Assembly {
         
         // MARK: - Supplementary screens
         
-        container.register(LyricsCoordinator.self) { (resolver, router: Router, base: UIViewController, dismissCompletion: @escaping DefaultAction, song: Song) in
+        container.register(LyricsCoordinator.self) { (resolver, router: Router, base: UIViewController, dismissCompletion: @escaping DefaultAction, song: Shared.Song) in
             LyricsCoordinator(router: router, resolver: resolver, base: base, dismissCompletion: dismissCompletion, song: song)
         }
         
         container.register(SetupCoordinator.self) { (resolver, router: Router, base: UIViewController, dismissCompletion: @escaping DefaultAction, mode: SetupMode) in
-            SetupCoordinator(mode: mode, router: router, resolver: resolver, base: base, dismissCompletion: dismissCompletion)
+            SetupCoordinator(
+                mode: mode,
+                router: router,
+                resolver: resolver,
+                base: base,
+                spotifyProvider: resolver.resolve(SpotifyProvider.self)!,
+                dismissCompletion: dismissCompletion
+            )
         }
         
     }

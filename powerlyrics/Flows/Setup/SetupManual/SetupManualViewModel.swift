@@ -7,4 +7,4 @@
 
 import Foundation
 
-struct SetupManualViewModel {}
+class SetupManualViewModel: ViewModel {}

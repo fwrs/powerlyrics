@@ -29,7 +29,7 @@ final class KeychainStorage: KeychainStorageProtocol {
         }
         
         return Keychain(service: service)
-            .accessibility(.whenUnlockedThisDeviceOnly)
+            .accessibility(.always)
     }()
     
     private var keychain: Keychain {
@@ -37,11 +37,9 @@ final class KeychainStorage: KeychainStorageProtocol {
     }
     
     enum Key: String {
-        case user
-        case profile
-        case passcode
+        case spotifyToken
         
-        static let all: [Key] = [.user, .passcode, .profile]
+        static let all: [Key] = [.spotifyToken]
     }
     
     func setEncodable<T: Encodable>(_ value: T?, for key: Key) {

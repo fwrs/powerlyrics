@@ -7,4 +7,4 @@
 
 import Foundation
 
-struct GenreMapViewModel {}
+class GenreMapViewModel: ViewModel {}

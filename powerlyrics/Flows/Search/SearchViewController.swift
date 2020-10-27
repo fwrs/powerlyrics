@@ -5,6 +5,7 @@
 //  Created by Ilya Kulinkovich on 10/2/20.
 //
 
+import Haptica
 import UIKit
 
 class SearchViewController: ViewController, SearchScene {
@@ -21,6 +22,12 @@ class SearchViewController: ViewController, SearchScene {
     
     let searchController = UISearchController(searchResultsController: nil)
     
+    private var lastSelectedIndexPath: IndexPath?
+    
+    // MARK: - Flows
+    
+    var flowLyrics: DefaultSongAction?
+    
     // MARK: - Lifecycle
 
     override func viewDidLoad() {
@@ -32,9 +39,8 @@ class SearchViewController: ViewController, SearchScene {
     
     // MARK: - Actions
     
-    override func keyboardWillHide(notification: Notification) {
-        super.keyboardWillHide(notification: notification)
-        searchController.isActive = false
+    @objc func dismissKeyboard() {
+        searchController.dismiss(animated: true)
     }
     
 }
@@ -48,15 +54,20 @@ extension SearchViewController {
         searchController.searchBar.searchTextField.leftView?.tintColor = .secondaryLabel
         searchController.hidesNavigationBarDuringPresentation = false
         searchController.obscuresBackgroundDuringPresentation = false
+        searchController.searchBar.delegate = self
         navigationItem.searchController = searchController
         let appearance = UINavigationBarAppearance()
         appearance.configureWithDefaultBackground()
         navigationItem.scrollEdgeAppearance = appearance
         addKeyboardWillHideNotification()
+        
+        let tap = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+        tap.cancelsTouchesInView = false
+        view.addGestureRecognizer(tap)
     }
     
     func setupObservers() {
-        searchController.searchBar.reactive.text.compactMap { $0 }.filter(\.nonEmpty).debounce(for: 0.5, queue: .main).observeNext { [self] query in
+        searchController.searchBar.reactive.text.compactMap { $0 }.filter(\.nonEmpty).debounce(for: 0.3, queue: .main).observeNext { [self] query in
             viewModel.search(for: query)
         }.dispose(in: disposeBag)
         viewModel.isLoading.bind(to: activityIndicator.reactive.isAnimating).dispose(in: disposeBag)
@@ -72,8 +83,32 @@ extension SearchViewController {
             cell.configure(with: cellViewModel)
         }.dispose(in: disposeBag)
         tableView.reactive.selectedRowIndexPath.observeNext { [self] indexPath in
+            lastSelectedIndexPath = indexPath
             tableView.deselectRow(at: indexPath, animated: true)
+            Haptic.play(".")
+            let songViewModel = viewModel.songs[itemAt: indexPath]
+            flowLyrics?(songViewModel.song)
         }.dispose(in: disposeBag)
     }
     
+}
+
+extension SearchViewController: UISearchBarDelegate {
+    
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        // reset search
+    }
+    
+}
+
+extension SearchViewController: TranslationAnimationView {
+    
+    var translationViews: [UIView] {
+        guard let indexPath = lastSelectedIndexPath,
+              let container = (tableView.cellForRow(at: indexPath) as? SongCell)?.songContainer else { return [] }
+        return [container]
+    }
+    
+    var translationInteractor: TranslationAnimationInteractor? { nil }
+
 }

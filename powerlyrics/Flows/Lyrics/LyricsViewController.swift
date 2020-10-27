@@ -5,21 +5,27 @@
 //  Created by Ilya Kulinkovich on 10/3/20.
 //
 
-import Bond
-import ReactiveKit
 import UIKit
 
 class LyricsViewController: ViewController, LyricsScene {
     
     fileprivate enum Constants {
-        static let albumArtShadowOpacity: Float = 0.5
+        static let albumArtShadowOpacity: Float = 0.3
     }
     
     // MARK: - Outlets
     
+    @IBOutlet private weak var backgroundCoverImageView: UIImageView!
+    
     @IBOutlet private weak var tableView: TableView!
     
     @IBOutlet private weak var songView: UIView!
+    
+    @IBOutlet private weak var firstInfoLabel: UILabel!
+    
+    @IBOutlet private weak var secondInfoLabel: UILabel!
+    
+    @IBOutlet private weak var buttonsStackView: UIStackView!
     
     @IBOutlet private weak var albumArtContainerView: UIView!
     
@@ -29,11 +35,27 @@ class LyricsViewController: ViewController, LyricsScene {
     
     @IBOutlet private weak var artistLabel: UILabel!
     
+    @IBOutlet private weak var likeButton: UIButton!
+    
+    @IBOutlet private weak var shareButton: UIButton!
+    
+    @IBOutlet private weak var safariButton: UIButton!
+    
+    @IBOutlet private weak var notesButton: UIButton!
+    
+    @IBOutlet private weak var activityIndicator: UIActivityIndicatorView!
+    
+    @IBOutlet private weak var navigationBarHeightConstraint: NSLayoutConstraint!
+    
+    private var titleLabel: UILabel?
+    
     // MARK: - Instance properties
 
     var viewModel: LyricsViewModel!
     
     var translationInteractor: TranslationAnimationInteractor?
+    
+    private var appeared: Bool = false
     
     // MARK: - Flows
     
@@ -46,6 +68,18 @@ class LyricsViewController: ViewController, LyricsScene {
         
         setupView()
         setupObservers()
+        
+        viewModel.loadData()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        appeared = true
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        appeared = false
     }
     
 }
@@ -55,6 +89,11 @@ extension LyricsViewController {
     // MARK: - Setup
 
     func setupView() {
+        songLabel.text = viewModel.song.name
+        artistLabel.text = viewModel.song.artistsString
+        albumArtImageView.populate(with: viewModel.song.albumArt)
+        backgroundCoverImageView.populate(with: viewModel.song.albumArt)
+    
         let appearance = UINavigationBarAppearance()
         appearance.configureWithTransparentBackground()
         appearance.titleTextAttributes = [
@@ -80,24 +119,27 @@ extension LyricsViewController {
             viewSquircle: true
         )
         
-        tableView.contentInset = UIEdgeInsets(top: 220 - safeAreaInsets.top, left: .zero, bottom: .zero, right: .zero)
+        tableView.contentInset = UIEdgeInsets(top: 200 - safeAreaInsets.top, left: .zero, bottom: -safeAreaInsets.bottom, right: .zero)
+        tableView.allowsSelection = false
+        tableView.delegate = self
         
         let interaction = UIContextMenuInteraction(delegate: self)
         albumArtImageView.addInteraction(interaction)
         
         translationInteractor = TranslationAnimationInteractor(viewController: self)
+        
+        [likeButton, shareButton, safariButton, notesButton].forEach {
+            $0?.setImage($0?.image(for: .normal)?.withTintColor(.label, renderingMode: .alwaysOriginal), for: .normal)
+        }
     }
     
     func setupObservers() {
-        viewModel.song.observeNext { [self] song in
-            songLabel.text = song.name
-            artistLabel.text = song.artistName
-            
-            if let albumArt = song.albumArt {
-                albumArtImageView.image = albumArt
-            } else {
-                albumArtImageView.image = UIImage.from(color: .tertiarySystemBackground)
-            }
+        viewModel.lyrics.bind(to: tableView, cellType: LyricsSectionCell.self, rowAnimation: .fade) { (cell, item) in
+            cell.configure(with: LyricsSectionCellViewModel(section: item))
+        }.dispose(in: disposeBag)
+        
+        viewModel.isLoading.observeNext { [self] loading in
+            activityIndicator.isHidden = !loading
         }.dispose(in: disposeBag)
     }
     
@@ -106,7 +148,7 @@ extension LyricsViewController {
 extension LyricsViewController: TranslationAnimationView {
     
     var translationViews: [UIView] {
-        [songView]
+        appeared && tableView.contentOffset.y > -205 ? [] : [songView]
     }
     
 }
@@ -117,6 +159,7 @@ extension LyricsViewController: UIContextMenuInteractionDelegate {
         _ interaction: UIContextMenuInteraction,
         configurationForMenuAtLocation location: CGPoint
     ) -> UIContextMenuConfiguration? {
+        guard albumArtImageView.loaded else { return nil }
         UIView.animate(withDuration: 0.2, delay: 0.5) { [self] in
             albumArtContainerView.layer.shadowOpacity = 0
         }
@@ -134,6 +177,27 @@ extension LyricsViewController: UIContextMenuInteractionDelegate {
         UIView.animate(withDuration: 0.2, delay: 0.3) { [self] in
             albumArtContainerView.layer.shadowOpacity = Constants.albumArtShadowOpacity
         }
+    }
+    
+}
+
+extension LyricsViewController: UITableViewDelegate {
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        let topPadding = min(270, max(44 + safeAreaInsets.top - 14, -scrollView.contentOffset.y + 12) + 14)
+        navigationBarHeightConstraint.constant = topPadding
+        tableView.verticalScrollIndicatorInsets.top = topPadding - safeAreaInsets.top - 44
+        if scrollView.contentOffset.y >= -100 {
+            navigationItem.title = "\(artistLabel.text.safe) — \(songLabel.text.safe)"
+        } else {
+            navigationItem.title = "lyrics"
+        }
+        buttonsStackView.alpha = pow(topPadding / 270, 20)
+        secondInfoLabel.alpha = pow((topPadding + 27) / 270, 20)
+        firstInfoLabel.alpha = pow((topPadding + 38) / 270, 20)
+        songView.alpha = pow((topPadding + 40) / 270, 7)
+        let songViewAdjustment = pow((topPadding + 36) / 270, 5)
+        songView.transform = .init(translationX: 0, y: -pow((1 - min((songViewAdjustment) + 0.3, 1)) * (3.68), 3) * 1.3)
     }
     
 }

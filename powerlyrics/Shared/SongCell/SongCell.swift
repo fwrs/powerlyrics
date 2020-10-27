@@ -5,12 +5,13 @@
 //  Created by Ilya Kulinkovich on 10/2/20.
 //
 
+import Kingfisher
 import UIKit
 
 class SongCell: TableViewCell {
     
     fileprivate enum Constants {
-        static let albumArtShadowOpacity: Float = 0.5
+        static let albumArtShadowOpacity: Float = 0.3
     }
     
     @IBOutlet private weak var songView: UIView!
@@ -23,7 +24,7 @@ class SongCell: TableViewCell {
     
     @IBOutlet private weak var artistLabel: UILabel!
     
-    public var songContainer: UIView {
+    var songContainer: UIView {
         songView
     }
     
@@ -44,14 +45,9 @@ class SongCell: TableViewCell {
     }
     
     func configure(with viewModel: SongCellViewModel) {
-        songLabel.text = viewModel.songName
-        artistLabel.text = viewModel.artistName
-        
-        if let albumArt = viewModel.albumArt {
-            albumArtImageView.image = albumArt
-        } else {
-            albumArtImageView.image = UIImage.from(color: .tertiarySystemBackground)
-        }
+        songLabel.text = viewModel.song.name
+        artistLabel.text = viewModel.song.artistsString
+        albumArtImageView.populate(with: viewModel.song.albumArt)
     }
     
 }
@@ -62,6 +58,7 @@ extension SongCell: UIContextMenuInteractionDelegate {
         _ interaction: UIContextMenuInteraction,
         configurationForMenuAtLocation location: CGPoint
     ) -> UIContextMenuConfiguration? {
+        guard albumArtImageView.loaded else { return nil }
         UIView.animate(withDuration: 0.2, delay: 0.5) { [self] in
             albumArtContainerView.layer.shadowOpacity = 0
         }

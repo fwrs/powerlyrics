@@ -16,9 +16,9 @@ class LyricsCoordinator: Coordinator {
     
     let dismissCompletion: DefaultAction
     
-    let song: Song
+    let song: Shared.Song
 
-    init(router: Router, resolver: Resolver, base: UIViewController, dismissCompletion: @escaping DefaultAction, song: Song) {
+    init(router: Router, resolver: Resolver, base: UIViewController, dismissCompletion: @escaping DefaultAction, song: Shared.Song) {
         self.router = router
         self.base = base
         self.dismissCompletion = dismissCompletion

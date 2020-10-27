@@ -7,4 +7,6 @@
 
 import Foundation
 
-protocol SearchScene: ViewController {}
+protocol SearchScene: ViewController {
+    var flowLyrics: DefaultSongAction? { get set }
+}

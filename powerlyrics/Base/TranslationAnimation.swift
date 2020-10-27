@@ -59,7 +59,7 @@ class TranslationAnimation: NSObject, UIViewControllerAnimatedTransitioning {
         toVC.view.layoutIfNeeded()
 
         let fromSnapshots = fromVC.translationViews.map { subview -> UIView in
-            let snapshot = subview.snapshotView(afterScreenUpdates: false)!
+            let snapshot = subview.snapshotView(afterScreenUpdates: !inNavigationController)!
             snapshot.frame = container.convert(subview.frame, from: subview.superview)
             return snapshot
         }
@@ -79,8 +79,10 @@ class TranslationAnimation: NSObject, UIViewControllerAnimatedTransitioning {
         }
         
         fromSnapshots.forEach { container.addSubview($0) }
-        fromVC.translationViews.forEach { $0.alpha = 0 }
-        toVC.translationViews.forEach { $0.alpha = 0 }
+        if fromVC.translationViews.nonEmpty {
+            fromVC.translationViews.forEach { $0.alpha = 0 }
+            toVC.translationViews.forEach { $0.alpha = 0 }
+        }
         
         if type == .present {
             toVC.view.transform = .init(translationX: toVC.view.frame.width, y: 0)

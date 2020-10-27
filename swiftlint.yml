@@ -13,7 +13,7 @@ disabled_rules: # rule identifiers to exclude from running
   - force_unwrapping
   - force_cast
   - unused_capture_list
-  
+  - private_over_fileprivate
   - nesting
   - force_try
   - line_length

@@ -9,7 +9,7 @@ import Haptica
 import ReactiveKit
 import UIKit
 
-public class ViewController: UIViewController, UITabBarControllerDelegate {
+class ViewController: UIViewController, UITabBarControllerDelegate {
     
     let disposeBag = DisposeBag()
     
@@ -25,11 +25,11 @@ public class ViewController: UIViewController, UITabBarControllerDelegate {
         UIApplication.shared.windows.first { $0.isKeyWindow }!.safeAreaInsets
     }
     
-    public var tabBarCanScrollToTop: Bool { true }
+    var tabBarCanScrollToTop: Bool { true }
     
-    public var prefersNavigationBarHidden: Bool { false }
+    var prefersNavigationBarHidden: Bool { false }
 
-    public override func viewWillAppear(_ animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
         if safeValue(forKey: "searchController") as? UISearchController != nil {
@@ -41,13 +41,13 @@ public class ViewController: UIViewController, UITabBarControllerDelegate {
         navigationController?.setNavigationBarHidden(prefersNavigationBarHidden, animated: animated)
     }
     
-    public override func viewWillDisappear(_ animated: Bool) {
+    override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         
         navigationController?.setNavigationBarHidden(false, animated: animated)
     }
     
-    public override func viewDidAppear(_ animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
                 
         if tabBarCanScrollToTop {
@@ -61,12 +61,12 @@ public class ViewController: UIViewController, UITabBarControllerDelegate {
         }
     }
     
-    public func scrollToTop() {
+    func scrollToTop() {
         scrollTableViewToTop()
         scrollCollectionViewToTop()
     }
     
-    public func scrollTableViewToTop() {
+    func scrollTableViewToTop() {
         if let tableView = safeValue(forKey: "tableView") as? TableView {
             tableView.setContentOffset(
                 CGPoint(
@@ -78,7 +78,7 @@ public class ViewController: UIViewController, UITabBarControllerDelegate {
         }
     }
     
-    public func scrollCollectionViewToTop() {
+    func scrollCollectionViewToTop() {
         if let collectionView = safeValue(forKey: "collectionView") as? UICollectionView {
             collectionView.setContentOffset(
                 CGPoint(
@@ -107,7 +107,7 @@ public class ViewController: UIViewController, UITabBarControllerDelegate {
     
     private static var index: Int = 0
     
-    public func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
+    func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
         if ViewController.index == tabBarController.selectedIndex {
             handleTabItemDoubleTap()
         }

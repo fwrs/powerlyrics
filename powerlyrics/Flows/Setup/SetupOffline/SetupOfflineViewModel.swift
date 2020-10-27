@@ -7,4 +7,4 @@
 
 import Foundation
 
-struct SetupOfflineViewModel {}
+class SetupOfflineViewModel: ViewModel {}

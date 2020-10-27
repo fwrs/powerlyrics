@@ -17,7 +17,7 @@ class HomeCoordinator: Coordinator {
         super.init(resolver: resolver)
     }
     
-    func showLyrics(for song: Song) {
+    func showLyrics(for song: Shared.Song) {
         let lyricsCoordinator = resolver.resolve(LyricsCoordinator.self, arguments: Router(), rootViewController, { [self] in
             childCoordinators.removeAll { $0.isKind(of: LyricsCoordinator.self) }
         }, song)!
