@@ -8,6 +8,10 @@
 import Swinject
 import UIKit
 
+protocol SetupManualScene: ViewController {
+    var flowDismiss: DefaultAction? { get set }
+}
+
 class SetupManualAssembly: Assembly {
 
     override func assemble(container: Container) {

@@ -8,6 +8,11 @@
 import Swinject
 import UIKit
 
+protocol SetupOfflineScene: ViewController {
+    var flowDismiss: DefaultAction? { get set }
+    var flowSpotifyLoginOffline: DefaultAction? { get set }
+}
+
 class SetupOfflineAssembly: Assembly {
 
     override func assemble(container: Container) {

@@ -12,7 +12,9 @@ extension Shared {
     struct Song: Codable, Equatable {
         let name: String
         let artists: [String]
+        
         let albumArt: Image?
+        let thumbnailAlbumArt: Image?
         
         let geniusURL: URL?
     }

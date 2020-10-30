@@ -17,10 +17,10 @@ class HomeCoordinator: Coordinator {
         super.init(resolver: resolver)
     }
     
-    func showLyrics(for song: Shared.Song) {
+    func showLyrics(for song: Shared.Song, placeholder: UIImage?) {
         let lyricsCoordinator = resolver.resolve(LyricsCoordinator.self, arguments: Router(), rootViewController, { [self] in
             childCoordinators.removeAll { $0.isKind(of: LyricsCoordinator.self) }
-        }, song)!
+        }, song, placeholder)!
         childCoordinators.append(lyricsCoordinator)
         lyricsCoordinator.start()
     }
@@ -35,8 +35,8 @@ class HomeCoordinator: Coordinator {
     
     override func start() {
         let scene = resolver.resolve(HomeScene.self)
-        scene?.flowLyrics = { [weak self] song in
-            self?.showLyrics(for: song)
+        scene?.flowLyrics = { [weak self] (song, placeholder) in
+            self?.showLyrics(for: song, placeholder: placeholder)
         }
         scene?.flowSetup = { [weak self] mode in
             self?.showSetup(mode: mode)

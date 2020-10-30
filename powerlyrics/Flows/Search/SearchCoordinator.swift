@@ -19,16 +19,16 @@ class SearchCoordinator: Coordinator {
     
     override func start() {
         let scene = resolver.resolve(SearchScene.self)
-        scene?.flowLyrics = { [weak self] song in
-            self?.showLyrics(for: song)
+        scene?.flowLyrics = { [weak self] (song, placeholder) in
+            self?.showLyrics(for: song, placeholder: placeholder)
         }
         router.push(scene, animated: false)
     }
     
-    func showLyrics(for song: Shared.Song) {
+    func showLyrics(for song: Shared.Song, placeholder: UIImage?) {
         let lyricsCoordinator = resolver.resolve(LyricsCoordinator.self, arguments: Router(), rootViewController, { [self] in
             childCoordinators.removeAll { $0.isKind(of: LyricsCoordinator.self) }
-        }, song)!
+        }, song, placeholder)!
         childCoordinators.append(lyricsCoordinator)
         lyricsCoordinator.start()
     }

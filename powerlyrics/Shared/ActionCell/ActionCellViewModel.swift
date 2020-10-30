@@ -13,12 +13,23 @@ enum ActionCellAction: Equatable {
     case manageAccount
     case signOut
     case seeTrendingSongs
+    case seeViralSongs
     
     var localizedTitle: String {
-        if self == .signOut {
-            return "Sign Out"
+        switch self {
+        case .likedSongs:
+            return "Liked songs"
+        case .connectToSpotify:
+            return "Connect to Spotify"
+        case .manageAccount:
+            return "Manage account"
+        case .signOut:
+            return "Sign out"
+        case .seeTrendingSongs:
+            return "Discover all trending songs"
+        case .seeViralSongs:
+            return "Discover all viral songs"
         }
-        return "Action"
     }
 }
 

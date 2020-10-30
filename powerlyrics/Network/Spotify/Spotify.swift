@@ -19,6 +19,7 @@ enum Spotify: TargetType {
     case playlistSongs(playlistId: String)
     
     static let trendingSongs = Spotify.playlistSongs(playlistId: "37i9dQZEVXbMDoHDwVN2tF")
+    static let viralSongs = Spotify.playlistSongs(playlistId: "37i9dQZEVXbLiRSasKsNU9")
     
     // MARK: - Requests Data
     

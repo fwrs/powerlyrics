@@ -10,18 +10,16 @@ import UIKit
 class ImagePreviewController: UIViewController {
     private let imageView = UIImageView()
     
-    init?(_ image: UIImage?) {
-        guard let image = image else { return nil }
+    init?(_ image: Shared.Image?, placeholder: UIImage? = nil) {
         super.init(nibName: nil, bundle: nil)
         
-        let ratio = image.size.height / image.size.width
         let width = UIScreen.main.bounds.width
-        let newSize = CGSize(width: width, height: ratio * width)
+        let newSize = CGSize(width: width, height: width)
         
         preferredContentSize = newSize
         imageView.contentMode = .scaleAspectFill
         imageView.clipsToBounds = true
-        imageView.image = image
+        imageView.populate(with: image, placeholder: placeholder)
         view = imageView
     }
     

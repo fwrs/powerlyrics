@@ -31,10 +31,9 @@ extension Spotify.Song {
             name: name,
             artists: artists.map { $0.name },
             albumArt: album.images.first,
+            thumbnailAlbumArt: album.images.last,
             geniusURL: nil
         )
     }
     
 }
-
-typealias DefaultSpotifySongAction = (Spotify.Song) -> Void

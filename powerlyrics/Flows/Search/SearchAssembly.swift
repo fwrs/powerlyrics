@@ -8,6 +8,10 @@
 import Swinject
 import UIKit
 
+protocol SearchScene: ViewController {
+    var flowLyrics: ((Shared.Song, UIImage?) -> Void)? { get set }
+}
+
 class SearchAssembly: Assembly {
 
     override func assemble(container: Container) {

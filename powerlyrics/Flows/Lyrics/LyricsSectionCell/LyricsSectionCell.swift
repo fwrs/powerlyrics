@@ -27,7 +27,7 @@ class LyricsSectionCell: TableViewCell {
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineSpacing = 4
 
-        let attrString = NSMutableAttributedString(string: viewModel.section.contents.joined(separator: "\n"))
+        let attrString = NSMutableAttributedString(string: viewModel.section.contents.joined(separator: "\n").typographized)
         attrString.addAttribute(.paragraphStyle, value: paragraphStyle, range: NSRange(location: 0, length: attrString.length))
 
         contentsLabel.attributedText = attrString

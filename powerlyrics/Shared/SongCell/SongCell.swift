@@ -28,6 +28,12 @@ class SongCell: TableViewCell {
         songView
     }
     
+    var currentImage: UIImage? {
+        albumArtImageView.image
+    }
+    
+    private var fullImage: Shared.Image?
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         
@@ -45,9 +51,10 @@ class SongCell: TableViewCell {
     }
     
     func configure(with viewModel: SongCellViewModel) {
-        songLabel.text = viewModel.song.name
-        artistLabel.text = viewModel.song.artistsString
-        albumArtImageView.populate(with: viewModel.song.albumArt)
+        songLabel.text = viewModel.song.name.typographized
+        artistLabel.text = viewModel.song.artistsString.typographized
+        albumArtImageView.populate(with: viewModel.song.thumbnailAlbumArt)
+        fullImage = viewModel.song.albumArt
     }
     
 }
@@ -65,7 +72,7 @@ extension SongCell: UIContextMenuInteractionDelegate {
         
         return UIContextMenuConfiguration(
             identifier: nil,
-            previewProvider: { [self] in ImagePreviewController(albumArtImageView.image) },
+            previewProvider: { [self] in ImagePreviewController(fullImage, placeholder: albumArtImageView.image) },
             actionProvider: { suggestedActions in
                 UIMenu(children: suggestedActions)
             }

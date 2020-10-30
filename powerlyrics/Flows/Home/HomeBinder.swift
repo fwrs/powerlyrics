@@ -9,7 +9,7 @@ import Bond
 import ReactiveKit
 import UIKit
 
-enum HomeCell {
+enum HomeCell: Equatable {
     case song(SongCellViewModel)
     case action(ActionCellViewModel)
 }

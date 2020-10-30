@@ -24,6 +24,9 @@ target 'powerlyrics' do
   
   # Labels with links and formatting
   pod 'ActiveLabel'
+  
+  # Quotation marks formatter
+  pod 'Typographizer', :git => 'https://github.com/frankrausch/Typographizer.git'
 
   # Realm data storage
   pod 'RealmSwift'

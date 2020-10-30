@@ -8,6 +8,8 @@
 import Swinject
 import UIKit
 
+protocol GenreMapScene: ViewController {}
+
 class GenreMapAssembly: Assembly {
 
     override func assemble(container: Container) {

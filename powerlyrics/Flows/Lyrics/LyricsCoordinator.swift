@@ -17,17 +17,20 @@ class LyricsCoordinator: Coordinator {
     let dismissCompletion: DefaultAction
     
     let song: Shared.Song
+    
+    let placeholder: UIImage?
 
-    init(router: Router, resolver: Resolver, base: UIViewController, dismissCompletion: @escaping DefaultAction, song: Shared.Song) {
+    init(router: Router, resolver: Resolver, base: UIViewController, dismissCompletion: @escaping DefaultAction, song: Shared.Song, placeholder: UIImage?) {
         self.router = router
         self.base = base
         self.dismissCompletion = dismissCompletion
         self.song = song
+        self.placeholder = placeholder
         super.init(resolver: resolver)
     }
     
     override func start() {
-        let scene = resolver.resolve(LyricsScene.self, argument: song)!
+        let scene = resolver.resolve(LyricsScene.self, arguments: song, placeholder)!
         scene.flowDismiss = { [self] in
             base.dismiss(animated: true, completion: {
                 dismissCompletion()

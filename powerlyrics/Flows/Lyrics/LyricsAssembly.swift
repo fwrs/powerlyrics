@@ -8,6 +8,10 @@
 import Swinject
 import UIKit
 
+protocol LyricsScene: ViewController {
+    var flowDismiss: DefaultAction? { get set }
+}
+
 class LyricsAssembly: Assembly {
 
     override func assemble(container: Container) {
@@ -16,9 +20,10 @@ class LyricsAssembly: Assembly {
             LyricsViewModel(geniusProvider: resolver.resolve(GeniusProvider.self)!, song: song)
         }
         
-        container.register(LyricsScene.self) { (resolver, song: Shared.Song) in
+        container.register(LyricsScene.self) { (resolver, song: Shared.Song, albumArtThumbnail: UIImage?) in
             let viewController = UIStoryboard.createController(LyricsViewController.self)
             viewController.viewModel = resolver.resolve(LyricsViewModel.self, argument: song)
+            viewController.albumArtThumbnail = albumArtThumbnail
             return viewController
         }
         

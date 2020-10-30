@@ -42,14 +42,14 @@ extension UIImageView {
         tag == 10
     }
 
-    func populate(with newImage: Shared.Image?) {
+    func populate(with newImage: Shared.Image?, placeholder: UIImage? = nil) {
         tag = 0
         switch newImage {
         case .local(let localImage):
             image = localImage
             tag = 10
         case .external(let imageUrl):
-            kf.setImage(with: imageUrl, placeholder: UIImageView.placeholder, completionHandler: { [self] _ in
+            kf.setImage(with: imageUrl, placeholder: placeholder ?? UIImageView.placeholder, completionHandler: { [self] _ in
                 tag = 10
             })
         case .none:

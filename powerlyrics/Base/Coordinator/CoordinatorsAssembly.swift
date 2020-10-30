@@ -38,8 +38,8 @@ class CoordinatorsAssembly: Assembly {
         
         // MARK: - Supplementary screens
         
-        container.register(LyricsCoordinator.self) { (resolver, router: Router, base: UIViewController, dismissCompletion: @escaping DefaultAction, song: Shared.Song) in
-            LyricsCoordinator(router: router, resolver: resolver, base: base, dismissCompletion: dismissCompletion, song: song)
+        container.register(LyricsCoordinator.self) { (resolver, router: Router, base: UIViewController, dismissCompletion: @escaping DefaultAction, song: Shared.Song, placeholder: UIImage?) in
+            LyricsCoordinator(router: router, resolver: resolver, base: base, dismissCompletion: dismissCompletion, song: song, placeholder: placeholder)
         }
         
         container.register(SetupCoordinator.self) { (resolver, router: Router, base: UIViewController, dismissCompletion: @escaping DefaultAction, mode: SetupMode) in

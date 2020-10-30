@@ -41,12 +41,23 @@ extension Genius.Song {
         
         if let url = songArtImageURL {
             albumArt = .external(url)
+        } else if let url = songArtImageThumbnailURL {
+            albumArt = .external(url)
+        }
+        
+        var thumbnailAlbumArt: Shared.Image?
+        
+        if let url = songArtImageThumbnailURL {
+            thumbnailAlbumArt = .external(url)
+        } else if let url = songArtImageURL {
+            thumbnailAlbumArt = .external(url)
         }
         
         return Shared.Song(
             name: title,
             artists: [primaryArtist.name],
             albumArt: albumArt,
+            thumbnailAlbumArt: thumbnailAlbumArt,
             geniusURL: url
         )
         

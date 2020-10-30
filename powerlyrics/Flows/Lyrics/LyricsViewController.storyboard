@@ -88,6 +88,7 @@
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             <constraints>
                                                 <constraint firstItem="96y-dm-XQN" firstAttribute="top" secondItem="fLV-pl-iEb" secondAttribute="top" constant="16" id="2Hx-pG-ddH"/>
+                                                <constraint firstAttribute="height" constant="90" id="Dbf-yx-bl7"/>
                                                 <constraint firstItem="fga-YF-Uqr" firstAttribute="leading" secondItem="96y-dm-XQN" secondAttribute="trailing" constant="15" id="IwF-05-VSB"/>
                                                 <constraint firstItem="fga-YF-Uqr" firstAttribute="centerY" secondItem="96y-dm-XQN" secondAttribute="centerY" id="Nan-bi-qnx"/>
                                                 <constraint firstItem="96y-dm-XQN" firstAttribute="leading" secondItem="fLV-pl-iEb" secondAttribute="leading" constant="16" id="aYV-A9-ZDq"/>

@@ -16,6 +16,10 @@ class SearchViewController: ViewController, SearchScene {
     
     @IBOutlet private weak var activityIndicator: UIActivityIndicatorView!
     
+    @IBOutlet private weak var trendsCollectionView: UICollectionView!
+    
+    @IBOutlet weak var searchIconImageView: UIImageView!
+    
     // MARK: - Instance properties
     
     var viewModel: SearchViewModel!
@@ -26,7 +30,7 @@ class SearchViewController: ViewController, SearchScene {
     
     // MARK: - Flows
     
-    var flowLyrics: DefaultSongAction?
+    var flowLyrics: ((Shared.Song, UIImage?) -> Void)?
     
     // MARK: - Lifecycle
 
@@ -40,7 +44,9 @@ class SearchViewController: ViewController, SearchScene {
     // MARK: - Actions
     
     @objc func dismissKeyboard() {
-        searchController.dismiss(animated: true)
+        if !viewModel.isLoading.value {
+            searchController.dismiss(animated: true)
+        }
     }
     
 }
@@ -50,7 +56,6 @@ extension SearchViewController {
     // MARK: - Setup
 
     func setupView() {
-        tableView.setRefreshControl()
         searchController.searchBar.searchTextField.leftView?.tintColor = .secondaryLabel
         searchController.hidesNavigationBarDuringPresentation = false
         searchController.obscuresBackgroundDuringPresentation = false
@@ -64,21 +69,41 @@ extension SearchViewController {
         let tap = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
         tap.cancelsTouchesInView = false
         view.addGestureRecognizer(tap)
+        searchIconImageView.image = searchIconImageView.image?.withTintColor(.label, renderingMode: .alwaysOriginal)
     }
     
     func setupObservers() {
-        searchController.searchBar.reactive.text.compactMap { $0 }.filter(\.nonEmpty).debounce(for: 0.3, queue: .main).observeNext { [self] query in
+        searchController.searchBar.reactive.text.compactMap { $0 }.dropFirst(1).debounce(for: 0.3, queue: .main).observeNext { [self] query in
             viewModel.search(for: query)
         }.dispose(in: disposeBag)
-        viewModel.isLoading.bind(to: activityIndicator.reactive.isAnimating).dispose(in: disposeBag)
+        
+        viewModel.isRefreshing.observeNext { [self] isRefreshing in
+            tableView.isRefreshing = isRefreshing
+        }.dispose(in: disposeBag)
         viewModel.isLoading.observeNext { [self] loading in
+            if loading {
+                tableView.isUserInteractionEnabled = false
+                tableView.isScrollEnabled = false
+            }
+            UIView.animate(withDuration: 0.2, delay: 0, options: .curveEaseOut) {
+                activityIndicator.alpha = loading ? 1 : 0
+                tableView.transform = loading ? .init(translationX: 0, y: 100) : .identity
+            } completion: { _ in
+                if !loading {
+                    tableView.isUserInteractionEnabled = true
+                    tableView.isScrollEnabled = true
+                }
+            }
             if loading {
                 tableView.unsetRefreshControl()
             } else {
-                tableView.setRefreshControl()
+                tableView.setRefreshControl { [self] in
+                    viewModel.search(for: searchController.searchBar.text.safe, refresh: true)
+                }
                 scrollToTop()
             }
         }.dispose(in: disposeBag)
+        
         viewModel.songs.bind(to: tableView, cellType: SongCell.self, using: SearchBinder()) { (cell, cellViewModel) in
             cell.configure(with: cellViewModel)
         }.dispose(in: disposeBag)
@@ -87,7 +112,7 @@ extension SearchViewController {
             tableView.deselectRow(at: indexPath, animated: true)
             Haptic.play(".")
             let songViewModel = viewModel.songs[itemAt: indexPath]
-            flowLyrics?(songViewModel.song)
+            flowLyrics?(songViewModel.song, (tableView.cellForRow(at: indexPath) as? SongCell)?.currentImage)
         }.dispose(in: disposeBag)
     }
     
@@ -96,7 +121,7 @@ extension SearchViewController {
 extension SearchViewController: UISearchBarDelegate {
     
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-        // reset search
+        viewModel.reset()
     }
     
 }

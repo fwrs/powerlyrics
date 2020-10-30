@@ -8,6 +8,11 @@
 import Swinject
 import UIKit
 
+protocol HomeScene: ViewController {
+    var flowLyrics: ((Shared.Song, UIImage?) -> Void)? { get set }
+    var flowSetup: DefaultSetupModeAction? { get set }
+}
+
 class HomeAssembly: Assembly {
 
     override func assemble(container: Container) {

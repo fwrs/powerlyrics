@@ -20,26 +20,29 @@ class SearchViewModel: ViewModel {
     
     let songs = MutableObservableArray2D(Array2D<SearchSection, SongCellViewModel>())
     
+    let trends = MutableObservableArray<TrendCellViewModel>()
+    
     let geniusProvider: GeniusProvider
     
     init(geniusProvider: GeniusProvider) {
         self.geniusProvider = geniusProvider
     }
     
-    func search(for query: String) {
-        isLoading.value = true
+    func loadTrends() {
+        
+    }
+    
+    func search(for query: String, refresh: Bool = false) {
+        startLoading(refresh)
         geniusProvider.reactive
             .request(.searchSongs(query: query))
             .map(Genius.SearchResponse.self)
             .start { [self] event in
                 switch event {
                 case .value(let response):
-                    isLoading.value = false
-                    songs.removeAll()
-                    songs.appendSection(.closestMatch)
-                    let newSongs = response.response.hits.map { $0.result.asSharedSong }
-                    for song in newSongs {
-                        songs.appendItem(SongCellViewModel(song: song), toSectionAt: 0)
+                    endLoading(refresh)
+                    delay(0.25) {
+                        songs.set([(.closestMatch, response.response.hits.map { SongCellViewModel(song: $0.result.asSharedSong) })])
                     }
                 case .failed(let error):
                     print(error)
@@ -48,6 +51,10 @@ class SearchViewModel: ViewModel {
                 }
             
         }
+    }
+    
+    func reset() {
+        songs.removeAllItemsAndSections()
     }
     
 }

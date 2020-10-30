@@ -5,9 +5,9 @@
 //  Created by Ilya Kulinkovich on 10/2/20.
 //
 
-import Foundation
 import Haptica
 import Moya
+import Typographizer
 
 func delay(_ seconds: TimeInterval, execute: @escaping DefaultAction) {
     DispatchQueue.main.asyncAfter(deadline: .now() + seconds, execute: execute)
@@ -81,6 +81,10 @@ extension String {
     
     var clean: String {
         trimmingCharacters(in: .whitespacesAndNewlines)
+    }
+    
+    var typographized: String {
+        typographized(language: NSLocale.current.languageCode ?? "en")
     }
     
 }

@@ -17,12 +17,18 @@ class TableView: UITableView {
     
     private var customRefreshControl: UIRefreshControl?
     
-    override var refreshControl: UIRefreshControl? {
+    var isRefreshing: Bool {
         get {
-            customRefreshControl
+            customRefreshControl?.isRefreshing == true
         }
         set {
-            customRefreshControl = newValue
+            if newValue {
+                customRefreshControl?.beginRefreshing()
+            } else {
+                delay(0.5) { [self] in
+                    customRefreshControl?.endRefreshing()
+                }
+            }
         }
     }
     

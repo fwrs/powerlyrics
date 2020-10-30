@@ -55,6 +55,8 @@ class LyricsViewController: ViewController, LyricsScene {
     
     var translationInteractor: TranslationAnimationInteractor?
     
+    var albumArtThumbnail: UIImage?
+    
     private var appeared: Bool = false
     
     // MARK: - Flows
@@ -91,8 +93,8 @@ extension LyricsViewController {
     func setupView() {
         songLabel.text = viewModel.song.name
         artistLabel.text = viewModel.song.artistsString
-        albumArtImageView.populate(with: viewModel.song.albumArt)
-        backgroundCoverImageView.populate(with: viewModel.song.albumArt)
+        albumArtImageView.populate(with: viewModel.song.thumbnailAlbumArt, placeholder: albumArtThumbnail)
+        backgroundCoverImageView.populate(with: viewModel.song.thumbnailAlbumArt, placeholder: albumArtThumbnail)
     
         let appearance = UINavigationBarAppearance()
         appearance.configureWithTransparentBackground()
@@ -139,7 +141,9 @@ extension LyricsViewController {
         }.dispose(in: disposeBag)
         
         viewModel.isLoading.observeNext { [self] loading in
-            activityIndicator.isHidden = !loading
+            UIView.animate(withDuration: 0.35) {
+                activityIndicator.alpha = loading ? 1 : 0
+            }
         }.dispose(in: disposeBag)
     }
     
@@ -166,7 +170,7 @@ extension LyricsViewController: UIContextMenuInteractionDelegate {
         
         return UIContextMenuConfiguration(
             identifier: nil,
-            previewProvider: { [self] in ImagePreviewController(albumArtImageView.image) },
+            previewProvider: { [self] in ImagePreviewController(viewModel.song.albumArt, placeholder: albumArtThumbnail) },
             actionProvider: { suggestedActions in
                 UIMenu(children: suggestedActions)
             }

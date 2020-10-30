@@ -26,7 +26,7 @@ class HomeViewController: ViewController, HomeScene {
     
     // MARK: - Flows
     
-    var flowLyrics: DefaultSongAction?
+    var flowLyrics: ((Shared.Song, UIImage?) -> Void)?
     
     var flowSetup: DefaultSetupModeAction?
     
@@ -58,17 +58,13 @@ extension HomeViewController {
     
     func setupObservers() {
         viewModel.items.bind(to: tableView, using: HomeBinder())
-        viewModel.isRefreshing.observeNext { [self] refreshing in
-            if refreshing {
-                tableView.refreshControl?.beginRefreshing()
-            } else {
-                delay(0.5) {
-                    tableView.refreshControl?.endRefreshing()
-                }
-            }
+        viewModel.isRefreshing.observeNext { [self] isRefreshing in
+            tableView.isRefreshing = isRefreshing
         }.dispose(in: disposeBag)
         viewModel.isLoading.observeNext { [self] loading in
-            activityIndicator.isHidden = !loading
+            UIView.animate(withDuration: 0.35) {
+                activityIndicator.alpha = loading ? 1 : 0
+            }
             if loading {
                 tableView.unsetRefreshControl()
             } else {
@@ -88,7 +84,7 @@ extension HomeViewController {
             Haptic.play(".")
             let cell = viewModel.items[itemAt: indexPath]
             if case .song(let viewModel) = cell {
-                flowLyrics?(viewModel.song)
+                flowLyrics?(viewModel.song, (tableView.cellForRow(at: indexPath) as? SongCell)?.currentImage)
             }
         }.dispose(in: disposeBag)
     }

@@ -8,6 +8,12 @@
 import Swinject
 import UIKit
 
+protocol SetupInitScene: ViewController {
+    var flowDismiss: DefaultAction? { get set }
+    var flowSpotifyLogin: DefaultAction? { get set }
+    var flowOfflineSetup: DefaultAction? { get set }
+}
+
 class SetupInitAssembly: Assembly {
 
     override func assemble(container: Container) {
