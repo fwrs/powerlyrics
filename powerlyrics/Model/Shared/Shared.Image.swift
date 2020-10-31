@@ -48,8 +48,8 @@ extension UIImageView {
         case .local(let localImage):
             image = localImage
             tag = 10
-        case .external(let imageUrl):
-            kf.setImage(with: imageUrl, placeholder: placeholder ?? UIImageView.placeholder, completionHandler: { [self] _ in
+        case .external(let imageURL):
+            kf.setImage(with: imageURL, placeholder: placeholder ?? UIImageView.placeholder, completionHandler: { [self] _ in
                 tag = 10
             })
         case .none:

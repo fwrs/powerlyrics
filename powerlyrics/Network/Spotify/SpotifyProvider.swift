@@ -31,7 +31,7 @@ extension SpotifyProvider {
             
             if let accessToken = token?.accessToken, token?.isExpired == false {
                 request.setValue("Bearer \(accessToken)", forHTTPHeaderField: "Authorization")
-            } else if let data = "\(Tokens.Spotify.clientId):\(Tokens.Spotify.clientSecret)".data(using: .utf8) {
+            } else if let data = "\(Tokens.Spotify.clientID):\(Tokens.Spotify.clientSecret)".data(using: .utf8) {
                 request.setValue("Basic \(data.base64EncodedString(options: []))", forHTTPHeaderField: "Authorization")
             }
             
@@ -73,7 +73,7 @@ extension SpotifyProvider {
     func login(from presentingViewController: UIViewController) {
         if let url = URL(string: "https://accounts.spotify.com/authorize")?.with(
             parameters: [
-                "client_id": Tokens.Spotify.clientId,
+                "client_id": Tokens.Spotify.clientID,
                 "response_type": "code",
                 "redirect_uri": Tokens.Spotify.redirectURL,
                 "scope": "user-read-private user-read-email user-library-modify user-library-read user-read-currently-playing user-read-playback-state"

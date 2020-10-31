@@ -16,10 +16,10 @@ enum Spotify: TargetType {
     case newLocalToken
     
     case playerStatus
-    case playlistSongs(playlistId: String)
+    case playlistSongs(playlistID: String)
     
-    static let trendingSongs = Spotify.playlistSongs(playlistId: "37i9dQZEVXbMDoHDwVN2tF")
-    static let viralSongs = Spotify.playlistSongs(playlistId: "37i9dQZEVXbLiRSasKsNU9")
+    static let trendingSongs = Spotify.playlistSongs(playlistID: "37i9dQZEVXbMDoHDwVN2tF")
+    static let viralSongs = Spotify.playlistSongs(playlistID: "37i9dQZEVXbLiRSasKsNU9")
     
     // MARK: - Requests Data
     
@@ -38,8 +38,8 @@ enum Spotify: TargetType {
             return "/api/token"
         case .playerStatus:
             return "/me/player"
-        case .playlistSongs(let playlistId):
-            return "/playlists/\(playlistId)/tracks"
+        case .playlistSongs(let playlistID):
+            return "/playlists/\(playlistID)/tracks"
         }
     }
     
@@ -65,7 +65,7 @@ enum Spotify: TargetType {
             ], encoding: URLEncoding.httpBody)
         case .newToken(let authCode):
             return .requestParameters(parameters: [
-                "client_id": Tokens.Spotify.clientId,
+                "client_id": Tokens.Spotify.clientID,
                 "client_secret": Tokens.Spotify.clientSecret,
                 "grant_type": "authorization_code",
                 "code": authCode,

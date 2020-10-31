@@ -35,8 +35,8 @@ class LyricsViewModel: ViewModel {
             GeniusProvider.scrape(url: url, completionHandler: onLyricsFetch)
         }
         isLoading.value = true
-        if let geniusUrl = song.geniusURL {
-            onSongFetch(geniusUrl)
+        if let geniusURL = song.geniusURL {
+            onSongFetch(geniusURL)
             return
         }
         
