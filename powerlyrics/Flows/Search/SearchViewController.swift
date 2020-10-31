@@ -18,7 +18,7 @@ class SearchViewController: ViewController, SearchScene {
     
     @IBOutlet private weak var trendsCollectionView: UICollectionView!
     
-    @IBOutlet weak var searchIconImageView: UIImageView!
+    @IBOutlet private weak var searchIconImageView: UIImageView!
     
     // MARK: - Instance properties
     

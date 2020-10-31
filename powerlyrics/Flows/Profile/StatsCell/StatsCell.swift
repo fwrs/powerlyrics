@@ -7,17 +7,31 @@
 
 import UIKit
 
-class StatsCell: UITableViewCell {
-
+class StatsCell: TableViewCell {
+    
+    @IBOutlet weak var likedCountLabel: UILabel!
+    
+    @IBOutlet weak var searchesCountLabel: UILabel!
+    
+    @IBOutlet weak var discoveriesCountLabel: UILabel!
+    
+    @IBOutlet weak var artistsLabel: UILabel!
+    
+    @IBOutlet var iconImageView: [UIImageView]!
+    
     override func awakeFromNib() {
         super.awakeFromNib()
-        // Initialization code
+        
+        iconImageView.enumerated().forEach { index, element in
+            element.image = element.image?.withTintColor([
+                UIColor.systemRed, .systemYellow, .systemBlue, .systemGreen
+            ][index], renderingMode: .alwaysOriginal)
+        }
+    }
+    
+    func configure(with viewModel: StatsCellViewModel) {
+        
     }
 
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-
-        // Configure the view for the selected state
-    }
     
 }

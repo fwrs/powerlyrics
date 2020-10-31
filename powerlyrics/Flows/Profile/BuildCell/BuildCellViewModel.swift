@@ -7,6 +7,8 @@
 
 import Foundation
 
-struct BuildCellViewModel {
+struct BuildCellViewModel: Equatable {
+    
+    let text: String
     
 }
