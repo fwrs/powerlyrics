@@ -16,7 +16,7 @@ extension SpotifyProvider {
     
     private static let keychain: KeychainStorageProtocol = Config.getResolver().resolve(KeychainStorageProtocol.self)!
     
-    private static var token: SpotifyToken? {
+    private static var token: Spotify.Token? {
         get {
             keychain.getDecodable(for: .spotifyToken)
         }
@@ -47,7 +47,7 @@ extension SpotifyProvider {
             Config.getResolver().resolve(SpotifyProvider.self)!.request(currentToken.refreshToken == nil ? .newLocalToken : .refreshToken(oldToken: currentToken)) { result in
                 switch result {
                 case .success(let response):
-                    token = SpotifyToken(data: response.data, refreshToken: token?.refreshToken) ?? token
+                    token = Spotify.Token(data: response.data, refreshToken: token?.refreshToken) ?? token
                     request.setValue("Bearer \((token?.accessToken).safe)", forHTTPHeaderField: "Authorization")
                     closure(.success(request))
                 case .failure(let error):
@@ -64,7 +64,7 @@ extension SpotifyProvider {
             
             Config.getResolver().resolve(SpotifyProvider.self)!.request(.newToken(authCode: code)) { result in
                 if case .success(let response) = result {
-                    SpotifyProvider.token = SpotifyToken(data: response.data)
+                    SpotifyProvider.token = Spotify.Token(data: response.data)
                 }
             }
         }
@@ -89,7 +89,7 @@ extension SpotifyProvider {
     func loginWithoutUser(completion: @escaping DefaultBoolAction) {
         Config.getResolver().resolve(SpotifyProvider.self)!.request(.newLocalToken) { result in
             if case .success(let response) = result {
-                SpotifyProvider.token = SpotifyToken(data: response.data)
+                SpotifyProvider.token = Spotify.Token(data: response.data)
                 completion(true)
                 return
             }

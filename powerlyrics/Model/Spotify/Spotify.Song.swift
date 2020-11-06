@@ -5,7 +5,7 @@
 //  Created by Ilya Kulinkovich on 10/4/20.
 //
 
-import UIKit
+import Foundation
 
 extension Spotify {
 
@@ -29,9 +29,9 @@ extension Spotify.Song {
     var asSharedSong: Shared.Song {
         Shared.Song(
             name: name,
-            artists: artists.map { $0.name },
-            albumArt: album.images.first,
-            thumbnailAlbumArt: album.images.last,
+            artists: artists.map(\.name),
+            albumArt: album.albumArt,
+            thumbnailAlbumArt: album.thumbnailAlbumArt,
             geniusURL: nil
         )
     }

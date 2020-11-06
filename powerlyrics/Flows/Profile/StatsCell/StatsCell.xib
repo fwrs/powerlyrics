@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="17156" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
-    <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17126"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
@@ -32,7 +31,7 @@
                                         <rect key="frame" x="0.0" y="0.0" width="170.5" height="115.5"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="y6x-kW-JLU">
-                                                <rect key="frame" x="11" y="8" width="148.5" height="32"/>
+                                                <rect key="frame" x="11" y="8" width="148.5" height="28"/>
                                                 <fontDescription key="fontDescription" name="RobotoMono-Medium" family="Roboto Mono" pointSize="24"/>
                                                 <color key="textColor" systemColor="systemRedColor"/>
                                                 <nil key="highlightedColor"/>
@@ -77,7 +76,7 @@
                                         <rect key="frame" x="190.5" y="0.0" width="170.5" height="115.5"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2wP-iA-GGo">
-                                                <rect key="frame" x="11" y="8" width="148.5" height="32"/>
+                                                <rect key="frame" x="11" y="8" width="148.5" height="28"/>
                                                 <fontDescription key="fontDescription" name="RobotoMono-Medium" family="Roboto Mono" pointSize="24"/>
                                                 <color key="textColor" systemColor="systemYellowColor"/>
                                                 <nil key="highlightedColor"/>
@@ -127,7 +126,7 @@
                                         <rect key="frame" x="0.0" y="0.0" width="170.5" height="115.5"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LFa-TI-Fck">
-                                                <rect key="frame" x="11" y="8" width="148.5" height="32"/>
+                                                <rect key="frame" x="11" y="8" width="148.5" height="28"/>
                                                 <fontDescription key="fontDescription" name="RobotoMono-Medium" family="Roboto Mono" pointSize="24"/>
                                                 <color key="textColor" systemColor="systemBlueColor"/>
                                                 <nil key="highlightedColor"/>
@@ -172,7 +171,7 @@
                                         <rect key="frame" x="190.5" y="0.0" width="170.5" height="115.5"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="40T-0T-MNA">
-                                                <rect key="frame" x="11" y="8" width="148.5" height="32"/>
+                                                <rect key="frame" x="11" y="8" width="148.5" height="28"/>
                                                 <fontDescription key="fontDescription" name="RobotoMono-Medium" family="Roboto Mono" pointSize="24"/>
                                                 <color key="textColor" systemColor="systemGreenColor"/>
                                                 <nil key="highlightedColor"/>
@@ -229,10 +228,10 @@
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <connections>
-                <outlet property="artistsLabel" destination="40T-0T-MNA" id="htm-mm-Pjb"/>
-                <outlet property="discoveriesCountLabel" destination="LFa-TI-Fck" id="mEd-by-psB"/>
-                <outlet property="likedCountLabel" destination="y6x-kW-JLU" id="lt6-eq-u8X"/>
+                <outlet property="likedSongsCountLabel" destination="y6x-kW-JLU" id="lt6-eq-u8X"/>
+                <outlet property="newDiscoveriesCountLabel" destination="LFa-TI-Fck" id="mEd-by-psB"/>
                 <outlet property="searchesCountLabel" destination="2wP-iA-GGo" id="kL5-lr-cNL"/>
+                <outlet property="viewedArtistsLabel" destination="40T-0T-MNA" id="htm-mm-Pjb"/>
                 <outletCollection property="iconImageView" destination="MZL-3M-nOR" collectionClass="NSMutableArray" id="l39-Nc-vAq"/>
                 <outletCollection property="iconImageView" destination="QVV-eD-k7v" collectionClass="NSMutableArray" id="kRs-uf-bik"/>
                 <outletCollection property="iconImageView" destination="IQB-fD-FPh" collectionClass="NSMutableArray" id="hbe-Hp-GZc"/>

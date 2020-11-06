@@ -25,6 +25,14 @@ let twice = times(2)
 
 let thrice = times(3)
 
+extension Collection {
+    
+    subscript (safe index: Index) -> Element? {
+        indices.contains(index) ? self[index] : nil
+    }
+    
+}
+
 extension Haptic {
     
     static func play(_ pattern: String) {
@@ -175,6 +183,23 @@ extension Array where Element: Equatable {
             }
             total.append(element)
         }
+    }
+    
+}
+
+extension CGRect {
+    
+    var randomPointInRect: CGPoint {
+        let origin = self.origin
+        return CGPoint(x: CGFloat(arc4random_uniform(UInt32(self.width))) + origin.x, y: CGFloat(arc4random_uniform(UInt32(self.height))) + origin.y)
+    }
+    
+}
+
+extension FloatingPointSign {
+    
+    var number: CGFloat {
+        self == .plus ? 1 : -1
     }
     
 }

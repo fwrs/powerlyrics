@@ -29,11 +29,11 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="eaC-uH-Hwv">
                                 <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                                 <subviews>
-                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="ovM-qu-J7F">
-                                        <rect key="frame" x="60" y="255.5" width="294" height="164.5"/>
+                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="13" translatesAutoresizingMaskIntoConstraints="NO" id="ovM-qu-J7F">
+                                        <rect key="frame" x="60" y="249.5" width="294" height="170.5"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ZlH-dd-LLu">
-                                                <rect key="frame" x="0.0" y="0.0" width="294" height="72"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="294" height="70"/>
                                                 <subviews>
                                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" alpha="0.59999999999999998" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="magnifyingglass" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="vsi-mt-b74">
                                                         <rect key="frame" x="0.0" y="1" width="294" height="60"/>
@@ -45,26 +45,35 @@
                                                 </subviews>
                                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                                 <constraints>
-                                                    <constraint firstAttribute="bottom" secondItem="vsi-mt-b74" secondAttribute="bottom" constant="10" id="0bL-Xh-Fyq"/>
+                                                    <constraint firstAttribute="bottom" secondItem="vsi-mt-b74" secondAttribute="bottom" constant="8" id="0bL-Xh-Fyq"/>
                                                     <constraint firstAttribute="trailing" secondItem="vsi-mt-b74" secondAttribute="trailing" id="KbK-As-5Xe"/>
                                                     <constraint firstItem="vsi-mt-b74" firstAttribute="top" secondItem="ZlH-dd-LLu" secondAttribute="top" id="V6g-DJ-fY8"/>
                                                     <constraint firstItem="vsi-mt-b74" firstAttribute="leading" secondItem="ZlH-dd-LLu" secondAttribute="leading" id="oOU-dm-ARc"/>
                                                 </constraints>
                                             </view>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No results" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="c0d-BO-zvF">
-                                                <rect key="frame" x="0.0" y="82" width="294" height="31.5"/>
+                                                <rect key="frame" x="0.0" y="83" width="294" height="31.5"/>
                                                 <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="26"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TaK-Gp-yH0">
-                                                <rect key="frame" x="0.0" y="123.5" width="294" height="41"/>
-                                                <string key="text">Start typing to
-receive suggestions</string>
-                                                <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="17"/>
-                                                <color key="textColor" systemColor="secondaryLabelColor"/>
-                                                <nil key="highlightedColor"/>
-                                            </label>
+                                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="2" translatesAutoresizingMaskIntoConstraints="NO" id="C4N-gl-kqj">
+                                                <rect key="frame" x="0.0" y="127.5" width="294" height="43"/>
+                                                <subviews>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Start typing to" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TaK-Gp-yH0">
+                                                        <rect key="frame" x="0.0" y="0.0" width="294" height="20.5"/>
+                                                        <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="17"/>
+                                                        <color key="textColor" systemColor="secondaryLabelColor"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="receive suggestions" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rrb-IE-5aO">
+                                                        <rect key="frame" x="0.0" y="22.5" width="294" height="20.5"/>
+                                                        <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="17"/>
+                                                        <color key="textColor" systemColor="secondaryLabelColor"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
+                                                </subviews>
+                                            </stackView>
                                         </subviews>
                                     </stackView>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2gs-oQ-R3L">
@@ -81,12 +90,9 @@ receive suggestions</string>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="r8L-W9-VQx">
-                                        <rect key="frame" x="20" y="530" width="374" height="128"/>
+                                        <rect key="frame" x="18" y="521.5" width="378" height="349.5"/>
                                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="128" id="a00-Oz-T4s"/>
-                                        </constraints>
-                                        <collectionViewFlowLayout key="collectionViewLayout" automaticEstimatedItemSize="YES" minimumLineSpacing="10" minimumInteritemSpacing="10" id="oF4-gv-j0P">
+                                        <collectionViewFlowLayout key="collectionViewLayout" automaticEstimatedItemSize="YES" minimumLineSpacing="10" minimumInteritemSpacing="10" id="oF4-gv-j0P" customClass="CenteredCollectionViewLayout" customModule="powerlyrics" customModuleProvider="target">
                                             <size key="itemSize" width="128" height="128"/>
                                             <size key="headerReferenceSize" width="0.0" height="0.0"/>
                                             <size key="footerReferenceSize" width="0.0" height="0.0"/>
@@ -94,21 +100,31 @@ receive suggestions</string>
                                         </collectionViewFlowLayout>
                                         <cells/>
                                     </collectionView>
+                                    <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="large" translatesAutoresizingMaskIntoConstraints="NO" id="ZMi-Hm-ZWd">
+                                        <rect key="frame" x="18" y="521.5" width="378" height="60"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="60" id="buB-3G-tqa"/>
+                                        </constraints>
+                                    </activityIndicatorView>
                                 </subviews>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <constraints>
                                     <constraint firstItem="2gs-oQ-R3L" firstAttribute="top" secondItem="ovM-qu-J7F" secondAttribute="bottom" constant="27.5" id="3I3-M0-NqH"/>
-                                    <constraint firstAttribute="trailing" secondItem="r8L-W9-VQx" secondAttribute="trailing" constant="20" id="3w0-uN-8S1"/>
+                                    <constraint firstAttribute="trailing" secondItem="r8L-W9-VQx" secondAttribute="trailing" constant="18" id="3w0-uN-8S1"/>
                                     <constraint firstItem="2gs-oQ-R3L" firstAttribute="centerY" secondItem="eaC-uH-Hwv" secondAttribute="centerY" id="5Sf-Hn-wcN"/>
-                                    <constraint firstItem="r8L-W9-VQx" firstAttribute="leading" secondItem="eaC-uH-Hwv" secondAttribute="leading" constant="20" id="85y-CL-geK"/>
+                                    <constraint firstItem="ZMi-Hm-ZWd" firstAttribute="trailing" secondItem="r8L-W9-VQx" secondAttribute="trailing" id="7ub-D7-IdP"/>
+                                    <constraint firstItem="r8L-W9-VQx" firstAttribute="leading" secondItem="eaC-uH-Hwv" secondAttribute="leading" constant="18" id="85y-CL-geK"/>
+                                    <constraint firstItem="ZMi-Hm-ZWd" firstAttribute="top" secondItem="r8L-W9-VQx" secondAttribute="top" id="8vu-Ak-ORF"/>
                                     <constraint firstAttribute="trailing" secondItem="2gs-oQ-R3L" secondAttribute="trailing" constant="60" id="CLw-FZ-G7c"/>
                                     <constraint firstItem="ovM-qu-J7F" firstAttribute="trailing" secondItem="2gs-oQ-R3L" secondAttribute="trailing" id="KFY-QO-wvs"/>
                                     <constraint firstItem="ovM-qu-J7F" firstAttribute="leading" secondItem="2gs-oQ-R3L" secondAttribute="leading" id="KtN-Dn-rOr"/>
                                     <constraint firstItem="Tzg-Mi-g4q" firstAttribute="top" secondItem="2gs-oQ-R3L" secondAttribute="bottom" constant="27.5" id="XlB-EX-M7c"/>
-                                    <constraint firstItem="r8L-W9-VQx" firstAttribute="top" secondItem="Tzg-Mi-g4q" secondAttribute="bottom" constant="33.5" id="gXp-Si-8sB"/>
+                                    <constraint firstAttribute="bottom" secondItem="r8L-W9-VQx" secondAttribute="bottom" constant="25" id="bMX-L2-ixb"/>
+                                    <constraint firstItem="r8L-W9-VQx" firstAttribute="top" secondItem="Tzg-Mi-g4q" secondAttribute="bottom" constant="25" id="gXp-Si-8sB"/>
                                     <constraint firstItem="Tzg-Mi-g4q" firstAttribute="trailing" secondItem="2gs-oQ-R3L" secondAttribute="trailing" id="giH-WW-JdD"/>
                                     <constraint firstItem="Tzg-Mi-g4q" firstAttribute="leading" secondItem="2gs-oQ-R3L" secondAttribute="leading" id="jzZ-Ss-mI0"/>
                                     <constraint firstItem="2gs-oQ-R3L" firstAttribute="leading" secondItem="eaC-uH-Hwv" secondAttribute="leading" constant="60" id="qAi-ms-9Af"/>
+                                    <constraint firstItem="ZMi-Hm-ZWd" firstAttribute="leading" secondItem="r8L-W9-VQx" secondAttribute="leading" id="tQs-ZI-1aF"/>
                                 </constraints>
                             </view>
                         </subviews>
@@ -143,8 +159,10 @@ receive suggestions</string>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="activityIndicator" destination="dqQ-X5-1gs" id="E9Y-hU-Xsm"/>
+                        <outlet property="noResultsView" destination="eaC-uH-Hwv" id="egY-LO-RxL"/>
                         <outlet property="searchIconImageView" destination="vsi-mt-b74" id="hIX-Z6-r08"/>
                         <outlet property="tableView" destination="ftC-Eq-hSW" id="Z44-Xn-V9K"/>
+                        <outlet property="trendsActivityIndicator" destination="ZMi-Hm-ZWd" id="2Hb-31-uxt"/>
                         <outlet property="trendsCollectionView" destination="r8L-W9-VQx" id="eMN-KP-ON3"/>
                     </connections>
                 </viewController>

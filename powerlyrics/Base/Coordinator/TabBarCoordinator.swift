@@ -47,7 +47,7 @@ class TabBarCoordinator: Coordinator {
         
         childCoordinators.forEach { $0.start() }
         
-        tabBarController.setViewControllers(childCoordinators.map { $0.rootViewController }, animated: false)
+        tabBarController.setViewControllers(childCoordinators.map(\.rootViewController), animated: false)
 
         window.rootViewController = tabBarController
     }

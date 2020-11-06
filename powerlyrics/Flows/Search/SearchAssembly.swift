@@ -17,7 +17,10 @@ class SearchAssembly: Assembly {
     override func assemble(container: Container) {
         
         container.register(SearchViewModel.self) { resolver in
-            SearchViewModel(geniusProvider: resolver.resolve(GeniusProvider.self)!)
+            SearchViewModel(
+                spotifyProvider: resolver.resolve(SpotifyProvider.self)!,
+                geniusProvider: resolver.resolve(GeniusProvider.self)!
+            )
         }
         
         container.register(SearchScene.self) { resolver in

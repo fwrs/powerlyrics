@@ -9,6 +9,10 @@ import UIKit
 
 extension UIColor {
 
+    @nonobjc class var highlightTintColor: UIColor {
+        Asset.Colors.highlightTintColor.color
+    }
+    
     @nonobjc class var tintColor: UIColor {
         Asset.Colors.tintColor.color
     }

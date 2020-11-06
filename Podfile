@@ -15,8 +15,14 @@ target 'powerlyrics' do
   pod 'SwiftLint'
   pod 'SwiftGen'
 
+  # Syntax sugar
+  pod 'Then'
+
   # Haptic feedback
   pod 'Haptica'
+  
+  # Pan modals
+  pod 'PanModal'
 
   # Data binding
   pod 'ReactiveKit'

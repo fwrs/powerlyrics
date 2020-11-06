@@ -40,13 +40,8 @@ class LyricsViewModel: ViewModel {
             return
         }
         
-        var songName = song.name
-        if let range = songName.range(of: "(feat.") {
-            songName = String(songName[..<range.lowerBound]).clean
-        }
-        
         geniusProvider.reactive
-            .request(.searchSongs(query: "\(song.artists.first.safe) - \(songName)"))
+            .request(.searchSongs(query: "\(song.strippedFeatures.name) - \(song.artists.first.safe)"))
             .map(Genius.SearchResponse.self)
             .start { event in
                 switch event {

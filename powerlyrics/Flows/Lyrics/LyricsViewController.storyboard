@@ -109,7 +109,7 @@
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <stackView opaque="NO" contentMode="scaleToFill" distribution="equalSpacing" spacing="18" translatesAutoresizingMaskIntoConstraints="NO" id="h8c-L7-BUn">
-                                            <rect key="frame" x="16" y="226" width="335.5" height="32"/>
+                                            <rect key="frame" x="16" y="226" width="331.5" height="32"/>
                                             <subviews>
                                                 <button opaque="NO" alpha="0.80000000000000004" contentMode="scaleToFill" semanticContentAttribute="forceLeftToRight" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageWhenHighlighted="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Bka-VT-Y7D">
                                                     <rect key="frame" x="0.0" y="0.0" width="57.5" height="32"/>
@@ -142,11 +142,11 @@
                                                     </state>
                                                 </button>
                                                 <button opaque="NO" alpha="0.80000000000000004" contentMode="scaleToFill" semanticContentAttribute="forceLeftToRight" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageWhenHighlighted="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zVs-UO-dOM">
-                                                    <rect key="frame" x="259.5" y="0.0" width="76" height="32"/>
+                                                    <rect key="frame" x="259.5" y="0.0" width="72" height="32"/>
                                                     <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <inset key="contentEdgeInsets" minX="0.0" minY="0.0" maxX="10" maxY="0.0"/>
                                                     <inset key="titleEdgeInsets" minX="5" minY="0.0" maxX="-5" maxY="0.0"/>
-                                                    <state key="normal" title="notes">
+                                                    <state key="normal" title="story">
                                                         <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <imageReference key="image" image="note.text" catalog="system" renderingMode="template"/>
                                                     </state>

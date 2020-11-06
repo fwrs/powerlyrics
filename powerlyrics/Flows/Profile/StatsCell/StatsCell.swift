@@ -9,15 +9,15 @@ import UIKit
 
 class StatsCell: TableViewCell {
     
-    @IBOutlet weak var likedCountLabel: UILabel!
+    @IBOutlet private weak var likedSongsCountLabel: UILabel!
     
-    @IBOutlet weak var searchesCountLabel: UILabel!
+    @IBOutlet private weak var searchesCountLabel: UILabel!
     
-    @IBOutlet weak var discoveriesCountLabel: UILabel!
+    @IBOutlet private weak var newDiscoveriesCountLabel: UILabel!
     
-    @IBOutlet weak var artistsLabel: UILabel!
+    @IBOutlet private weak var viewedArtistsLabel: UILabel!
     
-    @IBOutlet var iconImageView: [UIImageView]!
+    @IBOutlet private var iconImageView: [UIImageView]!
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -32,6 +32,5 @@ class StatsCell: TableViewCell {
     func configure(with viewModel: StatsCellViewModel) {
         
     }
-
     
 }

@@ -8,7 +8,9 @@
 import Swinject
 import UIKit
 
-protocol GenreMapScene: ViewController {}
+protocol GenreMapScene: ViewController {
+    var flowLyrics: ((Shared.Song, UIImage?) -> Void)? { get set }
+}
 
 class GenreMapAssembly: Assembly {
 

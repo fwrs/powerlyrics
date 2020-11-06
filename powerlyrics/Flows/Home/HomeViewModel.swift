@@ -74,7 +74,7 @@ class HomeViewModel: ViewModel {
             .start { [self] event in
                 switch event {
                 case .value(let response):
-                    trendingSongs = response.items.map { $0.asSharedSong }
+                    trendingSongs = response.items.map(\.asSharedSong)
                     group.leave()
                 case .failed(let error):
                     print(error)
@@ -90,7 +90,7 @@ class HomeViewModel: ViewModel {
             .start { [self] event in
                 switch event {
                 case .value(let response):
-                    viralSongs = response.items.map { $0.asSharedSong }
+                    viralSongs = response.items.map(\.asSharedSong)
                     group.leave()
                 case .failed(let error):
                     print(error)

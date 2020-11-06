@@ -35,6 +35,8 @@ class ProfileBinder<Changeset: SectionedDataSourceChangeset>: TableViewBinderDat
             case .build(let buildCellViewModel):
                 let cell = tableView.dequeue(BuildCell.self, indexPath: indexPath)
                 cell.configure(with: buildCellViewModel)
+                cell.selectionStyle = .none
+                cell.isUserInteractionEnabled = false
                 return cell
             default:
                 fatalError("Invalid cell")

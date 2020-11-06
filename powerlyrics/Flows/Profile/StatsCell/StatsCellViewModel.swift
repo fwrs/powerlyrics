@@ -9,12 +9,12 @@ import Foundation
 
 struct StatsCellViewModel: Equatable {
     
-    var likes: Int = 0
+    var likedSongs: Int = 0
     
     var searches: Int = 0
     
-    var discoveries: Int = 0
+    var newDiscoveries: Int = 0
     
-    var artists: Int = 0
+    var viewedArtists: Int = 0
     
 }

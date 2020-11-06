@@ -48,9 +48,14 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         }
         spotifyProvider.handle(url: url)
         delay(0.5) { [self] in
-            window?.rootViewController?.presentedViewController?.dismiss(animated: true, completion: nil)
-            window?.rootViewController?.presentedViewController?.dismiss(animated: true, completion: nil)
+            window?.rootViewController?.presentedViewController?.dismiss(animated: true, completion: {
+                window?.rootViewController?.presentedViewController?.dismiss(animated: true, completion: nil)
+            })
         }
+    }
+    
+    func loadUserData() {
+        
     }
     
 }

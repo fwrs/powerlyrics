@@ -11,12 +11,14 @@ enum Spotify: TargetType {
     
     // MARK: - Requests
     
-    case refreshToken(oldToken: SpotifyToken)
+    case refreshToken(oldToken: Spotify.Token)
     case newToken(authCode: String)
     case newLocalToken
     
     case playerStatus
     case playlistSongs(playlistID: String)
+    case searchAlbums(query: String)
+    case userInfo
     
     static let trendingSongs = Spotify.playlistSongs(playlistID: "37i9dQZEVXbMDoHDwVN2tF")
     static let viralSongs = Spotify.playlistSongs(playlistID: "37i9dQZEVXbLiRSasKsNU9")
@@ -40,6 +42,10 @@ enum Spotify: TargetType {
             return "/me/player"
         case .playlistSongs(let playlistID):
             return "/playlists/\(playlistID)/tracks"
+        case .searchAlbums:
+            return "/search"
+        case .userInfo:
+            return "/me"
         }
     }
     
@@ -75,6 +81,12 @@ enum Spotify: TargetType {
             return .requestParameters(parameters: [
                 "grant_type": "client_credentials"
             ], encoding: URLEncoding.httpBody)
+        case .searchAlbums(let query):
+            return .requestParameters(parameters: [
+                "q": query,
+                "type": "album",
+                "limit": 3
+            ], encoding: URLEncoding.queryString)
         default:
             return .requestPlain
         }

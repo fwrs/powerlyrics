@@ -19,7 +19,7 @@ class ProfileViewController: ViewController, ProfileScene {
     
     @IBOutlet private weak var avatarImageView: UIImageView!
     
-    @IBOutlet weak var userInfoStackView: UIStackView!
+    @IBOutlet private weak var userInfoStackView: UIStackView!
     
     @IBOutlet private weak var activityIndicator: UIActivityIndicatorView!
     
@@ -46,7 +46,7 @@ extension ProfileViewController {
         tableView.register(ActionCell.self)
         tableView.register(BuildCell.self)
         
-        tableView.contentInset.top = 250 - safeAreaInsets.top - 20
+        tableView.contentInset.top = 250 - safeAreaInsets.top - 22
         
         tableView.delegate = self
         
@@ -89,13 +89,12 @@ extension ProfileViewController: UITableViewDelegate {
     }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        let topPadding = min(250, max(44 + safeAreaInsets.top, -scrollView.contentOffset.y - 20))
+        let topPadding = min(250, max(44 + safeAreaInsets.top, -scrollView.contentOffset.y - 22))
         let progress = 125.0 / 79 - topPadding / 158
         tableView.verticalScrollIndicatorInsets.top = topPadding - safeAreaInsets.top - 44
         avatarDimensionConstraint.constant = 105 - 61 * progress
         avatarImageView.layer.cornerRadius = avatarDimensionConstraint.constant / 2
         navigationBarHeightConstraint.constant = topPadding
-        // * pow(progress, 4)
         avatarContainerView.transform = .init(translationX: 0, y: -312.831 * pow(progress, 4) + 840.079 * pow(progress, 3) - 793.935 * pow(progress, 2) + 287.687 * progress)
         userInfoStackView.transform = .init(translationX: 0, y: 215.556 * progress - 155.556 * pow(progress, 2))
         

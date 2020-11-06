@@ -192,7 +192,7 @@ extension LyricsViewController: UITableViewDelegate {
         navigationBarHeightConstraint.constant = topPadding
         tableView.verticalScrollIndicatorInsets.top = topPadding - safeAreaInsets.top - 44
         if scrollView.contentOffset.y >= -100 {
-            navigationItem.title = "\(artistLabel.text.safe) — \(songLabel.text.safe)"
+            navigationItem.title = songLabel.text.safe
         } else {
             navigationItem.title = "lyrics"
         }

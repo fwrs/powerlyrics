@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="17156" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17126"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iN0-l3-epB" customClass="GenreMapSongView" customModule="powerlyrics" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="371" height="90"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="X1n-vc-qD9">
+                    <rect key="frame" x="0.0" y="0.0" width="371" height="90"/>
+                    <subviews>
+                        <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ZBm-GU-qM9">
+                            <rect key="frame" x="0.0" y="0.0" width="371" height="90"/>
+                            <subviews>
+                                <visualEffectView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Tzd-Sw-o3H">
+                                    <rect key="frame" x="0.0" y="0.0" width="371" height="90"/>
+                                    <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="FEN-cS-Ami">
+                                        <rect key="frame" x="0.0" y="0.0" width="371" height="90"/>
+                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                    </view>
+                                    <blurEffect style="regular"/>
+                                    <userDefinedRuntimeAttributes>
+                                        <userDefinedRuntimeAttribute type="number" keyPath="squircleCorners">
+                                            <real key="value" value="20"/>
+                                        </userDefinedRuntimeAttribute>
+                                    </userDefinedRuntimeAttributes>
+                                </visualEffectView>
+                            </subviews>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <constraints>
+                                <constraint firstAttribute="bottom" secondItem="Tzd-Sw-o3H" secondAttribute="bottom" id="Q40-yn-kEl"/>
+                                <constraint firstAttribute="trailing" secondItem="Tzd-Sw-o3H" secondAttribute="trailing" id="gVK-2Y-R5d"/>
+                                <constraint firstItem="Tzd-Sw-o3H" firstAttribute="leading" secondItem="ZBm-GU-qM9" secondAttribute="leading" id="rUf-rT-VZf"/>
+                                <constraint firstItem="Tzd-Sw-o3H" firstAttribute="top" secondItem="ZBm-GU-qM9" secondAttribute="top" id="vfi-Kg-taj"/>
+                            </constraints>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="number" keyPath="squircleCorners">
+                                    <real key="value" value="20"/>
+                                </userDefinedRuntimeAttribute>
+                            </userDefinedRuntimeAttributes>
+                        </view>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="uQE-00-Rub">
+                            <rect key="frame" x="16" y="16" width="58" height="58"/>
+                            <subviews>
+                                <imageView clipsSubviews="YES" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="LtU-cJ-9ZI">
+                                    <rect key="frame" x="0.0" y="0.0" width="58" height="58"/>
+                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    <constraints>
+                                        <constraint firstAttribute="width" constant="58" id="Gb6-4R-lIe"/>
+                                        <constraint firstAttribute="height" priority="750" constant="58" id="UnE-Yw-qLL"/>
+                                    </constraints>
+                                    <userDefinedRuntimeAttributes>
+                                        <userDefinedRuntimeAttribute type="number" keyPath="squircleCorners">
+                                            <real key="value" value="8"/>
+                                        </userDefinedRuntimeAttribute>
+                                    </userDefinedRuntimeAttributes>
+                                </imageView>
+                            </subviews>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <constraints>
+                                <constraint firstAttribute="bottom" secondItem="LtU-cJ-9ZI" secondAttribute="bottom" id="1r7-Ku-sRS"/>
+                                <constraint firstItem="LtU-cJ-9ZI" firstAttribute="top" secondItem="uQE-00-Rub" secondAttribute="top" id="3Ua-Wd-wO7"/>
+                                <constraint firstItem="LtU-cJ-9ZI" firstAttribute="leading" secondItem="uQE-00-Rub" secondAttribute="leading" id="I5e-qU-f6n"/>
+                                <constraint firstAttribute="trailing" secondItem="LtU-cJ-9ZI" secondAttribute="trailing" id="fql-VP-rV1"/>
+                            </constraints>
+                        </view>
+                        <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="wdQ-Fi-zh6">
+                            <rect key="frame" x="89" y="23.5" width="266" height="43.5"/>
+                            <subviews>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" text="Song name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsLetterSpacingToFitWidth="YES" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yBB-WJ-XRy">
+                                    <rect key="frame" x="0.0" y="0.0" width="86" height="20.5"/>
+                                    <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" text="Artist name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsLetterSpacingToFitWidth="YES" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2zx-sP-DAp">
+                                    <rect key="frame" x="0.0" y="25.5" width="79" height="18"/>
+                                    <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
+                                    <color key="textColor" systemColor="secondaryLabelColor"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                            </subviews>
+                        </stackView>
+                    </subviews>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstItem="ZBm-GU-qM9" firstAttribute="leading" secondItem="X1n-vc-qD9" secondAttribute="leading" id="8D1-La-vCu"/>
+                        <constraint firstAttribute="bottom" secondItem="ZBm-GU-qM9" secondAttribute="bottom" id="ACu-ww-fGd"/>
+                        <constraint firstItem="uQE-00-Rub" firstAttribute="leading" secondItem="X1n-vc-qD9" secondAttribute="leading" constant="16" id="Ftz-DW-LbY"/>
+                        <constraint firstItem="wdQ-Fi-zh6" firstAttribute="centerY" secondItem="uQE-00-Rub" secondAttribute="centerY" id="MFf-On-DXO"/>
+                        <constraint firstAttribute="trailing" secondItem="ZBm-GU-qM9" secondAttribute="trailing" id="Wxr-Qx-TH2"/>
+                        <constraint firstItem="ZBm-GU-qM9" firstAttribute="top" secondItem="X1n-vc-qD9" secondAttribute="top" id="Y8y-fv-Cb9"/>
+                        <constraint firstAttribute="trailing" secondItem="wdQ-Fi-zh6" secondAttribute="trailing" constant="16" id="ZLe-xr-Yix"/>
+                        <constraint firstItem="uQE-00-Rub" firstAttribute="top" secondItem="X1n-vc-qD9" secondAttribute="top" constant="16" id="ehz-6G-DTd"/>
+                        <constraint firstItem="wdQ-Fi-zh6" firstAttribute="leading" secondItem="uQE-00-Rub" secondAttribute="trailing" constant="15" id="fB7-ou-9NN"/>
+                        <constraint firstAttribute="bottom" secondItem="uQE-00-Rub" secondAttribute="bottom" constant="16" id="m5V-iC-ggc"/>
+                    </constraints>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="number" keyPath="squircleCorners">
+                            <real key="value" value="20"/>
+                        </userDefinedRuntimeAttribute>
+                    </userDefinedRuntimeAttributes>
+                </view>
+            </subviews>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <constraints>
+                <constraint firstItem="X1n-vc-qD9" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="2aS-CN-nLv"/>
+                <constraint firstItem="X1n-vc-qD9" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="BPh-xl-bWe"/>
+                <constraint firstAttribute="bottom" secondItem="X1n-vc-qD9" secondAttribute="bottom" id="fr6-Hc-zCA"/>
+                <constraint firstAttribute="trailing" secondItem="X1n-vc-qD9" secondAttribute="trailing" id="sq2-oc-pJ0"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <connections>
+                <outlet property="albumArtContainerView" destination="uQE-00-Rub" id="zJH-wd-TsG"/>
+                <outlet property="albumArtImageView" destination="LtU-cJ-9ZI" id="gSt-SJ-277"/>
+                <outlet property="artistLabel" destination="2zx-sP-DAp" id="yzs-Bx-AwI"/>
+                <outlet property="songLabel" destination="yBB-WJ-XRy" id="gP4-Z8-yOs"/>
+                <outlet property="songView" destination="X1n-vc-qD9" id="fZm-qY-XMF"/>
+            </connections>
+            <point key="canvasLocation" x="57.24637681159421" y="-171.42857142857142"/>
+        </view>
+    </objects>
+    <resources>
+        <systemColor name="secondaryLabelColor">
+            <color red="0.23529411764705882" green="0.23529411764705882" blue="0.2627450980392157" alpha="0.59999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+    </resources>
+</document>

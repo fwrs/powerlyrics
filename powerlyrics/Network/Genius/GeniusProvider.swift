@@ -31,19 +31,19 @@ extension GeniusProvider {
                   let lyricsContainer = try? doc.select("div[class^='lyrics']"),
                   let _ = try? lyricsContainer.select("br").prepend("\\n"),
                   let text = try? lyricsContainer.text().replacingOccurrences(of: "\\n", with: "\n") else { return }
-
+            
             let result = text.split(separator: "\n")
-                .map { $0.clean }
+                .map(\.clean)
                 .dedupNearby(equals: String())
                 .reduce([Shared.LyricsSection(contents: .init())]) { result, element in
                     if element.starts(with: "[") || element.isEmpty {
-                    return result + [Shared.LyricsSection(name: element, contents: .init())]
-                } else {
-                    return result.enumerated().map {
-                        Shared.LyricsSection(name: $1.name, contents: $0 + 1 == result.count ? $1.contents + [element] : $1.contents)
+                        return result + [Shared.LyricsSection(name: element, contents: .init())]
+                    } else {
+                        return result.enumerated().map {
+                            Shared.LyricsSection(name: $1.name, contents: $0 + 1 == result.count ? $1.contents + [element] : $1.contents)
+                        }
                     }
-                }
-            }.filter { $0.contents.nonEmpty && $0.name != nil }
+                }.filter { $0.contents.nonEmpty }
             
             completionHandler?(result)
         }
