@@ -11,10 +11,12 @@ protocol TranslationAnimationView {
     var translationViews: [UIView] { get }
     var translationInteractor: TranslationAnimationInteractor? { get }
     var completelyMoveAway: Bool { get }
+    var isSourcePanModal: Bool { get }
 }
 
 extension TranslationAnimationView {
     var completelyMoveAway: Bool { false }
+    var isSourcePanModal: Bool { false }
 }
 
 class TranslationAnimation: NSObject, UIViewControllerAnimatedTransitioning {
@@ -47,17 +49,27 @@ class TranslationAnimation: NSObject, UIViewControllerAnimatedTransitioning {
     func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
         let fromVC = transitionContext.viewController(forKey: .from) as! TranslationAnimationView  & UIViewController
         let toVC   = transitionContext.viewController(forKey: .to)   as! TranslationAnimationView  & UIViewController
+        
+        let fromVCCorrectedView = fromVC.isSourcePanModal ? fromVC.view.superview! : fromVC.view!
+        let toVCCorrectedView = toVC.isSourcePanModal ? toVC.view.superview! : toVC.view!
 
         let container = transitionContext.containerView
 
-        toVC.view.frame = fromVC.view.frame
-        if type == .present {
-            container.addSubview(toVC.view)
-        } else {
-            container.insertSubview(toVC.view, belowSubview: fromVC.view)
+        if !toVC.isSourcePanModal && fromVC.isSourcePanModal {
+            toVCCorrectedView.frame = UIScreen.main.bounds
+        } else if !toVC.isSourcePanModal {
+            toVCCorrectedView.frame = fromVCCorrectedView.frame
         }
-        toVC.view.layoutIfNeeded()
-
+        if type == .present {
+            container.addSubview(toVCCorrectedView)
+        } else {
+            if !toVC.isSourcePanModal {
+                container.insertSubview(toVCCorrectedView, belowSubview: fromVCCorrectedView)
+            }
+        }
+        
+        toVCCorrectedView.layoutIfNeeded()
+        
         let fromSnapshots = (toVC.translationViews.isEmpty ? [] : fromVC.translationViews).map { subview -> UIView in
             let snapshot = subview.snapshotView(afterScreenUpdates: !inNavigationController)!
             snapshot.frame = container.convert(subview.frame, from: subview.superview)
@@ -85,16 +97,16 @@ class TranslationAnimation: NSObject, UIViewControllerAnimatedTransitioning {
         }
         
         if type == .present {
-            toVC.view.transform = .init(translationX: toVC.view.frame.width, y: 0)
+            toVCCorrectedView.transform = .init(translationX: toVCCorrectedView.frame.width, y: 0)
             if fromVC.completelyMoveAway {
-                toVC.view.alpha = 0
+                toVCCorrectedView.alpha = 0
             }
         } else {
             if toVC.completelyMoveAway {
-                toVC.view.alpha = 0
+                toVCCorrectedView.alpha = 0
             }
-            toVC.view.alpha = toVC.completelyMoveAway ? 0 : 0.5
-            toVC.view.transform = .init(translationX: -(toVC.view.bounds.width / (toVC.completelyMoveAway ? 1 : 3)), y: 0)
+            toVCCorrectedView.alpha = toVC.completelyMoveAway ? 0 : 0.5
+            toVCCorrectedView.transform = .init(translationX: -(toVCCorrectedView.bounds.width / (toVC.completelyMoveAway ? 1 : 3)), y: 0)
         }
         
         let animationsClosure = {
@@ -109,20 +121,22 @@ class TranslationAnimation: NSObject, UIViewControllerAnimatedTransitioning {
             }
 
             if self.type == .present {
-                toVC.view.transform = .identity
-                fromVC.view.alpha = fromVC.completelyMoveAway ? 0 : 0.5
-                fromVC.view.transform = .init(translationX: -(fromVC.view.bounds.width / (fromVC.completelyMoveAway ? 1 : 3)), y: 0)
+                toVCCorrectedView.transform = .identity
+                fromVCCorrectedView.alpha = fromVC.completelyMoveAway ? 0 : 0.5
+                fromVCCorrectedView.transform = .init(translationX: -(fromVCCorrectedView.bounds.width / (fromVC.completelyMoveAway ? 1 : 3)), y: 0)
                 if fromVC.completelyMoveAway {
-                    toVC.view.alpha = 1
+                    toVCCorrectedView.alpha = 1
                 }
             } else {
-                fromVC.view.transform = .init(translationX: fromVC.view.frame.width, y: 0)
-                toVC.view.alpha = 1
+//                if !fromVC.isPanModalPresented {
+                fromVCCorrectedView.transform = .init(translationX: fromVCCorrectedView.frame.width, y: 0)
+//                }
+                toVCCorrectedView.alpha = 1
                 if toVC.completelyMoveAway {
-                    fromVC.view.alpha = 0
-                    toVC.view.alpha = 1
+                    fromVCCorrectedView.alpha = 0
+                    toVCCorrectedView.alpha = 1
                 }
-                toVC.view.transform = .identity
+                toVCCorrectedView.transform = .identity
             }
         }
         
@@ -132,10 +146,14 @@ class TranslationAnimation: NSObject, UIViewControllerAnimatedTransitioning {
             fromVC.translationViews.forEach { $0.alpha = 1 }
             toVC.translationViews.forEach { $0.alpha = 1 }
             
-            fromVC.view.alpha = 1
-            fromVC.view.transform = .identity
-            toVC.view.alpha = 1
-            toVC.view.transform = .identity
+//            if !fromVC.isPanModalPresented {
+            fromVCCorrectedView.alpha = 1
+            fromVCCorrectedView.transform = .identity
+//            }
+//            if !toVC.isPanModalPresented {
+            toVCCorrectedView.alpha = 1
+            toVCCorrectedView.transform = .identity
+//            }
 
             transitionContext.completeTransition(!transitionContext.transitionWasCancelled)
         }
@@ -165,6 +183,10 @@ extension UITabBarController: TranslationAnimationView {
         (selectedViewController as! TranslationAnimationView).translationInteractor
     }
     
+    var isSourcePanModal: Bool {
+        (selectedViewController as! TranslationAnimationView).isSourcePanModal
+    }
+    
 }
 
 extension Router: TranslationAnimationView {
@@ -175,6 +197,10 @@ extension Router: TranslationAnimationView {
     
     var translationInteractor: TranslationAnimationInteractor? {
         (topViewController as! TranslationAnimationView).translationInteractor
+    }
+    
+    var isSourcePanModal: Bool {
+        (topViewController as! TranslationAnimationView).isSourcePanModal
     }
     
 }

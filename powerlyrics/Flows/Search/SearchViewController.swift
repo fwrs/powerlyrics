@@ -36,7 +36,7 @@ class SearchViewController: ViewController, SearchScene {
     
     // MARK: - Flows
     
-    var flowLyrics: ((Shared.Song, UIImage?) -> Void)?
+    var flowLyrics: ((SharedSong, UIImage?) -> Void)?
     
     // MARK: - Lifecycle
 
@@ -107,7 +107,7 @@ extension SearchViewController {
             )
         }.dispose(in: disposeBag)
         
-        viewModel.trendsAreLoading.map { !$0 }.bind(to: trendsActivityIndicator.reactive.isHidden).dispose(in: disposeBag)
+        viewModel.trendsAreLoading.map(\.negated).bind(to: trendsActivityIndicator.reactive.isHidden).dispose(in: disposeBag)
         
         viewModel.isRefreshing.observeNext { [self] isRefreshing in
             tableView.isRefreshing = isRefreshing

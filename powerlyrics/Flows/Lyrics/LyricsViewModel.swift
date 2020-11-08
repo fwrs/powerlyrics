@@ -13,11 +13,11 @@ class LyricsViewModel: ViewModel {
     
     let geniusProvider: GeniusProvider
     
-    let song: Shared.Song
+    let song: SharedSong
     
     let lyrics = MutableObservableArray<Shared.LyricsSection>()
     
-    init(geniusProvider: GeniusProvider, song: Shared.Song) {
+    init(geniusProvider: GeniusProvider, song: SharedSong) {
         self.geniusProvider = geniusProvider
         self.song = song
     }
@@ -42,7 +42,7 @@ class LyricsViewModel: ViewModel {
         
         geniusProvider.reactive
             .request(.searchSongs(query: "\(song.strippedFeatures.name) - \(song.artists.first.safe)"))
-            .map(Genius.SearchResponse.self)
+            .map(GeniusSearchResponse.self)
             .start { event in
                 switch event {
                 case .value(let response):

@@ -14,8 +14,8 @@ class ProfileAssembly: Assembly {
 
     override func assemble(container: Container) {
         
-        container.register(ProfileViewModel.self) { _ in
-            ProfileViewModel()
+        container.register(ProfileViewModel.self) { resolver in
+            ProfileViewModel(spotifyProvider: resolver.resolve(SpotifyProvider.self)!)
         }
         
         container.register(ProfileScene.self) { resolver in

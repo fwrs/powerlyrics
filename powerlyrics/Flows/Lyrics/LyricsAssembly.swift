@@ -16,11 +16,11 @@ class LyricsAssembly: Assembly {
 
     override func assemble(container: Container) {
         
-        container.register(LyricsViewModel.self) { (resolver, song: Shared.Song) in
+        container.register(LyricsViewModel.self) { (resolver, song: SharedSong) in
             LyricsViewModel(geniusProvider: resolver.resolve(GeniusProvider.self)!, song: song)
         }
         
-        container.register(LyricsScene.self) { (resolver, song: Shared.Song, albumArtThumbnail: UIImage?) in
+        container.register(LyricsScene.self) { (resolver, song: SharedSong, albumArtThumbnail: UIImage?) in
             let viewController = UIStoryboard.createController(LyricsViewController.self)
             viewController.viewModel = resolver.resolve(LyricsViewModel.self, argument: song)
             viewController.albumArtThumbnail = albumArtThumbnail

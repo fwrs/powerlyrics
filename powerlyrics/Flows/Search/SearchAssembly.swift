@@ -9,7 +9,7 @@ import Swinject
 import UIKit
 
 protocol SearchScene: ViewController {
-    var flowLyrics: ((Shared.Song, UIImage?) -> Void)? { get set }
+    var flowLyrics: ((SharedSong, UIImage?) -> Void)? { get set }
 }
 
 class SearchAssembly: Assembly {

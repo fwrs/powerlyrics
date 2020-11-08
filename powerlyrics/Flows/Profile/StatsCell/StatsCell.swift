@@ -13,7 +13,7 @@ class StatsCell: TableViewCell {
     
     @IBOutlet private weak var searchesCountLabel: UILabel!
     
-    @IBOutlet private weak var newDiscoveriesCountLabel: UILabel!
+    @IBOutlet private weak var discoveriesCountLabel: UILabel!
     
     @IBOutlet private weak var viewedArtistsLabel: UILabel!
     

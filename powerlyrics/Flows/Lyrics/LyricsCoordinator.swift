@@ -16,11 +16,11 @@ class LyricsCoordinator: Coordinator {
     
     let dismissCompletion: DefaultAction
     
-    let song: Shared.Song
+    let song: SharedSong
     
     let placeholder: UIImage?
 
-    init(router: Router, resolver: Resolver, base: UIViewController, dismissCompletion: @escaping DefaultAction, song: Shared.Song, placeholder: UIImage?) {
+    init(router: Router, resolver: Resolver, base: UIViewController, dismissCompletion: @escaping DefaultAction, song: SharedSong, placeholder: UIImage?) {
         self.router = router
         self.base = base
         self.dismissCompletion = dismissCompletion

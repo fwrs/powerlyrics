@@ -6,6 +6,7 @@
 //
 
 import Moya
+import RealmSwift
 import SafariServices
 import Swinject
 import UIKit
@@ -16,7 +17,7 @@ extension SpotifyProvider {
     
     private static let keychain: KeychainStorageProtocol = Config.getResolver().resolve(KeychainStorageProtocol.self)!
     
-    private static var token: Spotify.Token? {
+    private static var token: SpotifyToken? {
         get {
             keychain.getDecodable(for: .spotifyToken)
         }
@@ -47,7 +48,7 @@ extension SpotifyProvider {
             Config.getResolver().resolve(SpotifyProvider.self)!.request(currentToken.refreshToken == nil ? .newLocalToken : .refreshToken(oldToken: currentToken)) { result in
                 switch result {
                 case .success(let response):
-                    token = Spotify.Token(data: response.data, refreshToken: token?.refreshToken) ?? token
+                    token = SpotifyToken(data: response.data, refreshToken: token?.refreshToken) ?? token
                     request.setValue("Bearer \((token?.accessToken).safe)", forHTTPHeaderField: "Authorization")
                     closure(.success(request))
                 case .failure(let error):
@@ -57,14 +58,15 @@ extension SpotifyProvider {
         }
     }
     
-    func handle(url: URL) {
+    func handle(url: URL, finished: DefaultAction?) {
         if let urlComponents = URLComponents(string: url.absoluteString),
             let queryItems = urlComponents.queryItems,
             let code = queryItems.first(where: { item in item.name == "code" })?.value {
             
             Config.getResolver().resolve(SpotifyProvider.self)!.request(.newToken(authCode: code)) { result in
                 if case .success(let response) = result {
-                    SpotifyProvider.token = Spotify.Token(data: response.data)
+                    SpotifyProvider.token = SpotifyToken(data: response.data)
+                    finished?()
                 }
             }
         }
@@ -89,7 +91,7 @@ extension SpotifyProvider {
     func loginWithoutUser(completion: @escaping DefaultBoolAction) {
         Config.getResolver().resolve(SpotifyProvider.self)!.request(.newLocalToken) { result in
             if case .success(let response) = result {
-                SpotifyProvider.token = Spotify.Token(data: response.data)
+                SpotifyProvider.token = SpotifyToken(data: response.data)
                 completion(true)
                 return
             }
@@ -100,6 +102,8 @@ extension SpotifyProvider {
     func logout() {
         SpotifyProvider.token = nil
         SpotifyProvider.keychain.delete(for: .spotifyToken)
+        
+        Realm.unsetUserData()
     }
     
     var loggedIn: Bool {

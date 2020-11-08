@@ -51,9 +51,9 @@ class SearchViewModel: ViewModel {
     
     var latestSearchAlbumsRequest: ReactiveSwift.Disposable?
     
-    private var searchSongsResult = [Shared.Song]()
+    private var searchSongsResult = [SharedSong]()
     
-    private var searchAlbumsResult = [Spotify.Album]()
+    private var searchAlbumsResult = [SpotifyAlbum]()
     
     init(spotifyProvider: SpotifyProvider, geniusProvider: GeniusProvider) {
         self.spotifyProvider = spotifyProvider
@@ -63,7 +63,7 @@ class SearchViewModel: ViewModel {
     func loadTrends() {
         spotifyProvider.reactive
             .request(.trendingSongs)
-            .map(Spotify.PlaylistSongsResponse.self)
+            .map(SpotifyPlaylistSongsResponse.self)
             .start { [self] event in
                 switch event {
                 case .value(let response):
@@ -100,7 +100,7 @@ class SearchViewModel: ViewModel {
         latestSearchSongsRequest?.dispose()
         latestSearchSongsRequest = geniusProvider.reactive
             .request(.searchSongs(query: query))
-            .map(Genius.SearchResponse.self)
+            .map(GeniusSearchResponse.self)
             .start { [self] event in
                 switch event {
                 case .value(let response):
@@ -118,7 +118,7 @@ class SearchViewModel: ViewModel {
         latestSearchAlbumsRequest?.dispose()
         latestSearchAlbumsRequest = spotifyProvider.reactive
             .request(.searchAlbums(query: query))
-            .map(Spotify.SearchAlbumsResponse.self)
+            .map(SpotifySearchAlbumsResponse.self)
             .start { [self] event in
                 switch event {
                 case .value(let response):

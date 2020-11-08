@@ -16,6 +16,7 @@ PODS:
   - Moya/ReactiveSwift (14.0.0):
     - Moya/Core
     - ReactiveSwift (~> 6.0)
+  - PanModal (1.2.7)
   - ReactiveKit (3.17.4)
   - ReactiveSwift (6.4.0)
   - Realm (5.3.6):
@@ -39,6 +40,7 @@ DEPENDENCIES:
   - KeychainAccess
   - Kingfisher
   - Moya/ReactiveSwift
+  - PanModal
   - ReactiveKit
   - RealmSwift
   - SwiftGen
@@ -59,6 +61,7 @@ SPEC REPOS:
     - KeychainAccess
     - Kingfisher
     - Moya
+    - PanModal
     - ReactiveKit
     - ReactiveSwift
     - Realm
@@ -88,6 +91,7 @@ SPEC CHECKSUMS:
   KeychainAccess: 9b07f665298d13c3a85881bd3171f6f49b8151c1
   Kingfisher: e3ec347a5ab8817b7585ef46923a2d2b9a7d8fbe
   Moya: 5b45dacb75adb009f97fde91c204c1e565d31916
+  PanModal: 3e16ead1a907fb06f4df3f13492fd00149fa4974
   ReactiveKit: f9f9e079efa39312c597bf1508ef4810d111ce76
   ReactiveSwift: 7555791a608c0679563a3f72546f971b2a06de98
   Realm: cd400dd7e5b5bb5c8ae9842eecd73792369e6ec0
@@ -99,6 +103,6 @@ SPEC CHECKSUMS:
   Then: acfe0be7e98221c6204e12f8161459606d5d822d
   Typographizer: 1e1cf1abf8ed4e06427f3f130ecb91f95165123b
 
-PODFILE CHECKSUM: 37db4778dc32e9428f046330ac6c4976fb185b72
+PODFILE CHECKSUM: ad595eb7288d02a45c2573543633875db1ec5b0d
 
 COCOAPODS: 1.10.0

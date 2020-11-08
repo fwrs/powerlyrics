@@ -228,8 +228,8 @@
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <connections>
+                <outlet property="discoveriesCountLabel" destination="LFa-TI-Fck" id="mEd-by-psB"/>
                 <outlet property="likedSongsCountLabel" destination="y6x-kW-JLU" id="lt6-eq-u8X"/>
-                <outlet property="newDiscoveriesCountLabel" destination="LFa-TI-Fck" id="mEd-by-psB"/>
                 <outlet property="searchesCountLabel" destination="2wP-iA-GGo" id="kL5-lr-cNL"/>
                 <outlet property="viewedArtistsLabel" destination="40T-0T-MNA" id="htm-mm-Pjb"/>
                 <outletCollection property="iconImageView" destination="MZL-3M-nOR" collectionClass="NSMutableArray" id="l39-Nc-vAq"/>

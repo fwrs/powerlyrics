@@ -9,7 +9,7 @@ import Swinject
 import UIKit
 
 protocol GenreMapScene: ViewController {
-    var flowLyrics: ((Shared.Song, UIImage?) -> Void)? { get set }
+    var flowGenre: DefaultLikedSongGenreAction? { get set }
 }
 
 class GenreMapAssembly: Assembly {

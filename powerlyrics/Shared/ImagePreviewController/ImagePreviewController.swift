@@ -10,7 +10,7 @@ import UIKit
 class ImagePreviewController: UIViewController {
     private let imageView = UIImageView()
     
-    init?(_ image: Shared.Image?, placeholder: UIImage? = nil) {
+    init?(_ image: SharedImage?, placeholder: UIImage? = nil) {
         super.init(nibName: nil, bundle: nil)
         
         let width = UIScreen.main.bounds.width

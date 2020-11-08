@@ -88,7 +88,7 @@ class SetupCoordinator: Coordinator {
                 }
             }
         }
-        router.push(scene, animated: true)
+        router.push(scene)
     }
     
     override func start() {

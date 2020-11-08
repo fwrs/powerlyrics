@@ -25,7 +25,7 @@ class SearchCoordinator: Coordinator {
         router.push(scene, animated: false)
     }
     
-    func showLyrics(for song: Shared.Song, placeholder: UIImage?) {
+    func showLyrics(for song: SharedSong, placeholder: UIImage?) {
         let lyricsCoordinator = resolver.resolve(LyricsCoordinator.self, arguments: Router(), rootViewController, { [self] in
             childCoordinators.removeAll { $0.isKind(of: LyricsCoordinator.self) }
         }, song, placeholder)!

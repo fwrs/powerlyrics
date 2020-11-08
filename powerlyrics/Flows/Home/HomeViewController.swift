@@ -26,7 +26,7 @@ class HomeViewController: ViewController, HomeScene {
     
     // MARK: - Flows
     
-    var flowLyrics: ((Shared.Song, UIImage?) -> Void)?
+    var flowLyrics: ((SharedSong, UIImage?) -> Void)?
     
     var flowSetup: DefaultSetupModeAction?
     

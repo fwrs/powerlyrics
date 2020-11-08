@@ -27,6 +27,12 @@ class ProfileViewController: ViewController, ProfileScene {
     
     @IBOutlet private weak var avatarDimensionConstraint: NSLayoutConstraint!
     
+    @IBOutlet private weak var userNameLabel: UILabel!
+    
+    @IBOutlet private weak var premiumIconImageView: UIImageView!
+    
+    @IBOutlet private weak var registerDateLabel: UILabel!
+    
     var viewModel: ProfileViewModel!
     
     override func viewDidLoad() {
@@ -73,7 +79,25 @@ extension ProfileViewController {
     
     func setupObservers() {
         viewModel.items.bind(to: tableView, using: ProfileBinder())
-        viewModel.isLoading.map { !$0 }.bind(to: activityIndicator.reactive.isHidden)
+        viewModel.isLoading.map(\.negated).bind(to: activityIndicator.reactive.isHidden)
+        
+        tableView.reactive.selectedRowIndexPath.observeNext { [self] indexPath in
+            let item = viewModel.items[itemAt: indexPath]
+            
+            if case .action(let actionCellViewModel) = item {
+                if actionCellViewModel.action == .signOut {
+                    viewModel.spotifyProvider.logout()
+                    present(UIAlertController(title: "signed out pog", message: ":)", preferredStyle: .alert).with {
+                        $0.addAction(UIAlertAction(title: "Good", style: .default, handler: nil))
+                    }, animated: true, completion: nil)
+                }
+            }
+            
+            tableView.deselectRow(at: indexPath, animated: true)
+        }.dispose(in: disposeBag)
+        
+        viewModel.name.bind(to: userNameLabel.reactive.text).dispose(in: disposeBag)
+        viewModel.premium.map(\.negated).bind(to: premiumIconImageView.reactive.isHidden).dispose(in: disposeBag)
     }
     
 }

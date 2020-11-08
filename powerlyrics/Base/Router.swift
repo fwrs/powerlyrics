@@ -5,6 +5,7 @@
 //  Created by Ilya Kulinkovich on 10/1/20.
 //
 
+import PanModal
 import UIKit
 
 class Router: UINavigationController {
@@ -32,8 +33,32 @@ class Router: UINavigationController {
         navigationBar.prefersLargeTitles = false
     }
     
-    func push(_ viewController: UIViewController?, animated: Bool) {
+    func push(_ viewController: UIViewController?, animated: Bool = true) {
         pushViewController(viewController!, animated: animated)
+    }
+    
+}
+
+extension Router: PanModalPresentable {
+    
+    var panScrollable: UIScrollView? {
+        (topViewController as! PanModalPresentable).panScrollable
+    }
+    
+    var panModalBackgroundColor: UIColor {
+        (topViewController as! PanModalPresentable).panModalBackgroundColor
+    }
+    
+    var cornerRadius: CGFloat {
+        (topViewController as! PanModalPresentable).cornerRadius
+    }
+    
+    var shortFormHeight: PanModalHeight {
+        (topViewController as! PanModalPresentable).shortFormHeight
+    }
+    
+    var longFormHeight: PanModalHeight {
+        (topViewController as! PanModalPresentable).longFormHeight
     }
     
 }

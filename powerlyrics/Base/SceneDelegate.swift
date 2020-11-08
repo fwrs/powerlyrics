@@ -6,6 +6,7 @@
 //
 
 import IQKeyboardManager
+import RealmSwift
 import Swinject
 import UIKit
 
@@ -33,6 +34,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         UIView.appearance().tintColor = .tintColor
         
+        Realm.Configuration.defaultConfiguration.deleteRealmIfMigrationNeeded = true
+        
         IQKeyboardManager.shared().isEnabled = true
         IQKeyboardManager.shared().shouldResignOnTouchOutside = true
         IQKeyboardManager.shared().isEnableAutoToolbar = false
@@ -46,16 +49,38 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         guard let url = URLContexts.first?.url else {
             return
         }
-        spotifyProvider.handle(url: url)
-        delay(0.5) { [self] in
-            window?.rootViewController?.presentedViewController?.dismiss(animated: true, completion: {
-                window?.rootViewController?.presentedViewController?.dismiss(animated: true, completion: nil)
-            })
+        spotifyProvider.handle(url: url) { [self] in
+            alertTopMostViewController(controller: UIAlertController(title: "loading", message: "oo...", preferredStyle: .alert))
+            loadUserData { [self] in
+                window?.rootViewController?.presentedViewController?.dismiss(animated: true, completion: {
+                    window?.rootViewController?.presentedViewController?.dismiss(animated: true, completion: nil)
+                })
+            } failure: { [self] in
+                alertTopMostViewController(controller: UIAlertController(title: "Failed", message: ":(", preferredStyle: .alert))
+            }
         }
     }
     
-    func loadUserData() {
-        
+    func alertTopMostViewController(controller: UIAlertController) {
+        window?.topViewController?.present(controller, animated: true)
+    }
+    
+    func loadUserData(success: @escaping DefaultAction, failure: @escaping DefaultAction) {
+        spotifyProvider.reactive
+            .request(.userInfo)
+            .map(SpotifyUserInfoResponse.self)
+            .start { event in
+                switch event {
+                case .value(let response):
+                    Realm.saveUserData(spotifyUserInfo: response)
+                    success()
+                case .failed(let error):
+                    print(error)
+                    failure()
+                default:
+                    break
+                }
+            }
     }
     
 }

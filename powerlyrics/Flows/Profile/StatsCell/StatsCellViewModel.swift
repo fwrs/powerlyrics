@@ -13,7 +13,7 @@ struct StatsCellViewModel: Equatable {
     
     var searches: Int = 0
     
-    var newDiscoveries: Int = 0
+    var discoveries: Int = 0
     
     var viewedArtists: Int = 0
     

@@ -32,7 +32,7 @@ class SongCell: TableViewCell {
         albumArtImageView.image
     }
     
-    private var fullImage: Shared.Image?
+    private var fullImage: SharedImage?
     
     override func awakeFromNib() {
         super.awakeFromNib()

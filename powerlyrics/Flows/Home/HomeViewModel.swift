@@ -31,11 +31,11 @@ class HomeViewModel: ViewModel {
     
     let items = MutableObservableArray2D(Array2D<HomeSection, HomeCell>())
     
-    private var currentlyPlayingSong = [Shared.Song]()
+    private var currentlyPlayingSong = [SharedSong]()
     
-    private var trendingSongs = [Shared.Song]()
+    private var trendingSongs = [SharedSong]()
     
-    private var viralSongs = [Shared.Song]()
+    private var viralSongs = [SharedSong]()
     
     init(spotifyProvider: SpotifyProvider) {
         self.spotifyProvider = spotifyProvider
@@ -53,7 +53,7 @@ class HomeViewModel: ViewModel {
         group.enter()
         spotifyProvider.reactive
             .request(.playerStatus)
-            .map(Spotify.PlayingContextResponse.self)
+            .map(SpotifyPlayingContextResponse.self)
             .start { [self] event in
                 switch event {
                 case .value(let response):
@@ -70,7 +70,7 @@ class HomeViewModel: ViewModel {
         group.enter()
         spotifyProvider.reactive
             .request(.trendingSongs)
-            .map(Spotify.PlaylistSongsResponse.self)
+            .map(SpotifyPlaylistSongsResponse.self)
             .start { [self] event in
                 switch event {
                 case .value(let response):
@@ -86,7 +86,7 @@ class HomeViewModel: ViewModel {
         group.enter()
         spotifyProvider.reactive
             .request(.viralSongs)
-            .map(Spotify.PlaylistSongsResponse.self)
+            .map(SpotifyPlaylistSongsResponse.self)
             .start { [self] event in
                 switch event {
                 case .value(let response):

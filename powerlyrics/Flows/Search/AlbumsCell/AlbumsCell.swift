@@ -25,7 +25,7 @@ class AlbumsCell: UITableViewCell {
     
     private var interactors = [AlbumContextInteractor]()
     
-    var fullSizeImages = [Shared.Image?]()
+    var fullSizeImages = [SharedImage?]()
     
     override func awakeFromNib() {
         super.awakeFromNib()

@@ -9,6 +9,6 @@ import Foundation
 
 struct AlbumsCellViewModel: Equatable {
     
-    let albums: [Spotify.Album]
+    let albums: [SpotifyAlbum]
     
 }

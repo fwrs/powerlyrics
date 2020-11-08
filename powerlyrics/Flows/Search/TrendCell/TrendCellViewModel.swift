@@ -9,6 +9,6 @@ import Foundation
 
 struct TrendCellViewModel: Equatable {
     
-    let song: Shared.Song
+    let song: SharedSong
     
 }

@@ -11,7 +11,7 @@ enum Spotify: TargetType {
     
     // MARK: - Requests
     
-    case refreshToken(oldToken: Spotify.Token)
+    case refreshToken(oldToken: SpotifyToken)
     case newToken(authCode: String)
     case newLocalToken
     
