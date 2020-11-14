@@ -23,16 +23,19 @@ class GenreMapCoordinator: Coordinator {
         scene?.flowGenre = { [weak self] genre in
             self?.showGenre(genre)
         }
+        scene?.flowLikedSongs = { [weak self] in
+            self?.showLikedSongs()
+        }
         router.push(scene, animated: false)
     }
     
-    func showGenre(_ genre: LikedSongGenre) {
-        let scene = resolver.resolve(GenreStatsScene.self)!
+    func showGenre(_ genre: RealmLikedSongGenre) {
+        let scene = resolver.resolve(GenreStatsScene.self, argument: genre)!
         let genreRouter = Router(rootViewController: scene)
         if let tabBarController = router.tabBarController {
             let blurView = UIVisualEffectView(effect: nil)
             UIView.animate(withDuration: 0.35, delay: 0, options: .curveEaseOut) {
-                blurView.effect = UIBlurEffect(style: .systemThinMaterial)
+                blurView.effect = UIBlurEffect(style: .systemUltraThinMaterial)
             }
             tabBarController.view.addSubview(blurView)
             blurView.isUserInteractionEnabled = false
@@ -60,6 +63,17 @@ class GenreMapCoordinator: Coordinator {
         }, song, placeholder)!
         childCoordinators.append(lyricsCoordinator)
         lyricsCoordinator.start()
+    }
+    
+    func showLikedSongs() {
+        let scene = resolver.resolve(SongListScene.self, argument: SongListFlow.likedSongs)
+        scene?.flowLyrics = { [weak self] (song, placeholder) in
+            guard let self = self else {
+                return
+            }
+            self.showLyrics(for: song, placeholder: placeholder, from: self.rootViewController)
+        }
+        router.push(scene)
     }
     
     override var rootViewController: UIViewController {

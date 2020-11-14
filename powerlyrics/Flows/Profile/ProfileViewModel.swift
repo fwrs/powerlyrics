@@ -15,6 +15,8 @@ class ProfileViewModel: ViewModel {
     
     let premium = Observable(false)
     
+    let avatar: Observable<SharedImage?> = Observable(nil)
+    
     let registerDate = Observable(Date())
     
     init(spotifyProvider: SpotifyProvider) {
@@ -24,6 +26,7 @@ class ProfileViewModel: ViewModel {
         name.value = userData?.name ?? "User"
         premium.value = userData?.premium ?? false
         registerDate.value = userData?.registerDate ?? Date()
+        avatar.value = userData?.thumbnailAvatarURL?.url.map { .external($0) }
     }
     
     let spotifyProvider: SpotifyProvider

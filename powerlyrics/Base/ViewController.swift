@@ -28,6 +28,74 @@ class ViewController: UIViewController, UITabBarControllerDelegate {
     var tabBarCanScrollToTop: Bool { true }
     
     var prefersNavigationBarHidden: Bool { false }
+    
+    private var noInternetView: NoInternetView?
+    
+    private var emptyView: EmptyView?
+    
+    func setNoInternetView(isVisible: Bool) {
+        if isVisible {
+            let newNoInternetView = NoInternetView.loadFromNib()
+            view.addSubview(newNoInternetView)
+            view.bringSubviewToFront(newNoInternetView)
+            NSLayoutConstraint.activate([
+                newNoInternetView.topAnchor.constraint(equalTo: view.topAnchor),
+                newNoInternetView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+                newNoInternetView.leftAnchor.constraint(equalTo: view.leftAnchor),
+                newNoInternetView.rightAnchor.constraint(equalTo: view.rightAnchor)
+            ])
+            noInternetView = newNoInternetView
+            newNoInternetView.alpha = 0
+            UIView.animate(withDuration: 0.3) {
+                newNoInternetView.alpha = 1
+            }
+        } else {
+            guard let currentNoInternetView = noInternetView else { return }
+            currentNoInternetView.alpha = 1
+            UIView.animate(withDuration: 0.3) {
+                currentNoInternetView.alpha = 0
+            } completion: { [self] _ in
+                currentNoInternetView.removeFromSuperview()
+                noInternetView = nil
+            }
+        }
+    }
+    
+    func setEmptyView(isVisible: Bool) {
+        if isVisible {
+            let newEmptyView = EmptyView.loadFromNib()
+            view.addSubview(newEmptyView)
+            view.bringSubviewToFront(newEmptyView)
+            NSLayoutConstraint.activate([
+                newEmptyView.topAnchor.constraint(equalTo: view.topAnchor),
+                newEmptyView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+                newEmptyView.leftAnchor.constraint(equalTo: view.leftAnchor),
+                newEmptyView.rightAnchor.constraint(equalTo: view.rightAnchor)
+            ])
+            emptyView = newEmptyView
+            newEmptyView.alpha = 0
+            UIView.animate(withDuration: 0.3) {
+                newEmptyView.alpha = 1
+            }
+        } else {
+            guard let currentEmptyView = emptyView else { return }
+            currentEmptyView.alpha = 1
+            UIView.animate(withDuration: 0.3) {
+                currentEmptyView.alpha = 0
+            } completion: { [self] _ in
+                currentEmptyView.removeFromSuperview()
+                emptyView = nil
+            }
+        }
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        // to be localized
+        let backItem = UIBarButtonItem()
+        backItem.title = "Back"
+        navigationItem.backBarButtonItem = backItem
+    }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)

@@ -5,6 +5,7 @@
 //  Created by Ilya Kulinkovich on 10/3/20.
 //
 
+import Haptica
 import UIKit
 
 class LyricsViewController: ViewController, LyricsScene {
@@ -143,6 +144,52 @@ extension LyricsViewController {
         viewModel.isLoading.observeNext { [self] loading in
             UIView.animate(withDuration: 0.35) {
                 activityIndicator.alpha = loading ? 1 : 0
+            }
+        }.dispose(in: disposeBag)
+        
+        likeButton.isUserInteractionEnabled = false
+        viewModel.isLiked.dropFirst(1).observeNext { [self] _ in
+            likeButton.isUserInteractionEnabled = true
+        }.dispose(in: disposeBag)
+        viewModel.isLiked.observeNext { [self] isLiked in
+            UIView.transition(with: buttonsStackView, duration: 0.2, options: .transitionCrossDissolve) {
+                likeButton.setImage(
+                    isLiked ?
+                        UIImage(systemName: "heart.fill")?.withTintColor(.label, renderingMode: .alwaysOriginal) :
+                        UIImage(systemName: "heart")?.withTintColor(.label, renderingMode: .alwaysOriginal),
+                    for: .normal
+                )
+                likeButton.setTitle(isLiked ? "liked" : "like", for: .normal)
+            } completion: { _ in
+                if isLiked {
+                    Haptic.play(".-o")
+                }
+            }
+        }.dispose(in: disposeBag)
+        
+        [likeButton, shareButton, safariButton, notesButton].forEach { button in
+            button.reactive.controlEvents([.touchDown, .touchDragEnter]).observeNext { _ in
+                UIView.animate(withDuration: 0.15) {
+                    button.alpha = 0.5
+                }
+            }.dispose(in: disposeBag)
+        }
+        
+        [likeButton, shareButton, safariButton, notesButton].forEach { button in
+            button.reactive.controlEvents([.touchDragExit, .touchUpInside]).observeNext { [self] _ in
+                likeButton.layer.removeAllAnimations()
+                UIView.animate(withDuration: 0.15) {
+                    button.alpha = 1
+                }
+            }.dispose(in: disposeBag)
+        }
+        
+        likeButton.reactive.tap.throttle(for: 0.3).observeNext { [self] _ in
+            guard viewModel.geniusID != nil else { return }
+            if viewModel.isLiked.value {
+                viewModel.unlikeSong()
+            } else {
+                viewModel.likeSong()
             }
         }.dispose(in: disposeBag)
     }

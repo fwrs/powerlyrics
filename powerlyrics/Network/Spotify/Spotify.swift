@@ -17,7 +17,9 @@ enum Spotify: TargetType {
     
     case playerStatus
     case playlistSongs(playlistID: String)
+    case albumSongs(albumID: String)
     case searchAlbums(query: String)
+    case getArtist(artistID: String)
     case userInfo
     
     static let trendingSongs = Spotify.playlistSongs(playlistID: "37i9dQZEVXbMDoHDwVN2tF")
@@ -42,8 +44,12 @@ enum Spotify: TargetType {
             return "/me/player"
         case .playlistSongs(let playlistID):
             return "/playlists/\(playlistID)/tracks"
+        case .albumSongs(let albumID):
+            return "/albums/\(albumID)/tracks"
         case .searchAlbums:
             return "/search"
+        case .getArtist(let artistID):
+            return "/artists/\(artistID)"
         case .userInfo:
             return "/me"
         }

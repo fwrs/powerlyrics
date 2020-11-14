@@ -18,13 +18,13 @@ class GenreStatsAssembly: Assembly {
 
     override func assemble(container: Container) {
         
-        container.register(GenreStatsViewModel.self) { _ in
-            GenreStatsViewModel()
+        container.register(GenreStatsViewModel.self) { (_, genre: RealmLikedSongGenre) in
+            GenreStatsViewModel(genre: genre)
         }
         
-        container.register(GenreStatsScene.self) { resolver in
+        container.register(GenreStatsScene.self) { (resolver, genre: RealmLikedSongGenre) in
             let viewController = UIStoryboard.createController(GenreStatsViewController.self)
-            viewController.viewModel = resolver.resolve(GenreStatsViewModel.self)
+            viewController.viewModel = resolver.resolve(GenreStatsViewModel.self, argument: genre)
             return viewController
         }
         

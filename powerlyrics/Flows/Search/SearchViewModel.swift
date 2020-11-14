@@ -51,6 +51,8 @@ class SearchViewModel: ViewModel {
     
     var latestSearchAlbumsRequest: ReactiveSwift.Disposable?
     
+    let nothingWasFound = Observable(false)
+    
     private var searchSongsResult = [SharedSong]()
     
     private var searchAlbumsResult = [SpotifyAlbum]()
@@ -145,6 +147,8 @@ class SearchViewModel: ViewModel {
             
             let albumsSection = searchAlbumsResult.isEmpty ? [] : [SearchCell.albums(AlbumsCellViewModel(albums: searchAlbumsResult))]
             
+            nothingWasFound.value = topResultSection.isEmpty && songsSection.isEmpty && albumsSection.isEmpty
+            
             items.set([
                 (.topResult, topResultSection),
                 (.songs, songsSection),
@@ -155,6 +159,7 @@ class SearchViewModel: ViewModel {
     
     func reset() {
         items.removeAllItemsAndSections()
+        nothingWasFound.value = false
     }
     
 }

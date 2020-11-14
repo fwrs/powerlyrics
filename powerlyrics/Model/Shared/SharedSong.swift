@@ -14,6 +14,7 @@ struct SharedSong: Codable, Equatable {
     let albumArt: SharedImage?
     let thumbnailAlbumArt: SharedImage?
     
+    let geniusID: Int?
     let geniusURL: URL?
 }
 

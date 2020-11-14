@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17506" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17505"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--songs-->
+        <scene sceneID="jr3-pR-ajE">
+            <objects>
+                <viewController storyboardIdentifier="SongListViewController" interfaceStyle="dark" id="9j1-xF-Za6" customClass="SongListViewController" customModule="powerlyrics" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="bwb-9C-yoL">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" sectionFooterHeight="18" translatesAutoresizingMaskIntoConstraints="NO" id="rpq-9B-PzZ" customClass="TableView" customModule="powerlyrics" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                            </tableView>
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="large" translatesAutoresizingMaskIntoConstraints="NO" id="IB9-x8-S2o">
+                                <rect key="frame" x="0.0" y="88" width="414" height="120"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="120" id="f8A-tV-8kv"/>
+                                </constraints>
+                            </activityIndicatorView>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="lVi-Hh-Fi4"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="rpq-9B-PzZ" secondAttribute="trailing" id="I4U-IE-9CU"/>
+                            <constraint firstAttribute="trailing" secondItem="IB9-x8-S2o" secondAttribute="trailing" id="Q6J-3G-Vwt"/>
+                            <constraint firstItem="lVi-Hh-Fi4" firstAttribute="top" secondItem="IB9-x8-S2o" secondAttribute="top" id="YWt-wr-sz1"/>
+                            <constraint firstItem="rpq-9B-PzZ" firstAttribute="top" secondItem="bwb-9C-yoL" secondAttribute="top" id="eHS-xj-vKx"/>
+                            <constraint firstAttribute="bottom" secondItem="rpq-9B-PzZ" secondAttribute="bottom" id="fCW-TF-Nlk"/>
+                            <constraint firstItem="IB9-x8-S2o" firstAttribute="leading" secondItem="bwb-9C-yoL" secondAttribute="leading" id="lk5-0L-RCT"/>
+                            <constraint firstItem="rpq-9B-PzZ" firstAttribute="leading" secondItem="bwb-9C-yoL" secondAttribute="leading" id="lkz-H5-JEq"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" title="songs" id="MG5-RN-qMF"/>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
+                    <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
+                    <connections>
+                        <outlet property="activityIndicator" destination="IB9-x8-S2o" id="tm0-HL-5Lj"/>
+                        <outlet property="tableView" destination="rpq-9B-PzZ" id="1X3-kr-cWn"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="OQq-sf-G1q" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="236" y="23"/>
+        </scene>
+    </scenes>
+    <resources>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
+</document>

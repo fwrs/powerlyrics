@@ -8,7 +8,9 @@
 import Swinject
 import UIKit
 
-protocol ProfileScene: ViewController {}
+protocol ProfileScene: ViewController {
+    var flowLikedSongs: DefaultAction? { get set }
+}
 
 class ProfileAssembly: Assembly {
 

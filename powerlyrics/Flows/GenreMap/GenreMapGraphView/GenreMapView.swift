@@ -9,6 +9,8 @@ import UIKit
 
 class GenreMapView: UIView {
     
+    var values = [CGFloat]()
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         addBehavior()
@@ -74,7 +76,6 @@ class GenreMapView: UIView {
     }
     
     func animatePathChange() {
-        let values: [CGFloat] = [1.0/8, 2/8, 3/8, 4/8, 5/8, 6/8, 7/8, 8/8]
         var prevDelay = 0.0
         for i in 0..<8 {
             delay((prevDelay + pow(0.9, Double(i+1))) / 20) { [self] in

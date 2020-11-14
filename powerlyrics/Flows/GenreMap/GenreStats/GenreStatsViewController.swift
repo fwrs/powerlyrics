@@ -56,6 +56,8 @@ extension GenreStatsViewController {
     func setupView() {
         tableView.register(SongCell.self)
         tableView.register(GenreInfoCell.self)
+        tableView.register(GenreEmptyCell
+                            .self)
         
         viewModel.items.bind(to: tableView) { items, indexPath, uiTableView in
             let tableView = uiTableView as! TableView
@@ -75,6 +77,12 @@ extension GenreStatsViewController {
                     cell.separatorInset = .zero
                 }
                 return cell
+            case .empty:
+                let cell = tableView.dequeue(GenreEmptyCell.self, indexPath: indexPath)
+                cell.separatorInset = .init(top: 0, left: tableView.bounds.width, bottom: 0, right: 0)
+                cell.isUserInteractionEnabled = false
+                cell.selectionStyle = .none
+                return cell
             }
         }
         tableView.delegate = self
@@ -87,6 +95,8 @@ extension GenreStatsViewController {
                 flowLyrics?(songCellViewModel.song, nil)
             }
         }.dispose(in: disposeBag)
+        
+        navigationItem.title = viewModel.genre.localizedName
         
         updateNavigationBarAppearance()
     }
@@ -103,6 +113,7 @@ extension GenreStatsViewController {
         ]
         navigationItem.standardAppearance = appearance
     }
+    
 }
 
 extension GenreStatsViewController: TranslationAnimationView {
@@ -134,7 +145,7 @@ extension GenreStatsViewController: PanModalPresentable {
     }
     
     var shortFormHeight: PanModalHeight {
-        .maxHeightWithTopInset(300)
+        viewModel.isEmpty ? .intrinsicHeight : .maxHeightWithTopInset(300)
     }
     
 }

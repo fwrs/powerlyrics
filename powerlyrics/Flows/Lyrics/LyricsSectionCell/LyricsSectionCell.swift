@@ -21,7 +21,11 @@ class LyricsSectionCell: TableViewCell {
     }
     
     func configure(with viewModel: LyricsSectionCellViewModel) {
-        nameLabel.text = viewModel.section.name?.dropFirst().dropLast().string.uppercased()
+        if let sectionName = viewModel.section.name?.dropFirst().string.uppercased() {
+            nameLabel.text = sectionName.last == "]" ? sectionName.dropLast().string : sectionName
+        } else {
+            nameLabel.text = nil
+        }
         nameLabel.isHidden = viewModel.section.name == nil
         
         let paragraphStyle = NSMutableParagraphStyle()

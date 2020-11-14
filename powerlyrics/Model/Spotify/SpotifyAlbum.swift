@@ -29,3 +29,5 @@ extension SpotifyAlbum {
     }
     
 }
+
+typealias DefaultSpotifyAlbumAction = (SpotifyAlbum) -> Void

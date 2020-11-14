@@ -16,6 +16,15 @@ extension Shared {
     
     typealias Lyrics = [LyricsSection]
     
+    struct LyricsResult {
+        
+        let lyrics: Lyrics
+        let genre: RealmLikedSongGenre
+        let notes: String
+        
+    }
+    
 }
 
 typealias DefaultLyricsAction = (Shared.Lyrics) -> Void
+typealias DefaultLyricsResultAction = (Shared.LyricsResult) -> Void

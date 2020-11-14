@@ -30,6 +30,10 @@ class HomeViewController: ViewController, HomeScene {
     
     var flowSetup: DefaultSetupModeAction?
     
+    var flowTrends: DefaultAction?
+    
+    var flowVirals: DefaultAction?
+    
     // MARK: - Lifecycle
 
     override func viewDidLoad() {
@@ -85,6 +89,12 @@ extension HomeViewController {
             let cell = viewModel.items[itemAt: indexPath]
             if case .song(let viewModel) = cell {
                 flowLyrics?(viewModel.song, (tableView.cellForRow(at: indexPath) as? SongCell)?.currentImage)
+            } else if case .action(let viewModel) = cell {
+                if viewModel.action == .seeTrendingSongs {
+                    flowTrends?()
+                } else if viewModel.action == .seeViralSongs {
+                    flowVirals?()
+                }
             }
         }.dispose(in: disposeBag)
     }

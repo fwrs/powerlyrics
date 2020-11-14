@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17156" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17506" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17126"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17505"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
@@ -52,8 +52,8 @@
                                                 <constraint firstItem="kbM-Vy-9U2" firstAttribute="top" secondItem="y5l-12-iX5" secondAttribute="top" id="w4D-qA-oDI"/>
                                             </constraints>
                                         </view>
-                                        <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="2" translatesAutoresizingMaskIntoConstraints="NO" id="Cb1-DC-afP">
-                                            <rect key="frame" x="171.5" y="184" width="71.5" height="44.5"/>
+                                        <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="Cb1-DC-afP">
+                                            <rect key="frame" x="171.5" y="184" width="71.5" height="47.5"/>
                                             <subviews>
                                                 <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="3" translatesAutoresizingMaskIntoConstraints="NO" id="Ffh-Jq-fYO">
                                                     <rect key="frame" x="0.0" y="0.0" width="71.5" height="25.5"/>
@@ -78,7 +78,7 @@
                                                     </constraints>
                                                 </stackView>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Zbj-WJ-aID">
-                                                    <rect key="frame" x="18" y="27.5" width="35.5" height="17"/>
+                                                    <rect key="frame" x="18" y="30.5" width="35.5" height="17"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                     <color key="textColor" systemColor="secondaryLabelColor"/>
                                                     <nil key="highlightedColor"/>
@@ -143,6 +143,7 @@
                         <outlet property="avatarDimensionConstraint" destination="pRP-Na-eAJ" id="nja-uc-peP"/>
                         <outlet property="avatarImageView" destination="kbM-Vy-9U2" id="ZHO-M8-oHc"/>
                         <outlet property="navigationBarHeightConstraint" destination="apF-46-Buk" id="DPz-Hk-kRz"/>
+                        <outlet property="navigationBarView" destination="j4n-CT-Dpy" id="ZgA-bw-W5s"/>
                         <outlet property="premiumIconImageView" destination="I4L-yA-zn3" id="6yc-7k-aPP"/>
                         <outlet property="registerDateLabel" destination="Zbj-WJ-aID" id="nOu-bC-EfJ"/>
                         <outlet property="tableView" destination="aMK-Ar-Kzp" id="xXA-jF-q1U"/>

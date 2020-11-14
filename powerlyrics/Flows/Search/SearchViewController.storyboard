@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17156" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17506" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17126"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17505"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -30,7 +30,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="13" translatesAutoresizingMaskIntoConstraints="NO" id="ovM-qu-J7F">
-                                        <rect key="frame" x="60" y="249.5" width="294" height="170.5"/>
+                                        <rect key="frame" x="60" y="251.5" width="294" height="168.5"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ZlH-dd-LLu">
                                                 <rect key="frame" x="0.0" y="0.0" width="294" height="70"/>
@@ -58,16 +58,12 @@
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="2" translatesAutoresizingMaskIntoConstraints="NO" id="C4N-gl-kqj">
-                                                <rect key="frame" x="0.0" y="127.5" width="294" height="43"/>
+                                                <rect key="frame" x="0.0" y="127.5" width="294" height="41"/>
                                                 <subviews>
-                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Start typing to" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TaK-Gp-yH0">
-                                                        <rect key="frame" x="0.0" y="0.0" width="294" height="20.5"/>
-                                                        <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="17"/>
-                                                        <color key="textColor" systemColor="secondaryLabelColor"/>
-                                                        <nil key="highlightedColor"/>
-                                                    </label>
-                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="receive suggestions" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rrb-IE-5aO">
-                                                        <rect key="frame" x="0.0" y="22.5" width="294" height="20.5"/>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TaK-Gp-yH0">
+                                                        <rect key="frame" x="0.0" y="0.0" width="294" height="41"/>
+                                                        <string key="text">Start typing to
+receive suggestions</string>
                                                         <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="17"/>
                                                         <color key="textColor" systemColor="secondaryLabelColor"/>
                                                         <nil key="highlightedColor"/>
@@ -160,6 +156,7 @@
                     <connections>
                         <outlet property="activityIndicator" destination="dqQ-X5-1gs" id="E9Y-hU-Xsm"/>
                         <outlet property="noResultsView" destination="eaC-uH-Hwv" id="egY-LO-RxL"/>
+                        <outlet property="nothingWasFoundSubtitleLabel" destination="TaK-Gp-yH0" id="FhJ-rc-88K"/>
                         <outlet property="searchIconImageView" destination="vsi-mt-b74" id="hIX-Z6-r08"/>
                         <outlet property="tableView" destination="ftC-Eq-hSW" id="Z44-Xn-V9K"/>
                         <outlet property="trendsActivityIndicator" destination="ZMi-Hm-ZWd" id="2Hb-31-uxt"/>

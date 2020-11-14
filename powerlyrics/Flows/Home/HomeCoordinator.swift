@@ -33,6 +33,22 @@ class HomeCoordinator: Coordinator {
         setupCoordinator.start()
     }
     
+    func showTrends() {
+        let scene = resolver.resolve(SongListScene.self, argument: SongListFlow.trendingSongs)
+        scene?.flowLyrics = { [weak self] (song, placeholder) in
+            self?.showLyrics(for: song, placeholder: placeholder)
+        }
+        router.push(scene)
+    }
+    
+    func showVirals() {
+        let scene = resolver.resolve(SongListScene.self, argument: SongListFlow.viralSongs)
+        scene?.flowLyrics = { [weak self] (song, placeholder) in
+            self?.showLyrics(for: song, placeholder: placeholder)
+        }
+        router.push(scene)
+    }
+    
     override func start() {
         let scene = resolver.resolve(HomeScene.self)
         scene?.flowLyrics = { [weak self] (song, placeholder) in
@@ -40,6 +56,12 @@ class HomeCoordinator: Coordinator {
         }
         scene?.flowSetup = { [weak self] mode in
             self?.showSetup(mode: mode)
+        }
+        scene?.flowTrends = { [weak self] in
+            self?.showTrends()
+        }
+        scene?.flowVirals = { [weak self] in
+            self?.showVirals()
         }
         router.push(scene, animated: false)
     }

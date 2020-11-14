@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17156" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17506" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17126"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17505"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
@@ -22,7 +22,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5ju-dN-qOT">
+                            <label opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5ju-dN-qOT">
                                 <rect key="frame" x="20" y="104" width="358" height="93.5"/>
                                 <string key="text">Your genremap shows how diverse your music taste is. This graph is populated based on your liked music. Tap on a genre to learn more. 🎵</string>
                                 <fontDescription key="fontDescription" type="system" pointSize="19.5"/>
@@ -161,15 +161,46 @@
                                     <constraint firstAttribute="bottom" secondItem="st3-wX-gh2" secondAttribute="bottom" id="tdy-sP-HQ8"/>
                                 </constraints>
                             </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="lfV-kv-Ed9">
+                                <rect key="frame" x="0.0" y="288.5" width="414" height="414"/>
+                                <subviews>
+                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="ljv-qL-oI1">
+                                        <rect key="frame" x="79.5" y="179.5" width="255.5" height="55.5"/>
+                                        <subviews>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Not enough data 😴" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cc2-2w-1ws">
+                                                <rect key="frame" x="14.5" y="0.0" width="226.5" height="30"/>
+                                                <fontDescription key="fontDescription" type="boldSystem" pointSize="25"/>
+                                                <nil key="textColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Like songs to populate GenreMap" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0Ah-mF-fHz">
+                                                <rect key="frame" x="0.0" y="35" width="255.5" height="20.5"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                <color key="textColor" systemColor="secondaryLabelColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                        </subviews>
+                                    </stackView>
+                                </subviews>
+                                <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.80000000000000004" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstItem="ljv-qL-oI1" firstAttribute="centerY" secondItem="lfV-kv-Ed9" secondAttribute="centerY" id="8Ei-ZI-GdN"/>
+                                    <constraint firstItem="ljv-qL-oI1" firstAttribute="centerX" secondItem="lfV-kv-Ed9" secondAttribute="centerX" id="9oR-gP-7w0"/>
+                                </constraints>
+                            </view>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="H2j-x3-U2c"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <color key="tintColor" name="TintColor"/>
                         <constraints>
+                            <constraint firstItem="lfV-kv-Ed9" firstAttribute="top" secondItem="chX-eS-asc" secondAttribute="top" id="Dbw-Cb-CHo"/>
                             <constraint firstItem="H2j-x3-U2c" firstAttribute="trailing" secondItem="chX-eS-asc" secondAttribute="trailing" id="G1q-0M-Myd"/>
                             <constraint firstItem="chX-eS-asc" firstAttribute="centerY" secondItem="H2j-x3-U2c" secondAttribute="centerY" multiplier="1.17" id="Kv6-Wl-oeV"/>
                             <constraint firstItem="H2j-x3-U2c" firstAttribute="trailing" secondItem="5ju-dN-qOT" secondAttribute="trailing" constant="36" id="LkQ-Bc-Xzr"/>
                             <constraint firstItem="chX-eS-asc" firstAttribute="centerY" secondItem="H2j-x3-U2c" secondAttribute="centerY" multiplier="1.1" priority="750" id="RGA-hn-AUv"/>
+                            <constraint firstItem="lfV-kv-Ed9" firstAttribute="trailing" secondItem="chX-eS-asc" secondAttribute="trailing" id="UTM-fT-aBz"/>
+                            <constraint firstItem="lfV-kv-Ed9" firstAttribute="leading" secondItem="chX-eS-asc" secondAttribute="leading" id="bd9-Nf-mbM"/>
+                            <constraint firstItem="lfV-kv-Ed9" firstAttribute="bottom" secondItem="chX-eS-asc" secondAttribute="bottom" id="kjY-PI-I1K"/>
                             <constraint firstItem="5ju-dN-qOT" firstAttribute="top" secondItem="H2j-x3-U2c" secondAttribute="top" constant="16" id="uiB-ox-7LA"/>
                             <constraint firstItem="chX-eS-asc" firstAttribute="leading" secondItem="H2j-x3-U2c" secondAttribute="leading" id="y5E-Hx-tE4"/>
                             <constraint firstItem="5ju-dN-qOT" firstAttribute="leading" secondItem="H2j-x3-U2c" secondAttribute="leading" constant="20" id="zuE-Xb-2DN"/>
@@ -196,6 +227,7 @@
                         <outlet property="descriptionLabel" destination="5ju-dN-qOT" id="Qzg-Hu-N3h"/>
                         <outlet property="genreMapBackgroundView" destination="chX-eS-asc" id="1c9-8r-X3q"/>
                         <outlet property="genreMapView" destination="st3-wX-gh2" id="O64-B8-ct5"/>
+                        <outlet property="notEnoughDataView" destination="lfV-kv-Ed9" id="4uI-Qt-Gcd"/>
                         <outlet property="secondaryMapAlignmentConstraint" destination="Kv6-Wl-oeV" id="Wmb-ig-iOq"/>
                         <outletCollection property="genreMapButtons" destination="fOa-RY-QAE" collectionClass="NSMutableArray" id="xpW-Pr-8VJ"/>
                         <outletCollection property="genreMapButtons" destination="VSD-uF-qOY" collectionClass="NSMutableArray" id="q0T-F4-Spm"/>
@@ -220,6 +252,9 @@
         </namedColor>
         <systemColor name="labelColor">
             <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+        <systemColor name="secondaryLabelColor">
+            <color red="0.23529411764705882" green="0.23529411764705882" blue="0.2627450980392157" alpha="0.59999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>

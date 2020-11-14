@@ -54,6 +54,7 @@ extension GeniusSong {
             artists: [primaryArtist.name],
             albumArt: albumArt,
             thumbnailAlbumArt: thumbnailAlbumArt,
+            geniusID: id,
             geniusURL: url
         )
         

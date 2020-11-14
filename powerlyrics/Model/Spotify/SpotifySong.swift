@@ -28,6 +28,7 @@ extension SpotifySong {
             artists: artists.map(\.name),
             albumArt: album.albumArt,
             thumbnailAlbumArt: album.thumbnailAlbumArt,
+            geniusID: nil,
             geniusURL: nil
         )
     }

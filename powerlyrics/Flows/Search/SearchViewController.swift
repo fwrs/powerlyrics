@@ -26,6 +26,8 @@ class SearchViewController: ViewController, SearchScene {
     
     @IBOutlet private weak var searchIconImageView: UIImageView!
     
+    @IBOutlet private weak var nothingWasFoundSubtitleLabel: UILabel!
+    
     // MARK: - Instance properties
     
     var viewModel: SearchViewModel!
@@ -37,6 +39,8 @@ class SearchViewController: ViewController, SearchScene {
     // MARK: - Flows
     
     var flowLyrics: ((SharedSong, UIImage?) -> Void)?
+    
+    var flowAlbum: ((SpotifyAlbum) -> Void)?
     
     // MARK: - Lifecycle
 
@@ -136,7 +140,9 @@ extension SearchViewController {
             }
         }.dispose(in: disposeBag)
         
-        viewModel.items.bind(to: tableView, using: SearchBinder())
+        viewModel.items.bind(to: tableView, using: SearchBinder(albumTapAction: { [self] album in
+            flowAlbum?(album)
+        }))
         tableView.reactive.selectedRowIndexPath.observeNext { [self] indexPath in
             lastSelectedIndexPath = indexPath
             tableView.deselectRow(at: indexPath, animated: true)
@@ -165,6 +171,8 @@ extension SearchViewController {
                 viewModel.search(for: query)
             }
         }
+        
+        viewModel.nothingWasFound.map { $0 ? "Nothing was found\nfor your query" : "Start typing to\nreceive suggestions" }.bind(to: nothingWasFoundSubtitleLabel.reactive.text).dispose(in: disposeBag)
     }
     
 }

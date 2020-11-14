@@ -19,11 +19,30 @@ class ProfileCoordinator: Coordinator {
     
     override func start() {
         let scene = resolver.resolve(ProfileScene.self)
+        scene?.flowLikedSongs = { [weak self] in
+            self?.showLikedSongs()
+        }
         router.push(scene, animated: false)
     }
     
     override var rootViewController: UIViewController {
         router
+    }
+    
+    func showLikedSongs() {
+        let scene = resolver.resolve(SongListScene.self, argument: SongListFlow.likedSongs)
+        scene?.flowLyrics = { [weak self] (song, placeholder) in
+            self?.showLyrics(for: song, placeholder: placeholder)
+        }
+        router.push(scene)
+    }
+    
+    func showLyrics(for song: SharedSong, placeholder: UIImage?) {
+        let lyricsCoordinator = resolver.resolve(LyricsCoordinator.self, arguments: Router(), rootViewController, { [self] in
+            childCoordinators.removeAll { $0.isKind(of: LyricsCoordinator.self) }
+        }, song, placeholder)!
+        childCoordinators.append(lyricsCoordinator)
+        lyricsCoordinator.start()
     }
     
 }

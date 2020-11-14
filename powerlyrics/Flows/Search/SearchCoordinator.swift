@@ -19,8 +19,11 @@ class SearchCoordinator: Coordinator {
     
     override func start() {
         let scene = resolver.resolve(SearchScene.self)
-        scene?.flowLyrics = { [weak self] (song, placeholder) in
+        scene?.flowLyrics = { [weak self] song, placeholder in
             self?.showLyrics(for: song, placeholder: placeholder)
+        }
+        scene?.flowAlbum = { [weak self] album in
+            self?.showAlbum(album)
         }
         router.push(scene, animated: false)
     }
@@ -33,6 +36,14 @@ class SearchCoordinator: Coordinator {
         lyricsCoordinator.start()
     }
 
+    func showAlbum(_ album: SpotifyAlbum) {
+        let scene = resolver.resolve(SongListScene.self, argument: SongListFlow.albumTracks(album))
+        scene?.flowLyrics = { [weak self] (song, placeholder) in
+            self?.showLyrics(for: song, placeholder: placeholder)
+        }
+        router.push(scene)
+    }
+    
     override var rootViewController: UIViewController {
         router
     }

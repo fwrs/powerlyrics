@@ -10,6 +10,7 @@ import UIKit
 
 protocol SearchScene: ViewController {
     var flowLyrics: ((SharedSong, UIImage?) -> Void)? { get set }
+    var flowAlbum: ((SpotifyAlbum) -> Void)? { get set }
 }
 
 class SearchAssembly: Assembly {

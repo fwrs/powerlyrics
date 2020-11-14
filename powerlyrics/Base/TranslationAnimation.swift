@@ -106,7 +106,7 @@ class TranslationAnimation: NSObject, UIViewControllerAnimatedTransitioning {
                 toVCCorrectedView.alpha = 0
             }
             toVCCorrectedView.alpha = toVC.completelyMoveAway ? 0 : 0.5
-            toVCCorrectedView.transform = .init(translationX: -(toVCCorrectedView.bounds.width / (toVC.completelyMoveAway ? 1 : 3)), y: 0)
+            toVCCorrectedView.transform = .init(translationX: -(toVCCorrectedView.bounds.width / (toVC.completelyMoveAway ? 1 : 3.35)), y: 0)
         }
         
         let animationsClosure = {
@@ -128,9 +128,7 @@ class TranslationAnimation: NSObject, UIViewControllerAnimatedTransitioning {
                     toVCCorrectedView.alpha = 1
                 }
             } else {
-//                if !fromVC.isPanModalPresented {
                 fromVCCorrectedView.transform = .init(translationX: fromVCCorrectedView.frame.width, y: 0)
-//                }
                 toVCCorrectedView.alpha = 1
                 if toVC.completelyMoveAway {
                     fromVCCorrectedView.alpha = 0
@@ -146,14 +144,11 @@ class TranslationAnimation: NSObject, UIViewControllerAnimatedTransitioning {
             fromVC.translationViews.forEach { $0.alpha = 1 }
             toVC.translationViews.forEach { $0.alpha = 1 }
             
-//            if !fromVC.isPanModalPresented {
             fromVCCorrectedView.alpha = 1
             fromVCCorrectedView.transform = .identity
-//            }
-//            if !toVC.isPanModalPresented {
+            
             toVCCorrectedView.alpha = 1
             toVCCorrectedView.transform = .identity
-//            }
 
             transitionContext.completeTransition(!transitionContext.transitionWasCancelled)
         }

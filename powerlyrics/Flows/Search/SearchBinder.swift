@@ -11,7 +11,7 @@ import UIKit
 
 class SearchBinder<Changeset: SectionedDataSourceChangeset>: TableViewBinderDataSource<Changeset> where Changeset.Collection == Array2D<SearchSection, SearchCell> {
     
-    override init() {
+    init(albumTapAction: @escaping DefaultSpotifyAlbumAction) {
         super.init { (items, indexPath, uiTableView) in
             let element = items[childAt: indexPath]
             let tableView = uiTableView as! TableView
@@ -23,6 +23,7 @@ class SearchBinder<Changeset: SectionedDataSourceChangeset>: TableViewBinderData
             case .albums(let albumsCellViewModel):
                 let cell = tableView.dequeue(AlbumsCell.self, indexPath: indexPath)
                 cell.configure(with: albumsCellViewModel)
+                cell.didTapAlbum = albumTapAction
                 return cell
             default:
                 fatalError("Invalid cell")

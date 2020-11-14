@@ -7,7 +7,7 @@
 
 import UIKit
 
-class AlbumsCell: UITableViewCell {
+class AlbumsCell: TableViewCell {
     
     fileprivate enum Constants {
         static let albumArtShadowOpacity: Float = 0.3
@@ -26,6 +26,8 @@ class AlbumsCell: UITableViewCell {
     private var interactors = [AlbumContextInteractor]()
     
     var fullSizeImages = [SharedImage?]()
+    
+    var didTapAlbum: DefaultSpotifyAlbumAction?
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -61,6 +63,9 @@ class AlbumsCell: UITableViewCell {
                 albumArtImageViews[safe: index]?.populate(with: album.thumbnailAlbumArt)
                 albumNameLabels[safe: index]?.text = album.name
                 fullSizeImages.append(album.albumArt)
+                albumArrangedSubviews[safe: index]?.reactive.tapGesture().observeNext { [self] _ in
+                    didTapAlbum?(album)
+                }.dispose(in: disposeBag)
             } else {
                 albumArrangedSubviews[safe: index]?.isHidden = true
             }
