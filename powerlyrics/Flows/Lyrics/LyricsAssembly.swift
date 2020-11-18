@@ -9,9 +9,16 @@
 import Swinject
 import UIKit
 
+// MARK: - LyricsScene
+
 protocol LyricsScene: ViewController {
+    
+    var flowSafari: DefaultURLAction? { get set }
     var flowDismiss: DefaultAction? { get set }
+    
 }
+
+// MARK: - LyricsAssembly
 
 class LyricsAssembly: Assembly {
 

@@ -8,17 +8,29 @@
 
 import UIKit
 
+// MARK: - Constants
+
 extension Constants {
     
     static let contextMenuFadeOutDelay: TimeInterval = 0.8
     
+    static let paragraphStyle = NSMutableParagraphStyle().with {
+        $0.lineSpacing = 4
+    }
+    
 }
 
+// MARK: - LyricsSectionCell
+
 class LyricsSectionCell: TableViewCell {
+    
+    // MARK: - Outlets
     
     @IBOutlet private weak var nameLabel: UILabel!
     
     @IBOutlet private weak var contentsLabel: UILabel!
+    
+    // MARK: - Lifecycle
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -27,24 +39,33 @@ class LyricsSectionCell: TableViewCell {
         addInteraction(interaction)
     }
     
+    // MARK: - Configure
+    
     func configure(with viewModel: LyricsSectionCellViewModel) {
         if let sectionName = viewModel.section.name?.dropFirst().string.uppercased() {
-            nameLabel.text = sectionName.last == "]" ? sectionName.dropLast().string : sectionName
+            nameLabel.text = sectionName.last == Constants.sectionEnd ? sectionName.dropLast().string : sectionName
         } else {
             nameLabel.text = nil
         }
-        nameLabel.isHidden = viewModel.section.name == nil
         
-        let paragraphStyle = NSMutableParagraphStyle()
-        paragraphStyle.lineSpacing = 4
+        nameLabel.isHidden = viewModel.section.name == nil
 
-        let attrString = NSMutableAttributedString(string: viewModel.section.contents.joined(separator: "\n").typographized)
-        attrString.addAttribute(.paragraphStyle, value: paragraphStyle, range: NSRange(location: 0, length: attrString.length))
+        let attrString = NSMutableAttributedString(
+            string: viewModel.section.contents.joined(separator: String(Constants.newline)).typographized
+        )
+        
+        attrString.addAttribute(
+            .paragraphStyle,
+            value: Constants.paragraphStyle,
+            range: NSRange(location: .zero, length: attrString.length)
+        )
 
         contentsLabel.attributedText = attrString
     }
     
 }
+
+// MARK: - UIContextMenuInteractionDelegate
 
 extension LyricsSectionCell: UIContextMenuInteractionDelegate {
     
@@ -52,13 +73,18 @@ extension LyricsSectionCell: UIContextMenuInteractionDelegate {
         _ interaction: UIContextMenuInteraction,
         configurationForMenuAtLocation location: CGPoint
     ) -> UIContextMenuConfiguration? {
-        let copyElement = UIAction(title: "Copy", image: UIImage(systemName: "doc.on.doc")) { [self] _ in
+        let copyElement = UIAction(
+            title: Constants.copy.title,
+            image: Constants.copy.icon
+        ) { [self] _ in
             let text = contentsLabel.text
             UIPasteboard.general.string = text
         }
-        UIView.animate(withDuration: .oOne, delay: .oOne) { [self] in
+        
+        UIView.animate(withDuration: .pointOne, delay: .pointOne) { [self] in
             backgroundColor = .systemBackground
         }
+        
         return UIContextMenuConfiguration(
             identifier: nil,
             previewProvider: nil,
@@ -69,7 +95,10 @@ extension LyricsSectionCell: UIContextMenuInteractionDelegate {
     }
     
     func contextMenuInteraction(_ interaction: UIContextMenuInteraction, willEndFor configuration: UIContextMenuConfiguration, animator: UIContextMenuInteractionAnimating?) {
-        UIView.animate(withDuration: .oneHalfth * .oOne, delay: Constants.contextMenuFadeOutDelay) { [self] in
+        UIView.animate(
+            withDuration: .oneHalfth * .pointOne,
+            delay: Constants.contextMenuFadeOutDelay
+        ) { [self] in
             backgroundColor = .clear
         }
     }

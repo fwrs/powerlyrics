@@ -10,13 +10,13 @@ import UIKit
 
 class TableView: UITableView {
     
-    private var refreshControlHandle: DefaultAction?
+    var refreshControlHandle: DefaultAction?
     
     @objc private func refreshControlPulled(_ sender: UIRefreshControl) {
         refreshControlHandle?()
     }
     
-    private var customRefreshControl: UIRefreshControl?
+    var customRefreshControl: UIRefreshControl?
     
     var isRefreshing: Bool {
         get {

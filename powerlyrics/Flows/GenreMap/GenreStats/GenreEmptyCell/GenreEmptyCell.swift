@@ -10,7 +10,11 @@ import UIKit
 
 class GenreEmptyCell: TableViewCell {
 
+    // MARK: - Outlets
+    
     @IBOutlet private weak var moonImageView: UIImageView!
+    
+    // MARK: - Lifecycle
     
     override func awakeFromNib() {
         super.awakeFromNib()

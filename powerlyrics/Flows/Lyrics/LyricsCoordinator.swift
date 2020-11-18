@@ -6,10 +6,15 @@
 //  Copyright © 2020 Ilya Kulinkovich. All rights reserved.
 //
 
+import SafariServices
 import Swinject
 import UIKit
 
+// MARK: - LyricsCoordinator
+
 class LyricsCoordinator: Coordinator {
+    
+    // MARK: - Instance properties
     
     let router: Router
     
@@ -20,8 +25,17 @@ class LyricsCoordinator: Coordinator {
     let song: SharedSong
     
     let placeholder: UIImage?
+    
+    // MARK: - Init
 
-    init(router: Router, resolver: Resolver, base: UIViewController, dismissCompletion: @escaping DefaultAction, song: SharedSong, placeholder: UIImage?) {
+    init(
+        router: Router,
+        resolver: Resolver,
+        base: UIViewController,
+        dismissCompletion: @escaping DefaultAction,
+        song: SharedSong,
+        placeholder: UIImage?
+    ) {
         self.router = router
         self.base = base
         self.dismissCompletion = dismissCompletion
@@ -30,12 +44,17 @@ class LyricsCoordinator: Coordinator {
         super.init(resolver: resolver)
     }
     
+    // MARK: - Coordinator
+    
     override func start() {
         let scene = resolver.resolve(LyricsScene.self, arguments: song, placeholder)!
         scene.flowDismiss = { [self] in
             base.dismiss(animated: true, completion: {
                 dismissCompletion()
             })
+        }
+        scene.flowSafari = { [weak self] url in
+            self?.showSafari(url: url)
         }
         router.push(scene, animated: false)
         router.modalPresentationStyle = .custom
@@ -46,8 +65,18 @@ class LyricsCoordinator: Coordinator {
     override var rootViewController: UIViewController {
         router
     }
+    
+    // MARK: - Scenes
+    
+    func showSafari(url: URL) {
+        let safariViewController = SFSafariViewController(url: url, configuration: SFSafariViewController.Configuration())
+        safariViewController.preferredControlTintColor = .tintColor
+        router.present(safariViewController, animated: true)
+    }
 
 }
+
+// MARK: - UIViewControllerTransitioningDelegate
 
 extension LyricsCoordinator: UIViewControllerTransitioningDelegate {
     

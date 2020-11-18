@@ -12,10 +12,13 @@ import UIKit
 // MARK: - HomeScene
 
 protocol HomeScene: ViewController {
+    
+    var flowSafari: DefaultURLAction? { get set }
     var flowLyrics: DefaultSharedSongPreviewAction? { get set }
     var flowSetup: DefaultSetupModeAction? { get set }
     var flowTrends: DefaultSharedSongListAction? { get set }
     var flowVirals: DefaultSharedSongListAction? { get set }
+    
 }
 
 // MARK: - HomeAssembly

@@ -9,10 +9,14 @@
 import Swinject
 import UIKit
 
+// MARK: - SetupOfflineScene
+
 protocol SetupOfflineScene: ViewController {
     var flowDismiss: DefaultAction? { get set }
     var flowSpotifyLoginOffline: DefaultAction? { get set }
 }
+
+// MARK: - SetupOfflineAssembly
 
 class SetupOfflineAssembly: Assembly {
 

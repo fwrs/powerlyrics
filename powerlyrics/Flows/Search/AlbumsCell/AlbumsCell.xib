@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="17156" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="17506" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17126"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17505"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -159,8 +159,8 @@
                 </subviews>
                 <constraints>
                     <constraint firstAttribute="bottom" secondItem="5IL-ko-KNz" secondAttribute="bottom" id="175-m7-SaG"/>
-                    <constraint firstItem="5IL-ko-KNz" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="H2p-sc-9uM" secondAttribute="leading" priority="750" id="j3M-SD-Nzc"/>
-                    <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="5IL-ko-KNz" secondAttribute="trailing" priority="750" id="lh7-nP-gQe"/>
+                    <constraint firstItem="5IL-ko-KNz" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="H2p-sc-9uM" secondAttribute="leading" id="j3M-SD-Nzc"/>
+                    <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="5IL-ko-KNz" secondAttribute="trailing" id="lh7-nP-gQe"/>
                     <constraint firstItem="5IL-ko-KNz" firstAttribute="centerX" secondItem="H2p-sc-9uM" secondAttribute="centerX" id="r2B-mT-CFA"/>
                     <constraint firstItem="5IL-ko-KNz" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="rT9-3X-0pL"/>
                 </constraints>

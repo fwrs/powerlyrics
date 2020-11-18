@@ -10,26 +10,48 @@ import Bond
 import ReactiveKit
 import RealmSwift
 
+// MARK: - Constants
+
+fileprivate extension Constants {
+    
+    static let trendingTitle = "trending"
+    
+    static let viralTitle = "viral"
+    
+    static let likedSongsTitle = "liked songs"
+    
+}
+
+// MARK: - SongListCell
+
 enum SongListCell: Equatable {
     case song(SongCellViewModel)
     case loading
 }
 
+// MARK: - SongListViewModel
+
 class SongListViewModel: ViewModel {
     
-    let flow: SongListFlow
-    
+    // MARK: - DI
+
     let spotifyProvider: SpotifyProvider
     
     let realmService: RealmServiceProtocol
+    
+    // MARK: - Instance methods
+    
+    let flow: SongListFlow
+    
+    // MARK: - Observables
     
     let title = Observable(String())
     
     let items = MutableObservableArray<SongListCell>()
     
-    let failed = Observable(false)
-    
     let isLoadingWithPreview = Observable(false)
+    
+    // MARK: - Init
     
     init(flow: SongListFlow, spotifyProvider: SpotifyProvider, realmService: RealmServiceProtocol) {
         self.flow = flow
@@ -38,6 +60,8 @@ class SongListViewModel: ViewModel {
         super.init()
         updateTitle()
     }
+    
+    // MARK: - Load data
     
     func loadData(refresh: Bool = false) {
         switch flow {
@@ -50,19 +74,23 @@ class SongListViewModel: ViewModel {
                     switch event {
                     case .value(let response):
                         let albumSongs = response.items
-                        items.replace(with: albumSongs.map { .song(SongCellViewModel(song: $0.asSharedSong(with: album))) }, performDiff: true)
+                        items.replace(
+                            with: albumSongs
+                                .map { .song(SongCellViewModel(song: $0.asSharedSong(with: album))) },
+                            performDiff: true
+                        )
                         endLoading(refresh)
-                        failed.value = false
+                        isFailed.value = false
                     case .failed:
                         items.replace(with: [], performDiff: true)
-                        failed.value = true
+                        isFailed.value = true
                         endLoading(refresh)
                     default:
                         break
                     }
                 }
         case .trendingSongs(let preview):
-            failed.value = false
+            isFailed.value = false
             isLoadingWithPreview.value = true
             if refresh {
                 startLoading(refresh)
@@ -75,12 +103,16 @@ class SongListViewModel: ViewModel {
                     switch event {
                     case .value(let response):
                         let trendingSongs = response.items
-                        items.replace(with: trendingSongs.enumerated().map { .song(SongCellViewModel(song: $1.asSharedSong, accessory: .ranking(nth: $0 + 1))) }, performDiff: true)
+                        items.replace(
+                            with: trendingSongs.enumerated()
+                                .map { .song(SongCellViewModel(song: $1.asSharedSong, accessory: .ranking(nth: $0 + .one))) },
+                            performDiff: true
+                        )
                         endLoading(refresh)
                         isLoadingWithPreview.value = false
                     case .failed:
                         items.replace(with: [], performDiff: true)
-                        failed.value = true
+                        isFailed.value = true
                         endLoading(refresh)
                         isLoadingWithPreview.value = false
                     default:
@@ -89,11 +121,11 @@ class SongListViewModel: ViewModel {
                 }
         case .viralSongs(let preview):
             isLoadingWithPreview.value = true
-            failed.value = false
+            isFailed.value = false
             if refresh {
                 startLoading(refresh)
             }
-            items.replace(with: preview.enumerated().map { .song(SongCellViewModel(song: $1, accessory: .ranking(nth: $0 + 1))) } + [.loading], performDiff: true)
+            items.replace(with: preview.enumerated().map { .song(SongCellViewModel(song: $1, accessory: .ranking(nth: $0 + .one))) } + [.loading], performDiff: true)
             spotifyProvider.reactive
                 .request(.viralSongs)
                 .map(SpotifyPlaylistSongsResponse.self)
@@ -101,12 +133,16 @@ class SongListViewModel: ViewModel {
                     switch event {
                     case .value(let response):
                         let viralSongs = response.items
-                        items.replace(with: viralSongs.enumerated().map { .song(SongCellViewModel(song: $1.asSharedSong, accessory: .ranking(nth: $0 + 1))) }, performDiff: true)
+                        items.replace(
+                            with: viralSongs.enumerated()
+                                .map { .song(SongCellViewModel(song: $1.asSharedSong, accessory: .ranking(nth: $0 + .one))) },
+                            performDiff: true
+                        )
                         endLoading(refresh)
                         isLoadingWithPreview.value = false
                     case .failed:
                         items.replace(with: [], performDiff: true)
-                        failed.value = true
+                        isFailed.value = true
                         endLoading(refresh)
                         isLoadingWithPreview.value = false
                     default:
@@ -114,7 +150,7 @@ class SongListViewModel: ViewModel {
                     }
                 }
         case .likedSongs:
-            failed.value = false
+            isFailed.value = false
             if refresh {
                 startLoading(refresh)
             }
@@ -124,16 +160,18 @@ class SongListViewModel: ViewModel {
         }
     }
     
+    // MARK: - Helper methods
+    
     func updateTitle() {
         switch flow {
         case .albumTracks(let album):
             title.value = album.name
         case .trendingSongs:
-            title.value = "trending"
+            title.value = Constants.trendingTitle
         case .viralSongs:
-            title.value = "viral"
+            title.value = Constants.viralTitle
         case .likedSongs:
-            title.value = "liked songs"
+            title.value = Constants.likedSongsTitle
         }
     }
     

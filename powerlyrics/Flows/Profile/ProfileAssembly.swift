@@ -9,10 +9,17 @@
 import Swinject
 import UIKit
 
+// MARK: - ProfileScene
+
 protocol ProfileScene: ViewController {
+    
+    var flowSafari: DefaultURLAction? { get set }
     var flowLikedSongs: DefaultAction? { get set }
     var flowSetup: DefaultSetupModeAction? { get set }
+    
 }
+
+// MARK: - ProfileAssembly
 
 class ProfileAssembly: Assembly {
 
@@ -21,7 +28,8 @@ class ProfileAssembly: Assembly {
         container.register(ProfileViewModel.self) { resolver in
             ProfileViewModel(
                 spotifyProvider: resolver.resolve(SpotifyProvider.self)!,
-                realmService: resolver.resolve(RealmServiceProtocol.self)!
+                realmService: resolver.resolve(RealmServiceProtocol.self)!,
+                keychainService: resolver.resolve(KeychainServiceProtocol.self)!
             )
         }
         

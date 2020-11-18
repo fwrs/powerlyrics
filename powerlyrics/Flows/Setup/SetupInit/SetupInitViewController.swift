@@ -20,10 +20,6 @@ class SetupInitViewController: ViewController, SetupInitScene {
     
     @IBOutlet private weak var buttonsStackView: UIStackView!
     
-    // MARK: - Instance properties
-    
-    var viewModel: SetupInitViewModel!
-    
     // MARK: - Flows
     
     var flowDismiss: DefaultAction?
@@ -38,31 +34,33 @@ class SetupInitViewController: ViewController, SetupInitScene {
         super.viewDidLoad()
         
         setupView()
-        setupObservers()
+        setupInput()
     }
-    
-    // MARK: - Actions
-    
-    // MARK: - Helper methods
     
 }
 
+// MARK: - Setup
+
 extension SetupInitViewController {
     
-    // MARK: - Setup
+    // MARK: - View
 
     func setupView() {
         let appearance = UINavigationBarAppearance()
         appearance.configureWithTransparentBackground()
+        
         navigationItem.scrollEdgeAppearance = appearance
         navigationItem.compactAppearance = appearance
         navigationItem.standardAppearance = appearance
     }
     
-    func setupObservers() {
+    // MARK: - Input
+    
+    func setupInput() {
         mainButton.reactive.tap.throttle(for: Constants.buttonThrottleTime).observeNext { [self] _ in
             flowSpotifyLogin?()
         }.dispose(in: disposeBag)
+        
         secondaryButton.reactive.tap.throttle(for: Constants.buttonThrottleTime).observeNext { [self] _ in
             flowOfflineSetup?()
         }.dispose(in: disposeBag)
@@ -70,13 +68,13 @@ extension SetupInitViewController {
     
 }
 
+// MARK: - TranslationAnimationView
+
 extension SetupInitViewController: TranslationAnimationView {
     
     var translationViews: [UIView] {
         [brandingStackView]
     }
-    
-    var translationInteractor: TranslationAnimationInteractor? { nil }
 
     var completelyMoveAway: Bool { true }
     

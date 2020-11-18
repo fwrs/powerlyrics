@@ -9,23 +9,24 @@
 import Swinject
 import UIKit
 
+// MARK: - SetupInitScene
+
 protocol SetupInitScene: ViewController {
+    
     var flowDismiss: DefaultAction? { get set }
     var flowSpotifyLogin: DefaultAction? { get set }
     var flowOfflineSetup: DefaultAction? { get set }
+    
 }
+
+// MARK: - SetupInitAssembly
 
 class SetupInitAssembly: Assembly {
 
     override func assemble(container: Container) {
         
-        container.register(SetupInitViewModel.self) { _ in
-            SetupInitViewModel()
-        }
-        
-        container.register(SetupInitScene.self) { resolver in
+        container.register(SetupInitScene.self) { _ in
             let viewController = UIStoryboard.createController(SetupInitViewController.self)
-            viewController.viewModel = resolver.resolve(SetupInitViewModel.self)
             return viewController
         }
         

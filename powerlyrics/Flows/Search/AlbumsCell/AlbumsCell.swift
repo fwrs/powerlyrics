@@ -9,7 +9,21 @@
 import Haptica
 import UIKit
 
+// MARK: - Constants
+
+fileprivate extension Constants {
+    
+    static let twoAlbumsStackViewSpacing: CGFloat = 50
+    
+    static let threeAlbumsStackViewSpacing: CGFloat = 15
+    
+}
+
+// MARK: - AlbumsCell
+
 class AlbumsCell: TableViewCell {
+    
+    // MARK: - Outlets
     
     @IBOutlet private weak var stackView: UIStackView!
     
@@ -21,132 +35,57 @@ class AlbumsCell: TableViewCell {
     
     @IBOutlet private var albumArrangedSubviews: [UIView]!
     
-    private var interactors = [AlbumContextInteractor]()
-    
-    var fullSizeImages = [SharedImage?]()
-    
+    // MARK: - Instance properties
+
     var didTapAlbum: DefaultSpotifyAlbumAction?
+    
+    var contextMenuHandlers = [ImageContextMenuInteractionHandler]()
+    
+    // MARK: - Lifecycle
     
     override func awakeFromNib() {
         super.awakeFromNib()
         
         albumArtContainerViews.forEach {
             $0.shadow(
-                color: .black,
-                radius: 6,
-                offset: CGSize(width: 0, height: 3),
+                color: Constants.albumArtShadowColor,
+                radius: Constants.albumArtShadowRadius,
+                offset: Constants.albumArtShadowOffset,
                 opacity: Constants.defaultShadowOpacity,
-                viewCornerRadius: 8,
+                viewCornerRadius: Constants.albumArtShadowCornerRadius,
                 viewSquircle: true
             )
         }
-        interactors.removeAll()
+        contextMenuHandlers.removeAll()
         for (index, view) in albumArtImageViews.enumerated() {
-            let interactor = AlbumContextInteractor(
-                imageView: view,
-                containerView: albumArtContainerViews[index],
-                fullSizeImage: (self, index),
-                window: window
+            let contextMenuHandler = ImageContextMenuInteractionHandler(
+                shadowFadeView: albumArtContainerViews[safe: index],
+                imageView: view
             )
-            let interaction = UIContextMenuInteraction(delegate: interactor)
-            interactors.append(interactor)
+            contextMenuHandlers.append(contextMenuHandler)
+            let interaction = UIContextMenuInteraction(delegate: contextMenuHandler)
             view.addInteraction(interaction)
         }
         
     }
     
+    // MARK: - Configure
+    
     func configure(with viewModel: AlbumsCellViewModel) {
-        fullSizeImages.removeAll()
-        for (index, album) in (0..<3).map({ viewModel.albums[safe: $0] }).enumerated() {
+        for (index, album) in (.zero..<Int.three).map({ viewModel.albums[safe: $0] }).enumerated() {
             if let album = album {
                 albumArtImageViews[safe: index]?.populate(with: album.thumbnailAlbumArt)
                 albumNameLabels[safe: index]?.text = album.name
-                fullSizeImages.append(album.albumArt)
+                contextMenuHandlers[safe: index]?.updateFullImage(with: album.albumArt)
                 albumArrangedSubviews[safe: index]?.reactive.tapGesture().observeNext { [self] _ in
                     didTapAlbum?(album)
                 }.dispose(in: disposeBag)
             } else {
                 albumArrangedSubviews[safe: index]?.isHidden = true
             }
-            stackView.spacing = index == 2 && album == nil ? 50 : 15
-        }
-    }
-    
-}
-
-class AlbumContextInteractor: NSObject {
-    
-    let imageView: UIImageView
-    let containerView: UIView
-    let fullSizeImage: (AlbumsCell, Int)
-    weak var window: UIWindow?
-    
-    init(imageView: UIImageView, containerView: UIView, fullSizeImage: (AlbumsCell, Int), window: UIWindow?) {
-        self.imageView = imageView
-        self.containerView = containerView
-        self.fullSizeImage = fullSizeImage
-        self.window = window
-    }
-    
-}
-
-extension AlbumContextInteractor: UIContextMenuInteractionDelegate {
-    
-    func contextMenuInteraction(
-        _ interaction: UIContextMenuInteraction,
-        configurationForMenuAtLocation location: CGPoint
-    ) -> UIContextMenuConfiguration? {
-        guard imageView.loaded else { return nil }
-        UIView.animate(withDuration: Constants.defaultAnimationDuration, delay: .half) { [self] in
-            containerView.layer.shadowOpacity = .zero
-        }
-        
-        let controller = ImagePreviewController(fullSizeImage.0.fullSizeImages[fullSizeImage.1], placeholder: imageView.image)
-        return UIContextMenuConfiguration(
-            identifier: nil,
-            previewProvider: { controller },
-            actionProvider: { _ in
-                UIMenu(children: [UIAction(
-                    title: "Copy",
-                    image: UIImage(systemName: "doc.on.doc"),
-                    identifier: nil,
-                    attributes: []) { _ in
-                    if let image = controller?.imageView.image {
-                        UIPasteboard.general.image = image
-                    }
-                }] + [UIAction(
-                    title: "Download",
-                    image: UIImage(systemName: "square.and.arrow.down"),
-                    identifier: nil,
-                    attributes: []) { [self] _ in
-                    if let image = controller?.imageView.image {
-                        UIImageWriteToSavedPhotosAlbum(image, self, #selector(image(image:didFinishSavingWithError:contextInfo:)), nil)
-                    }
-                }] + [UIAction(
-                    title: "Share",
-                    image: UIImage(systemName: "square.and.arrow.up"),
-                    identifier: nil,
-                    attributes: []) { [self] _ in
-                    if let image = controller?.imageView.image {
-                        window?.topViewController?.present(UIActivityViewController(activityItems: [image], applicationActivities: nil), animated: true, completion: nil)
-                    }
-                }])
-            }
-        )
-    }
-    
-    @objc private func image(image: UIImage!, didFinishSavingWithError error: NSError!, contextInfo: AnyObject!) {
-        if error != nil {
-            window?.topViewController?.present(UIAlertController(title: "Failed to save image", message: "Please check application permissions and try again.", preferredStyle: .alert).with { $0.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))}, animated: true, completion: nil)
-        } else {
-            Haptic.play(Constants.successTaps)
-            window?.topViewController?.present(UIAlertController(title: "Image saved successfuly", message: "Check your gallery to find it.", preferredStyle: .alert).with { $0.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))}, animated: true, completion: nil)
-        }
-    }
-    
-    func contextMenuInteraction(_ interaction: UIContextMenuInteraction, willEndFor configuration: UIContextMenuConfiguration, animator: UIContextMenuInteractionAnimating?) {
-        UIView.animate(withDuration: Constants.defaultAnimationDuration, delay: Constants.defaultAnimationDelay) { [self] in
-            containerView.layer.shadowOpacity = Constants.defaultShadowOpacity
+            stackView.spacing = index == .two && album == nil ?
+                Constants.twoAlbumsStackViewSpacing :
+                Constants.threeAlbumsStackViewSpacing
         }
     }
     

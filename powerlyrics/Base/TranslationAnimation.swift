@@ -8,24 +8,34 @@
 
 import UIKit
 
+// MARK: - Constants
+
 fileprivate extension Constants {
     
     static let presentationControllerMoveAwayMultipler: CGFloat = 3.35
     
 }
 
+// MARK: - TranslationAnimationView
+
 protocol TranslationAnimationView {
+    
     var translationViews: [UIView] { get }
     var translationInteractor: TranslationAnimationInteractor? { get }
     var completelyMoveAway: Bool { get }
     var isSourcePanModal: Bool { get }
+    
 }
 
 extension TranslationAnimationView {
+    
     var translationInteractor: TranslationAnimationInteractor? { nil }
     var completelyMoveAway: Bool { false }
     var isSourcePanModal: Bool { false }
+    
 }
+
+// MARK: - TranslationAnimation
 
 class TranslationAnimation: NSObject, UIViewControllerAnimatedTransitioning {
     
@@ -122,18 +132,18 @@ class TranslationAnimation: NSObject, UIViewControllerAnimatedTransitioning {
                 y: .zero)
         }
         
-        let animationsClosure = {
+        let animationsClosure = { [self] in
             zip(toSnapshots, frames).forEach { snapshot, frame in
                 snapshot.frame = frame.1
                 snapshot.alpha = .one
             }
 
-            zip(fromSnapshots, frames).forEach { [self] snapshot, frame in
+            zip(fromSnapshots, frames).forEach { snapshot, frame in
                 snapshot.frame = frame.1
                 snapshot.alpha = inNavigationController ? .one : .zero
             }
 
-            if self.type == .present {
+            if type == .present {
                 toVCCorrectedView.transform = .identity
                 fromVCCorrectedView.alpha = fromVC.completelyMoveAway ? .one : .half
                 fromVCCorrectedView.transform = .init(translationX: -(fromVCCorrectedView.bounds.width / (fromVC.completelyMoveAway ? .one : .three)), y: .zero)
@@ -175,11 +185,15 @@ class TranslationAnimation: NSObject, UIViewControllerAnimatedTransitioning {
     
 }
 
+// MARK: - PresentationController
+
 class PresentationController: UIPresentationController {
     
     override var shouldRemovePresentersView: Bool { true }
     
 }
+
+// MARK: - TranslationAnimationView
 
 extension UITabBarController: TranslationAnimationView {
     
@@ -213,15 +227,23 @@ extension Router: TranslationAnimationView {
     
 }
 
+// MARK: - TranslationAnimationInteractor
+
 class TranslationAnimationInteractor: UIPercentDrivenInteractiveTransition {
+    
+    // MARK: - Instance properties
+    
+    weak var viewController: UIViewController!
     
     var interactionInProgress = false
 
-    private var shouldCompleteTransition = false
-    private weak var viewController: UIViewController!
-    private var pop: Bool
+    var shouldCompleteTransition = false
+    
+    var pop: Bool
     
     var gesture: UIScreenEdgePanGestureRecognizer?
+    
+    // MARK: - Init
 
     init(viewController: UIViewController, pop: Bool = false) {
         self.pop = pop
@@ -230,7 +252,9 @@ class TranslationAnimationInteractor: UIPercentDrivenInteractiveTransition {
         prepareGestureRecognizer(in: viewController.view)
     }
     
-    private func prepareGestureRecognizer(in view: UIView) {
+    // MARK: - Helper methods
+    
+    func prepareGestureRecognizer(in view: UIView) {
         let newGesture = UIScreenEdgePanGestureRecognizer(
             target: self,
             action: #selector(handleGesture(_:))
@@ -240,7 +264,7 @@ class TranslationAnimationInteractor: UIPercentDrivenInteractiveTransition {
         gesture = newGesture
     }
 
-    @objc func handleGesture(_ gestureRecognizer: UIScreenEdgePanGestureRecognizer) {
+    @objc private func handleGesture(_ gestureRecognizer: UIScreenEdgePanGestureRecognizer) {
         let translation = gestureRecognizer.translation(in: gestureRecognizer.view!.superview!)
         var progress = (translation.x / ((45.0 * UIScreen.main.bounds.width) / 94 + 9250.0 / 47))
         progress = CGFloat(fminf(fmaxf(Float(progress), .zero), .one))
@@ -256,7 +280,7 @@ class TranslationAnimationInteractor: UIPercentDrivenInteractiveTransition {
             }
             
         case .changed:
-            shouldCompleteTransition = progress > .oThree
+            shouldCompleteTransition = progress > .pointThree
             update(progress)
             
         case .cancelled:

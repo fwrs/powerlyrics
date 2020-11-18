@@ -8,35 +8,65 @@
 
 import UIKit
 
+// MARK: - Constants
+
+fileprivate extension Constants {
+    
+    static let lineWidth: CGFloat = 2
+    
+    static let baseInset: CGFloat = 95
+    
+    static let extraInset: CGFloat = 60
+    
+    static let edgeColor = Asset.Colors.genreMapEdgeGrey.color.cg
+    
+    static let guidingLineColor = Asset.Colors.genreMapEdgeGrey.color.cg
+    
+}
+
+// MARK: - GenreMapBackgroundView
+
 class GenreMapBackgroundView: UIView {
     
+    // MARK: - Lifecycle
+    
+    override func draw(_ rect: CGRect) {
+        let context = UIGraphicsGetCurrentContext()
+        
+        guidingLines(context: context, inset: Constants.baseInset, rect: rect)
+        
+        octagon(context: context, inset: Constants.baseInset, rect: rect)
+        octagon(context: context, inset: Constants.baseInset + Constants.extraInset, rect: rect)
+        octagon(context: context, inset: Constants.baseInset + .two * Constants.extraInset, rect: rect)
+    }
+    
+    // MARK: - Helper methods
+    
     func octagon(context: CGContext!, inset: CGFloat, rect: CGRect) {
-        let aSize: CGFloat = 2
-        let color: [CGFloat] = [ 121.0 / 255.0, 121.0 / 255.0, 121.0 / 255.0, 0.6 ]
-        let aColor = CGColor(colorSpace: CGColorSpaceCreateDeviceRGB(), components: color)!
-        context.setLineWidth(aSize)
-        let xCenter = rect.origin.x + rect.size.height / 2
-        let yCenter = rect.origin.y + rect.size.width / 2
+        context.setLineWidth(Constants.lineWidth)
+        
+        let xCenter = rect.origin.x + rect.size.height / .two
+        let yCenter = rect.origin.y + rect.size.width / .two
         
         let width: CGFloat = rect.size.width - inset
-        let radius: CGFloat = width / 2.0
+        let radius: CGFloat = width / .two
         
-        context.setFillColor(aColor)
+        context.setFillColor(Constants.edgeColor)
         
-        let things: CGFloat = 8
+        let vertices = CGFloat(RealmLikedSongGenre.total)
         
-        context.setStrokeColor(aColor)
+        context.setStrokeColor(Constants.edgeColor)
         
-        let theta = .pi * (2.0 / things)
+        let theta = .pi * (.two / vertices)
         
         context.move(to: CGPoint(x: xCenter, y: CGFloat(radius)+yCenter))
         
-        for i in 1...Int(things) {
+        for i in .one...Int(vertices) {
             let x = radius * sin(CGFloat(i) * theta)
             let y = radius * cos(CGFloat(i) * theta)
             
-            let x1: CGFloat = x+xCenter
-            let y1: CGFloat = y+yCenter
+            let x1: CGFloat = x + xCenter
+            let y1: CGFloat = y + yCenter
             context.addLine(to: CGPoint(x: x1, y: y1))
         }
         
@@ -45,44 +75,33 @@ class GenreMapBackgroundView: UIView {
     }
     
     func guidingLines(context: CGContext!, inset: CGFloat, rect: CGRect) {
-        let aSize: CGFloat = 2
-        let color: [CGFloat] = [ 20.0 / 255.0, 20.0 / 255.0, 20.0 / 255.0, 1.0 ]
-        let aColor = CGColor(colorSpace: CGColorSpaceCreateDeviceRGB(), components: color)!
-        context.setLineWidth(aSize)
-        let xCenter = rect.origin.x + rect.size.height / 2
-        let yCenter = rect.origin.y + rect.size.width / 2
+        context.setLineWidth(Constants.lineWidth)
+        
+        let xCenter = rect.origin.x + rect.size.height / .two
+        let yCenter = rect.origin.y + rect.size.width / .two
         
         let width: CGFloat = rect.size.width - inset
-        let radius: CGFloat = width / 2.0
+        let radius: CGFloat = width / .two
         
-        context.setFillColor(aColor)
+        context.setFillColor(Constants.guidingLineColor)
         
-        let things: CGFloat = 8
+        let vertices = CGFloat(RealmLikedSongGenre.total)
         
-        context.setStrokeColor(aColor)
+        context.setStrokeColor(Constants.guidingLineColor)
         
-        let theta = .pi * (2.0 / things)
+        let theta = .pi * (.two / vertices)
         
-        for i in 1...Int(things) {
+        for i in .one...Int(vertices) {
             let x = radius * sin(CGFloat(i) * theta)
             let y = radius * cos(CGFloat(i) * theta)
             
-            let x1: CGFloat = x+xCenter
-            let y1: CGFloat = y+yCenter
+            let x1: CGFloat = x + xCenter
+            let y1: CGFloat = y + yCenter
+            
             context.move(to: CGPoint(x: xCenter, y: yCenter))
             context.addLine(to: CGPoint(x: x1, y: y1))
             context.strokePath()
         }
-    }
-    
-    override func draw(_ rect: CGRect) {
-        let extraInset: CGFloat = 60
-        let baseInset: CGFloat = 95
-        let context = UIGraphicsGetCurrentContext()
-        guidingLines(context: context, inset: baseInset, rect: rect)
-        octagon(context: context, inset: baseInset, rect: rect)
-        octagon(context: context, inset: baseInset + extraInset, rect: rect)
-        octagon(context: context, inset: baseInset + 2 * extraInset, rect: rect)
     }
 
 }

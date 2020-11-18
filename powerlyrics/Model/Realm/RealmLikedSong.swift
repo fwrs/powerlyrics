@@ -42,12 +42,12 @@ extension RealmLikedSong {
     
     var asSharedSong: SharedSong {
         var albumArt: SharedImage?
-        if let url = self.albumArtURL?.url {
+        if let url = albumArtURL?.url {
             albumArt = .external(url)
         }
         
         var thumbnailAlbumArt: SharedImage?
-        if let url = self.thumbnailAlbumArtURL?.url {
+        if let url = thumbnailAlbumArtURL?.url {
             thumbnailAlbumArt = .external(url)
         }
         

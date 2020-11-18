@@ -8,11 +8,18 @@
 
 import Alamofire
 import Moya
-import SafariServices
 import SwiftSoup
 import Swinject
 
 // MARK: - Constants
+
+extension Constants {
+    
+    static let sectionBegin: Character = "["
+    
+    static let sectionEnd: Character = "]"
+    
+}
 
 fileprivate extension Constants {
     
@@ -23,10 +30,6 @@ fileprivate extension Constants {
     static let lyricsWrapperSelector = "div[class^='lyrics']"
     
     static let brSelector = "br"
-    
-    static let sectionBegin: Character = "["
-    
-    static let sectionEnd: Character = "]"
     
     static let tagTypeSeparator = "\\\"songRelationships\\\""
     

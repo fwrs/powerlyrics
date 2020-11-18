@@ -8,7 +8,25 @@
 
 import UIKit
 
+// MARK: - Constants
+
+fileprivate extension Constants {
+    
+    static let likedSongsText = (singular: "liked song", plural: "liked songs")
+    
+    static let searchesText = (singular: "search", plural: "searches")
+    
+    static let discoveriesText = (singular: "new discovery", plural: "new discoveries")
+    
+    static let viewedArtistsText = (singular: "viewed artist", plural: "viewed artists")
+    
+}
+
+// MARK: - StatsCell
+
 class StatsCell: TableViewCell {
+    
+    // MARK: - Outlets
     
     @IBOutlet private weak var likedSongsDescriptionLabel: UILabel!
     
@@ -26,13 +44,15 @@ class StatsCell: TableViewCell {
     
     @IBOutlet private weak var viewedArtistsLabel: UILabel!
     
-    @IBOutlet private var iconImageView: [UIImageView]!
-    
     @IBOutlet private weak var topStackView: UIStackView!
     
     @IBOutlet private weak var bottomStackView: UIStackView!
     
     @IBOutlet private weak var outerStackView: UIStackView!
+    
+    @IBOutlet private var iconImageView: [UIImageView]!
+    
+    // MARK: - Lifecycle
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -43,20 +63,37 @@ class StatsCell: TableViewCell {
             ][index], renderingMode: .alwaysOriginal)
         }
         
-        topStackView.spacing = UIDevice.current.hasNotch ? 20 : 16
-        bottomStackView.spacing = UIDevice.current.hasNotch ? 20 : 16
-        outerStackView.spacing = UIDevice.current.hasNotch ? 20 : 16
+        let unifiedSpacing = UIDevice.current.hasNotch ? Constants.space20 : Constants.space16
+        
+        topStackView.spacing = unifiedSpacing
+        bottomStackView.spacing = unifiedSpacing
+        outerStackView.spacing = unifiedSpacing
     }
     
+    // MARK: - Configure
+    
     func configure(with viewModel: StatsCellViewModel) {
+        
         likedSongsCountLabel.text = String(viewModel.likedSongs)
-        likedSongsDescriptionLabel.text = viewModel.likedSongs == 1 ? "liked song" : "liked songs"
+        likedSongsDescriptionLabel.text = viewModel.likedSongs == .one ?
+            Constants.likedSongsText.singular :
+            Constants.likedSongsText.plural
+        
         searchesCountLabel.text = String(viewModel.searches)
-        searchesDescriptionLabel.text = viewModel.searches == 1 ? "search" : "searches"
+        searchesDescriptionLabel.text = viewModel.searches == .one ?
+            Constants.searchesText.singular :
+            Constants.searchesText.plural
+        
         discoveriesCountLabel.text = String(viewModel.discoveries)
-        discoveriesDescriptionLabel.text = viewModel.discoveries == 1 ? "new discovery" : "new discoveries"
+        discoveriesDescriptionLabel.text = viewModel.discoveries == .one ?
+            Constants.discoveriesText.singular :
+            Constants.discoveriesText.plural
+        
         viewedArtistsLabel.text = String(viewModel.viewedArtists)
-        viewedArtistsDescriptionLabel.text = viewModel.viewedArtists == 1 ? "viewed artist" : "viewed artists"
+        viewedArtistsDescriptionLabel.text = viewModel.viewedArtists == .one ?
+            Constants.viewedArtistsText.singular :
+            Constants.viewedArtistsText.plural
+        
     }
     
 }

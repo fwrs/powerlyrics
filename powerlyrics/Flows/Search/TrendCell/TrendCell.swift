@@ -12,13 +12,21 @@ import UIKit
 
 class TrendCell: CollectionViewCell {
     
+    // MARK: - Outlets
+    
     @IBOutlet private weak var mainButton: UIButton!
     
+    // MARK: - Instance properties
+    
     var didTap: DefaultAction?
+    
+    // MARK: - Lifecycle
     
     override func awakeFromNib() {
         super.awakeFromNib()
     }
+    
+    // MARK: - Configure
     
     func configure(with viewModel: TrendCellViewModel) {
         mainButton.setTitle(viewModel.song.name, for: .normal)

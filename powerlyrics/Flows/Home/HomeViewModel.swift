@@ -56,16 +56,14 @@ class HomeViewModel: ViewModel {
     let keychainService: KeychainServiceProtocol
     
     // MARK: - Instance properties
-    
-    let items = MutableObservableArray2D(Array2D<HomeSection, HomeCell>())
-    
+        
     var currentlyPlayingSong = [SharedSong]()
     
     var trendingSongs = [SharedSong]()
     
     var viralSongs = [SharedSong]()
     
-    var isFailed = true
+    var isAtLeastOneRequestFailed = true
     
     var shouldSignUp: Bool {
         !spotifyProvider.loggedIn
@@ -73,7 +71,7 @@ class HomeViewModel: ViewModel {
     
     // MARK: - Observables
     
-    let isError = Observable(false)
+    let items = MutableObservableArray2D(Array2D<HomeSection, HomeCell>())
     
     let isSpotifyAccount = Observable(true)
     
@@ -93,11 +91,11 @@ class HomeViewModel: ViewModel {
 
     func loadData(refresh: Bool = false) {
         startLoading(refresh)
-        isError.value = false
+        isFailed.value = false
         
         let group = DispatchGroup()
         
-        isFailed = true
+        isAtLeastOneRequestFailed = true
         
         group.enter()
         spotifyProvider.reactive
@@ -108,7 +106,7 @@ class HomeViewModel: ViewModel {
                 case .value(let response):
                     currentlyPlayingSong = [response.item.asSharedSong]
                     group.leave()
-                    isFailed = false
+                    isAtLeastOneRequestFailed = false
                 case .failed:
                     currentlyPlayingSong = .init()
                     group.leave()
@@ -126,7 +124,7 @@ class HomeViewModel: ViewModel {
                 case .value(let response):
                     trendingSongs = response.items.map(\.asSharedSong)
                     group.leave()
-                    isFailed = false
+                    isAtLeastOneRequestFailed = false
                 case .failed:
                     group.leave()
                 default:
@@ -143,7 +141,7 @@ class HomeViewModel: ViewModel {
                 case .value(let response):
                     viralSongs = response.items.map(\.asSharedSong)
                     group.leave()
-                    isFailed = false
+                    isAtLeastOneRequestFailed = false
                 case .failed:
                     group.leave()
                 default:
@@ -167,17 +165,24 @@ class HomeViewModel: ViewModel {
     }
     
     func updateState() {
-        if isFailed {
-            isError.value = true
+        if isAtLeastOneRequestFailed {
+            isFailed.value = true
             items.set([])
             return
         }
         
-        let currentlyPlayingSongsSection = currentlyPlayingSong.map { HomeCell.song(SongCellViewModel(song: $0, accessory: .spotifyLogo, shouldDisplayDominantColor: true)) }
+        let currentlyPlayingSongsSection = currentlyPlayingSong
+            .map { HomeCell.song(SongCellViewModel(
+                song: $0,
+                accessory: .spotifyLogo,
+                shouldDisplayDominantColor: true
+            )) }
         
-        var trendingSongsSection = trendingSongs.prefix(3).enumerated().map { HomeCell.song(SongCellViewModel(song: $1, accessory: .ranking(nth: $0 + 1))) }
+        var trendingSongsSection = trendingSongs.prefix(Constants.maxPlaylistPreviewCount)
+            .enumerated()
+            .map { HomeCell.song(SongCellViewModel(song: $1, accessory: .ranking(nth: $0 + .one))) }
         
-        if trendingSongs.count > 3 {
+        if trendingSongs.count > Constants.maxPlaylistPreviewCount {
             trendingSongsSection.append(.action(ActionCellViewModel(action: .seeTrendingSongs)))
         }
         
@@ -185,9 +190,11 @@ class HomeViewModel: ViewModel {
         
         let likedTodaySection = likedToday.map { HomeCell.song(SongCellViewModel(song: $0.asSharedSong, accessory: .likeLogo)) }
         
-        var viralSongsSection = viralSongs.prefix(3).enumerated().map { HomeCell.song(SongCellViewModel(song: $1, accessory: .ranking(nth: $0 + 1))) }
+        var viralSongsSection = viralSongs.prefix(Constants.maxPlaylistPreviewCount)
+            .enumerated()
+            .map { HomeCell.song(SongCellViewModel(song: $1, accessory: .ranking(nth: $0 + .one))) }
         
-        if viralSongs.count > 3 {
+        if viralSongs.count > Constants.maxPlaylistPreviewCount {
             viralSongsSection.append(.action(ActionCellViewModel(action: .seeViralSongs)))
         }
         
@@ -200,33 +207,3 @@ class HomeViewModel: ViewModel {
     }
     
 }
-
-// MARK: - HomeBinder
-
-class HomeBinder<Changeset: SectionedDataSourceChangeset>: TableViewBinderDataSource<Changeset> where Changeset.Collection == Array2D<HomeSection, HomeCell> {
-
-    override init() {
-        super.init { (items, indexPath, uiTableView) in
-            let element = items[childAt: indexPath]
-            let tableView = uiTableView as! TableView
-            switch element.item {
-            case .song(let songCellViewModel):
-                let cell = tableView.dequeue(SongCell.self, indexPath: indexPath)
-                cell.configure(with: songCellViewModel)
-                return cell
-            case .action(let actionCellViewModel):
-                let cell = tableView.dequeue(ActionCell.self, indexPath: indexPath)
-                cell.configure(with: actionCellViewModel)
-                return cell
-            default:
-                fatalError("Invalid cell")
-            }
-        }
-    }
-    
-    @objc func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        changeset?.collection[sectionAt: section].metadata.localizedTitle
-    }
-    
-}
-

@@ -8,6 +8,8 @@
 
 import UIKit
 
+// MARK: - Constants
+
 fileprivate extension Constants {
     
     static let baseInset: CGFloat = 95
@@ -16,21 +18,56 @@ fileprivate extension Constants {
     
     static let chartAnimationDelayGrowth: Double = 20
     
+    static let path = "path"
+    
 }
+
+// MARK: - GenreMapView
 
 class GenreMapView: UIView {
     
-    var values: [CGFloat] = Constants.baseLikedSongCounts
+    // MARK: - Instance properties
+    
+    var oldValues = Constants.baseLikedSongCounts
+    
+    var values = Constants.baseLikedSongCounts
+    
+    var shapeLayer: CAShapeLayer!
+    
+    // MARK: - Init
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        addBehavior()
+        
+        setupView()
     }
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-        addBehavior()
+        
+        setupView()
     }
+    
+    // MARK: - Setup
+    
+    func setupView() {
+        shapeLayer?.removeFromSuperlayer()
+        let baseInset = Constants.baseInset
+        let path = radarChart(inset: baseInset, rect: bounds, values: Constants.baseLikedSongCounts)
+        shapeLayer = CAShapeLayer()
+
+        shapeLayer.path = path.cgPath
+        
+        shapeLayer.strokeColor = UIColor.tintColor.cg
+        shapeLayer.fillColor = UIColor.tintColor.withAlphaComponent(.pointThree).cg
+        
+        shapeLayer.lineWidth = .two
+        shapeLayer.position = .zero
+
+        self.layer.addSublayer(shapeLayer)
+    }
+    
+    // MARK: - Helper methods
     
     func radarChart(inset: CGFloat, rect: CGRect, values: [CGFloat]) -> UIBezierPath {
         let xCenter = rect.origin.x + rect.size.height / .two
@@ -62,36 +99,23 @@ class GenreMapView: UIView {
         return path
     }
     
-    var shapeLayer: CAShapeLayer!
-
-    func addBehavior() {
-        shapeLayer?.removeFromSuperlayer()
-        let baseInset = Constants.baseInset
-        let path = radarChart(inset: baseInset, rect: bounds, values: Constants.baseLikedSongCounts)
-        shapeLayer = CAShapeLayer()
-
-        shapeLayer.path = path.cgPath
-        
-        shapeLayer.strokeColor = UIColor.tintColor.cg
-        shapeLayer.fillColor = UIColor.tintColor.withAlphaComponent(.oThree).cg
-        
-        shapeLayer.lineWidth = .two
-        shapeLayer.position = .zero
-
-        self.layer.addSublayer(shapeLayer)
-    }
-    
-    var oldValues = Constants.baseLikedSongCounts
-    
     func animatePathChange(fast: Bool = false) {
         var prevDelay = Double.zero
         let group = DispatchGroup()
-        for i in 0..<8 {
+        for i in .zero..<RealmLikedSongGenre.total {
             group.enter()
-            delay((prevDelay + pow(fast ? .oThree : .oThree * .three, Double(i + .one))) / Constants.chartAnimationDelayGrowth) { [self] in
+            
+            delay((prevDelay + pow(fast ? .pointThree : .pointThree * .three, Double(i + .one))) / Constants.chartAnimationDelayGrowth) { [self] in
                 let baseInset: CGFloat = Constants.baseInset
-                let newPath = radarChart(inset: baseInset, rect: bounds, values: values.enumerated().map { $0 > i ? oldValues[$0] : CGFloat($1) }).cgPath
-                let animation = CABasicAnimation(keyPath: "path")
+                
+                let newPath = radarChart(
+                    inset: baseInset,
+                    rect: bounds,
+                    values: values.enumerated().map { $0 > i ? oldValues[$0] : CGFloat($1) }
+                ).cgPath
+                
+                let animation = CABasicAnimation(keyPath: Constants.path)
+                
                 animation.duration = .half
                 animation.fromValue = shapeLayer.presentation()?.path
                 animation.toValue = newPath
@@ -100,13 +124,16 @@ class GenreMapView: UIView {
                 animation.isRemovedOnCompletion = false
                 shapeLayer.path = shapeLayer.presentation()?.path
                 shapeLayer.removeAllAnimations()
-                shapeLayer.add(animation, forKey: "path")
+                shapeLayer.add(animation, forKey: Constants.path)
+                
                 delay(.half) {
                     group.leave()
                 }
             }
-            prevDelay += pow(fast ? .oThree : .oThree * .three, Double(i+1))
+            
+            prevDelay += pow(fast ? .pointThree : .pointThree * .three, Double(i + .one))
         }
+        
         group.notify(queue: .main) { [self] in
             oldValues = values
         }

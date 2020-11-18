@@ -11,9 +11,13 @@ import UIKit
 
 // MARK: - Constants
 
-fileprivate extension Constants {
+extension Constants {
     
     static let copy = (title: "Copy", icon: UIImage(systemName: "doc.on.doc"))
+    
+}
+
+fileprivate extension Constants {
     
     static let download = (title: "Download", icon: UIImage(systemName: "square.and.arrow.down"))
     

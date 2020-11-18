@@ -9,16 +9,26 @@
 import Swinject
 import UIKit
 
-protocol SongListScene: ViewController {
-    var flowLyrics: DefaultSharedSongPreviewAction? { get set }
-}
+// MARK: - SongListFlow
 
 enum SongListFlow: Equatable {
+    
     case albumTracks(SpotifyAlbum)
     case trendingSongs(preview: [SharedSong])
     case viralSongs(preview: [SharedSong])
     case likedSongs
+    
 }
+
+// MARK: - SongListScene
+
+protocol SongListScene: ViewController {
+    
+    var flowLyrics: DefaultSharedSongPreviewAction? { get set }
+    
+}
+
+// MARK: - SongListAssembly
 
 class SongListAssembly: Assembly {
 

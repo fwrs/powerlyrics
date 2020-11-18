@@ -115,9 +115,6 @@ receive suggestions</string>
                                                 <rect key="frame" x="163.5" y="0.0" width="78" height="33"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <state key="normal" title="Try again?"/>
-                                                <connections>
-                                                    <action selector="tappedReloadTrendsButton:" destination="8Km-R5-V3q" eventType="touchUpInside" id="Mmt-rD-FMa"/>
-                                                </connections>
                                             </button>
                                         </subviews>
                                     </stackView>
@@ -178,6 +175,7 @@ receive suggestions</string>
                         <outlet property="activityIndicator" destination="dqQ-X5-1gs" id="E9Y-hU-Xsm"/>
                         <outlet property="noResultsView" destination="eaC-uH-Hwv" id="egY-LO-RxL"/>
                         <outlet property="nothingWasFoundSubtitleLabel" destination="TaK-Gp-yH0" id="FhJ-rc-88K"/>
+                        <outlet property="reloadTrendsButton" destination="xyW-k6-pPE" id="lZf-Eb-Dfg"/>
                         <outlet property="searchIconImageView" destination="vsi-mt-b74" id="hIX-Z6-r08"/>
                         <outlet property="tableView" destination="ftC-Eq-hSW" id="Z44-Xn-V9K"/>
                         <outlet property="trendsActivityIndicator" destination="ZMi-Hm-ZWd" id="2Hb-31-uxt"/>

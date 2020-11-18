@@ -37,7 +37,7 @@ extension Collection {
 extension Haptic {
     
     static func play(_ pattern: String) {
-        Haptic.play(pattern, delay: .oOne)
+        Haptic.play(pattern, delay: .pointOne)
     }
     
 }
@@ -426,15 +426,15 @@ extension Float {
         0.75
     }
     
-    static var oOne: Float {
+    static var pointOne: Float {
         0.1
     }
     
-    static var oTwo: Float {
+    static var pointTwo: Float {
         0.2
     }
     
-    static var oThree: Float {
+    static var pointThree: Float {
         0.3
     }
     
@@ -470,15 +470,15 @@ extension Double {
         0.75
     }
     
-    static var oOne: Double {
+    static var pointOne: Double {
         0.1
     }
     
-    static var oTwo: Double {
+    static var pointTwo: Double {
         0.2
     }
     
-    static var oThree: Double {
+    static var pointThree: Double {
         0.3
     }
     
@@ -514,15 +514,15 @@ extension CGFloat {
         0.75
     }
     
-    static var oOne: CGFloat {
+    static var pointOne: CGFloat {
         0.1
     }
     
-    static var oTwo: CGFloat {
+    static var pointTwo: CGFloat {
         0.2
     }
     
-    static var oThree: CGFloat {
+    static var pointThree: CGFloat {
         0.3
     }
     

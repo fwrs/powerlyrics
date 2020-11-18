@@ -15,6 +15,10 @@ class ViewModel {
     
     let isRefreshing = Observable(false)
     
+    let isFailed = Observable(false)
+    
+    let isEmpty = Observable(false)
+    
     func startLoading(_ refresh: Bool) {
         if refresh {
             isRefreshing.value = true

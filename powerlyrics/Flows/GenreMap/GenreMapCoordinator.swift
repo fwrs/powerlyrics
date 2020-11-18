@@ -10,14 +10,30 @@ import PanModal
 import Swinject
 import UIKit
 
+fileprivate extension Constants {
+    
+    static let globalBlurStyle = UIBlurEffect.Style.systemUltraThinMaterial
+    
+}
+
+// MARK: - GenreMapCoordinator
+
 class GenreMapCoordinator: Coordinator {
     
+    // MARK: - Instance properties
+    
     let router: Router
+    
+    var genreViewControllerRouter: UIViewController?
+    
+    // MARK: - Init
 
     init(router: Router, resolver: Resolver) {
         self.router = router
         super.init(resolver: resolver)
     }
+    
+    // MARK: - Coordinator
     
     override func start() {
         let scene = resolver.resolve(GenreMapScene.self)
@@ -30,17 +46,26 @@ class GenreMapCoordinator: Coordinator {
         router.push(scene, animated: false)
     }
     
+    override var rootViewController: UIViewController {
+        router
+    }
+    
+    // MARK: - Scenes
+    
     func showGenre(_ genre: RealmLikedSongGenre) {
         let scene = resolver.resolve(GenreStatsScene.self, argument: genre)!
         if let tabBarController = router.tabBarController {
             let blurView = UIVisualEffectView(effect: nil)
+            
             UIView.animate(withDuration: Constants.defaultAnimationDuration, options: .curveEaseOut) {
-                blurView.effect = UIBlurEffect(style: .systemUltraThinMaterial)
+                blurView.effect = UIBlurEffect(style: Constants.globalBlurStyle)
             }
+            
             tabBarController.view.addSubview(blurView)
             blurView.isUserInteractionEnabled = false
             blurView.frame = UIScreen.main.bounds
             tabBarController.view.bringSubviewToFront(blurView)
+            
             scene.flowDismiss = {
                 UIView.animate(withDuration: Constants.defaultAnimationDuration, options: .curveEaseOut) {
                     blurView.effect = nil
@@ -49,18 +74,24 @@ class GenreMapCoordinator: Coordinator {
                 }
             }
         }
+        
         scene.flowLyrics = { [weak self] (song, placeholder) in
             self?.showLyrics(for: song, placeholder: placeholder, from: scene)
         }
+        
         router.presentPanModal(scene)
     }
     
-    private var genreViewControllerRouter: UIViewController?
-    
     func showLyrics(for song: SharedSong, placeholder: UIImage?, from sourceViewController: UIViewController) {
-        let lyricsCoordinator = resolver.resolve(LyricsCoordinator.self, arguments: Router(), sourceViewController, { [self] in
-            childCoordinators.removeAll { $0.isKind(of: LyricsCoordinator.self) }
-        }, song, placeholder)!
+        let lyricsCoordinator = resolver.resolve(
+            LyricsCoordinator.self,
+            arguments:
+                Router(),
+                sourceViewController,
+            { [self] in childCoordinators.removeAll { $0.isKind(of: LyricsCoordinator.self) } },
+            song,
+            placeholder
+        )!
         childCoordinators.append(lyricsCoordinator)
         lyricsCoordinator.start()
     }
@@ -74,10 +105,6 @@ class GenreMapCoordinator: Coordinator {
             self.showLyrics(for: song, placeholder: placeholder, from: self.rootViewController)
         }
         router.push(scene)
-    }
-    
-    override var rootViewController: UIViewController {
-        router
     }
     
 }

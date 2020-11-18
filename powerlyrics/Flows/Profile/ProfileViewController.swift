@@ -6,9 +6,63 @@
 //  Copyright © 2020 Ilya Kulinkovich. All rights reserved.
 //
 
+import Bond
 import Haptica
-import SafariServices
+import ReactiveKit
 import UIKit
+
+// MARK: - Constants
+
+fileprivate extension Constants {
+    
+    static let registerDateFormat = "d MMM yyyy"
+
+    static let unknownRegisterDateText = "Unknown register date"
+    
+    static let registeredText = "Registered"
+    
+    static let confirmLogOutActionTitle = "Reset and sign out"
+    
+    static let cancelLogOutAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil )
+    
+    static let logOutAlert = UIAlertController(
+        title: "Are you sure you want to sign out?",
+        message: "This will delete all local data, including liked songs, but not Spotify data. There’s no undoing this.",
+        preferredStyle: .alert
+    )
+    
+    static let githubURL = URL(string: "https://www.github.com/fwrs/powerlyrics")!
+    
+    static let tinyDelay: TimeInterval = 0.01
+    
+    static let defaultTopPadding: CGFloat = 250
+    
+    static let topPaddingFunction = { (contentOffset: CGFloat, safeAreaInsets: UIEdgeInsets) -> CGFloat in
+        min(
+            Constants.defaultTopPadding - (UIDevice.current.hasNotch ? .zero : Constants.space20),
+            max(44 + safeAreaInsets.top, -contentOffset - 22 + (UIDevice.current.hasNotch ? 0 : 4))
+        )
+    }
+    
+    static let progressFunction = { (topPadding: CGFloat) -> CGFloat in
+        if UIDevice.current.hasNotch {
+            return 125.0 / 79 - topPadding / 158
+        } else {
+            return 115.0 / 83 - topPadding / 166
+        }
+    }
+    
+    static let translationYAvatarFunction = { (progress: CGFloat) -> CGFloat in ((-312.831 * pow(progress, 4) + 840.079 * pow(progress, 3) - 793.935 * pow(progress, 2) + 287.687 * progress) * (UIDevice.current.hasNotch ? 1 : 0.55)) + (UIDevice.current.hasNotch ? 0 : (7 * progress - 7)) }
+    
+    static let translationYUserInfoFunction = { (progress: CGFloat) -> CGFloat in (215.556 * progress - 155.556 * pow(progress, 2)) - (UIDevice.current.hasNotch ? 0 : 9) }
+    
+    static let avatarHeightFunction = { (progress: CGFloat) -> CGFloat in (105 - 61 * progress) * (UIDevice.current.hasNotch ? 1 : 0.9) }
+    
+    static let avatarScaleFunction = { (progress: CGFloat) -> CGFloat in min(1 - progress + (UIDevice.current.hasNotch ? 0.8 : 0.77), 1) }
+    
+}
+
+// MARK: - ProfileViewController
 
 class ProfileViewController: ViewController, ProfileScene {
     
@@ -38,15 +92,19 @@ class ProfileViewController: ViewController, ProfileScene {
     
     // MARK: - Instance properties
     
-    var viewModel: ProfileViewModel!
-    
     override var prefersNavigationBarHidden: Bool { true }
     
-    var started = true
+    var viewModel: ProfileViewModel!
+
+    var contextMenuHandler: ImageContextMenuInteractionHandler?
+
+    var shouldDrawShadow = true
     
-    var initial = true
+    var initialLoad = true
     
     // MARK: - Flows
+    
+    var flowSafari: DefaultURLAction?
     
     var flowLikedSongs: DefaultAction?
     
@@ -58,22 +116,46 @@ class ProfileViewController: ViewController, ProfileScene {
         super.viewDidLoad()
         
         setupView()
-        setupObservers()
-        viewModel.updateData()
+        setupInput()
+        setupOutput()
+        
+        viewModel.loadData()
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        if initial {
-            initial = false
+        
+        if initialLoad {
+            initialLoad = false
             return
         }
-        viewModel.updateData()
+        
+        viewModel.loadData()
+    }
+    
+    // MARK: - Helper methods
+    
+    func presentSignOutAlert() {
+        
+        present(Constants.logOutAlert.with {
+            $0.addAction(UIAlertAction(title: Constants.confirmLogOutActionTitle, style: .destructive) { [self] _ in
+                viewModel.spotifyProvider.logout()
+                viewModel.loadData()
+                viewModel.resetAllViewControllers(window: window)
+                flowSetup?(.initial)
+            })
+            $0.addAction(Constants.cancelLogOutAction)
+        }, animated: true, completion: nil)
+        
     }
     
 }
 
+// MARK: - Setup
+
 extension ProfileViewController {
+    
+    // MARK: - View
     
     func setupView() {
         
@@ -81,87 +163,95 @@ extension ProfileViewController {
         tableView.register(ActionCell.self)
         tableView.register(BuildCell.self)
         
-        tableView.contentInset.top = 250 - safeAreaInsets.top + 22 - (UIDevice.current.hasNotch ? 0 : 24)
+        tableView.contentInset.top = Constants.defaultTopPadding - safeAreaInsets.top +
+            Constants.space20 + .two - (UIDevice.current.hasNotch ? .zero : Constants.space24)
         
         tableView.delegate = self
         
         let appearance = UINavigationBarAppearance()
         appearance.configureWithTransparentBackground()
-        appearance.titleTextAttributes = [
-            .font: FontFamily.RobotoMono.semiBold.font(size: 17)
-        ]
         navigationItem.standardAppearance = appearance
         navigationItem.compactAppearance = appearance
         navigationItem.scrollEdgeAppearance = appearance
         
         if !UIDevice.current.hasNotch {
-            userInfoStackView.spacing = 2
+            userInfoStackView.spacing = Constants.space2
         }
         
-        let interaction = UIContextMenuInteraction(delegate: self)
+        let contextMenuHandler = ImageContextMenuInteractionHandler(
+            shadowFadeView: avatarContainerView,
+            imageView: avatarImageView
+        )
+        self.contextMenuHandler = contextMenuHandler
+        let interaction = UIContextMenuInteraction(delegate: contextMenuHandler)
         avatarImageView.addInteraction(interaction)
+        
     }
     
-    func setupObservers() {
-        viewModel.items.bind(to: tableView, using: ProfileBinder())
-        viewModel.isLoading.map(\.negated).bind(to: activityIndicator.reactive.isHidden)
+    // MARK: - Input
+    
+    func setupInput() {
         
         tableView.reactive.selectedRowIndexPath.observeNext { [self] indexPath in
             let item = viewModel.items[itemAt: indexPath]
             
             if case .action(let actionCellViewModel) = item {
                 Haptic.play(Constants.tinyTap)
-                if actionCellViewModel.action == .likedSongs {
+                
+                switch actionCellViewModel.action {
+                case .likedSongs:
                     flowLikedSongs?()
-                } else if actionCellViewModel.action == .signOut {
-                    present(UIAlertController(title: "Are you sure you want to sign out?", message: "This will delete all local data, including liked songs, but not Spotify data. There’s no undoing this.", preferredStyle: .alert).with {
-                        $0.addAction(UIAlertAction(title: "Reset and sign out", style: .destructive, handler: { _ in
-                            viewModel.spotifyProvider.logout()
-                            viewModel.updateData()
-                            if let homeViewController = ((window.rootViewController as? UITabBarController)?.viewControllers?.first as? Router)?.viewControllers.first as? HomeViewController {
-                                homeViewController.viewModel.checkSpotifyAccount()
-                            }
-                            if let searchViewController = ((window.rootViewController as? UITabBarController)?.viewControllers?[safe: 1] as? Router)?.viewControllers.first as? SearchViewController {
-                                searchViewController.viewModel.reset()
-                            }
-                            if let genreMapViewController = ((window.rootViewController as? UITabBarController)?.viewControllers?[safe: 2] as? Router)?.viewControllers.first as? GenreMapViewController {
-                                genreMapViewController.reset()
-                            }
-                            for router in ((window.rootViewController as? UITabBarController)?.viewControllers) ?? [] {
-                                (router as? Router)?.popToRootViewController(animated: true)
-                            }
-                            flowSetup?(.initial)
-                        }))
-                        $0.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil ))
-                    }, animated: true, completion: nil)
-                } else if actionCellViewModel.action == .manageAccount {
-                    let url = URL(string: "https://www.spotify.com/account/overview/")!
-                    let safariViewController = SFSafariViewController(url: url, configuration: SFSafariViewController.Configuration())
-                    safariViewController.preferredControlTintColor = .tintColor
-                    present(safariViewController, animated: true)
-                } else if actionCellViewModel.action == .appSourceCode {
-                    let url = URL(string: "https://www.github.com/fwrs/powerlyrics")!
-                    let safariViewController = SFSafariViewController(url: url, configuration: SFSafariViewController.Configuration())
-                    safariViewController.preferredControlTintColor = .tintColor
-                    present(safariViewController, animated: true)
-                } else if actionCellViewModel.action == .connectToSpotify {
+                case .manageAccount:
+                    flowSafari?(Constants.accountManagementURL)
+                case .appSourceCode:
+                    flowSafari?(Constants.githubURL)
+                case .connectToSpotify:
                     flowSetup?(.manual)
+                case .signOut:
+                    presentSignOutAlert()
+                default:
+                    break
                 }
             }
             
             tableView.deselectRow(at: indexPath, animated: true)
         }.dispose(in: disposeBag)
         
+    }
+    
+    // MARK: - Output
+    
+    func setupOutput() {
+        viewModel.items.bind(to: tableView, using: ProfileBinder())
+        viewModel.isLoading.map(\.negated).bind(to: activityIndicator.reactive.isHidden)
+        
         viewModel.name.bind(to: userNameLabel.reactive.text).dispose(in: disposeBag)
         viewModel.premium.map(\.negated).bind(to: premiumIconImageView.reactive.isHidden).dispose(in: disposeBag)
         viewModel.avatar.observeNext { [self] image in
             avatarImageView.populate(with: image)
         }.dispose(in: disposeBag)
-        viewModel.registerDate.compactMap { $0 }.map { DateFormatter().with { $0.dateFormat = "d MMM yyyy" }.string(for: $0) }.map { "Registered \($0.safe)" }.bind(to: registerDateLabel.reactive.text).dispose(in: disposeBag)
-        viewModel.registerDate.filter { $0 == nil }.map { _ in "Unknown register date" }.bind(to: registerDateLabel.reactive.text).dispose(in: disposeBag)
+        
+        viewModel.registerDate
+            .compactMap { $0 }
+            .map { DateFormatter().with { $0.dateFormat = Constants.registerDateFormat }.string(for: $0) }
+            .map { "\(Constants.registeredText) \($0.safe)" }
+            .bind(to: registerDateLabel.reactive.text)
+            .dispose(in: disposeBag)
+        
+        viewModel.registerDate
+            .filter { $0 == nil }
+            .map { _ in Constants.unknownRegisterDateText }
+            .bind(to: registerDateLabel.reactive.text)
+            .dispose(in: disposeBag)
+        
+        viewModel.avatar.observeNext { [self] image in
+            contextMenuHandler?.updateFullImage(with: image)
+        }.dispose(in: disposeBag)
     }
     
 }
+
+// MARK: - UITableViewDelegate
 
 extension ProfileViewController: UITableViewDelegate {
     
@@ -170,98 +260,81 @@ extension ProfileViewController: UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        section == tableView.numberOfSections - 2 ? 10 : (UIDevice.current.hasNotch ? 20 : 16)
+        section == tableView.numberOfSections - .two ?
+            Constants.space10 :
+            (UIDevice.current.hasNotch ? Constants.space20 : Constants.space16)
     }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        let total: CGFloat = 250 - (UIDevice.current.hasNotch ? 0 : 20)
-        let topPadding = min(total, max(44 + safeAreaInsets.top, -scrollView.contentOffset.y - 22 + (UIDevice.current.hasNotch ? 0 : 4)))
-        let progress = UIDevice.current.hasNotch ? (125.0 / 79 - topPadding / 158) : (115.0 / 83 - topPadding / 166)
+        let topPadding: CGFloat = Constants.topPaddingFunction(scrollView.contentOffset.y, safeAreaInsets)
+        let progress: CGFloat = Constants.progressFunction(topPadding)
+        let scale: CGFloat = Constants.avatarScaleFunction(progress)
+        
         tableView.verticalScrollIndicatorInsets.top = topPadding - safeAreaInsets.top
-        avatarDimensionConstraint.constant = (105 - 61 * progress) * (UIDevice.current.hasNotch ? 1 : 0.9)
-        avatarImageView.layer.cornerRadius = avatarDimensionConstraint.constant / 2
+        avatarDimensionConstraint.constant = Constants.avatarHeightFunction(progress)
+        avatarImageView.layer.cornerRadius = avatarDimensionConstraint.constant / .two
         navigationBarHeightConstraint.constant = topPadding
-        let scale = min(1 - progress + (UIDevice.current.hasNotch ? 0.8 : 0.77), 1)
-        let translateMultiplier: CGFloat = UIDevice.current.hasNotch ? 1 : 0.55
-        let translationY: CGFloat = ((-312.831 * pow(progress, 4) + 840.079 * pow(progress, 3) - 793.935 * pow(progress, 2) + 287.687 * progress) * translateMultiplier) + (UIDevice.current.hasNotch ? 0 : (7 * progress - 7))
-        avatarContainerView.transform = CGAffineTransform(translationX: 0, y: translationY).scaledBy(x: scale, y: scale)
-        userInfoStackView.transform = .init(translationX: 0, y: (215.556 * progress - 155.556 * pow(progress, 2)) - (UIDevice.current.hasNotch ? 0 : 9))
         
-        userInfoStackView.alpha = pow(1 - progress, 8)
+        avatarContainerView.transform = CGAffineTransform(
+            translationX: .zero,
+            y: Constants.translationYAvatarFunction(progress)
+        ).scaledBy(x: scale, y: scale)
         
-        delay(started ? 0.01 : 0) { [self] in
+        userInfoStackView.transform = .init(
+            translationX: .zero,
+            y: Constants.translationYUserInfoFunction(progress)
+        )
+        
+        userInfoStackView.alpha = pow(.one - progress, Constants.space8)
+        
+        delay(shouldDrawShadow ? Constants.tinyDelay : .zero) { [self] in
             avatarContainerView.shadow(
-                color: .black,
-                radius: 6,
-                offset: CGSize(width: .zero, height: 3),
+                color: Constants.albumArtShadowColor,
+                radius: Constants.albumArtShadowRadius,
+                offset: Constants.albumArtShadowOffset,
                 opacity: Constants.defaultShadowOpacity,
-                viewCornerRadius: avatarDimensionConstraint.constant / 2
+                viewCornerRadius: avatarDimensionConstraint.constant / .two
             )
         }
-        started = false
+        
+        shouldDrawShadow = false
     }
     
 }
 
-extension ProfileViewController: UIContextMenuInteractionDelegate {
-    
-    func contextMenuInteraction(
-        _ interaction: UIContextMenuInteraction,
-        configurationForMenuAtLocation location: CGPoint
-    ) -> UIContextMenuConfiguration? {
-        guard avatarImageView.loaded else { return nil }
-        UIView.animate(withDuration: Constants.defaultAnimationDuration, delay: .half) { [self] in
-            avatarContainerView.layer.shadowOpacity = .zero
-        }
-    
-        let controller = ImagePreviewController(viewModel.fullAvatar.value, placeholder: avatarImageView.image)
-        return UIContextMenuConfiguration(
-            identifier: nil,
-            previewProvider: { controller },
-            actionProvider: { _ in
-                UIMenu(children: [UIAction(
-                    title: "Copy",
-                    image: UIImage(systemName: "doc.on.doc"),
-                    identifier: nil,
-                    attributes: []) { _ in
-                    if let image = controller?.imageView.image {
-                        UIPasteboard.general.image = image
-                    }
-                }] + [UIAction(
-                    title: "Download",
-                    image: UIImage(systemName: "square.and.arrow.down"),
-                    identifier: nil,
-                    attributes: []) { [self] _ in
-                    if let image = controller?.imageView.image {
-                        UIImageWriteToSavedPhotosAlbum(image, self, #selector(image(image:didFinishSavingWithError:contextInfo:)), nil)
-                    }
-                }] + [UIAction(
-                    title: "Share",
-                    image: UIImage(systemName: "square.and.arrow.up"),
-                    identifier: nil,
-                    attributes: []) { [self] _ in
-                    if let image = controller?.imageView.image {
-                        window.topViewController?.present(UIActivityViewController(activityItems: [image], applicationActivities: nil), animated: true, completion: nil)
-                    }
-                }])
-            }
-        )
+// MARK: - ProfileBinder
 
-    }
-    
-    @objc private func image(image: UIImage!, didFinishSavingWithError error: NSError!, contextInfo: AnyObject!) {
-        if error != nil {
-            window.topViewController?.present(UIAlertController(title: "Failed to save image", message: "Please check application permissions and try again.", preferredStyle: .alert).with { $0.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))}, animated: true, completion: nil)
-        } else {
-            Haptic.play(Constants.successTaps)
-            window.topViewController?.present(UIAlertController(title: "Image saved successfuly", message: "Check your gallery to find it.", preferredStyle: .alert).with { $0.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))}, animated: true, completion: nil)
+class ProfileBinder<Changeset: SectionedDataSourceChangeset>: TableViewBinderDataSource<Changeset> where Changeset.Collection == Array2D<(), ProfileCell> {
+
+    override init() {
+        super.init { (items, indexPath, uiTableView) in
+            let element = items[childAt: indexPath]
+            let tableView = uiTableView as! TableView
+            switch element.item {
+            case .stats(let statsCellViewModel):
+                let cell = tableView.dequeue(StatsCell.self, indexPath: indexPath)
+                cell.configure(with: statsCellViewModel)
+                cell.selectionStyle = .none
+                cell.isUserInteractionEnabled = false
+                return cell
+            case .action(let actionCellViewModel):
+                let cell = tableView.dequeue(ActionCell.self, indexPath: indexPath)
+                cell.configure(with: actionCellViewModel)
+                return cell
+            case .build(let buildCellViewModel):
+                let cell = tableView.dequeue(BuildCell.self, indexPath: indexPath)
+                cell.configure(with: buildCellViewModel)
+                cell.selectionStyle = .none
+                cell.isUserInteractionEnabled = false
+                return cell
+            default:
+                fatalError("Invalid cell")
+            }
         }
+        
+        rowReloadAnimation = .fade
+        rowInsertionAnimation = .none
+        rowDeletionAnimation = .none
     }
-    
-    func contextMenuInteraction(_ interaction: UIContextMenuInteraction, willEndFor configuration: UIContextMenuConfiguration, animator: UIContextMenuInteractionAnimating?) {
-        UIView.animate(withDuration: Constants.defaultAnimationDuration, delay: Constants.defaultAnimationDelay) { [self] in
-            avatarContainerView.layer.shadowOpacity = Constants.defaultShadowOpacity
-        }
-    }
-    
+
 }

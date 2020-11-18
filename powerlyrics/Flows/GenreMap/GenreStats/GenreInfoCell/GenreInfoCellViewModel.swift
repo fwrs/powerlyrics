@@ -6,6 +6,8 @@
 //  Copyright © 2020 Ilya Kulinkovich. All rights reserved.
 //
 
+// MARK: - Constants
+
 fileprivate extension Constants {
     
     static let okRange: Range<Float> = 0.2..<0.45
@@ -16,7 +18,10 @@ fileprivate extension Constants {
     
 }
 
+// MARK: - GenreInfoLevel
+
 enum GenreInfoLevel {
+    
     case low
     case ok
     case good
@@ -68,10 +73,15 @@ enum GenreInfoLevel {
             return "Looks like you’re a huge fan of \(genre.localizedName), maybe try exploring some other genres."
         }
     }
+    
 }
 
+// MARK: - GenreInfoCellViewModel
+
 struct GenreInfoCellViewModel: Equatable {
+    
     let level: GenreInfoLevel
     let count: Int
     let genre: RealmLikedSongGenre
+    
 }

@@ -8,6 +8,38 @@
 
 import UIKit
 
+// MARK: - Constants
+
+extension Constants {
+    
+    static let unsuitableForMinorsAlert = UIAlertController(
+        title: "Unsuitable for minors",
+        message: "You have to be over 18 years old in order to use this app.",
+        preferredStyle: .alert
+    )
+    
+    static let failedToSignInAlert = UIAlertController(
+        title: "Failed to sign in",
+        message: "Please try again.",
+        preferredStyle: .alert
+    )
+    
+}
+
+fileprivate extension Constants {
+    
+    static let keyboardOffsets: (CGFloat, CGFloat, CGFloat) = (2, 17, 30)
+    
+    static let enterNameAlert = UIAlertController(
+        title: "Please enter your name",
+        message: "In order to register we need to know your name and whether you’re older than 18 years old.",
+        preferredStyle: .alert
+    )
+    
+}
+
+// MARK: - SetupOfflineViewController
+
 class SetupOfflineViewController: ViewController, SetupOfflineScene {
     
     // MARK: - Outlets
@@ -39,10 +71,11 @@ class SetupOfflineViewController: ViewController, SetupOfflineScene {
     // MARK: - Lifecycle
 
     override func viewDidLoad() {
+        
         super.viewDidLoad()
         
         setupView()
-        setupObservers()
+        setupInput()
         
         addKeyboardWillShowNotification()
         addKeyboardWillHideNotification()
@@ -56,16 +89,18 @@ class SetupOfflineViewController: ViewController, SetupOfflineScene {
     
     override func keyboardWillShow(notification: Notification) {
         super.keyboardWillShow(notification: notification)
+        
         UIView.animate { [self] in
-            brandingStackView.transform = .init(translationX: 0, y: -(UIScreen.main.bounds.height / 30))
-            formStackView.transform = .init(translationX: 0, y: -(UIScreen.main.bounds.height / 17))
-            buttonsStackView.transform = .init(translationX: 0, y: UIScreen.main.bounds.height / 2)
+            brandingStackView.transform = .init(translationX: .zero, y: -(UIScreen.main.bounds.height / Constants.keyboardOffsets.2))
+            formStackView.transform = .init(translationX: .zero, y: -(UIScreen.main.bounds.height / Constants.keyboardOffsets.1))
+            buttonsStackView.transform = .init(translationX: .zero, y: UIScreen.main.bounds.height / Constants.keyboardOffsets.0)
         }
         translationInteractor?.gesture?.isEnabled = false
     }
     
     override func keyboardWillHide(notification: Notification) {
         super.keyboardWillHide(notification: notification)
+        
         UIView.animate { [self] in
             brandingStackView.transform = .identity
             formStackView.transform = .identity
@@ -75,14 +110,17 @@ class SetupOfflineViewController: ViewController, SetupOfflineScene {
 
     override func keyboardDidHide(notification: Notification) {
         super.keyboardDidHide(notification: notification)
+        
         translationInteractor?.gesture?.isEnabled = true
     }
     
 }
 
+// MARK: - Setup
+
 extension SetupOfflineViewController {
     
-    // MARK: - Setup
+    // MARK: - View
 
     func setupView() {
         let appearance = UINavigationBarAppearance()
@@ -93,25 +131,27 @@ extension SetupOfflineViewController {
         
         translationInteractor = TranslationAnimationInteractor(viewController: self, pop: true)
     }
-    
-    func setupObservers() {
+
+    // MARK: - Input
+
+    func setupInput() {
         mainButton.reactive.tap.observeNext { [self] _ in
             if nameTextField.text.safe.isEmpty {
-                present(UIAlertController(title: "Please enter your name", message: "In order to register we need to know your name and whether you’re older than 18 years old.", preferredStyle: .alert).with {
-                    $0.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+                present(Constants.enterNameAlert.with {
+                    $0.addAction(UIAlertAction(title: Constants.ok, style: .default, handler: nil))
                 }, animated: true, completion: nil)
                 return
             }
             if !over18Switch.isOn {
-                present(UIAlertController(title: "Unsuitable for minors", message: "You have to be over 18 years old in order to use this app.", preferredStyle: .alert).with {
-                    $0.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+                present(Constants.unsuitableForMinorsAlert.with {
+                    $0.addAction(UIAlertAction(title: Constants.ok, style: .default, handler: nil))
                 }, animated: true, completion: nil)
                 return
             }
             viewModel.saveLocalUserData(name: nameTextField.text.safe, over18: over18Switch.isOn)
             mainButton.isLoading = true
             viewModel.spotifyProvider.loginWithoutUser { success in
-                delay(2) {
+                delay(.two) {
                     mainButton.isLoading = false
                 }
                 if success {
@@ -121,12 +161,12 @@ extension SetupOfflineViewController {
                         homeViewController.viewModel.checkSpotifyAccount()
                     }
                     if let profileViewController = ((window.rootViewController as? UITabBarController)?.viewControllers?.last as? Router)?.viewControllers.first as? ProfileViewController {
-                        profileViewController.viewModel.updateData()
+                        profileViewController.viewModel.loadData()
                     }
                 } else {
                     mainButton.isLoading = false
-                    present(UIAlertController(title: "Failed to sign in", message: "Please try again.", preferredStyle: .alert).with {
-                        $0.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+                    present(Constants.failedToSignInAlert.with {
+                        $0.addAction(UIAlertAction(title: Constants.ok, style: .default, handler: nil))
                     }, animated: true, completion: nil)
                     viewModel.fail()
                 }
@@ -136,6 +176,8 @@ extension SetupOfflineViewController {
     
 }
 
+// MARK: - TranslationAnimationView
+
 extension SetupOfflineViewController: TranslationAnimationView {
     
     var translationViews: [UIView] {
@@ -144,10 +186,13 @@ extension SetupOfflineViewController: TranslationAnimationView {
 
 }
 
+// MARK: - UITextFieldDelegate
+
 extension SetupOfflineViewController: UITextFieldDelegate {
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
+        
         return true
     }
     

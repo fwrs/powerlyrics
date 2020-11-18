@@ -10,14 +10,20 @@ import RealmSwift
 import Swinject
 import UIKit
 
-typealias DefaultSetupModeAction = (SetupMode) -> Void
+// MARK: - SetupMode
 
 enum SetupMode {
     case initial
     case manual
 }
 
+typealias DefaultSetupModeAction = (SetupMode) -> Void
+
+// MARK: - SetupCoordinator
+
 class SetupCoordinator: Coordinator {
+    
+    // MARK: - Instance properties
     
     let mode: SetupMode
     
@@ -30,8 +36,17 @@ class SetupCoordinator: Coordinator {
     var interactionController: UIPercentDrivenInteractiveTransition?
     
     let spotifyProvider: SpotifyProvider
+    
+    // MARK: - Init
 
-    init(mode: SetupMode, router: Router, resolver: Resolver, base: UIViewController, spotifyProvider: SpotifyProvider, dismissCompletion: @escaping DefaultAction) {
+    init(
+        mode: SetupMode,
+        router: Router,
+        resolver: Resolver,
+        base: UIViewController,
+        spotifyProvider: SpotifyProvider,
+        dismissCompletion: @escaping DefaultAction
+    ) {
         self.mode = mode
         self.router = router
         self.base = base
@@ -45,6 +60,22 @@ class SetupCoordinator: Coordinator {
             router.isModalInPresentation = true
         }
     }
+    
+    // MARK: - Coordinator
+    
+    override func start() {
+        if mode == .initial {
+            showInitSetup()
+        } else if mode == .manual {
+            showManualSetup()
+        }
+    }
+    
+    override var rootViewController: UIViewController {
+        router
+    }
+    
+    // MARK: - Scenes
     
     func showInitSetup() {
         let scene = resolver.resolve(SetupInitScene.self)!
@@ -91,20 +122,10 @@ class SetupCoordinator: Coordinator {
         }
         router.push(scene)
     }
-    
-    override func start() {
-        if mode == .initial {
-            showInitSetup()
-        } else if mode == .manual {
-            showManualSetup()
-        }
-    }
-    
-    override var rootViewController: UIViewController {
-        router
-    }
 
 }
+
+// MARK: - UINavigationControllerDelegate
 
 extension SetupCoordinator: UINavigationControllerDelegate {
 

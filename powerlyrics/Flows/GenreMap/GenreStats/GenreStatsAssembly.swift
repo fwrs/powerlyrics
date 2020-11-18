@@ -10,10 +10,16 @@ import PanModal
 import Swinject
 import UIKit
 
+// MARK: - GenreStatsScene
+
 protocol GenreStatsScene: ViewController & PanModalPresentable {
+    
     var flowLyrics: DefaultSharedSongPreviewAction? { get set }
     var flowDismiss: DefaultAction? { get set }
+    
 }
+
+// MARK: - GenreStatsAssembly
 
 class GenreStatsAssembly: Assembly {
 

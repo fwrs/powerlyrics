@@ -6,7 +6,6 @@
 //  Copyright © 2020 Ilya Kulinkovich. All rights reserved.
 //
 
-import CoreMotion
 import Haptica
 import ReactiveKit
 import RealmSwift
@@ -18,6 +17,8 @@ import UIKit
 extension Constants {
     
     static let baseLikedSongCounts = Array(repeating: CGFloat.zero, count: RealmLikedSongGenre.total)
+    
+    static let likedMusicButtonText = "liked music"
     
 }
 
@@ -50,6 +51,10 @@ fileprivate extension Constants {
     static let springDamping: CGFloat = 0.6
     
     static let inverseAngles = 4...7
+    
+    static let descriptionParagraphStyle = NSMutableParagraphStyle().with {
+        $0.lineSpacing = .two
+    }
     
 }
 
@@ -93,33 +98,53 @@ class GenreMapViewController: ViewController, GenreMapScene {
         super.viewDidLoad()
 
         setupView()
-        
+        setupInput()
         reset()
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        
         viewModel.loadData()
+        animate()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        restore()
+    }
+        
+    // MARK: - Helper methods
+    
+    func animate() {
+        
         genreMapView.values = viewModel.values.value
         let noData = viewModel.noData.value
+        
         if shouldAnimate {
-            UIView.animate(withDuration: .half, delay: .oOne, options: .curveEaseOut) { [self] in
+            UIView.animate(withDuration: .half, delay: .pointOne, options: .curveEaseOut) { [self] in
                 genreMapBackgroundView.alpha = .one
             }
+            
             UIView.animate(withDuration: Constants.backgroundAppearanceDuration, delay: Constants.fastAnimationDuration, options: .curveEaseOut) { [self] in
                 genreMapView.alpha = .one
             }
+            
             delay(Constants.fastAnimationDuration) { [self] in
                 genreMapView.animatePathChange()
             }
+            
             for i in .zero..<RealmLikedSongGenre.total {
-                UIView.animate(withDuration: Constants.buttonAppearanceBaseDuration + (Double(i) / 10), delay: .oOne + Constants.tinyDelay * Double(i) + pow(0.95, Double(i)) / 20, options: .curveEaseOut) { [self] in
+                UIView.animate(withDuration: Constants.buttonAppearanceBaseDuration + (Double(i) / 10), delay: .pointOne + Constants.tinyDelay * Double(i) + pow(0.95, Double(i)) / 20, options: .curveEaseOut) { [self] in
                     genreMapButtons[i].alpha = .one
                 }
             }
+            
             UIView.animate(withDuration: Constants.descriptionAppearanceDuration, delay: Constants.descriptionAppearanceDelay, options: .curveEaseIn) { [self] in
                 descriptionLabel.alpha = .one
             }
+            
             if noData {
                 notEnoughDataView.isHidden = false
                 notEnoughDataView.alpha = .zero
@@ -129,6 +154,7 @@ class GenreMapViewController: ViewController, GenreMapScene {
             } else {
                 notEnoughDataView.isHidden = true
             }
+            
             shouldAnimate = false
         } else {
             if (notEnoughDataView.isHidden && noData) || (!notEnoughDataView.isHidden && !noData) {
@@ -138,6 +164,7 @@ class GenreMapViewController: ViewController, GenreMapScene {
                 } else {
                     notEnoughDataView.alpha = .one
                 }
+                
                 UIView.animate(withDuration: .half) { [self] in
                     notEnoughDataView.alpha = noData ? .one : .zero
                 } completion: { [self] _ in
@@ -150,10 +177,33 @@ class GenreMapViewController: ViewController, GenreMapScene {
         }
         
         goingBackFromPush = false
+        
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
+    func reset() {
+        
+        if genreMapBackgroundView == nil {
+            return
+        }
+        genreMapBackgroundView.alpha = .zero
+        genreMapView.alpha = .zero
+        descriptionLabel.alpha = .zero
+        
+        for i in .zero..<RealmLikedSongGenre.total {
+            genreMapButtons[i].alpha = .zero
+        }
+        
+        viewModel.values.value = Constants.baseLikedSongCounts
+        viewModel.noData.value = false
+        notEnoughDataView.alpha = .zero
+        shouldAnimate = true
+        genreMapView.oldValues = Constants.baseLikedSongCounts
+        genreMapView.values = Constants.baseLikedSongCounts
+        genreMapView.setupView()
+        
+    }
+    
+    func restore() {
         
         if goingBackFromPush {
             UIView.animate { [self] in
@@ -161,28 +211,30 @@ class GenreMapViewController: ViewController, GenreMapScene {
                 genreMapBackgroundView.layer.transform = CATransform3DIdentity
             }
         }
+        
     }
     
-    func reset() {
-        if genreMapBackgroundView == nil {
-            return
-        }
-        genreMapBackgroundView.alpha = .zero
-        genreMapView.alpha = .zero
-        descriptionLabel.alpha = .zero
-        for i in .zero..<RealmLikedSongGenre.total {
-            genreMapButtons[i].alpha = .zero
-        }
-        viewModel.values.value = Constants.baseLikedSongCounts
-        viewModel.noData.value = false
-        notEnoughDataView.alpha = .zero
-        shouldAnimate = true
-        genreMapView.oldValues = Constants.baseLikedSongCounts
-        genreMapView.values = Constants.baseLikedSongCounts
-        genreMapView.addBehavior()
-    }
+    func generateAttributedDescriptionText(highlight: Bool = false) -> NSMutableAttributedString {
         
-    // MARK: - Actions
+        let text = descriptionLabel.text.safe.typographized
+
+        let attrString = NSMutableAttributedString(string: text)
+        
+        attrString.addAttribute(
+            .paragraphStyle,
+            value: Constants.descriptionParagraphStyle,
+            range: NSRange(location: .zero, length: attrString.length)
+        )
+        
+        attrString.addAttribute(
+            .foregroundColor,
+            value: highlight ? UIColor.highlightTintColor : UIColor.tintColor,
+            range: NSString(string: text).range(of: Constants.likedMusicButtonText)
+        )
+        
+        return attrString
+        
+    }
     
 }
 
@@ -194,46 +246,13 @@ extension GenreMapViewController {
         if !UIDevice.current.hasNotch {
             secondaryMapAlignmentConstraint.isActive = true
         }
-        
-        let text = descriptionLabel.text.safe.typographized
-        let paragraphStyle = NSMutableParagraphStyle()
-        paragraphStyle.lineSpacing = .two
 
-        let attrString = NSMutableAttributedString(string: text)
-        attrString.addAttribute(.paragraphStyle, value: paragraphStyle, range: NSRange(location: 0, length: attrString.length))
-        
-        attrString.addAttribute(.foregroundColor, value: UIColor.tintColor, range: NSString(string: text).range(of: "liked music"))
-        
-        descriptionLabel.attributedText = attrString
-
-        descriptionLabel.reactive.longPressGesture(minimumPressDuration: .zero).observeNext { [self] recognizer in
-            if recognizer.state == .ended || recognizer.state == .cancelled {
-                let attrString = NSMutableAttributedString(string: text)
-                attrString.addAttribute(.paragraphStyle, value: paragraphStyle, range: NSRange(location: .zero, length: attrString.length))
-                
-                attrString.addAttribute(.foregroundColor, value: UIColor.tintColor, range: NSString(string: text).range(of: "liked music"))
-                
-                UIView.transition(with: descriptionLabel, duration: Constants.buttonTapDuration, options: .transitionCrossDissolve) {
-                    descriptionLabel.attributedText = attrString
-                }
-            }
-            
-            switch recognizer.state {
-            case .began:
-                let attrString = NSMutableAttributedString(string: text)
-                attrString.addAttribute(.paragraphStyle, value: paragraphStyle, range: NSRange(location: .zero, length: attrString.length))
-                
-                attrString.addAttribute(.foregroundColor, value: UIColor.highlightTintColor, range: NSString(string: text).range(of: "liked music"))
-                
-                UIView.transition(with: descriptionLabel, duration: Constants.buttonTapDuration, options: .transitionCrossDissolve) {
-                    descriptionLabel.attributedText = attrString
-                }
-            case .ended:
-                flowLikedSongs?()
-            default:
-                break
-            }
-        }.dispose(in: disposeBag)
+        descriptionLabel.attributedText = generateAttributedDescriptionText()
+    }
+    
+    // MARK: - Input
+    
+    func setupInput() {
         
         genreMapButtons.enumerated().forEach { index, button in
             button.reactive.tap.observeNext { [self] in
@@ -260,11 +279,31 @@ extension GenreMapViewController {
             }.dispose(in: disposeBag)
             
             button.reactive.controlEvents(.touchDragExit).observeNext { [self] in
-                UIView.animate(withDuration: Constants.flipDuration, delay: .zero, usingSpringWithDamping: .oOne, initialSpringVelocity: .zero) {
+                UIView.animate(withDuration: Constants.flipDuration, delay: .zero, usingSpringWithDamping: .pointOne, initialSpringVelocity: .zero) {
                     genreMapBackgroundView.layer.transform = CATransform3DIdentity
                 }
             }.dispose(in: disposeBag)
         }
+        
+        descriptionLabel.reactive.longPressGesture(minimumPressDuration: .zero).observeNext { [self] recognizer in
+            if recognizer.state == .ended || recognizer.state == .cancelled {
+                UIView.transition(with: descriptionLabel, duration: Constants.buttonTapDuration, options: .transitionCrossDissolve) {
+                    descriptionLabel.attributedText = generateAttributedDescriptionText()
+                }
+            }
+            
+            switch recognizer.state {
+            case .began:
+                UIView.transition(with: descriptionLabel, duration: Constants.buttonTapDuration, options: .transitionCrossDissolve) {
+                    descriptionLabel.attributedText = generateAttributedDescriptionText(highlight: true)
+                }
+            case .ended:
+                flowLikedSongs?()
+            default:
+                break
+            }
+        }.dispose(in: disposeBag)
+        
     }
     
 }

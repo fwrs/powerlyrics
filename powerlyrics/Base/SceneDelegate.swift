@@ -12,11 +12,29 @@ import RealmSwift
 import Swinject
 import UIKit
 
+// MARK: - Constants
+
+fileprivate extension Constants {
+    
+    static let pleaseWaitText = "Please wait"
+    
+    static let googleServicePlist = Bundle.main.path(forResource: "GoogleService-Info", ofType: "plist")
+    
+}
+
+// MARK: - SceneDelegate
+
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
+    
+    // MARK: - Instance methods
     
     var window: UIWindow?
     
-    private var resolver: Resolver = Config.getResolver()
+    var resolver: Resolver = Config.getResolver()
+    
+    var loadingAlert: UIAlertController?
+    
+    // MARK: - DI
     
     lazy var spotifyProvider: SpotifyProvider = {
         resolver.resolve(SpotifyProvider.self)!
@@ -34,6 +52,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         resolver.resolve(TabBarCoordinator.self)!
     }()
     
+    // MARK: - Scene lifecycle
+    
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         guard let windowScene = (scene as? UIWindowScene) else { return }
         window = UIWindow(frame: windowScene.coordinateSpace.bounds)
@@ -50,7 +70,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         IQKeyboardManager.shared().shouldResignOnTouchOutside = true
         IQKeyboardManager.shared().isEnableAutoToolbar = false
         
-        let filePath = Bundle.main.path(forResource: "GoogleService-Info", ofType: "plist")!
+        let filePath = Constants.googleServicePlist!
         let options = FirebaseOptions(contentsOfFile: filePath)
         FirebaseApp.configure(options: options!)
         
@@ -59,8 +79,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         tabBarCoordinator.start()
     }
     
-    var loadingAlert: UIAlertController?
-    
     func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>) {
         guard let url = URLContexts.first?.url else {
             return
@@ -68,7 +86,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         spotifyProvider.logout(reset: false)
         spotifyProvider.handle(url: url) { [self] in
             let loadingAlert = UIAlertController(title: nil, message: nil, preferredStyle: .alert).with {
-                $0.addLoadingUI(title: "Please wait")
+                $0.addLoadingUI(title: Constants.pleaseWaitText)
             }
             alertTopMostViewController(controller: loadingAlert)
             self.loadingAlert = loadingAlert
@@ -81,7 +99,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                     homeViewController.viewModel.checkSpotifyAccount()
                 }
                 if let profileViewController = ((window?.rootViewController as? UITabBarController)?.viewControllers?.last as? Router)?.viewControllers.first as? ProfileViewController {
-                    profileViewController.viewModel.updateData()
+                    profileViewController.viewModel.loadData()
                 }
             } failure: { [self] underage in
                 if let alert = self.loadingAlert {
@@ -89,17 +107,19 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                 }
                 spotifyProvider.logout(reset: true)
                 if underage {
-                    alertTopMostViewController(controller: UIAlertController(title: "Unsuitable for minors", message: "You have to be over 18 years old in order to use this app.", preferredStyle: .alert).with {
-                        $0.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+                    alertTopMostViewController(controller: Constants.unsuitableForMinorsAlert.with {
+                        $0.addAction(UIAlertAction(title: Constants.ok, style: .default, handler: nil))
                     })
                 } else {
-                    alertTopMostViewController(controller: UIAlertController(title: "Failed to sign in", message: "Please try again.", preferredStyle: .alert).with {
-                        $0.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+                    alertTopMostViewController(controller: Constants.failedToSignInAlert.with {
+                        $0.addAction(UIAlertAction(title: Constants.ok, style: .default, handler: nil))
                     })
                 }
             }
         }
     }
+    
+    // MARK: - Helper methods
     
     func alertTopMostViewController(controller: UIAlertController) {
         window?.topViewController?.present(controller, animated: true)

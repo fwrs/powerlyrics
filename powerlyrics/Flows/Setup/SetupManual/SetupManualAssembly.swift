@@ -9,22 +9,23 @@
 import Swinject
 import UIKit
 
+// MARK: - SetupManualScene
+
 protocol SetupManualScene: ViewController {
+    
     var flowDismiss: DefaultAction? { get set }
     var flowSpotifyLogin: DefaultAction? { get set }
+    
 }
+
+// MARK: - SetupManualAssembly
 
 class SetupManualAssembly: Assembly {
 
     override func assemble(container: Container) {
         
-        container.register(SetupManualViewModel.self) { _ in
-            SetupManualViewModel()
-        }
-        
-        container.register(SetupManualScene.self) { resolver in
+        container.register(SetupManualScene.self) { _ in
             let viewController = UIStoryboard.createController(SetupManualViewController.self)
-            viewController.viewModel = resolver.resolve(SetupManualViewModel.self)
             return viewController
         }
         

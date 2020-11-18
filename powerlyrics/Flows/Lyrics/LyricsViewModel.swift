@@ -11,13 +11,37 @@ import ReactiveKit
 import RealmSwift
 import UIKit
 
+// MARK: - Constants
+
+fileprivate extension Constants {
+    
+    static let lyricsSuffix = "-lyrics"
+    
+    static let spotifyAuthor = "Spotify"
+    
+    static let geniusAuthor = "Genius"
+    
+}
+
+// MARK: - LyricsViewModel
+
 class LyricsViewModel: ViewModel {
+    
+    // MARK: - DI
     
     let geniusProvider: GeniusProvider
     
     let realmService: RealmServiceProtocol
     
+    // MARK: - Instance properties
+    
     var song: SharedSong
+    
+    var geniusID: Int?
+    
+    var geniusURL: URL?
+    
+    // MARK: - Observables
     
     let lyrics = MutableObservableArray<SharedLyricsSection>()
     
@@ -25,15 +49,9 @@ class LyricsViewModel: ViewModel {
     
     let isLiked = Observable(false)
     
-    var geniusID: Int?
-    
-    var geniusURL: URL?
-    
-    let isFailed = Observable(false)
-    
     let producers = Observable([String]())
     
-    let album = Observable("")
+    let album = Observable(String())
     
     let spotifyURL: Observable<URL?> = .init(nil)
     
@@ -41,11 +59,15 @@ class LyricsViewModel: ViewModel {
     
     let lyricsNotFound = Observable(false)
     
+    // MARK: - Init
+    
     init(geniusProvider: GeniusProvider, realmService: RealmServiceProtocol, song: SharedSong) {
         self.geniusProvider = geniusProvider
         self.realmService = realmService
         self.song = song
     }
+    
+    // MARK: - Load data
     
     func loadData() {
         let onFailure = { [self] in
@@ -76,7 +98,7 @@ class LyricsViewModel: ViewModel {
                 .start { [self] event in
                     switch event {
                     case .value(let response):
-                        if let producers = response.response.song.producerArtists?.prefix(2) {
+                        if let producers = response.response.song.producerArtists?.prefix(.two) {
                             self.producers.value = producers.map { $0.name.clean.typographized }
                         }
                         if let album = response.response.song.album {
@@ -85,7 +107,7 @@ class LyricsViewModel: ViewModel {
                         }
                         let artistId = response.response.song.primaryArtist.id
                         realmService.incrementViewedArtistsStat(with: artistId)
-                        spotifyURL.value = response.response.song.media?.first { $0.provider == "spotify" }?.url
+                        spotifyURL.value = response.response.song.media?.first { $0.provider == Constants.spotifySystemName }?.url
                         description.value = response.response.song.description?.plain
                     default:
                         break
@@ -107,17 +129,21 @@ class LyricsViewModel: ViewModel {
             .start { [self] event in
                 switch event {
                 case .value(let response):
-                    let filteredData = response.response.hits.filter { ($0.result.url?.absoluteString).safe.hasSuffix("-lyrics") && !$0.result.primaryArtist.name.contains("Genius") && !$0.result.primaryArtist.name.contains("Spotify") }
-                    guard filteredData.nonEmpty, let url = filteredData[0].result.url else {
+                    let filteredData = response.response.hits.filter {
+                        ($0.result.url?.absoluteString).safe.hasSuffix(Constants.lyricsSuffix) &&
+                            !$0.result.primaryArtist.name.contains(Constants.geniusAuthor) &&
+                            !$0.result.primaryArtist.name.contains(Constants.spotifyAuthor)
+                    }
+                    guard filteredData.nonEmpty, let url = filteredData[.zero].result.url else {
                         lyricsNotFound.value = true
                         return
                     }
-                    let id = filteredData[0].result.id
+                    let id = filteredData[.zero].result.id
                     geniusID = id
                     geniusURL = url
                     song.geniusID = geniusID
                     song.geniusURL = geniusURL
-                    isLiked.value = realmService.findLikedSong(geniusID: filteredData[0].result.id) != nil
+                    isLiked.value = realmService.findLikedSong(geniusID: filteredData[.zero].result.id) != nil
                     onSongFetch(url, id)
                 case .failed:
                     onFailure()
@@ -126,6 +152,8 @@ class LyricsViewModel: ViewModel {
                 }
             }
     }
+    
+    // MARK: - Helper methods
     
     func likeSong() {
         guard let geniusID = geniusID, let geniusURL = geniusURL?.absoluteString, let genre = genre.value else { return }

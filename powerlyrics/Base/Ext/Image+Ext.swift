@@ -329,7 +329,7 @@ extension UIImage {
         if proposedEdgeColor.color.isBlackOrWhite && .zero < sortedColors.count {
             for i in 1..<sortedColors.count {
                 let nextProposedEdgeColor = sortedColors.object(at: i) as! UIImageColorsCounter
-                if Double(nextProposedEdgeColor.count)/Double(proposedEdgeColor.count) > .oThree {
+                if Double(nextProposedEdgeColor.count)/Double(proposedEdgeColor.count) > .pointThree {
                     if !nextProposedEdgeColor.color.isBlackOrWhite {
                         proposedEdgeColor = nextProposedEdgeColor
                         break

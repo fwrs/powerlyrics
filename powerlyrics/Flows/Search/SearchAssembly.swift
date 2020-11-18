@@ -9,10 +9,16 @@
 import Swinject
 import UIKit
 
+// MARK: - SearchScene
+
 protocol SearchScene: ViewController {
+    
     var flowLyrics: DefaultSharedSongPreviewAction? { get set }
     var flowAlbum: DefaultSpotifyAlbumAction? { get set }
+    
 }
+
+// MARK: - SearchAssembly
 
 class SearchAssembly: Assembly {
 

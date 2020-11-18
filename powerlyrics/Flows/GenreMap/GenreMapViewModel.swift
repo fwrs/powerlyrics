@@ -10,36 +10,55 @@ import Bond
 import ReactiveKit
 import RealmSwift
 
+// MARK: - Constants
+
+fileprivate extension Constants {
+    
+    static let minimumTotalValue: CGFloat = 0.0001
+    
+    static let minimumChartValue: CGFloat = 0.012
+    
+}
+
+// MARK: - GenreMapViewModel
+
 class GenreMapViewModel: ViewModel {
+    
+    // MARK: - DI
     
     let realmService: RealmServiceProtocol
     
-    let noData = Observable(false)
+    // MARK: - Observables
     
     let values = Observable(Constants.baseLikedSongCounts)
+    
+    let noData = Observable(false)
+    
+    // MARK: - Init
     
     init(realmService: RealmServiceProtocol) {
         self.realmService = realmService
     }
     
+    // MARK: - Load data
+    
     func loadData() {
-        let total = (RealmLikedSongGenre.all.map { CGFloat(realmService.likedSongs(with: $0).count) } + [0.0001]).max().safe
+        let total = (RealmLikedSongGenre.all.map { CGFloat(realmService.likedSongs(with: $0).count) } + [Constants.minimumTotalValue]).max().safe
         
-        let counts = [realmService.likedSongs(with: .rock).count,
-                      realmService.likedSongs(with: .classic).count,
-                      realmService.likedSongs(with: .rap).count,
-                      realmService.likedSongs(with: .country).count,
-                      realmService.likedSongs(with: .acoustic).count,
-                      realmService.likedSongs(with: .pop).count,
-                      realmService.likedSongs(with: .jazz).count,
-                      realmService.likedSongs(with: .edm).count]
-
+        let counts = RealmLikedSongGenre.all.map { realmService.likedSongs(with: $0).count }
+        
         if counts.filter({ $0 != .zero }).count < .two {
             noData.value = true
             values.value = Constants.baseLikedSongCounts
         } else {
             noData.value = false
-            values.value = RealmLikedSongGenre.all.map { max(0.012, CGFloat(realmService.likedSongs(with: $0).count) / total) }
+            values.value = RealmLikedSongGenre.all
+                .map {
+                    max(
+                        Constants.minimumChartValue,
+                        CGFloat(realmService.likedSongs(with: $0).count) / total
+                    )
+                }
         }
     }
     

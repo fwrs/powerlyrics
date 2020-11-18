@@ -12,11 +12,23 @@ import ReactiveKit
 import Then
 import UIKit
 
+// MARK: - Constants
+
+extension Constants {
+    
+    static let panModalCornerRadius: CGFloat = 30
+    
+}
+
 fileprivate extension Constants {
     
     static let tinyDelay = 0.01
     
+    static let navigationBarBlurThreshold: CGFloat = 10
+    
 }
+
+// MARK: - GenreStatsViewController
 
 class GenreStatsViewController: ViewController, GenreStatsScene {
     
@@ -34,9 +46,9 @@ class GenreStatsViewController: ViewController, GenreStatsScene {
     
     var viewModel: GenreStatsViewModel!
     
-    private var lastSelectedIndexPath: IndexPath?
+    var lastSelectedIndexPath: IndexPath?
     
-    var initial: Bool = true
+    var initialLoad: Bool = true
     
     var navigationBarBackgroundHidden = true
     
@@ -52,6 +64,8 @@ class GenreStatsViewController: ViewController, GenreStatsScene {
         super.viewDidLoad()
 
         setupView()
+        setupInput()
+        setupOutput()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -65,27 +79,67 @@ class GenreStatsViewController: ViewController, GenreStatsScene {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
-        if !initial {
-            viewModel.reload()
+        if !initialLoad {
+            viewModel.loadData()
         }
-        initial = false
+        initialLoad = false
     }
     
-    // MARK: - Actions
+    // MARK: - Helper methods
+    
+    func updateNavigationBarAppearance() {
+        if (navigationBarBackgroundHidden && tableView.contentOffset.y < Constants.navigationBarBlurThreshold) ||
+            (!navigationBarBackgroundHidden && tableView.contentOffset.y >= Constants.navigationBarBlurThreshold) {
+            return
+        }
+        navigationBarBackgroundHidden = tableView.contentOffset.y < Constants.navigationBarBlurThreshold
+        titleBackgroundView.fadeDisplay(visible: tableView.contentOffset.y > Constants.navigationBarBlurThreshold)
+        titleShadowView.fadeDisplay(visible: tableView.contentOffset.y > Constants.navigationBarBlurThreshold)
+    }
     
 }
 
+// MARK: - Setup
+
 extension GenreStatsViewController {
     
-    // MARK: - Setup
+    // MARK: - View
 
     func setupView() {
+        
         tableView.register(SongCell.self)
         tableView.register(GenreInfoCell.self)
         tableView.register(GenreEmptyCell.self)
         
+        tableView.delegate = self
+        tableView.automaticallyAdjustsScrollIndicatorInsets = false
+        
+        titleLabel.text = viewModel.genre.localizedName
+        
         panModalSetNeedsLayoutUpdate()
+        updateNavigationBarAppearance()
+        
+    }
     
+    // MARK: - Input
+    
+    func setupInput() {
+    
+        tableView.reactive.selectedRowIndexPath.observeNext { [self] indexPath in
+            tableView.deselectRow(at: indexPath, animated: true)
+            lastSelectedIndexPath = indexPath
+            Haptic.play(Constants.tinyTap)
+            if case .song(let songCellViewModel) = viewModel.items[indexPath.row] {
+                flowLyrics?(songCellViewModel.song, nil)
+            }
+        }.dispose(in: disposeBag)
+        
+    }
+    
+    // MARK: - Output
+    
+    func setupOutput() {
+        
         viewModel.items.observeNext { [self] _ in
             delay(Constants.tinyDelay) {
                 panModalSetNeedsLayoutUpdate()
@@ -121,36 +175,12 @@ extension GenreStatsViewController {
                 return cell
             }
         }
-        tableView.delegate = self
-        tableView.automaticallyAdjustsScrollIndicatorInsets = false
         
-        tableView.reactive.selectedRowIndexPath.observeNext { [self] indexPath in
-            tableView.deselectRow(at: indexPath, animated: true)
-            lastSelectedIndexPath = indexPath
-            Haptic.play(Constants.tinyTap)
-            if case .song(let songCellViewModel) = viewModel.items[indexPath.row] {
-                flowLyrics?(songCellViewModel.song, nil)
-            }
-        }.dispose(in: disposeBag)
-        
-        titleLabel.text = viewModel.genre.localizedName
-        
-        updateNavigationBarAppearance()
-    }
-    
-    func updateNavigationBarAppearance() {
-        if navigationBarBackgroundHidden && tableView.contentOffset.y < 10 {
-            return
-        }
-        if !navigationBarBackgroundHidden && tableView.contentOffset.y >= 10 {
-            return
-        }
-        navigationBarBackgroundHidden = tableView.contentOffset.y < 10
-        titleBackgroundView.fadeDisplay(visible: tableView.contentOffset.y > 10)
-        titleShadowView.fadeDisplay(visible: tableView.contentOffset.y > 10)
     }
     
 }
+
+// MARK: - TranslationAnimationView
 
 extension GenreStatsViewController: TranslationAnimationView {
     
@@ -160,11 +190,11 @@ extension GenreStatsViewController: TranslationAnimationView {
         return [container]
     }
     
-    var translationInteractor: TranslationAnimationInteractor? { nil }
-    
     var isSourcePanModal: Bool { true }
     
 }
+
+// MARK: - PanModalPresentable
 
 extension GenreStatsViewController: PanModalPresentable {
     
@@ -177,10 +207,12 @@ extension GenreStatsViewController: PanModalPresentable {
     }
     
     var cornerRadius: CGFloat {
-        30
+        Constants.panModalCornerRadius
     }
     
 }
+
+// MARK: - UITableViewDelegate
 
 extension GenreStatsViewController: UITableViewDelegate {
     

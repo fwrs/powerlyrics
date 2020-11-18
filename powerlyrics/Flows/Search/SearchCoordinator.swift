@@ -11,12 +11,18 @@ import UIKit
 
 class SearchCoordinator: Coordinator {
     
+    // MARK: - Instance properties
+
     let router: Router
+    
+    // MARK: - Init
 
     init(router: Router, resolver: Resolver) {
         self.router = router
         super.init(resolver: resolver)
     }
+    
+    // MARK: - Coordinator
     
     override func start() {
         let scene = resolver.resolve(SearchScene.self)
@@ -29,10 +35,22 @@ class SearchCoordinator: Coordinator {
         router.push(scene, animated: false)
     }
     
+    override var rootViewController: UIViewController {
+        router
+    }
+    
+    // MARK: - Scenes
+    
     func showLyrics(for song: SharedSong, placeholder: UIImage?) {
-        let lyricsCoordinator = resolver.resolve(LyricsCoordinator.self, arguments: Router(), rootViewController, { [self] in
-            childCoordinators.removeAll { $0.isKind(of: LyricsCoordinator.self) }
-        }, song, placeholder)!
+        let lyricsCoordinator = resolver.resolve(
+            LyricsCoordinator.self,
+            arguments:
+                Router(),
+                rootViewController,
+                { [self] in childCoordinators.removeAll { $0.isKind(of: LyricsCoordinator.self) } },
+                song,
+                placeholder
+        )!
         childCoordinators.append(lyricsCoordinator)
         lyricsCoordinator.start()
     }
@@ -43,10 +61,6 @@ class SearchCoordinator: Coordinator {
             self?.showLyrics(for: song, placeholder: placeholder)
         }
         router.push(scene)
-    }
-    
-    override var rootViewController: UIViewController {
-        router
     }
     
 }

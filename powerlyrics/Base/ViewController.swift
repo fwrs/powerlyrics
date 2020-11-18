@@ -40,13 +40,13 @@ class ViewController: UIViewController, UITabBarControllerDelegate {
     
     var prefersNavigationBarHidden: Bool { false }
     
-    private var noInternetView: NoInternetView?
+    var noInternetView: NoInternetView?
     
-    private var emptyView: EmptyView?
+    var emptyView: EmptyView?
     
-    private var isNoInternetViewVisible = false
+    var isNoInternetViewVisible = false
     
-    private var isEmptyViewVisible = false
+    var isEmptyViewVisible = false
     
     func setNoInternetView(isVisible: Bool, onTapRefresh: @escaping DefaultAction) {
         if isVisible {
@@ -181,7 +181,7 @@ class ViewController: UIViewController, UITabBarControllerDelegate {
         }
     }
     
-    private func handleTabItemDoubleTap() {
+    func handleTabItemDoubleTap() {
         if let searchController = safeValue(forKey: "searchController") as? UISearchController {
             delay(0.1) {
                 let shouldScrollToTop = !searchController.isActive
@@ -196,7 +196,7 @@ class ViewController: UIViewController, UITabBarControllerDelegate {
         }
     }
     
-    private static var index = Int.zero
+    static var index = Int.zero
     
     func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
         if ViewController.index == tabBarController.selectedIndex {

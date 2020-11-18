@@ -34,7 +34,6 @@
 		B829CC74254D626A007B3C8E /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B829CC73254D626A007B3C8E /* ProfileViewController.swift */; };
 		B829CC77254D6277007B3C8E /* ProfileViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B829CC76254D6277007B3C8E /* ProfileViewController.storyboard */; };
 		B829CC7A254D6293007B3C8E /* ProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B829CC79254D6293007B3C8E /* ProfileViewModel.swift */; };
-		B829CC7D254D629E007B3C8E /* ProfileBinder.swift in Sources */ = {isa = PBXBuildFile; fileRef = B829CC7C254D629E007B3C8E /* ProfileBinder.swift */; };
 		B829CC85254D63C2007B3C8E /* Assets.gen.swift in Sources */ = {isa = PBXBuildFile; fileRef = B829CC82254D63C2007B3C8E /* Assets.gen.swift */; };
 		B829CC86254D63C2007B3C8E /* Fonts.gen.swift in Sources */ = {isa = PBXBuildFile; fileRef = B829CC83254D63C2007B3C8E /* Fonts.gen.swift */; };
 		B829CC87254D63C2007B3C8E /* Strings.gen.swift in Sources */ = {isa = PBXBuildFile; fileRef = B829CC84254D63C2007B3C8E /* Strings.gen.swift */; };
@@ -83,7 +82,6 @@
 		B8698E05252938DD0043F3AA /* TranslationAnimation.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8698E04252938DD0043F3AA /* TranslationAnimation.swift */; };
 		B86D5BFF2529F4BA0026B764 /* SetupInitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B86D5BFE2529F4BA0026B764 /* SetupInitViewController.swift */; };
 		B86D5C022529F4C90026B764 /* SetupInitViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B86D5C012529F4C90026B764 /* SetupInitViewController.storyboard */; };
-		B86D5C052529F4D20026B764 /* SetupInitViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B86D5C042529F4D20026B764 /* SetupInitViewModel.swift */; };
 		B86D5C082529FD4F0026B764 /* SetupCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B86D5C072529FD4F0026B764 /* SetupCoordinator.swift */; };
 		B86E82A825656CAF00D5E06A /* RealmService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B86E82A725656CAF00D5E06A /* RealmService.swift */; };
 		B86F6E0825260894003296B0 /* Storyboard+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = B86F6E0725260894003296B0 /* Storyboard+Ext.swift */; };
@@ -139,7 +137,6 @@
 		B8C8BCF52525EEBE00E55708 /* HomeCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8C8BCF42525EEBE00E55708 /* HomeCoordinator.swift */; };
 		B8C8BCFB2525EED900E55708 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8C8BCFA2525EED900E55708 /* HomeViewController.swift */; };
 		B8C8BD012525EF2800E55708 /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8C8BD002525EF2800E55708 /* HomeViewModel.swift */; };
-		B8DCAB972528DB4900C399FE /* SearchBinder.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8DCAB962528DB4900C399FE /* SearchBinder.swift */; };
 		B8DEAB522527254C00C9F96D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B8DEAB512527254C00C9F96D /* LaunchScreen.storyboard */; };
 		B8DEAB552527295700C9F96D /* SearchCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8DEAB542527295700C9F96D /* SearchCoordinator.swift */; };
 		B8DEAB582527296700C9F96D /* GenreMapCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8DEAB572527296700C9F96D /* GenreMapCoordinator.swift */; };
@@ -164,7 +161,6 @@
 		B8F79E72252A0D080060CB14 /* SetupManualViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8F79E6D252A0D070060CB14 /* SetupManualViewController.swift */; };
 		B8F79E73252A0D080060CB14 /* SetupManualViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B8F79E6E252A0D070060CB14 /* SetupManualViewController.storyboard */; };
 		B8F79E74252A0D080060CB14 /* SetupManualAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8F79E6F252A0D070060CB14 /* SetupManualAssembly.swift */; };
-		B8F79E76252A0D080060CB14 /* SetupManualViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8F79E71252A0D080060CB14 /* SetupManualViewModel.swift */; };
 		B8F79E7E252A0D2C0060CB14 /* SetupOfflineViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8F79E79252A0D2C0060CB14 /* SetupOfflineViewController.swift */; };
 		B8F79E7F252A0D2C0060CB14 /* SetupOfflineViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8F79E7A252A0D2C0060CB14 /* SetupOfflineViewModel.swift */; };
 		B8F79E80252A0D2C0060CB14 /* SetupOfflineViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B8F79E7B252A0D2C0060CB14 /* SetupOfflineViewController.storyboard */; };
@@ -199,7 +195,6 @@
 		B829CC73254D626A007B3C8E /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		B829CC76254D6277007B3C8E /* ProfileViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = ProfileViewController.storyboard; sourceTree = "<group>"; };
 		B829CC79254D6293007B3C8E /* ProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewModel.swift; sourceTree = "<group>"; };
-		B829CC7C254D629E007B3C8E /* ProfileBinder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileBinder.swift; sourceTree = "<group>"; };
 		B829CC82254D63C2007B3C8E /* Assets.gen.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Assets.gen.swift; sourceTree = "<group>"; };
 		B829CC83254D63C2007B3C8E /* Fonts.gen.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Fonts.gen.swift; sourceTree = "<group>"; };
 		B829CC84254D63C2007B3C8E /* Strings.gen.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Strings.gen.swift; sourceTree = "<group>"; };
@@ -249,7 +244,6 @@
 		B8698E04252938DD0043F3AA /* TranslationAnimation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TranslationAnimation.swift; sourceTree = "<group>"; };
 		B86D5BFE2529F4BA0026B764 /* SetupInitViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetupInitViewController.swift; sourceTree = "<group>"; };
 		B86D5C012529F4C90026B764 /* SetupInitViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = SetupInitViewController.storyboard; sourceTree = "<group>"; };
-		B86D5C042529F4D20026B764 /* SetupInitViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetupInitViewModel.swift; sourceTree = "<group>"; };
 		B86D5C072529FD4F0026B764 /* SetupCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetupCoordinator.swift; sourceTree = "<group>"; };
 		B86E82A3256566BA00D5E06A /* Tokens.example.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tokens.example.swift; sourceTree = "<group>"; };
 		B86E82A725656CAF00D5E06A /* RealmService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealmService.swift; sourceTree = "<group>"; };
@@ -311,7 +305,6 @@
 		B8C8BCF42525EEBE00E55708 /* HomeCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeCoordinator.swift; sourceTree = "<group>"; };
 		B8C8BCFA2525EED900E55708 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		B8C8BD002525EF2800E55708 /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
-		B8DCAB962528DB4900C399FE /* SearchBinder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBinder.swift; sourceTree = "<group>"; };
 		B8DEAB512527254C00C9F96D /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		B8DEAB542527295700C9F96D /* SearchCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchCoordinator.swift; sourceTree = "<group>"; };
 		B8DEAB572527296700C9F96D /* GenreMapCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenreMapCoordinator.swift; sourceTree = "<group>"; };
@@ -336,7 +329,6 @@
 		B8F79E6D252A0D070060CB14 /* SetupManualViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SetupManualViewController.swift; sourceTree = "<group>"; };
 		B8F79E6E252A0D070060CB14 /* SetupManualViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = SetupManualViewController.storyboard; sourceTree = "<group>"; };
 		B8F79E6F252A0D070060CB14 /* SetupManualAssembly.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SetupManualAssembly.swift; sourceTree = "<group>"; };
-		B8F79E71252A0D080060CB14 /* SetupManualViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SetupManualViewModel.swift; sourceTree = "<group>"; };
 		B8F79E79252A0D2C0060CB14 /* SetupOfflineViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SetupOfflineViewController.swift; sourceTree = "<group>"; };
 		B8F79E7A252A0D2C0060CB14 /* SetupOfflineViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SetupOfflineViewModel.swift; sourceTree = "<group>"; };
 		B8F79E7B252A0D2C0060CB14 /* SetupOfflineViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = SetupOfflineViewController.storyboard; sourceTree = "<group>"; };
@@ -828,7 +820,6 @@
 				B8E20CEB25272BEA00D0E04C /* SearchViewController.swift */,
 				B8E20CEE25272BF200D0E04C /* SearchViewController.storyboard */,
 				B8E20CF125272BFE00D0E04C /* SearchViewModel.swift */,
-				B8DCAB962528DB4900C399FE /* SearchBinder.swift */,
 			);
 			path = Search;
 			sourceTree = "<group>";
@@ -857,7 +848,6 @@
 				B829CC73254D626A007B3C8E /* ProfileViewController.swift */,
 				B829CC76254D6277007B3C8E /* ProfileViewController.storyboard */,
 				B829CC79254D6293007B3C8E /* ProfileViewModel.swift */,
-				B829CC7C254D629E007B3C8E /* ProfileBinder.swift */,
 			);
 			path = Profile;
 			sourceTree = "<group>";
@@ -901,7 +891,6 @@
 				B836B3E92549963B00E703B5 /* SetupInitAssembly.swift */,
 				B86D5BFE2529F4BA0026B764 /* SetupInitViewController.swift */,
 				B86D5C012529F4C90026B764 /* SetupInitViewController.storyboard */,
-				B86D5C042529F4D20026B764 /* SetupInitViewModel.swift */,
 			);
 			path = SetupInit;
 			sourceTree = "<group>";
@@ -912,7 +901,6 @@
 				B8F79E6F252A0D070060CB14 /* SetupManualAssembly.swift */,
 				B8F79E6D252A0D070060CB14 /* SetupManualViewController.swift */,
 				B8F79E6E252A0D070060CB14 /* SetupManualViewController.storyboard */,
-				B8F79E71252A0D080060CB14 /* SetupManualViewModel.swift */,
 			);
 			path = SetupManual;
 			sourceTree = "<group>";
@@ -1161,7 +1149,6 @@
 				B8EB541A2565855500D8EF85 /* RealmLikedSongGenre.swift in Sources */,
 				B8B9D45B252906E100E77A09 /* LyricsAssembly.swift in Sources */,
 				B875DE2E254C1137005D0C51 /* TrendCellViewModel.swift in Sources */,
-				B8DCAB972528DB4900C399FE /* SearchBinder.swift in Sources */,
 				B85272B82561A31900CC9A4B /* LoadingCell.swift in Sources */,
 				B8C8BCF52525EEBE00E55708 /* HomeCoordinator.swift in Sources */,
 				B8E20D1325275AC100D0E04C /* Misc.swift in Sources */,
@@ -1177,7 +1164,6 @@
 				B84063D42542E9B500144CE2 /* SpotifyResponses.swift in Sources */,
 				B81A9F752560957200F4575C /* NoInternetView.swift in Sources */,
 				B8E20CFA25272C4E00D0E04C /* GenreMapAssembly.swift in Sources */,
-				B829CC7D254D629E007B3C8E /* ProfileBinder.swift in Sources */,
 				B8806BCC25483F50009524BC /* SpotifyPlaylistSong.swift in Sources */,
 				B84814622543918D00CD5638 /* GeniusResponses.swift in Sources */,
 				B8E20D102527560F00D0E04C /* Image+Ext.swift in Sources */,
@@ -1220,8 +1206,6 @@
 				B891F89825574DB700AE2810 /* GenreInfoCell.swift in Sources */,
 				B86F6E2E25261364003296B0 /* View+Ext.swift in Sources */,
 				B86F6E8D25262237003296B0 /* NetworkAssembly.swift in Sources */,
-				B8F79E76252A0D080060CB14 /* SetupManualViewModel.swift in Sources */,
-				B86D5C052529F4D20026B764 /* SetupInitViewModel.swift in Sources */,
 				B891F8782557358100AE2810 /* GenreStatsAssembly.swift in Sources */,
 				B86F6E0825260894003296B0 /* Storyboard+Ext.swift in Sources */,
 				B8B5ED5725422FC9006E9560 /* SpotifyToken.swift in Sources */,

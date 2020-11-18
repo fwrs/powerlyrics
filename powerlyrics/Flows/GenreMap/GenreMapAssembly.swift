@@ -9,10 +9,16 @@
 import Swinject
 import UIKit
 
+// MARK: - GenreMapScene
+
 protocol GenreMapScene: ViewController {
+    
     var flowGenre: DefaultRealmLikedSongGenreAction? { get set }
     var flowLikedSongs: DefaultAction? { get set }
+    
 }
+
+// MARK: - GenreMapAssembly
 
 class GenreMapAssembly: Assembly {
 

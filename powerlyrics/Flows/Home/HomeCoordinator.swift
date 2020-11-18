@@ -6,6 +6,7 @@
 //  Copyright © 2020 Ilya Kulinkovich. All rights reserved.
 //
 
+import SafariServices
 import Swinject
 import UIKit
 
@@ -20,6 +21,32 @@ class HomeCoordinator: Coordinator {
     init(router: Router, resolver: Resolver) {
         self.router = router
         super.init(resolver: resolver)
+    }
+    
+    // MARK: - Coordinator
+    
+    override func start() {
+        let scene = resolver.resolve(HomeScene.self)
+        scene?.flowSafari = { [weak self] url in
+            self?.showSafari(url: url)
+        }
+        scene?.flowLyrics = { [weak self] (song, placeholder) in
+            self?.showLyrics(for: song, placeholder: placeholder)
+        }
+        scene?.flowSetup = { [weak self] mode in
+            self?.showSetup(mode: mode)
+        }
+        scene?.flowTrends = { [weak self] preview in
+            self?.showTrends(preview: preview)
+        }
+        scene?.flowVirals = { [weak self] preview in
+            self?.showVirals(preview: preview)
+        }
+        router.push(scene, animated: false)
+    }
+    
+    override var rootViewController: UIViewController {
+        router
     }
     
     // MARK: - Scenes
@@ -67,27 +94,13 @@ class HomeCoordinator: Coordinator {
         router.push(scene)
     }
     
-    // MARK: - Coordinator
-    
-    override func start() {
-        let scene = resolver.resolve(HomeScene.self)
-        scene?.flowLyrics = { [weak self] (song, placeholder) in
-            self?.showLyrics(for: song, placeholder: placeholder)
-        }
-        scene?.flowSetup = { [weak self] mode in
-            self?.showSetup(mode: mode)
-        }
-        scene?.flowTrends = { [weak self] preview in
-            self?.showTrends(preview: preview)
-        }
-        scene?.flowVirals = { [weak self] preview in
-            self?.showVirals(preview: preview)
-        }
-        router.push(scene, animated: false)
-    }
-    
-    override var rootViewController: UIViewController {
-        router
+    func showSafari(url: URL) {
+        let safariViewController = SFSafariViewController(
+            url: url,
+            configuration: SFSafariViewController.Configuration()
+        )
+        safariViewController.preferredControlTintColor = .tintColor
+        router.present(safariViewController, animated: true)
     }
     
 }

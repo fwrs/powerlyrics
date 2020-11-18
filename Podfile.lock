@@ -1,5 +1,4 @@
 PODS:
-  - ActiveLabel (1.1.0)
   - Alamofire (5.4.0)
   - Bond (7.8.1):
     - Differ (~> 1.4)
@@ -95,7 +94,6 @@ PODS:
   - Typographizer (0.3.0)
 
 DEPENDENCIES:
-  - ActiveLabel
   - Alamofire
   - Bond
   - Firebase/Analytics
@@ -116,7 +114,6 @@ DEPENDENCIES:
 
 SPEC REPOS:
   trunk:
-    - ActiveLabel
     - Alamofire
     - Bond
     - Differ
@@ -156,7 +153,6 @@ CHECKOUT OPTIONS:
     :git: https://github.com/frankrausch/Typographizer.git
 
 SPEC CHECKSUMS:
-  ActiveLabel: 5e3f4de79a1952d4604b845a0610d4776e4b82b3
   Alamofire: 3b6a534a3df22db367e4dedeeca73d1ddfcf0e2f
   Bond: 87075c7f20f37ea3e73dc7057fce839787bf46eb
   Differ: 3b6bd78e2b20cc795d9a86f7641d087524e4273e
@@ -187,6 +183,6 @@ SPEC CHECKSUMS:
   Then: acfe0be7e98221c6204e12f8161459606d5d822d
   Typographizer: 1e1cf1abf8ed4e06427f3f130ecb91f95165123b
 
-PODFILE CHECKSUM: e9faf0bc66a62460a3bad99d6cf320c59f823886
+PODFILE CHECKSUM: faeaefc6d14ae46ce5d73a6c2bf41005eadb25c9
 
 COCOAPODS: 1.10.0

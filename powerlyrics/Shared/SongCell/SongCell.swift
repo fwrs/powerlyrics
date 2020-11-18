@@ -50,6 +50,10 @@ class SongCell: TableViewCell {
     
     @IBOutlet private weak var nthPlaceAccessoryLabel: UILabel!
     
+    // MARK: - Static properties
+    
+    static var storedColors: [SharedSong: UIColor] = [:]
+    
     // MARK: - Instance properties
     
     var dominantColor: UIColor?
@@ -64,24 +68,23 @@ class SongCell: TableViewCell {
     
     var contextMenuHandler: ImageContextMenuInteractionHandler?
     
-    // MARK: - Static properties
-    
-    static var storedColors: [SharedSong: UIColor] = [:]
-    
     // MARK: - Lifecycle
     
     override func awakeFromNib() {
         super.awakeFromNib()
         
         albumArtContainerView.shadow(
-            color: .black,
-            radius: 6,
-            offset: CGSize(width: 0, height: 3),
+            color: Constants.albumArtShadowColor,
+            radius: Constants.albumArtShadowRadius,
+            offset: Constants.albumArtShadowOffset,
             opacity: Constants.defaultShadowOpacity,
-            viewCornerRadius: 8,
+            viewCornerRadius: Constants.albumArtShadowCornerRadius,
             viewSquircle: true
         )
-        let contextMenuHandler = ImageContextMenuInteractionHandler(shadowFadeView: albumArtContainerView, imageView: albumArtImageView)
+        let contextMenuHandler = ImageContextMenuInteractionHandler(
+            shadowFadeView: albumArtContainerView,
+            imageView: albumArtImageView
+        )
         self.contextMenuHandler = contextMenuHandler
         let interaction = UIContextMenuInteraction(delegate: contextMenuHandler)
         albumArtImageView.addInteraction(interaction)
@@ -90,11 +93,11 @@ class SongCell: TableViewCell {
     override func setHighlighted(_ highlighted: Bool, animated: Bool) {
         let highlightColor = dominantColor?.adjust(brightnessBy: .oneHalfth) ?? Asset.Colors.highlightCellColor.color
         let baseColor = dominantColor ?? Asset.Colors.normalCellColor.color
-        UIView.animate(withDuration: (highlighted || !animated) ? (Constants.defaultAnimationDuration * .oOne) : Constants.defaultAnimationDuration) { [self] in
+        UIView.animate(withDuration: (highlighted || !animated) ? (Constants.defaultAnimationDuration * .pointOne) : Constants.defaultAnimationDuration) { [self] in
             backgroundColorView.backgroundColor = highlighted ? highlightColor : dominantColor.safe
             accessoryBackgroundView.backgroundColor = highlighted ? highlightColor : baseColor
         }
-        UIView.transition(with: accessoryFadeOutView, duration: (highlighted || !animated) ? (Constants.defaultAnimationDuration * .oOne) : Constants.defaultAnimationDuration, options: .transitionCrossDissolve) { [self] in
+        UIView.transition(with: accessoryFadeOutView, duration: (highlighted || !animated) ? (Constants.defaultAnimationDuration * .pointOne) : Constants.defaultAnimationDuration, options: .transitionCrossDissolve) { [self] in
             (accessoryFadeOutView.gradientLayer).colors = highlighted ?
                 [highlightColor.transparent.cg, highlightColor.cg] :
                 [baseColor.transparent.cg, baseColor.cg]
@@ -104,11 +107,11 @@ class SongCell: TableViewCell {
     override func setSelected(_ selected: Bool, animated: Bool) {
         let highlightColor = dominantColor?.adjust(brightnessBy: .oneHalfth) ?? Asset.Colors.highlightCellColor.color
         let baseColor = dominantColor ?? Asset.Colors.normalCellColor.color
-        UIView.animate(withDuration: (selected || !animated) ? (Constants.defaultAnimationDuration * .oOne) : Constants.defaultAnimationDuration) { [self] in
+        UIView.animate(withDuration: (selected || !animated) ? (Constants.defaultAnimationDuration * .pointOne) : Constants.defaultAnimationDuration) { [self] in
             backgroundColorView.backgroundColor = selected ? highlightColor : dominantColor.safe
             accessoryBackgroundView.backgroundColor = selected ? highlightColor : baseColor
         }
-        UIView.transition(with: accessoryFadeOutView, duration: (selected || !animated) ? (Constants.defaultAnimationDuration * .oOne) : Constants.defaultAnimationDuration, options: .transitionCrossDissolve) { [self] in
+        UIView.transition(with: accessoryFadeOutView, duration: (selected || !animated) ? (Constants.defaultAnimationDuration * .pointOne) : Constants.defaultAnimationDuration, options: .transitionCrossDissolve) { [self] in
             (accessoryFadeOutView.gradientLayer).colors = selected ?
                 [highlightColor.transparent.cg, highlightColor.cg] :
                 [baseColor.transparent.cg, baseColor.cg]

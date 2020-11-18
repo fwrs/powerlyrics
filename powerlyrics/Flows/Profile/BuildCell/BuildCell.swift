@@ -9,8 +9,12 @@
 import UIKit
 
 class BuildCell: TableViewCell {
+    
+    // MARK: - Outlets
 
     @IBOutlet private weak var label: UILabel!
+    
+    // MARK: - Configure
 
     func configure(with viewModel: BuildCellViewModel) {
         label.text = viewModel.text

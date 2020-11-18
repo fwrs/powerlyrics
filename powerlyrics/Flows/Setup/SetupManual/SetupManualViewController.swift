@@ -8,6 +8,8 @@
 
 import UIKit
 
+// MARK: - SetupManualViewController
+
 class SetupManualViewController: ViewController, SetupManualScene {
     
     // MARK: - Outlets
@@ -15,10 +17,6 @@ class SetupManualViewController: ViewController, SetupManualScene {
     @IBOutlet private weak var mainButton: UIButton!
     
     @IBOutlet private weak var secondaryButton: UIButton!
-    
-    // MARK: - Instance properties
-    
-    var viewModel: SetupManualViewModel!
     
     // MARK: - Flows
     
@@ -32,16 +30,16 @@ class SetupManualViewController: ViewController, SetupManualScene {
         super.viewDidLoad()
         
         setupView()
-        setupObservers()
+        setupInput()
     }
-    
-    // MARK: - Actions
     
 }
 
+// MARK: - Setup
+
 extension SetupManualViewController {
     
-    // MARK: - Setup
+    // MARK: - View
 
     func setupView() {
         let appearance = UINavigationBarAppearance()
@@ -51,7 +49,9 @@ extension SetupManualViewController {
         navigationItem.standardAppearance = appearance
     }
     
-    func setupObservers() {
+    // MARK: - Input
+
+    func setupInput() {
         mainButton.reactive.tap.throttle(for: Constants.buttonThrottleTime).observeNext { [self] _ in
             flowSpotifyLogin?()
         }.dispose(in: disposeBag)

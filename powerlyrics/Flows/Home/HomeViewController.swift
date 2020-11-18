@@ -9,8 +9,25 @@
 import Bond
 import Haptica
 import ReactiveKit
-import SafariServices
 import UIKit
+
+// MARK: - Constants
+
+extension Constants {
+    
+    static let accountManagementURL = URL(string: "https://www.spotify.com/account/overview/")!
+    
+    static let maxPlaylistPreviewCount = 3
+    
+}
+
+fileprivate extension Constants {
+    
+    static let gearIcon = UIImage(systemName: "gear")
+    
+    static let personPlusIcon = UIImage(systemName: "person.crop.circle.badge.plus")
+    
+}
 
 // MARK: - HomeViewController
 
@@ -31,6 +48,8 @@ class HomeViewController: ViewController, HomeScene {
     var initialLoad = true
     
     // MARK: - Flows
+    
+    var flowSafari: DefaultURLAction?
     
     var flowLyrics: DefaultSharedSongPreviewAction?
     
@@ -84,8 +103,10 @@ extension HomeViewController {
     // MARK: - View
     
     func setupView() {
+        
         tableView.register(SongCell.self)
         tableView.register(ActionCell.self)
+        
     }
     
     // MARK: - Input
@@ -101,20 +122,17 @@ extension HomeViewController {
                 flowLyrics?(viewModel.song, (tableView.cellForRow(at: indexPath) as? SongCell)?.currentImage)
             } else if case .action(let actionCellViewModel) = cell {
                 if actionCellViewModel.action == .seeTrendingSongs {
-                    flowTrends?(Array(viewModel.trendingSongs.prefix(3)))
+                    flowTrends?(Array(viewModel.trendingSongs.prefix(Constants.maxPlaylistPreviewCount)))
                 } else if actionCellViewModel.action == .seeViralSongs {
-                    flowVirals?(Array(viewModel.viralSongs.prefix(3)))
+                    flowVirals?(Array(viewModel.viralSongs.prefix(Constants.maxPlaylistPreviewCount)))
                 }
             }
         }.dispose(in: disposeBag)
         
-        navigationItem.rightBarButtonItem?.reactive.tap.throttle(for: 0.5).observeNext { [self] _ in
+        navigationItem.rightBarButtonItem?.reactive.tap.throttle(for: Constants.buttonThrottleTime).observeNext { [self] _ in
             Haptic.play(Constants.tinyTap)
             if viewModel.isSpotifyAccount.value {
-                let url = URL(string: "https://www.spotify.com/account/overview/")!
-                let safariViewController = SFSafariViewController(url: url, configuration: SFSafariViewController.Configuration())
-                safariViewController.preferredControlTintColor = .tintColor
-                present(safariViewController, animated: true)
+                flowSafari?(Constants.accountManagementURL)
             } else {
                 flowSetup?(.manual)
             }
@@ -125,16 +143,17 @@ extension HomeViewController {
     // MARK: - Output
     
     func setupOutput() {
+        
         viewModel.items.bind(to: tableView, using: HomeBinder())
         
         viewModel.isSpotifyAccount.observeNext { [self] isSpotifyAccount in
             navigationItem.rightBarButtonItem?.image = isSpotifyAccount ?
-                UIImage(systemName: "gear") :
-                UIImage(systemName: "person.crop.circle.badge.plus")
+                Constants.gearIcon :
+                Constants.personPlusIcon
         }.dispose(in: disposeBag)
         
-        viewModel.isError.observeNext { [self] isError in
-            setNoInternetView(isVisible: isError) {
+        viewModel.isFailed.observeNext { [self] isFailed in
+            setNoInternetView(isVisible: isFailed) {
                 viewModel.loadData()
             }
         }.dispose(in: disposeBag)
@@ -155,6 +174,7 @@ extension HomeViewController {
                 scrollToTop()
             }
         }.dispose(in: disposeBag)
+        
     }
     
 }
@@ -165,8 +185,38 @@ extension HomeViewController: TranslationAnimationView {
     
     var translationViews: [UIView] {
         guard let indexPath = lastSelectedIndexPath,
-              let container = (tableView.cellForRow(at: indexPath) as? SongCell)?.songContainer else { return [] }
+              let container = (tableView.cellForRow(at: indexPath) as? SongCell)?
+                .songContainer else { return [] }
         return [container]
+    }
+    
+}
+
+// MARK: - HomeBinder
+
+class HomeBinder<Changeset: SectionedDataSourceChangeset>: TableViewBinderDataSource<Changeset> where Changeset.Collection == Array2D<HomeSection, HomeCell> {
+
+    override init() {
+        super.init { (items, indexPath, uiTableView) in
+            let element = items[childAt: indexPath]
+            let tableView = uiTableView as! TableView
+            switch element.item {
+            case .song(let songCellViewModel):
+                let cell = tableView.dequeue(SongCell.self, indexPath: indexPath)
+                cell.configure(with: songCellViewModel)
+                return cell
+            case .action(let actionCellViewModel):
+                let cell = tableView.dequeue(ActionCell.self, indexPath: indexPath)
+                cell.configure(with: actionCellViewModel)
+                return cell
+            default:
+                fatalError("Invalid cell")
+            }
+        }
+    }
+    
+    @objc private func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        changeset?.collection[sectionAt: section].metadata.localizedTitle
     }
     
 }

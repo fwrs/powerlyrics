@@ -11,6 +11,16 @@ import ReactiveKit
 import ReactiveSwift
 import RealmSwift
 
+// MARK: - Constants
+
+fileprivate extension Constants {
+    
+    static let maxTrendsCount = 8
+    
+}
+
+// MARK: - SearchSection
+
 enum SearchSection {
     
     case topResult
@@ -32,16 +42,18 @@ enum SearchSection {
     
 }
 
+// MARK: - SearchCell
+
 enum SearchCell: Equatable {
     case song(SongCellViewModel)
     case albums(AlbumsCellViewModel)
 }
 
+// MARK: - SearchViewModel
+
 class SearchViewModel: ViewModel {
     
-    let items = MutableObservableArray2D(Array2D<SearchSection, SearchCell>())
-    
-    let trends = MutableObservableArray<TrendCellViewModel>()
+    // MARK: - DI
     
     let spotifyProvider: SpotifyProvider
     
@@ -49,21 +61,29 @@ class SearchViewModel: ViewModel {
     
     let realmService: RealmServiceProtocol
     
-    let trendsAreLoading = Observable(true)
+    // MARK: - Instance properties
     
     var latestSearchSongsRequest: ReactiveSwift.Disposable?
     
     var latestSearchAlbumsRequest: ReactiveSwift.Disposable?
     
-    let nothingWasFound = Observable(false)
+    var searchSongsResult = [SharedSong]()
     
-    let internetError = Observable(false)
+    var searchAlbumsResult = [SpotifyAlbum]()
+    
+    // MARK: - Observables
+    
+    let items = MutableObservableArray2D(Array2D<SearchSection, SearchCell>())
+    
+    let trends = MutableObservableArray<TrendCellViewModel>()
+    
+    let trendsLoading = Observable(false)
+    
+    let nothingWasFound = Observable(false)
     
     let trendsFailed = Observable(false)
     
-    private var searchSongsResult = [SharedSong]()
-    
-    private var searchAlbumsResult = [SpotifyAlbum]()
+    // MARK: - Init
     
     init(spotifyProvider: SpotifyProvider, geniusProvider: GeniusProvider, realmService: RealmServiceProtocol) {
         self.spotifyProvider = spotifyProvider
@@ -71,8 +91,10 @@ class SearchViewModel: ViewModel {
         self.realmService = realmService
     }
     
+    // MARK: - Load data
+    
     func loadTrends() {
-        trendsAreLoading.value = true
+        trendsLoading.value = true
         trendsFailed.value = false
         spotifyProvider.reactive
             .request(.trendingSongs)
@@ -82,7 +104,7 @@ class SearchViewModel: ViewModel {
                 case .value(let response):
                     trends.replace(
                         with: response.items
-                            .prefix(8)
+                            .prefix(Constants.maxTrendsCount)
                             .map { $0.asSharedSong.strippedFeatures }
                             .sorted { $0.name.count < $1.name.count }
                             .map { song in
@@ -90,15 +112,17 @@ class SearchViewModel: ViewModel {
                             },
                         performDiff: true
                     )
-                    trendsAreLoading.value = false
+                    trendsLoading.value = false
                 case .failed:
                     trendsFailed.value = true
-                    trendsAreLoading.value = false
+                    trendsLoading.value = false
                 default:
                     break
                 }
             }
     }
+    
+    // MARK: - Search
     
     func search(for query: String, refresh: Bool = false) {
         if query.isEmpty {
@@ -138,8 +162,8 @@ class SearchViewModel: ViewModel {
             .start { [self] event in
                 switch event {
                 case .value(let response):
-                    if response.albums.items.count > 1 {
-                        searchAlbumsResult = Array(response.albums.items.prefix(3))
+                    if response.albums.items.count > .one {
+                        searchAlbumsResult = Array(response.albums.items.prefix(Constants.maxPlaylistPreviewCount))
                     } else {
                         searchAlbumsResult = []
                     }
@@ -158,11 +182,11 @@ class SearchViewModel: ViewModel {
             
             let topResultSection = [searchSongsResult.first].compactMap { $0 }.map { SearchCell.song(SongCellViewModel(song: $0)) }
             
-            let songsSection = Array(searchSongsResult.dropFirst().prefix(3).map { SearchCell.song(SongCellViewModel(song: $0)) })
+            let songsSection = Array(searchSongsResult.dropFirst().prefix(Constants.maxPlaylistPreviewCount).map { SearchCell.song(SongCellViewModel(song: $0)) })
             
             let albumsSection = searchAlbumsResult.isEmpty ? [] : [SearchCell.albums(AlbumsCellViewModel(albums: searchAlbumsResult))]
             
-            internetError.value = failedGenius && failedSpotify
+            isFailed.value = failedGenius && failedSpotify
             
             if failedGenius && failedSpotify {
                 items.set([])
@@ -181,10 +205,12 @@ class SearchViewModel: ViewModel {
         }
     }
     
+    // MARK: - Helper methods
+    
     func reset() {
         items.removeAllItemsAndSections()
         nothingWasFound.value = false
-        internetError.value = false
+        isFailed.value = false
     }
     
 }
