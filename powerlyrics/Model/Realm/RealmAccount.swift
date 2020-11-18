@@ -6,14 +6,15 @@
 //  Copyright © 2020 Ilya Kulinkovich. All rights reserved.
 //
 
-import Foundation
 import RealmSwift
 
 class RealmAccount: Object {
-    @objc dynamic var name = ""
+    
+    @objc dynamic var name = String()
     @objc dynamic var premium = false
     @objc dynamic var over18 = false
     @objc dynamic var registerDate = Date()
     @objc dynamic var avatarURL: String?
     @objc dynamic var thumbnailAvatarURL: String?
+    
 }

@@ -6,7 +6,15 @@
 //  Copyright © 2020 Ilya Kulinkovich. All rights reserved.
 //
 
-import Foundation
+// MARK: - Constants
+
+fileprivate extension Constants {
+    
+    static let secondToLast = 2
+    
+}
+
+// MARK: - SpotifyAlbum
 
 struct SpotifyAlbum: Codable, Equatable {
     
@@ -26,7 +34,7 @@ extension SpotifyAlbum {
     }
     
     var thumbnailAlbumArt: SharedImage? {
-        images[safe: images.count - 2] ?? images.last
+        images[safe: images.count - Constants.secondToLast] ?? images.last
     }
     
 }

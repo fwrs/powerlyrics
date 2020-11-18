@@ -12,7 +12,7 @@
 
 "tabBar.home" = "Хаб";
 "tabBar.search" = "Поиск";
-"tabBar.genremap" = "ЖанроКарта";
+"tabBar.genremap" = "Карта жанров";
 "tabBar.profile" = "Профиль";
 
 /* home */
@@ -25,7 +25,7 @@
 
 /* genremap */
 
-"genremap.title" = "жанрокарта";
+"genremap.title" = "карта жанров";
 
 /* genremap */
 

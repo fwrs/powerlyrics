@@ -10,7 +10,11 @@ import UIKit
 
 class CenteredCollectionViewLayout: UICollectionViewFlowLayout {
     
-    required init(minimumInteritemSpacing: CGFloat = 0, minimumLineSpacing: CGFloat = 0, sectionInset: UIEdgeInsets = .zero) {
+    required init(
+        minimumInteritemSpacing: CGFloat = .zero,
+        minimumLineSpacing: CGFloat = .zero,
+        sectionInset: UIEdgeInsets = .zero
+    ) {
         super.init()
         
         estimatedItemSize = UICollectionViewFlowLayout.automaticSize
@@ -36,12 +40,12 @@ class CenteredCollectionViewLayout: UICollectionViewFlowLayout {
         let cellAttributes = layoutAttributes.filter({ $0.representedElementCategory == .cell })
         
         for (_, attributes) in Dictionary(grouping: cellAttributes, by: { ($0.center.y / 10).rounded(.up) * 10 }) {
-            let cellsTotalWidth = attributes.reduce(CGFloat(0)) { (partialWidth, attribute) -> CGFloat in
+            let cellsTotalWidth = attributes.reduce(CGFloat.zero) { (partialWidth, attribute) -> CGFloat in
                 partialWidth + attribute.size.width
             }
             
-            let totalInset = collectionView!.safeAreaLayoutGuide.layoutFrame.width - cellsTotalWidth - sectionInset.left - sectionInset.right - minimumInteritemSpacing * CGFloat(attributes.count - 1)
-            var leftInset = (totalInset / 2 * 10).rounded(.down) / 10 + sectionInset.left
+            let totalInset = collectionView!.safeAreaLayoutGuide.layoutFrame.width - cellsTotalWidth - sectionInset.left - sectionInset.right - minimumInteritemSpacing * CGFloat(attributes.count - .one)
+            var leftInset = (totalInset / .two * 10).rounded(.down) / 10 + sectionInset.left
             
             for attribute in attributes {
                 attribute.frame.origin.x = leftInset

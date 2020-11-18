@@ -6,8 +6,6 @@
 //  Copyright © 2020 Ilya Kulinkovich. All rights reserved.
 //
 
-import Foundation
-
 struct GeniusAlbum: Codable, Equatable {
     
     let fullTitle: String

@@ -10,6 +10,16 @@ import Haptica
 import ReactiveKit
 import UIKit
 
+// MARK: - Constants
+
+fileprivate extension Constants {
+    
+    static let backButtonTitle = "Back"
+    
+}
+
+// MARK: - ViewController
+
 class ViewController: UIViewController, UITabBarControllerDelegate {
     
     let disposeBag = DisposeBag()
@@ -43,13 +53,11 @@ class ViewController: UIViewController, UITabBarControllerDelegate {
             if isNoInternetViewVisible { return }
             isNoInternetViewVisible = true
             if let view = noInternetView {
-                UIView.animate(withDuration: 0.3) {
-                    view.alpha = 1
-                }
+                view.fadeShow()
                 return
             }
             noInternetView?.layer.removeAllAnimations()
-            let newNoInternetView = NoInternetView.loadFromNib()
+            let newNoInternetView = NoInternetView.fromNib
             newNoInternetView.onRefresh = onTapRefresh
             view.addSubview(newNoInternetView)
             view.bringSubviewToFront(newNoInternetView)
@@ -60,17 +68,11 @@ class ViewController: UIViewController, UITabBarControllerDelegate {
                 newNoInternetView.rightAnchor.constraint(equalTo: view.rightAnchor)
             ])
             noInternetView = newNoInternetView
-            newNoInternetView.alpha = 0
-            UIView.animate(withDuration: 0.3) {
-                newNoInternetView.alpha = 1
-            }
+            newNoInternetView.fadeShow()
         } else {
             if !isNoInternetViewVisible { return }
             isNoInternetViewVisible = false
-            noInternetView?.alpha = 1
-            UIView.animate(withDuration: 0.3) { [self] in
-                noInternetView?.alpha = 0
-            } completion: { [self] _ in
+            noInternetView?.fadeHide { [self] in
                 if !isNoInternetViewVisible {
                     noInternetView?.removeFromSuperview()
                     noInternetView = nil
@@ -84,12 +86,10 @@ class ViewController: UIViewController, UITabBarControllerDelegate {
             if isEmptyViewVisible { return }
             isEmptyViewVisible = true
             if let view = emptyView {
-                UIView.animate(withDuration: 0.3) {
-                    view.alpha = 1
-                }
+                view.fadeShow()
                 return
             }
-            let newEmptyView = EmptyView.loadFromNib()
+            let newEmptyView = EmptyView.fromNib
             view.addSubview(newEmptyView)
             view.bringSubviewToFront(newEmptyView)
             NSLayoutConstraint.activate([
@@ -99,17 +99,12 @@ class ViewController: UIViewController, UITabBarControllerDelegate {
                 newEmptyView.rightAnchor.constraint(equalTo: view.rightAnchor)
             ])
             emptyView = newEmptyView
-            newEmptyView.alpha = 0
-            UIView.animate(withDuration: 0.3) {
-                newEmptyView.alpha = 1
-            }
+            newEmptyView.fadeShow()
         } else {
             if !isEmptyViewVisible { return }
             isEmptyViewVisible = false
             emptyView?.alpha = 1
-            UIView.animate(withDuration: 0.3) { [self] in
-                emptyView?.alpha = 0
-            } completion: { [self] _ in
+            emptyView?.fadeHide { [self] in
                 if !isEmptyViewVisible {
                     emptyView?.removeFromSuperview()
                     emptyView = nil
@@ -121,7 +116,7 @@ class ViewController: UIViewController, UITabBarControllerDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         let backItem = UIBarButtonItem()
-        backItem.title = "Back"
+        backItem.title = Constants.backButtonTitle
         navigationItem.backBarButtonItem = backItem
     }
 
@@ -201,7 +196,7 @@ class ViewController: UIViewController, UITabBarControllerDelegate {
         }
     }
     
-    private static var index: Int = 0
+    private static var index = Int.zero
     
     func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
         if ViewController.index == tabBarController.selectedIndex {
@@ -282,28 +277,16 @@ class ViewController: UIViewController, UITabBarControllerDelegate {
         keyboardDidUpdate(frame: .zero)
     }
     
-    open func keyboardWillShow(frame: CGRect) {
-        
-    }
+    open func keyboardWillShow(frame: CGRect) {}
     
-    open func keyboardDidShow(frame: CGRect) {
-        
-    }
+    open func keyboardDidShow(frame: CGRect) {}
     
-    open func keyboardWillHide(frame: CGRect) {
-        
-    }
+    open func keyboardWillHide(frame: CGRect) {}
     
-    open func keyboardDidHide(frame: CGRect) {
-        
-    }
+    open func keyboardDidHide(frame: CGRect) {}
     
-    open func keyboardWillUpdate(frame: CGRect) {
-        
-    }
+    open func keyboardWillUpdate(frame: CGRect) {}
     
-    open func keyboardDidUpdate(frame: CGRect) {
-        
-    }
+    open func keyboardDidUpdate(frame: CGRect) {}
     
 }

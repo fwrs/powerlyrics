@@ -6,55 +6,24 @@
 //  Copyright © 2020 Ilya Kulinkovich. All rights reserved.
 //
 
-import Foundation
 import RealmSwift
 
-@objc enum RealmLikedSongGenre: Int, Codable, Equatable {
-    case rock
-    case classic
-    case rap
-    case country
-    case acoustic
-    case pop
-    case jazz
-    case edm
+// MARK: - Constants
+
+extension Constants {
     
-    case unknown = 99
+    static let unknownGenreID = 99
+    
 }
 
-extension RealmLikedSongGenre {
-    var localizedName: String {
-        switch self {
-        case .rock:
-            return "rock"
-        case .classic:
-            return "classic"
-        case .rap:
-            return "rap"
-        case .country:
-            return "country"
-        case .acoustic:
-            return "acoustic"
-        case .pop:
-            return "pop"
-        case .jazz:
-            return "jazz"
-        case .edm:
-            return "edm"
-        case .unknown:
-            return ":("
-        }
-        
-    }
-}
-
-typealias DefaultRealmLikedSongGenreAction = (RealmLikedSongGenre) -> Void
+// MARK: - RealmLikedSong
 
 class RealmLikedSong: Object {
-    @objc private dynamic var genreInt = 99
     
-    @objc dynamic var geniusID = 0
-    @objc dynamic var name = ""
+    @objc private dynamic var genreInt = Constants.unknownGenreID
+    
+    @objc dynamic var geniusID = Int.zero
+    @objc dynamic var name = String()
     @objc dynamic var thumbnailAlbumArtURL: String?
     @objc dynamic var albumArtURL: String?
     @objc dynamic var geniusURL: String?
@@ -66,6 +35,7 @@ class RealmLikedSong: Object {
         get { RealmLikedSongGenre(rawValue: genreInt)! }
         set { genreInt = newValue.rawValue }
     }
+    
 }
 
 extension RealmLikedSong {

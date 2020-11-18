@@ -6,8 +6,8 @@
 //  Copyright © 2020 Ilya Kulinkovich. All rights reserved.
 //
 
-import Foundation
-
 struct LyricsSectionCellViewModel {
-    let section: Shared.LyricsSection
+    
+    let section: SharedLyricsSection
+    
 }

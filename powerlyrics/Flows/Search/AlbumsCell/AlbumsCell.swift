@@ -11,10 +11,6 @@ import UIKit
 
 class AlbumsCell: TableViewCell {
     
-    fileprivate enum Constants {
-        static let albumArtShadowOpacity: Float = 0.3
-    }
-    
     @IBOutlet private weak var stackView: UIStackView!
     
     @IBOutlet private var albumArtContainerViews: [UIView]!
@@ -39,7 +35,7 @@ class AlbumsCell: TableViewCell {
                 color: .black,
                 radius: 6,
                 offset: CGSize(width: 0, height: 3),
-                opacity: Constants.albumArtShadowOpacity,
+                opacity: Constants.defaultShadowOpacity,
                 viewCornerRadius: 8,
                 viewSquircle: true
             )
@@ -101,8 +97,8 @@ extension AlbumContextInteractor: UIContextMenuInteractionDelegate {
         configurationForMenuAtLocation location: CGPoint
     ) -> UIContextMenuConfiguration? {
         guard imageView.loaded else { return nil }
-        UIView.animate(withDuration: 0.2, delay: 0.5) { [self] in
-            containerView.layer.shadowOpacity = 0
+        UIView.animate(withDuration: Constants.defaultAnimationDuration, delay: .half) { [self] in
+            containerView.layer.shadowOpacity = .zero
         }
         
         let controller = ImagePreviewController(fullSizeImage.0.fullSizeImages[fullSizeImage.1], placeholder: imageView.image)
@@ -143,14 +139,14 @@ extension AlbumContextInteractor: UIContextMenuInteractionDelegate {
         if error != nil {
             window?.topViewController?.present(UIAlertController(title: "Failed to save image", message: "Please check application permissions and try again.", preferredStyle: .alert).with { $0.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))}, animated: true, completion: nil)
         } else {
-            Haptic.play(".-O")
+            Haptic.play(Constants.successTaps)
             window?.topViewController?.present(UIAlertController(title: "Image saved successfuly", message: "Check your gallery to find it.", preferredStyle: .alert).with { $0.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))}, animated: true, completion: nil)
         }
     }
     
     func contextMenuInteraction(_ interaction: UIContextMenuInteraction, willEndFor configuration: UIContextMenuConfiguration, animator: UIContextMenuInteractionAnimating?) {
-        UIView.animate(withDuration: 0.2, delay: 0.3) { [self] in
-            containerView.layer.shadowOpacity = AlbumsCell.Constants.albumArtShadowOpacity
+        UIView.animate(withDuration: Constants.defaultAnimationDuration, delay: Constants.defaultAnimationDelay) { [self] in
+            containerView.layer.shadowOpacity = Constants.defaultShadowOpacity
         }
     }
     

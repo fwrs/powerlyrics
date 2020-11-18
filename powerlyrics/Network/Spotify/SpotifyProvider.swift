@@ -12,18 +12,48 @@ import SafariServices
 import Swinject
 import UIKit
 
+// MARK: - Constants
+
+fileprivate extension Constants {
+    
+    static let authorizationHeader = "Authorization"
+    
+    static let authorizationBasic = "Basic"
+    
+    static let authorizationBearer = "Bearer"
+    
+    static let code = "code"
+    
+    static let scopes = "user-read-private user-read-email user-library-modify user-library-read user-read-currently-playing user-read-playback-state"
+    
+    static let authorizeURL = "https://accounts.spotify.com/authorize"
+    
+}
+
+// MARK: - SpotifyProvider
+
 typealias SpotifyProvider = MoyaProvider<Spotify>
 
 extension SpotifyProvider {
     
-    private static let keychain: KeychainStorageProtocol = Config.getResolver().resolve(KeychainStorageProtocol.self)!
+    private static let keychainService: KeychainServiceProtocol = Config.getResolver().resolve(KeychainServiceProtocol.self)!
+    
+    private var keychainService: KeychainServiceProtocol {
+        SpotifyProvider.keychainService
+    }
+    
+    private static let realmService: RealmServiceProtocol = Config.getResolver().resolve(RealmServiceProtocol.self)!
+    
+    private var realmService: RealmServiceProtocol {
+        SpotifyProvider.realmService
+    }
     
     private static var token: SpotifyToken? {
         get {
-            keychain.getDecodable(for: .spotifyToken)
+            keychainService.getDecodable(for: .spotifyToken)
         }
         set {
-            keychain.setEncodable(newValue, for: .spotifyToken)
+            keychainService.setEncodable(newValue, for: .spotifyToken)
         }
     }
 
@@ -32,16 +62,22 @@ extension SpotifyProvider {
             var request = try! endpoint.urlRequest()
             
             if let accessToken = token?.accessToken, token?.isExpired == false {
-                request.setValue("Bearer \(accessToken)", forHTTPHeaderField: "Authorization")
+                request.setValue(
+                    "\(Constants.authorizationBearer) \(accessToken)",
+                    forHTTPHeaderField: Constants.authorizationHeader
+                )
             } else if let data = "\(Tokens.Spotify.clientID):\(Tokens.Spotify.clientSecret)".data(using: .utf8) {
-                request.setValue("Basic \(data.base64EncodedString(options: []))", forHTTPHeaderField: "Authorization")
+                request.setValue(
+                    "\(Constants.authorizationBasic) \(data.base64EncodedString(options: []))",
+                    forHTTPHeaderField: Constants.authorizationHeader
+                )
             }
             
             guard let currentToken = token else {
                 return closure(.success(request))
             }
             
-            if !currentToken.isExpired || endpoint.url.contains("/api/token") {
+            if !currentToken.isExpired || endpoint.url.contains(Spotify.newLocalToken.path) {
                 closure(.success(request))
                 return
             }
@@ -50,7 +86,7 @@ extension SpotifyProvider {
                 switch result {
                 case .success(let response):
                     token = SpotifyToken(data: response.data, refreshToken: token?.refreshToken) ?? token
-                    request.setValue("Bearer \((token?.accessToken).safe)", forHTTPHeaderField: "Authorization")
+                    request.setValue("\(Constants.authorizationBearer) \((token?.accessToken).safe)", forHTTPHeaderField: Constants.authorizationHeader)
                     closure(.success(request))
                 case .failure(let error):
                     closure(.failure(error))
@@ -62,9 +98,9 @@ extension SpotifyProvider {
     func handle(url: URL, finished: DefaultAction?) {
         if let urlComponents = URLComponents(string: url.absoluteString),
             let queryItems = urlComponents.queryItems,
-            let code = queryItems.first(where: { item in item.name == "code" })?.value {
+            let code = queryItems.first(where: { item in item.name == Constants.code })?.value {
             
-            Config.getResolver().resolve(SpotifyProvider.self)!.request(.newToken(authCode: code)) { result in
+            request(.newToken(authCode: code)) { result in
                 if case .success(let response) = result {
                     SpotifyProvider.token = SpotifyToken(data: response.data)
                     finished?()
@@ -74,12 +110,12 @@ extension SpotifyProvider {
     }
     
     func login(from presentingViewController: UIViewController) {
-        if let url = URL(string: "https://accounts.spotify.com/authorize")?.with(
+        if let url = URL(string: Constants.authorizeURL)?.with(
             parameters: [
                 "client_id": Tokens.Spotify.clientID,
-                "response_type": "code",
+                "response_type": Constants.code,
                 "redirect_uri": Tokens.Spotify.redirectURL,
-                "scope": "user-read-private user-read-email user-library-modify user-library-read user-read-currently-playing user-read-playback-state"
+                "scope": Constants.scopes
             ]
         ) {
             DispatchQueue.main.async {
@@ -92,11 +128,11 @@ extension SpotifyProvider {
     }
     
     func loginWithoutUser(completion: @escaping DefaultBoolAction) {
-        Config.getResolver().resolve(SpotifyProvider.self)!.request(.newLocalToken) { result in
+        request(.newLocalToken) { [self] result in
             if case .success(let response) = result {
                 SpotifyProvider.token = SpotifyToken(data: response.data)
                 completion(true)
-                SpotifyProvider.keychain.setEncodable(false, for: .spotifyAuthorizedWithAccount)
+                keychainService.setEncodable(false, for: .spotifyAuthorizedWithAccount)
                 return
             }
             completion(false)
@@ -105,10 +141,10 @@ extension SpotifyProvider {
     
     func logout(reset: Bool = true) {
         SpotifyProvider.token = nil
-        SpotifyProvider.keychain.delete(for: .spotifyToken)
-        SpotifyProvider.keychain.delete(for: .spotifyAuthorizedWithAccount)
+        keychainService.delete(for: .spotifyToken)
+        keychainService.delete(for: .spotifyAuthorizedWithAccount)
         
-        Realm.unsetUserData(reset: reset)
+        realmService.unsetUserData(reset: reset)
     }
     
     var loggedIn: Bool {

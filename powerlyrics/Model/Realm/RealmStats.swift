@@ -6,12 +6,11 @@
 //  Copyright © 2020 Ilya Kulinkovich. All rights reserved.
 //
 
-import Foundation
 import RealmSwift
 
 class RealmStats: Object {
 
-    @objc dynamic var searches = 0
+    @objc dynamic var searches = Int.zero
     
     let discoveries = List<Int>()
     let viewedArtists = List<Int>()

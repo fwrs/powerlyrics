@@ -47,6 +47,8 @@ class SearchViewModel: ViewModel {
     
     let geniusProvider: GeniusProvider
     
+    let realmService: RealmServiceProtocol
+    
     let trendsAreLoading = Observable(true)
     
     var latestSearchSongsRequest: ReactiveSwift.Disposable?
@@ -63,9 +65,10 @@ class SearchViewModel: ViewModel {
     
     private var searchAlbumsResult = [SpotifyAlbum]()
     
-    init(spotifyProvider: SpotifyProvider, geniusProvider: GeniusProvider) {
+    init(spotifyProvider: SpotifyProvider, geniusProvider: GeniusProvider, realmService: RealmServiceProtocol) {
         self.spotifyProvider = spotifyProvider
         self.geniusProvider = geniusProvider
+        self.realmService = realmService
     }
     
     func loadTrends() {
@@ -168,7 +171,7 @@ class SearchViewModel: ViewModel {
             
             nothingWasFound.value = topResultSection.isEmpty && songsSection.isEmpty && albumsSection.isEmpty
             
-            Realm.incrementSearchesStat()
+            realmService.incrementSearchesStat()
             
             items.set([
                 (.topResult, topResultSection),

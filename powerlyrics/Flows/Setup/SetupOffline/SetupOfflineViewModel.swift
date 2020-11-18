@@ -6,23 +6,25 @@
 //  Copyright © 2020 Ilya Kulinkovich. All rights reserved.
 //
 
-import Foundation
 import RealmSwift
 
 class SetupOfflineViewModel: ViewModel {
     
     let spotifyProvider: SpotifyProvider
     
-    init(spotifyProvider: SpotifyProvider) {
+    let realmService: RealmServiceProtocol
+    
+    init(spotifyProvider: SpotifyProvider, realmService: RealmServiceProtocol) {
         self.spotifyProvider = spotifyProvider
+        self.realmService = realmService
     }
     
     func saveLocalUserData(name: String, over18: Bool) {
-        Realm.saveUserData(name: name.clean.typographized, over18: over18)
+        realmService.saveUserData(name: name.clean.typographized, over18: over18)
     }
     
     func fail() {
-        Realm.unsetUserData()
+        realmService.unsetUserData()
     }
     
 }

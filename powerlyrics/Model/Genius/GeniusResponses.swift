@@ -6,11 +6,10 @@
 //  Copyright © 2020 Ilya Kulinkovich. All rights reserved.
 //
 
-import Foundation
-
 struct GeniusSearchResponse: Codable, Equatable {
     
     struct SearchResponseInner: Codable, Equatable {
+        
         enum HitType: String, Codable, Equatable {
             case song
         }
@@ -21,6 +20,7 @@ struct GeniusSearchResponse: Codable, Equatable {
         }
         
         let hits: [Hit]
+        
     }
     
     let response: SearchResponseInner

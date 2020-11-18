@@ -10,15 +10,33 @@ import Bond
 import ReactiveKit
 import UIKit
 
-class NoInternetView: UIView {
+// MARK: - Constants
+
+extension Constants {
+    
+    static let buttonTapDuration: TimeInterval = 0.08
+    
+    static let tryAgainText = "try again"
+    
+}
+
+// MARK: - NoInternetView
+
+class NoInternetView: View {
+    
+    // MARK: - Outlets
 
     @IBOutlet private weak var noInternetImageView: UIImageView!
     
     @IBOutlet private weak var subtitleLabel: UILabel!
     
+    // MARK: - Instance properties
+    
     let disposeBag = DisposeBag()
     
     var onRefresh: DefaultAction?
+    
+    // MARK: - Lifecycle
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -28,16 +46,16 @@ class NoInternetView: UIView {
 
         let attrString = NSMutableAttributedString(string: text)
         
-        attrString.addAttribute(.foregroundColor, value: UIColor.tintColor, range: NSString(string: text).range(of: "try again"))
+        attrString.addAttribute(.foregroundColor, value: UIColor.tintColor, range: NSString(string: text).range(of: Constants.tryAgainText))
         subtitleLabel.attributedText = attrString
         
         subtitleLabel.reactive.longPressGesture(minimumPressDuration: 0).observeNext { [self] recognizer in
             if recognizer.state == .ended || recognizer.state == .cancelled {
                 let attrString = NSMutableAttributedString(string: text)
                 
-                attrString.addAttribute(.foregroundColor, value: UIColor.tintColor, range: NSString(string: text).range(of: "try again"))
+                attrString.addAttribute(.foregroundColor, value: UIColor.tintColor, range: NSString(string: text).range(of: Constants.tryAgainText))
                 
-                UIView.transition(with: subtitleLabel, duration: 0.08, options: .transitionCrossDissolve) {
+                UIView.transition(with: subtitleLabel, duration: Constants.buttonTapDuration, options: .transitionCrossDissolve) {
                     subtitleLabel.attributedText = attrString
                 }
             }
@@ -46,9 +64,9 @@ class NoInternetView: UIView {
             case .began:
                 let attrString = NSMutableAttributedString(string: text)
                 
-                attrString.addAttribute(.foregroundColor, value: UIColor.highlightTintColor, range: NSString(string: text).range(of: "try again"))
+                attrString.addAttribute(.foregroundColor, value: UIColor.highlightTintColor, range: NSString(string: text).range(of: Constants.tryAgainText))
                 
-                UIView.transition(with: subtitleLabel, duration: 0.08, options: .transitionCrossDissolve) {
+                UIView.transition(with: subtitleLabel, duration: Constants.buttonTapDuration, options: .transitionCrossDissolve) {
                     subtitleLabel.attributedText = attrString
                 }
             case .ended:

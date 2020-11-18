@@ -29,7 +29,7 @@ class SongListViewController: ViewController, SongListScene {
     
     // MARK: - Flows
     
-    var flowLyrics: ((SharedSong, UIImage?) -> Void)?
+    var flowLyrics: DefaultSharedSongPreviewAction?
     
     // MARK: - Lifecycle
 
@@ -87,9 +87,7 @@ extension SongListViewController {
             tableView.isRefreshing = isRefreshing
         }.dispose(in: disposeBag)
         viewModel.isLoading.observeNext { [self] loading in
-            UIView.animate(withDuration: 0.35) {
-                activityIndicator.alpha = loading ? 1 : 0
-            }
+            activityIndicator.fadeDisplay(visible: loading)
             if loading {
                 tableView.unsetRefreshControl()
             } else {
@@ -102,7 +100,7 @@ extension SongListViewController {
         tableView.reactive.selectedRowIndexPath.observeNext { [self] indexPath in
             lastSelectedIndexPath = indexPath
             tableView.deselectRow(at: indexPath, animated: true)
-            Haptic.play(".")
+            Haptic.play(Constants.tinyTap)
             let item = viewModel.items[indexPath.row]
             if case .song(let songCellViewModel) = item {
                 flowLyrics?(songCellViewModel.song, (tableView.cellForRow(at: indexPath) as? SongCell)?.currentImage)

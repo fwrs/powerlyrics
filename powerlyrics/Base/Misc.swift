@@ -16,15 +16,15 @@ func delay(_ seconds: TimeInterval, execute: @escaping DefaultAction) {
 
 func times(_ n: Int) -> (DefaultAction) -> Void {
     { execute in
-        for _ in 0..<n {
+        for _ in .zero..<n {
             execute()
         }
     }
 }
 
-let twice = times(2)
+let twice = times(.two)
 
-let thrice = times(3)
+let thrice = times(.three)
 
 extension Collection {
     
@@ -37,7 +37,7 @@ extension Collection {
 extension Haptic {
     
     static func play(_ pattern: String) {
-        Haptic.play(pattern, delay: 0.1)
+        Haptic.play(pattern, delay: .oOne)
     }
     
 }
@@ -231,6 +231,10 @@ extension Bool {
         !self
     }
     
+    var sign: CGFloat {
+        self ? 1 : -1
+    }
+    
 }
 
 extension Int {
@@ -241,27 +245,13 @@ extension Int {
     
 }
 
-extension UIView {
-
-    static func loadFromNib(withOwner: Any? = nil, options: [UINib.OptionsKey: Any]? = nil) -> Self {
-        let bundle = Bundle(for: self)
-        let nib = UINib(nibName: "\(self)", bundle: bundle)
-
-        guard let view = nib.instantiate(withOwner: withOwner, options: options).first as? Self else {
-            fatalError("Could not load view from nib file.")
-        }
-        return view
-    }
-    
-}
-
 extension UIColor {
     
-    public func adjust(hueBy hue: CGFloat = 0, saturationBy saturation: CGFloat = 0, brightnessBy brightness: CGFloat = 0) -> UIColor {
-        var currentHue: CGFloat = 0.0
-        var currentSaturation: CGFloat = 0.0
-        var currentBrigthness: CGFloat = 0.0
-        var currentAlpha: CGFloat = 0.0
+    func adjust(hueBy hue: CGFloat = .one, saturationBy saturation: CGFloat = .one, brightnessBy brightness: CGFloat = .one) -> UIColor {
+        var currentHue = CGFloat.zero
+        var currentSaturation = CGFloat.zero
+        var currentBrigthness = CGFloat.zero
+        var currentAlpha = CGFloat.zero
         
         if getHue(&currentHue, saturation: &currentSaturation, brightness: &currentBrigthness, alpha: &currentAlpha) {
             return UIColor(hue: currentHue * hue,
@@ -271,6 +261,14 @@ extension UIColor {
         } else {
             return self
         }
+    }
+    
+    var transparent: UIColor {
+        withAlphaComponent(.zero)
+    }
+    
+    var cg: CGColor {
+        cgColor
     }
     
 }
@@ -324,7 +322,7 @@ public extension DispatchQueue {
 
 extension UIAlertController {
 
-    func addLoadingUI() {
+    func addLoadingUI(title: String) {
         let vc = UIViewController()
         let activityIndicator = UIActivityIndicatorView()
         activityIndicator.style = .medium
@@ -334,14 +332,14 @@ extension UIAlertController {
             activityIndicator.widthAnchor.constraint(equalToConstant: 20)
         ])
         let label = UILabel()
-        label.text = "Please wait"
+        label.text = title
         label.font = .systemFont(ofSize: 17, weight: .semibold)
         let stackView = UIStackView(arrangedSubviews: [activityIndicator, label])
         stackView.spacing = 8
         stackView.axis = .horizontal
         stackView.alignment = .center
         vc.preferredContentSize = CGSize(width: label.intrinsicContentSize.width + 28, height: 70)
-        stackView.frame = CGRect(x: 0, y: 0, width: label.intrinsicContentSize.width + 28, height: 70)
+        stackView.frame = CGRect(x: .zero, y: .zero, width: label.intrinsicContentSize.width + 28, height: 70)
         vc.view.addSubview(stackView)
         label.sizeToFit()
         self.setValue(vc, forKey: "contentViewController")
@@ -351,4 +349,197 @@ extension UIAlertController {
         self.setValue(nil, forKey: "contentViewController")
         self.dismiss(animated: false)
     }
+    
+}
+
+extension UIView {
+    
+    func fadeShow(duration: TimeInterval = Constants.defaultAnimationDuration, completion: DefaultAction? = nil) {
+        UIView.transition(with: self, duration: duration, options: .transitionCrossDissolve) { [self] in
+            isHidden = false
+        } completion: { _ in
+            completion?()
+        }
+    }
+    
+    func fadeHide(duration: TimeInterval = Constants.defaultAnimationDuration, completion: DefaultAction? = nil) {
+        UIView.transition(with: self, duration: duration, options: .transitionCrossDissolve) { [self] in
+            isHidden = true
+        } completion: { _ in
+            completion?()
+        }
+    }
+    
+    func fadeDisplay(visible: Bool, duration: TimeInterval = Constants.defaultAnimationDuration, completion: DefaultAction? = nil) {
+        UIView.transition(with: self, duration: duration, options: .transitionCrossDissolve) { [self] in
+            isHidden = !visible
+        } completion: { _ in
+            completion?()
+        }
+    }
+    
+    func fadeUpdate(duration: TimeInterval = Constants.defaultAnimationDelay, changes: DefaultAction?, completion: DefaultAction? = nil) {
+        UIView.transition(with: self, duration: duration, options: .transitionCrossDissolve) {
+            changes?()
+        } completion: { _ in
+            completion?()
+        }
+    }
+    
+    class func animate(withDuration duration: TimeInterval, options: UIView.AnimationOptions = [], animations: @escaping () -> Void, completion: ((Bool) -> Void)? = nil) {
+        UIView.animate(withDuration: duration, delay: .zero, options: options, animations: animations, completion: completion)
+    }
+    
+    class func animate(options: UIView.AnimationOptions = [], animations: @escaping () -> Void, completion: ((Bool) -> Void)? = nil) {
+        UIView.animate(withDuration: Constants.defaultAnimationDuration, delay: .zero, options: options, animations: animations, completion: completion)
+    }
+    
+}
+
+extension Int {
+    
+    static var one: Int {
+        1
+    }
+    
+    static var two: Int {
+        2
+    }
+    
+    static var three: Int {
+        3
+    }
+    
+}
+
+extension Float {
+    
+    static var fourth: Float {
+        0.25
+    }
+    
+    static var half: Float {
+        0.5
+    }
+    
+    static var threeFourths: Float {
+        0.75
+    }
+    
+    static var oOne: Float {
+        0.1
+    }
+    
+    static var oTwo: Float {
+        0.2
+    }
+    
+    static var oThree: Float {
+        0.3
+    }
+    
+    static var one: Float {
+        1
+    }
+    
+    static var oneHalfth: Float {
+        1.5
+    }
+    
+    static var two: Float {
+        2
+    }
+    
+    static var three: Float {
+        3
+    }
+    
+}
+
+extension Double {
+    
+    static var fourth: Double {
+        0.25
+    }
+    
+    static var half: Double {
+        0.5
+    }
+    
+    static var threeFourths: Double {
+        0.75
+    }
+    
+    static var oOne: Double {
+        0.1
+    }
+    
+    static var oTwo: Double {
+        0.2
+    }
+    
+    static var oThree: Double {
+        0.3
+    }
+    
+    static var one: Double {
+        1
+    }
+    
+    static var oneHalfth: Double {
+        1.5
+    }
+    
+    static var two: Double {
+        2
+    }
+    
+    static var three: Double {
+        3
+    }
+    
+}
+
+extension CGFloat {
+    
+    static var fourth: CGFloat {
+        0.25
+    }
+    
+    static var half: CGFloat {
+        0.5
+    }
+    
+    static var threeFourths: CGFloat {
+        0.75
+    }
+    
+    static var oOne: CGFloat {
+        0.1
+    }
+    
+    static var oTwo: CGFloat {
+        0.2
+    }
+    
+    static var oThree: CGFloat {
+        0.3
+    }
+    
+    static var one: CGFloat {
+        1
+    }
+    
+    static var oneHalfth: CGFloat {
+        1.5
+    }
+    
+    static var two: CGFloat {
+        2
+    }
+    
+    static var three: CGFloat {
+        3
+    }
+    
 }

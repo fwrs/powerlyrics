@@ -15,9 +15,11 @@ class LyricsViewModel: ViewModel {
     
     let geniusProvider: GeniusProvider
     
+    let realmService: RealmServiceProtocol
+    
     var song: SharedSong
     
-    let lyrics = MutableObservableArray<Shared.LyricsSection>()
+    let lyrics = MutableObservableArray<SharedLyricsSection>()
     
     let genre: Observable<RealmLikedSongGenre?> = Observable(nil)
     
@@ -39,8 +41,9 @@ class LyricsViewModel: ViewModel {
     
     let lyricsNotFound = Observable(false)
     
-    init(geniusProvider: GeniusProvider, song: SharedSong) {
+    init(geniusProvider: GeniusProvider, realmService: RealmServiceProtocol, song: SharedSong) {
         self.geniusProvider = geniusProvider
+        self.realmService = realmService
         self.song = song
     }
     
@@ -50,7 +53,7 @@ class LyricsViewModel: ViewModel {
             isFailed.value = true
         }
         
-        let onLyricsFetch: DefaultLyricsResultAction = { [self] result in
+        let onLyricsFetch: DefaultSharedLyricsResultAction = { [self] result in
             let newLyrics = result.lyrics
             genre.value = result.genre
             isLoading.value = false
@@ -78,10 +81,10 @@ class LyricsViewModel: ViewModel {
                         }
                         if let album = response.response.song.album {
                             self.album.value = album.name.clean.typographized
-                            Realm.incrementDiscoveriesStat(with: album.id)
+                            realmService.incrementDiscoveriesStat(with: album.id)
                         }
                         let artistId = response.response.song.primaryArtist.id
-                        Realm.incrementViewedArtistsStat(with: artistId)
+                        realmService.incrementViewedArtistsStat(with: artistId)
                         spotifyURL.value = response.response.song.media?.first { $0.provider == "spotify" }?.url
                         description.value = response.response.song.description?.plain
                     default:
@@ -93,7 +96,7 @@ class LyricsViewModel: ViewModel {
         if let geniusURL = song.geniusURL, let geniusID = song.geniusID {
             self.geniusURL = geniusURL
             self.geniusID = geniusID
-            isLiked.value = Realm.findLikedSong(geniusID: geniusID) != nil
+            isLiked.value = realmService.findLikedSong(geniusID: geniusID) != nil
             onSongFetch(geniusURL, geniusID)
             return
         }
@@ -114,7 +117,7 @@ class LyricsViewModel: ViewModel {
                     geniusURL = url
                     song.geniusID = geniusID
                     song.geniusURL = geniusURL
-                    isLiked.value = Realm.findLikedSong(geniusID: filteredData[0].result.id) != nil
+                    isLiked.value = realmService.findLikedSong(geniusID: filteredData[0].result.id) != nil
                     onSongFetch(url, id)
                 case .failed:
                     onFailure()
@@ -126,13 +129,13 @@ class LyricsViewModel: ViewModel {
     
     func likeSong() {
         guard let geniusID = geniusID, let geniusURL = geniusURL?.absoluteString, let genre = genre.value else { return }
-        Realm.like(song: song, genre: genre, geniusID: geniusID, geniusURL: geniusURL)
+        realmService.like(song: song, genre: genre, geniusID: geniusID, geniusURL: geniusURL)
         isLiked.value = true
     }
     
     func unlikeSong() {
         guard let geniusID = geniusID else { return }
-        Realm.unlike(geniusID: geniusID)
+        realmService.unlike(geniusID: geniusID)
         isLiked.value = false
     }
     

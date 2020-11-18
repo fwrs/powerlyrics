@@ -24,8 +24,12 @@ extension ReactiveExtensions where Base: LoadingButton {
     
 }
 
+// MARK: - LoadingButton
+
 class LoadingButton: UIButton {
-    
+
+    // MARK: - Instance properties
+
     var isLoading: Bool = false {
         didSet {
             changeLoadingState(isLoading: isLoading)
@@ -35,6 +39,8 @@ class LoadingButton: UIButton {
     private var storedTitleColor: UIColor?
     
     private(set) var activityView: UIActivityIndicatorView = .init(style: .medium)
+    
+    // MARK: - Init
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -48,6 +54,8 @@ class LoadingButton: UIButton {
         configure()
     }
     
+    // MARK: - Setup
+    
     private func configure() {
         activityView.hidesWhenStopped = true
         self.addSubview(activityView)
@@ -60,6 +68,8 @@ class LoadingButton: UIButton {
         ])
         storedTitleColor = titleColor(for: .normal)
     }
+    
+    // MARK: - Helper functions
     
     private func changeLoadingState(isLoading: Bool) {
         isEnabled = !isLoading

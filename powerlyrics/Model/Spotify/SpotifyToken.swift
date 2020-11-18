@@ -6,7 +6,7 @@
 //  Copyright © 2020 Ilya Kulinkovich. All rights reserved.
 //
 
-import Foundation
+import UIKit
 
 struct SpotifyToken: Codable {
     

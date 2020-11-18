@@ -8,6 +8,22 @@
 
 import UIKit
 
+fileprivate extension Constants {
+    
+    static let colorComponentsCount = 4
+    
+    static let maxColorValue: CGFloat = 255
+    
+    static let red = 0
+    
+    static let green = 1
+    
+    static let blue = 2
+    
+    static let alpha = 3
+    
+}
+
 extension UIImage {
     
     var averageColor: UIColor? {
@@ -27,37 +43,37 @@ extension UIImage {
         
         guard let outputImage = filter.outputImage else { return nil }
         
-        var bitmap = [UInt8](repeating: 0, count: 4)
+        var bitmap = [UInt8](repeating: .zero, count: Constants.colorComponentsCount)
         let context = CIContext(options: [.workingColorSpace: kCFNull!])
         
         context.render(
             outputImage,
             toBitmap: &bitmap,
-            rowBytes: 4,
+            rowBytes: Constants.colorComponentsCount,
             bounds: CGRect(
-                x: 0,
-                y: 0,
-                width: 1,
-                height: 1
+                x: .zero,
+                y: .zero,
+                width: CGFloat.one,
+                height: CGFloat.one
             ),
             format: .RGBA8,
             colorSpace: nil
         )
         
         return UIColor(
-            red: CGFloat(bitmap[0]) / 255,
-            green: CGFloat(bitmap[1]) / 255,
-            blue: CGFloat(bitmap[2]) / 255,
-            alpha: CGFloat(bitmap[3]) / 255
+            red: CGFloat(bitmap[Constants.red]) / Constants.maxColorValue,
+            green: CGFloat(bitmap[Constants.green]) / Constants.maxColorValue,
+            blue: CGFloat(bitmap[Constants.blue]) / Constants.maxColorValue,
+            alpha: CGFloat(bitmap[Constants.alpha]) / Constants.maxColorValue
         )
     }
     
     static func from(color: UIColor) -> UIImage {
-        let rect = CGRect(x: 0, y: 0, width: 1, height: 1)
+        let rect = CGRect(x: .zero, y: .zero, width: CGFloat.one, height: CGFloat.one)
         UIGraphicsBeginImageContext(rect.size)
         
         let context = UIGraphicsGetCurrentContext()
-        context!.setFillColor(color.cgColor)
+        context!.setFillColor(color.cg)
         context!.fill(rect)
         
         let img = UIGraphicsGetImageFromCurrentImageContext()
@@ -143,14 +159,14 @@ fileprivate extension Double {
         var C = M-fmin(_r,fmin(_g, _b))
         
         V = M
-        S = V == 0 ? 0:C/V
+        S = V == .zero ? .zero : C/V
         
         if minSaturation <= S {
             return self
         }
         
-        if C == 0 {
-            H = 0
+        if C == .zero {
+            H = .zero
         } else if _r == M {
             H = fmod((_g-_b)/C, 6)
         } else if _g == M {
@@ -159,7 +175,7 @@ fileprivate extension Double {
             H = 4+((_r-_g)/C)
         }
         
-        if H < 0 {
+        if H < .zero {
             H += 6
         }
 
@@ -171,31 +187,31 @@ fileprivate extension Double {
         case 0...1:
             R = C
             G = X
-            B = 0
+            B = Double.zero
         case 1...2:
             R = X
             G = C
-            B = 0
+            B = Double.zero
         case 2...3:
-            R = 0
+            R = Double.zero
             G = C
             B = X
         case 3...4:
-            R = 0
+            R = Double.zero
             G = X
             B = C
         case 4...5:
             R = X
-            G = 0
+            G = Double.zero
             B = C
         case 5..<6:
             R = C
-            G = 0
+            G = Double.zero
             B = X
         default:
-            R = 0
-            G = 0
-            B = 0
+            R = Double.zero
+            G = Double.zero
+            B = Double.zero
         }
         
         let m = V-C
@@ -228,7 +244,7 @@ extension UIImage {
         defer {
             UIGraphicsEndImageContext()
         }
-        self.draw(in: CGRect(x: 0, y: 0, width: newSize.width, height: newSize.height))
+        self.draw(in: CGRect(x: .zero, y: .zero, width: newSize.width, height: newSize.height))
         guard let result = UIGraphicsGetImageFromCurrentImageContext() else {
             fatalError("UIImageColors.resizeForUIImageColors failed: UIGraphicsGetImageFromCurrentImageContext returned nil.")
         }
@@ -305,15 +321,15 @@ extension UIImage {
         
         var proposedEdgeColor: UIImageColorsCounter
         if 0 < sortedColors.count {
-            proposedEdgeColor = sortedColors.object(at: 0) as! UIImageColorsCounter
+            proposedEdgeColor = sortedColors.object(at: .zero) as! UIImageColorsCounter
         } else {
-            proposedEdgeColor = UIImageColorsCounter(color: 0, count: 1)
+            proposedEdgeColor = UIImageColorsCounter(color: .zero, count: .one)
         }
         
-        if proposedEdgeColor.color.isBlackOrWhite && 0 < sortedColors.count {
+        if proposedEdgeColor.color.isBlackOrWhite && .zero < sortedColors.count {
             for i in 1..<sortedColors.count {
                 let nextProposedEdgeColor = sortedColors.object(at: i) as! UIImageColorsCounter
-                if Double(nextProposedEdgeColor.count)/Double(proposedEdgeColor.count) > 0.3 {
+                if Double(nextProposedEdgeColor.count)/Double(proposedEdgeColor.count) > .oThree {
                     if !nextProposedEdgeColor.color.isBlackOrWhite {
                         proposedEdgeColor = nextProposedEdgeColor
                         break
@@ -323,12 +339,12 @@ extension UIImage {
                 }
             }
         }
-        proposed[0] = proposedEdgeColor.color
+        proposed[.zero] = proposedEdgeColor.color
         
         enumerator = imageColors.objectEnumerator()
         sortedColors.removeAllObjects()
         sortedColors = NSMutableArray(capacity: imageColors.count)
-        let findDarkTextColor = !proposed[0].isDarkColor
+        let findDarkTextColor = !proposed.first.safe.isDarkColor
         
         while var next = enumerator.nextObject() as? Double {
             next = next.with(minSaturation: 0.15)

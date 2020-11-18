@@ -202,7 +202,7 @@
                                     <constraint firstAttribute="height" constant="0.40000000000000002" id="Gsd-aV-42b"/>
                                 </constraints>
                             </view>
-                            <activityIndicatorView opaque="NO" alpha="0.0" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="large" translatesAutoresizingMaskIntoConstraints="NO" id="8et-Yq-luJ">
+                            <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="large" translatesAutoresizingMaskIntoConstraints="NO" id="8et-Yq-luJ">
                                 <rect key="frame" x="0.0" y="270.5" width="414" height="120"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="120" id="mFl-go-Muc"/>

@@ -6,7 +6,6 @@
 //  Copyright © 2020 Ilya Kulinkovich. All rights reserved.
 //
 
-import Foundation
 import UIKit
 
 extension Optional where Wrapped == String {
@@ -80,6 +79,19 @@ extension Optional where Wrapped == CGFloat {
         switch self {
         case .none:
             return 0
+        case .some(let value):
+            return value
+        }
+    }
+    
+}
+
+extension Optional where Wrapped == UIColor {
+    
+    var safe: Wrapped {
+        switch self {
+        case .none:
+            return .clear
         case .some(let value):
             return value
         }

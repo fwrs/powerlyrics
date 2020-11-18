@@ -10,7 +10,11 @@ import UIKit
 
 class ActionCell: TableViewCell {
     
+    // MARK: - Outlets
+    
     @IBOutlet private weak var actionLabel: UILabel!
+    
+    // MARK: - Configure
     
     func configure(with viewModel: ActionCellViewModel) {
         actionLabel.text = viewModel.action.localizedTitle

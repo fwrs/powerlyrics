@@ -18,7 +18,11 @@ class LyricsAssembly: Assembly {
     override func assemble(container: Container) {
         
         container.register(LyricsViewModel.self) { (resolver, song: SharedSong) in
-            LyricsViewModel(geniusProvider: resolver.resolve(GeniusProvider.self)!, song: song)
+            LyricsViewModel(
+                geniusProvider: resolver.resolve(GeniusProvider.self)!,
+                realmService: resolver.resolve(RealmServiceProtocol.self)!,
+                song: song
+            )
         }
         
         container.register(LyricsScene.self) { (resolver, song: SharedSong, albumArtThumbnail: UIImage?) in

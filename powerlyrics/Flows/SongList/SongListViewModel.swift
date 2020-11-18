@@ -21,6 +21,8 @@ class SongListViewModel: ViewModel {
     
     let spotifyProvider: SpotifyProvider
     
+    let realmService: RealmServiceProtocol
+    
     let title = Observable(String())
     
     let items = MutableObservableArray<SongListCell>()
@@ -29,9 +31,10 @@ class SongListViewModel: ViewModel {
     
     let isLoadingWithPreview = Observable(false)
     
-    init(flow: SongListFlow, spotifyProvider: SpotifyProvider) {
+    init(flow: SongListFlow, spotifyProvider: SpotifyProvider, realmService: RealmServiceProtocol) {
         self.flow = flow
         self.spotifyProvider = spotifyProvider
+        self.realmService = realmService
         super.init()
         updateTitle()
     }
@@ -115,7 +118,7 @@ class SongListViewModel: ViewModel {
             if refresh {
                 startLoading(refresh)
             }
-            let likedSongs = Realm.likedSongs()
+            let likedSongs = realmService.likedSongs()
             items.replace(with: likedSongs.map { .song(SongCellViewModel(song: $0.asSharedSong, accessory: .likeLogo)) }, performDiff: true)
             endLoading(refresh)
         }

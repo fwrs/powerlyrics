@@ -8,6 +8,12 @@
 
 import UIKit
 
+extension Constants {
+    
+    static let contextMenuFadeOutDelay: TimeInterval = 0.8
+    
+}
+
 class LyricsSectionCell: TableViewCell {
     
     @IBOutlet private weak var nameLabel: UILabel!
@@ -50,7 +56,7 @@ extension LyricsSectionCell: UIContextMenuInteractionDelegate {
             let text = contentsLabel.text
             UIPasteboard.general.string = text
         }
-        UIView.animate(withDuration: 0.1, delay: 0.1) { [self] in
+        UIView.animate(withDuration: .oOne, delay: .oOne) { [self] in
             backgroundColor = .systemBackground
         }
         return UIContextMenuConfiguration(
@@ -63,7 +69,7 @@ extension LyricsSectionCell: UIContextMenuInteractionDelegate {
     }
     
     func contextMenuInteraction(_ interaction: UIContextMenuInteraction, willEndFor configuration: UIContextMenuConfiguration, animator: UIContextMenuInteractionAnimating?) {
-        UIView.animate(withDuration: 0.15, delay: 0.8) { [self] in
+        UIView.animate(withDuration: .oneHalfth * .oOne, delay: Constants.contextMenuFadeOutDelay) { [self] in
             backgroundColor = .clear
         }
     }

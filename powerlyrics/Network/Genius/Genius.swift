@@ -8,6 +8,16 @@
 
 import Moya
 
+// MARK: - Constants
+
+fileprivate extension Constants {
+    
+    static let plainTextFormat = "plain"
+    
+}
+
+// MARK: - Genius
+
 enum Genius: TargetType {
     
     // MARK: - Requests
@@ -46,7 +56,7 @@ enum Genius: TargetType {
             ], encoding: URLEncoding.queryString)
         case .getSong:
             return .requestParameters(parameters: [
-                "text_format": "plain"
+                "text_format": Constants.plainTextFormat
             ], encoding: URLEncoding.queryString)
         }
     }

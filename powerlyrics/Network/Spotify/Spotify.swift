@@ -8,6 +8,28 @@
 
 import Moya
 
+// MARK: - Constants
+
+fileprivate extension Constants {
+    
+    static let trendingSongsPlaylistID = "37i9dQZEVXbMDoHDwVN2tF"
+    
+    static let viralSongsPlaylistID = "37i9dQZEVXbLiRSasKsNU9"
+    
+    static let refreshTokenCode = "refresh_token"
+    
+    static let authorizationCode = "authorization_code"
+    
+    static let clientCredentialsCode = "client_credentials"
+    
+    static let albumSearchType = "album"
+    
+    static let defaultAlbumSearchLimit = 3
+    
+}
+
+// MARK: - Spotify
+
 enum Spotify: TargetType {
     
     // MARK: - Requests
@@ -23,8 +45,8 @@ enum Spotify: TargetType {
     case getArtist(artistID: String)
     case userInfo
     
-    static let trendingSongs = Spotify.playlistSongs(playlistID: "37i9dQZEVXbMDoHDwVN2tF")
-    static let viralSongs = Spotify.playlistSongs(playlistID: "37i9dQZEVXbLiRSasKsNU9")
+    static let trendingSongs = Spotify.playlistSongs(playlistID: Constants.trendingSongsPlaylistID)
+    static let viralSongs = Spotify.playlistSongs(playlistID: Constants.viralSongsPlaylistID)
     
     // MARK: - Requests Data
     
@@ -73,26 +95,26 @@ enum Spotify: TargetType {
         switch self {
         case .refreshToken(let oldToken):
             return .requestParameters(parameters: [
-                "grant_type": "refresh_token",
+                "grant_type": Constants.refreshTokenCode,
                 "refresh_token": oldToken.refreshToken.safe
             ], encoding: URLEncoding.httpBody)
         case .newToken(let authCode):
             return .requestParameters(parameters: [
                 "client_id": Tokens.Spotify.clientID,
                 "client_secret": Tokens.Spotify.clientSecret,
-                "grant_type": "authorization_code",
+                "grant_type": Constants.authorizationCode,
                 "code": authCode,
                 "redirect_uri": Tokens.Spotify.redirectURL
             ], encoding: URLEncoding.httpBody)
         case .newLocalToken:
             return .requestParameters(parameters: [
-                "grant_type": "client_credentials"
+                "grant_type": Constants.clientCredentialsCode
             ], encoding: URLEncoding.httpBody)
         case .searchAlbums(let query):
             return .requestParameters(parameters: [
                 "q": query,
-                "type": "album",
-                "limit": 3
+                "type": Constants.albumSearchType,
+                "limit": Constants.defaultAlbumSearchLimit
             ], encoding: URLEncoding.queryString)
         default:
             return .requestPlain

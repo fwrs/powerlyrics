@@ -6,8 +6,6 @@
 //  Copyright © 2020 Ilya Kulinkovich. All rights reserved.
 //
 
-import Foundation
-
 struct GeniusArtist: Codable, Equatable {
     
     let id: Int

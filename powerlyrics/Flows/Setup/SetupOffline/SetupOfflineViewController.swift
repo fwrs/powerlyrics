@@ -56,7 +56,7 @@ class SetupOfflineViewController: ViewController, SetupOfflineScene {
     
     override func keyboardWillShow(notification: Notification) {
         super.keyboardWillShow(notification: notification)
-        UIView.animate(withDuration: 0.2) { [self] in
+        UIView.animate { [self] in
             brandingStackView.transform = .init(translationX: 0, y: -(UIScreen.main.bounds.height / 30))
             formStackView.transform = .init(translationX: 0, y: -(UIScreen.main.bounds.height / 17))
             buttonsStackView.transform = .init(translationX: 0, y: UIScreen.main.bounds.height / 2)
@@ -66,7 +66,7 @@ class SetupOfflineViewController: ViewController, SetupOfflineScene {
     
     override func keyboardWillHide(notification: Notification) {
         super.keyboardWillHide(notification: notification)
-        UIView.animate(withDuration: 0.2) { [self] in
+        UIView.animate { [self] in
             brandingStackView.transform = .identity
             formStackView.transform = .identity
             buttonsStackView.transform = .identity

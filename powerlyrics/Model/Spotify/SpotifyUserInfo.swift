@@ -6,10 +6,10 @@
 //  Copyright © 2020 Ilya Kulinkovich. All rights reserved.
 //
 
-import Foundation
-
 struct SpotifyUserInfo: Codable {
+    
     struct ExplicitContentSettings: Codable {
+        
         let filterEnabled: Bool
         let filterLocked: Bool
         
@@ -17,6 +17,7 @@ struct SpotifyUserInfo: Codable {
             case filterEnabled = "filter_enabled"
             case filterLocked = "filter_locked"
         }
+        
     }
     
     enum Product: String, Codable {
@@ -42,4 +43,5 @@ struct SpotifyUserInfo: Codable {
         case explicitContent = "explicit_content"
         case displayName = "display_name"
     }
+    
 }

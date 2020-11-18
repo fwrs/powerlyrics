@@ -41,9 +41,9 @@ class SearchViewController: ViewController, SearchScene {
     
     // MARK: - Flows
     
-    var flowLyrics: ((SharedSong, UIImage?) -> Void)?
+    var flowLyrics: DefaultSharedSongPreviewAction?
     
-    var flowAlbum: ((SpotifyAlbum) -> Void)?
+    var flowAlbum: DefaultSpotifyAlbumAction?
     
     // MARK: - Lifecycle
 
@@ -96,51 +96,25 @@ extension SearchViewController {
     
     func setupObservers() {
         viewModel.trendsFailed.observeNext { [self] failed in
-            UIView.transition(
-                with: trendsFailStackView,
-                duration: 0.3,
-                options: .transitionCrossDissolve,
-                animations: {
-                    trendsFailStackView.isHidden = !failed
-                }
-            )
+            trendsFailStackView.fadeDisplay(visible: failed)
         }.dispose(in: disposeBag)
         viewModel.internetError.observeNext { [self] isError in
             setNoInternetView(isVisible: isError) {
                 let text = searchController.searchBar.text.safe
                 viewModel.search(for: text)
             }
-            UIView.transition(
-                with: noResultsView,
-                duration: 0.3,
-                options: .transitionCrossDissolve,
-                animations: {
-                    noResultsView.isHidden = isError || !searchController.searchBar.text.safe.isEmpty
-                }
-            )
+            noResultsView.fadeDisplay(visible: !isError && searchController.searchBar.text.safe.isEmpty)
         }.dispose(in: disposeBag)
-        searchController.searchBar.reactive.text.compactMap { $0 }.dropFirst(1).debounce(for: 0.3, queue: .main).observeNext { [self] query in
+        searchController.searchBar.reactive.text.compactMap { $0 }.dropFirst(1).debounce(for: Constants.buttonThrottleTime, queue: .main).observeNext { [self] query in
             viewModel.search(for: query)
-            UIView.transition(
-                with: noResultsView,
-                duration: 0.3,
-                options: .transitionCrossDissolve,
-                animations: {
-                    noResultsView.isHidden = !query.isEmpty
-                }
-            )
+            noResultsView.fadeDisplay(visible: query.isEmpty)
         }.dispose(in: disposeBag)
         
         combineLatest(viewModel.items, viewModel.isLoading, viewModel.isRefreshing, viewModel.internetError).observeNext { [self] songs, isLoading, isRefreshing, isError in
             if isError { return }
-            UIView.transition(
-                with: noResultsView,
-                duration: 0.3,
-                options: .transitionCrossDissolve,
-                animations: {
-                    noResultsView.isHidden = isLoading || isRefreshing || (songs.collection.numberOfSections > 0 && songs.collection.numberOfItems(inSection: 0) > 0)
-                }
-            )
+            noResultsView.fadeDisplay(visible: !isLoading && !isRefreshing &&
+                (songs.collection.numberOfSections == .zero ||
+                    songs.collection.numberOfItems(inSection: .zero) == .zero))
         }.dispose(in: disposeBag)
         
         viewModel.trendsAreLoading.map(\.negated).bind(to: trendsActivityIndicator.reactive.isHidden).dispose(in: disposeBag)
@@ -153,9 +127,9 @@ extension SearchViewController {
                 tableView.isUserInteractionEnabled = false
                 tableView.isScrollEnabled = false
             }
-            UIView.animate(withDuration: 0.1, delay: 0, options: .curveEaseOut) {
-                activityIndicator.alpha = loading ? 1 : 0
-                tableView.alpha = loading ? 0.3 : 1
+            activityIndicator.fadeDisplay(visible: loading, duration: .oOne)
+            UIView.animate(withDuration: .oOne, delay: .zero, options: .curveEaseOut) {
+                tableView.alpha = loading ? .oThree : .one
             } completion: { _ in
                 if !loading {
                     tableView.isUserInteractionEnabled = true
@@ -178,7 +152,7 @@ extension SearchViewController {
         tableView.reactive.selectedRowIndexPath.observeNext { [self] indexPath in
             lastSelectedIndexPath = indexPath
             tableView.deselectRow(at: indexPath, animated: true)
-            Haptic.play(".")
+            Haptic.play(Constants.tinyTap)
             let item = viewModel.items[itemAt: indexPath]
             if case .song(let songViewModel) = item {
                 flowLyrics?(songViewModel.song, (tableView.cellForRow(at: indexPath) as? SongCell)?.currentImage)
@@ -188,15 +162,8 @@ extension SearchViewController {
         viewModel.trends.bind(to: trendsCollectionView, cellType: TrendCell.self) { cell, cellViewModel in
             cell.configure(with: cellViewModel)
             cell.didTap = { [self] in
-                Haptic.play(".")
-                UIView.transition(
-                    with: noResultsView,
-                    duration: 0.3,
-                    options: .transitionCrossDissolve,
-                    animations: {
-                        noResultsView.isHidden = true
-                    }
-                )
+                Haptic.play(Constants.tinyTap)
+                noResultsView.fadeHide()
                 let query = "\(cellViewModel.song.name) - \(cellViewModel.song.artists.first.safe)"
                 searchController.searchBar.text = query
                 searchController.isActive = true
@@ -215,14 +182,7 @@ extension SearchViewController: UISearchBarDelegate {
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         guard !viewModel.isLoading.value && !viewModel.isRefreshing.value else { return }
         viewModel.reset()
-        UIView.transition(
-            with: noResultsView,
-            duration: 0.3,
-            options: .transitionCrossDissolve,
-            animations: { [self] in
-                noResultsView.isHidden = false
-            }
-        )
+        noResultsView.fadeShow()
         searchBar.setShowsCancelButton(false, animated: true)
     }
     

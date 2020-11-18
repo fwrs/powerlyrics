@@ -8,9 +8,19 @@
 
 import UIKit
 
+fileprivate extension Constants {
+    
+    static let baseInset: CGFloat = 95
+    
+    static let chartAnimationTimingFunction = CAMediaTimingFunction(controlPoints: 0.075, 0.82, 0.165, 1)
+    
+    static let chartAnimationDelayGrowth: Double = 20
+    
+}
+
 class GenreMapView: UIView {
     
-    var values = [CGFloat]()
+    var values: [CGFloat] = Constants.baseLikedSongCounts
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -22,25 +32,25 @@ class GenreMapView: UIView {
         addBehavior()
     }
     
-    func roseGraph(inset: CGFloat, rect: CGRect, values: [CGFloat]) -> UIBezierPath {
-        let xCenter = rect.origin.x + rect.size.height / 2
-        let yCenter = rect.origin.y + rect.size.width / 2
+    func radarChart(inset: CGFloat, rect: CGRect, values: [CGFloat]) -> UIBezierPath {
+        let xCenter = rect.origin.x + rect.size.height / .two
+        let yCenter = rect.origin.y + rect.size.width / .two
         
         let width: CGFloat = rect.size.width - inset
-        let radius: CGFloat = width / 2.0
+        let radius: CGFloat = width / .two
         
-        let things: CGFloat = 8
+        let vertices = CGFloat(RealmLikedSongGenre.total)
         
-        let theta = .pi * (2.0 / things)
+        let theta = .pi * (.two / vertices)
         
         let path = UIBezierPath()
         
-        path.move(to: CGPoint(x: xCenter, y: yCenter-CGFloat(radius * values[0])))
+        path.move(to: CGPoint(x: xCenter, y: yCenter - CGFloat(radius * values.first.safe)))
         
-        for i in 1...Int(things) {
-            let localRadius = values[i - 1]
-            let x = (radius * localRadius) * sin((things - CGFloat(i) - 3) * theta)
-            let y = (radius * localRadius) * cos((things - CGFloat(i) - 3) * theta)
+        for i in .one...Int(vertices) {
+            let localRadius = values[i - .one]
+            let x = (radius * localRadius) * sin((vertices - CGFloat(i) - .three) * theta)
+            let y = (radius * localRadius) * cos((vertices - CGFloat(i) - .three) * theta)
             
             let x1: CGFloat = x+xCenter
             let y1: CGFloat = y+yCenter
@@ -56,51 +66,46 @@ class GenreMapView: UIView {
 
     func addBehavior() {
         shapeLayer?.removeFromSuperlayer()
-        let baseInset: CGFloat = 95
-        let path = roseGraph(inset: baseInset, rect: bounds, values: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0].map { _ in 0 })
+        let baseInset = Constants.baseInset
+        let path = radarChart(inset: baseInset, rect: bounds, values: Constants.baseLikedSongCounts)
         shapeLayer = CAShapeLayer()
 
         shapeLayer.path = path.cgPath
         
-        let color: [CGFloat] = [ 234.0 / 255.0, 174.0 / 255.0, 127.0 / 255.0, 1.0 ]
-        let aColor = CGColor(colorSpace: CGColorSpaceCreateDeviceRGB(), components: color)!
-        let fillColor: [CGFloat] = [ 234.0 / 255.0, 174.0 / 255.0, 127.0 / 255.0, 0.3 ]
-        let aFillColor = CGColor(colorSpace: CGColorSpaceCreateDeviceRGB(), components: fillColor)!
+        shapeLayer.strokeColor = UIColor.tintColor.cg
+        shapeLayer.fillColor = UIColor.tintColor.withAlphaComponent(.oThree).cg
         
-        shapeLayer.strokeColor = aColor
-        shapeLayer.fillColor = aFillColor
-        
-        shapeLayer.lineWidth = 2.0
+        shapeLayer.lineWidth = .two
         shapeLayer.position = .zero
 
         self.layer.addSublayer(shapeLayer)
     }
     
-    var oldValues: [CGFloat] = [0, 0, 0, 0, 0, 0, 0, 0]
+    var oldValues = Constants.baseLikedSongCounts
     
     func animatePathChange(fast: Bool = false) {
-        var prevDelay = 0.0
+        var prevDelay = Double.zero
         let group = DispatchGroup()
         for i in 0..<8 {
             group.enter()
-            delay((prevDelay + pow(fast ? 0.3 : 0.9, Double(i+1))) / 20) { [self] in
-                let baseInset: CGFloat = 95
-                let newPath = roseGraph(inset: baseInset, rect: bounds, values: values.enumerated().map { $0 > i ? oldValues[$0] : CGFloat($1) }).cgPath
+            delay((prevDelay + pow(fast ? .oThree : .oThree * .three, Double(i + .one))) / Constants.chartAnimationDelayGrowth) { [self] in
+                let baseInset: CGFloat = Constants.baseInset
+                let newPath = radarChart(inset: baseInset, rect: bounds, values: values.enumerated().map { $0 > i ? oldValues[$0] : CGFloat($1) }).cgPath
                 let animation = CABasicAnimation(keyPath: "path")
-                animation.duration = 0.5
+                animation.duration = .half
                 animation.fromValue = shapeLayer.presentation()?.path
                 animation.toValue = newPath
-                animation.timingFunction = CAMediaTimingFunction(controlPoints: 0.075, 0.82, 0.165, 1)
+                animation.timingFunction = Constants.chartAnimationTimingFunction
                 animation.fillMode = .forwards
                 animation.isRemovedOnCompletion = false
                 shapeLayer.path = shapeLayer.presentation()?.path
                 shapeLayer.removeAllAnimations()
                 shapeLayer.add(animation, forKey: "path")
-                delay(0.5) {
+                delay(.half) {
                     group.leave()
                 }
             }
-            prevDelay += pow(fast ? 0.3 : 0.9, Double(i+1))
+            prevDelay += pow(fast ? .oThree : .oThree * .three, Double(i+1))
         }
         group.notify(queue: .main) { [self] in
             oldValues = values

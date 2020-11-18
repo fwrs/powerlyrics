@@ -6,17 +6,17 @@
 //  Copyright © 2020 Ilya Kulinkovich. All rights reserved.
 //
 
-import Foundation
-
 struct SpotifyPlaylistSong: Codable, Equatable {
     
     let track: SpotifySong
     let isLocal: Bool
     
     private enum CodingKeys: String, CodingKey {
+        
         case track
         
         case isLocal = "is_local"
+        
     }
     
 }

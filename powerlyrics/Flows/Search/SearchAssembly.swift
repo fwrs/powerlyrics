@@ -10,8 +10,8 @@ import Swinject
 import UIKit
 
 protocol SearchScene: ViewController {
-    var flowLyrics: ((SharedSong, UIImage?) -> Void)? { get set }
-    var flowAlbum: ((SpotifyAlbum) -> Void)? { get set }
+    var flowLyrics: DefaultSharedSongPreviewAction? { get set }
+    var flowAlbum: DefaultSpotifyAlbumAction? { get set }
 }
 
 class SearchAssembly: Assembly {
@@ -21,7 +21,8 @@ class SearchAssembly: Assembly {
         container.register(SearchViewModel.self) { resolver in
             SearchViewModel(
                 spotifyProvider: resolver.resolve(SpotifyProvider.self)!,
-                geniusProvider: resolver.resolve(GeniusProvider.self)!
+                geniusProvider: resolver.resolve(GeniusProvider.self)!,
+                realmService: resolver.resolve(RealmServiceProtocol.self)!
             )
         }
         

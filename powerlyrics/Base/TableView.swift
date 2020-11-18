@@ -35,7 +35,7 @@ class TableView: UITableView {
     
     // MARK: - Public API
     
-    @discardableResult func setRefreshControl(top: CGFloat = 0, _ completion: @escaping DefaultAction) -> UIRefreshControl {
+    @discardableResult func setRefreshControl(top: CGFloat = .zero, _ completion: @escaping DefaultAction) -> UIRefreshControl {
         if let control = customRefreshControl { return control }
         refreshControlHandle = completion
         let newControl = UIRefreshControl()
@@ -47,9 +47,9 @@ class TableView: UITableView {
         return newControl
     }
     
-    @discardableResult func setRefreshControl(top: CGFloat = 0) -> UIRefreshControl {
+    @discardableResult func setRefreshControl(top: CGFloat = .zero) -> UIRefreshControl {
         setRefreshControl(top: top) { [self] in
-            delay(0.5) {
+            delay(.half) {
                 set(refreshing: false)
             }
         }

@@ -6,7 +6,15 @@
 //  Copyright © 2020 Ilya Kulinkovich. All rights reserved.
 //
 
-import Foundation
+fileprivate extension Constants {
+    
+    static let okRange: Range<Float> = 0.2..<0.45
+    
+    static let goodRange: Range<Float> = 0.45..<0.8
+    
+    static let overwhelmingRange: PartialRangeFrom<Float> = 0.8...
+    
+}
 
 enum GenreInfoLevel {
     case low
@@ -15,20 +23,20 @@ enum GenreInfoLevel {
     case overwhelming
     
     init(count: Int, average: Float) {
-        if count == 1 {
+        if count == .one {
             self = .low
             return
         }
-        if count < 3 {
+        if count < .three {
             self = .ok
             return
         }
         switch Float(count) / average {
-        case 0.2..<0.45:
+        case Constants.okRange:
             self = .ok
-        case 0.45..<0.8:
+        case Constants.goodRange:
             self = .good
-        case 0.8...:
+        case Constants.overwhelmingRange:
             self = .overwhelming
         default:
             self = .low

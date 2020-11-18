@@ -6,16 +6,14 @@
 //  Copyright © 2020 Ilya Kulinkovich. All rights reserved.
 //
 
-import Foundation
-
 struct StatsCellViewModel: Equatable {
     
-    var likedSongs: Int = 0
+    var likedSongs = Int.zero
     
-    var searches: Int = 0
+    var searches = Int.zero
     
-    var discoveries: Int = 0
+    var discoveries = Int.zero
     
-    var viewedArtists: Int = 0
+    var viewedArtists = Int.zero
     
 }

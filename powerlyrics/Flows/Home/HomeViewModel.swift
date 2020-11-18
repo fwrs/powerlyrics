@@ -10,7 +10,10 @@ import Bond
 import ReactiveKit
 import RealmSwift
 
+// MARK: - HomeSection
+
 enum HomeSection: Equatable {
+    
     case nowPlaying
     case trending
     case viral
@@ -28,39 +31,65 @@ enum HomeSection: Equatable {
             return "Liked Today"
         }
     }
+    
 }
+
+// MARK: - HomeCell
+
+enum HomeCell: Equatable {
+    
+    case song(SongCellViewModel)
+    case action(ActionCellViewModel)
+    
+}
+
+// MARK: - HomeViewModel
 
 class HomeViewModel: ViewModel {
     
+    // MARK: - DI
+    
     let spotifyProvider: SpotifyProvider
+    
+    let realmService: RealmServiceProtocol
+    
+    let keychainService: KeychainServiceProtocol
+    
+    // MARK: - Instance properties
     
     let items = MutableObservableArray2D(Array2D<HomeSection, HomeCell>())
     
-    private var currentlyPlayingSong = [SharedSong]()
+    var currentlyPlayingSong = [SharedSong]()
     
     var trendingSongs = [SharedSong]()
     
     var viralSongs = [SharedSong]()
     
-    let isError = Observable(false)
-    
-    let isSpotifyAccount = Observable(true)
-    
-    init(spotifyProvider: SpotifyProvider) {
-        self.spotifyProvider = spotifyProvider
-    }
+    var isFailed = true
     
     var shouldSignUp: Bool {
         !spotifyProvider.loggedIn
     }
     
-    private var fails = true
+    // MARK: - Observables
     
-    func checkSpotifyAccount() {
-        let isSpotifyAccount: Bool? = (Config.getResolver().resolve(KeychainStorageProtocol.self)!.getDecodable(for: .spotifyAuthorizedWithAccount) as Bool?)
-        
-        self.isSpotifyAccount.value = isSpotifyAccount == true
+    let isError = Observable(false)
+    
+    let isSpotifyAccount = Observable(true)
+    
+    // MARK: - Init
+    
+    init(
+        spotifyProvider: SpotifyProvider,
+        realmService: RealmServiceProtocol,
+        keychainService: KeychainServiceProtocol
+    ) {
+        self.spotifyProvider = spotifyProvider
+        self.realmService = realmService
+        self.keychainService = keychainService
     }
+    
+    // MARK: - Load data
 
     func loadData(refresh: Bool = false) {
         startLoading(refresh)
@@ -68,7 +97,7 @@ class HomeViewModel: ViewModel {
         
         let group = DispatchGroup()
         
-        fails = true
+        isFailed = true
         
         group.enter()
         spotifyProvider.reactive
@@ -79,7 +108,7 @@ class HomeViewModel: ViewModel {
                 case .value(let response):
                     currentlyPlayingSong = [response.item.asSharedSong]
                     group.leave()
-                    fails = false
+                    isFailed = false
                 case .failed:
                     currentlyPlayingSong = .init()
                     group.leave()
@@ -97,7 +126,7 @@ class HomeViewModel: ViewModel {
                 case .value(let response):
                     trendingSongs = response.items.map(\.asSharedSong)
                     group.leave()
-                    fails = false
+                    isFailed = false
                 case .failed:
                     group.leave()
                 default:
@@ -114,7 +143,7 @@ class HomeViewModel: ViewModel {
                 case .value(let response):
                     viralSongs = response.items.map(\.asSharedSong)
                     group.leave()
-                    fails = false
+                    isFailed = false
                 case .failed:
                     group.leave()
                 default:
@@ -129,8 +158,16 @@ class HomeViewModel: ViewModel {
         }
     }
     
+    // MARK: - Helper methods
+    
+    func checkSpotifyAccount() {
+        let isSpotifyAccount: Bool? = keychainService.getDecodable(for: .spotifyAuthorizedWithAccount)
+        
+        self.isSpotifyAccount.value = isSpotifyAccount == true
+    }
+    
     func updateState() {
-        if fails {
+        if isFailed {
             isError.value = true
             items.set([])
             return
@@ -144,7 +181,7 @@ class HomeViewModel: ViewModel {
             trendingSongsSection.append(.action(ActionCellViewModel(action: .seeTrendingSongs)))
         }
         
-        let likedToday = Realm.likedSongs().filter { Calendar.current.isDateInToday($0.likeDate) }
+        let likedToday = realmService.likedSongs().filter { Calendar.current.isDateInToday($0.likeDate) }
         
         let likedTodaySection = likedToday.map { HomeCell.song(SongCellViewModel(song: $0.asSharedSong, accessory: .likeLogo)) }
         
@@ -163,3 +200,33 @@ class HomeViewModel: ViewModel {
     }
     
 }
+
+// MARK: - HomeBinder
+
+class HomeBinder<Changeset: SectionedDataSourceChangeset>: TableViewBinderDataSource<Changeset> where Changeset.Collection == Array2D<HomeSection, HomeCell> {
+
+    override init() {
+        super.init { (items, indexPath, uiTableView) in
+            let element = items[childAt: indexPath]
+            let tableView = uiTableView as! TableView
+            switch element.item {
+            case .song(let songCellViewModel):
+                let cell = tableView.dequeue(SongCell.self, indexPath: indexPath)
+                cell.configure(with: songCellViewModel)
+                return cell
+            case .action(let actionCellViewModel):
+                let cell = tableView.dequeue(ActionCell.self, indexPath: indexPath)
+                cell.configure(with: actionCellViewModel)
+                return cell
+            default:
+                fatalError("Invalid cell")
+            }
+        }
+    }
+    
+    @objc func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        changeset?.collection[sectionAt: section].metadata.localizedTitle
+    }
+    
+}
+

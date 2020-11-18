@@ -11,7 +11,7 @@ import Swinject
 import UIKit
 
 protocol GenreStatsScene: ViewController & PanModalPresentable {
-    var flowLyrics: ((SharedSong, UIImage?) -> Void)? { get set }
+    var flowLyrics: DefaultSharedSongPreviewAction? { get set }
     var flowDismiss: DefaultAction? { get set }
 }
 
@@ -19,8 +19,11 @@ class GenreStatsAssembly: Assembly {
 
     override func assemble(container: Container) {
         
-        container.register(GenreStatsViewModel.self) { (_, genre: RealmLikedSongGenre) in
-            GenreStatsViewModel(genre: genre)
+        container.register(GenreStatsViewModel.self) { (resolver, genre: RealmLikedSongGenre) in
+            GenreStatsViewModel(
+                realmService: resolver.resolve(RealmServiceProtocol.self)!,
+                genre: genre
+            )
         }
         
         container.register(GenreStatsScene.self) { (resolver, genre: RealmLikedSongGenre) in

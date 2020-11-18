@@ -6,8 +6,6 @@
 //  Copyright © 2020 Ilya Kulinkovich. All rights reserved.
 //
 
-import Foundation
-
 import Swinject
 
 class Coordinator: NSObject {
@@ -20,9 +18,7 @@ class Coordinator: NSObject {
         self.resolver = resolver
     }
     
-    func start() {
-        
-    }
+    func start() {}
     
     var rootViewController: UIViewController {
         fatalError("Inaccessible")

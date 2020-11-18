@@ -34,7 +34,7 @@ class GenreMapCoordinator: Coordinator {
         let scene = resolver.resolve(GenreStatsScene.self, argument: genre)!
         if let tabBarController = router.tabBarController {
             let blurView = UIVisualEffectView(effect: nil)
-            UIView.animate(withDuration: 0.35, delay: 0, options: .curveEaseOut) {
+            UIView.animate(withDuration: Constants.defaultAnimationDuration, options: .curveEaseOut) {
                 blurView.effect = UIBlurEffect(style: .systemUltraThinMaterial)
             }
             tabBarController.view.addSubview(blurView)
@@ -42,7 +42,7 @@ class GenreMapCoordinator: Coordinator {
             blurView.frame = UIScreen.main.bounds
             tabBarController.view.bringSubviewToFront(blurView)
             scene.flowDismiss = {
-                UIView.animate(withDuration: 0.35, delay: 0, options: .curveEaseOut) {
+                UIView.animate(withDuration: Constants.defaultAnimationDuration, options: .curveEaseOut) {
                     blurView.effect = nil
                 } completion: { _ in
                     blurView.removeFromSuperview()

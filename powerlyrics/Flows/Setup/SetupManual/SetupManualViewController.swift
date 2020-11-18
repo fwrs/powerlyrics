@@ -52,11 +52,11 @@ extension SetupManualViewController {
     }
     
     func setupObservers() {
-        mainButton.reactive.tap.throttle(for: 0.3).observeNext { [self] _ in
+        mainButton.reactive.tap.throttle(for: Constants.buttonThrottleTime).observeNext { [self] _ in
             flowSpotifyLogin?()
         }.dispose(in: disposeBag)
         
-        secondaryButton.reactive.tap.throttle(for: 0.3).observeNext { [self] _ in
+        secondaryButton.reactive.tap.throttle(for: Constants.buttonThrottleTime).observeNext { [self] _ in
             flowDismiss?()
         }.dispose(in: disposeBag)
     }

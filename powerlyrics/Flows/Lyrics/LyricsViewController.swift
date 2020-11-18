@@ -10,11 +10,11 @@ import Haptica
 import SafariServices
 import UIKit
 
+fileprivate extension Constants {
+    static let heartbeatTap = ".-o--.-O"
+}
+
 class LyricsViewController: ViewController, LyricsScene {
-    
-    fileprivate enum Constants {
-        static let albumArtShadowOpacity: Float = 0.3
-    }
     
     // MARK: - Outlets
     
@@ -109,13 +109,13 @@ extension LyricsViewController {
         navigationItem.scrollEdgeAppearance = appearance
         
         navigationItem.leftBarButtonItem?.reactive.tap.observeNext { [self] _ in
-            Haptic.play(".")
+            Haptic.play(Constants.tinyTap)
             flowDismiss?()
         }.dispose(in: disposeBag)
         
         navigationItem.rightBarButtonItem?.reactive.tap.observeNext { [self] _ in
             if let url = viewModel.spotifyURL.value ?? viewModel.song.spotifyURL {
-                Haptic.play(".")
+                Haptic.play(Constants.tinyTap)
                 UIApplication.shared.open(url, options: [:], completionHandler: nil)
             } else {
                 present(UIAlertController(title: "Not found", message: "We couldn’t find this item on Spotify.", preferredStyle: .alert).with {
@@ -131,7 +131,7 @@ extension LyricsViewController {
             color: .black,
             radius: 6,
             offset: CGSize(width: .zero, height: 3),
-            opacity: Constants.albumArtShadowOpacity,
+            opacity: Constants.defaultShadowOpacity,
             viewCornerRadius: 8,
             viewSquircle: true
         )
@@ -168,9 +168,8 @@ extension LyricsViewController {
             attrString.addAttribute(.foregroundColor, value: UIColor.secondaryLabel, range: NSRange(location: 0, length: "From album “".count))
             attrString.addAttribute(.foregroundColor, value: UIColor.secondaryLabel, range: NSRange(location: text.count - 1, length: 1))
             
-            UIView.transition(with: firstInfoLabel, duration: 0.3, options: .transitionCrossDissolve) {
+            firstInfoLabel.fadeUpdate {
                 firstInfoLabel.attributedText = attrString
-                firstInfoLabel.isHidden = false
             }
         }.dispose(in: disposeBag)
         
@@ -184,7 +183,7 @@ extension LyricsViewController {
                 attrString.addAttribute(.foregroundColor, value: UIColor.secondaryLabel, range: NSRange(location: "Produced by ".count + producers.first.safe.count, length: 3))
             }
             
-            UIView.transition(with: secondInfoLabel, duration: 0.3, options: .transitionCrossDissolve) {
+            secondInfoLabel.fadeUpdate {
                 secondInfoLabel.attributedText = attrString
             }
         }.dispose(in: disposeBag)
@@ -194,9 +193,7 @@ extension LyricsViewController {
         }.dispose(in: disposeBag)
         
         viewModel.isLoading.observeNext { [self] loading in
-            UIView.animate(withDuration: 0.35) {
-                activityIndicator.alpha = loading ? 1 : 0
-            }
+            activityIndicator.fadeDisplay(visible: loading)
         }.dispose(in: disposeBag)
         
         viewModel.isFailed.observeNext { [self] failed in
@@ -210,7 +207,7 @@ extension LyricsViewController {
             likeButton.isUserInteractionEnabled = true
         }.dispose(in: disposeBag)
         viewModel.isLiked.observeNext { [self] isLiked in
-            UIView.transition(with: buttonsStackView, duration: 0.2, options: .transitionCrossDissolve) {
+            buttonsStackView.fadeUpdate {
                 likeButton.setImage(
                     isLiked ?
                         UIImage(systemName: "heart.fill")?.withTintColor(.label, renderingMode: .alwaysOriginal) :
@@ -223,8 +220,8 @@ extension LyricsViewController {
         
         [likeButton, shareButton, safariButton, notesButton].forEach { button in
             button.reactive.controlEvents([.touchDown, .touchDragEnter]).observeNext { _ in
-                UIView.animate(withDuration: 0.15) {
-                    button.alpha = 0.5
+                UIView.animate(withDuration: Constants.fastAnimationDuration) {
+                    button.alpha = .half
                 }
             }.dispose(in: disposeBag)
         }
@@ -232,45 +229,45 @@ extension LyricsViewController {
         [likeButton, shareButton, safariButton, notesButton].forEach { button in
             button.reactive.controlEvents([.touchDragExit, .touchUpInside]).observeNext { [self] _ in
                 likeButton.layer.removeAllAnimations()
-                UIView.animate(withDuration: 0.15) {
+                UIView.animate(withDuration: Constants.fastAnimationDuration) {
                     button.alpha = 0.8
                 }
             }.dispose(in: disposeBag)
         }
         
-        likeButton.reactive.tap.throttle(for: 0.3).observeNext { [self] _ in
+        likeButton.reactive.tap.throttle(for: Constants.buttonThrottleTime).observeNext { [self] _ in
             guard viewModel.genre.value != nil else { return }
             if viewModel.isLiked.value {
                 viewModel.unlikeSong()
-                Haptic.play(".")
+                Haptic.play(Constants.tinyTap)
             } else {
                 viewModel.likeSong()
-                Haptic.play(".-o--.-O", delay: 0.2)
+                Haptic.play(Constants.heartbeatTap, delay: .oTwo)
             }
         }.dispose(in: disposeBag)
         
-        shareButton.reactive.tap.throttle(for: 0.3).observeNext { [self] _ in
+        shareButton.reactive.tap.throttle(for: Constants.buttonThrottleTime).observeNext { [self] _ in
             guard let url = viewModel.geniusURL else { return }
-            Haptic.play(".")
+            Haptic.play(Constants.tinyTap)
             let items = ["Just discovered this awesome song using powerlyrics app: \(url.absoluteURL)"]
             let activityViewController = UIActivityViewController(activityItems: items, applicationActivities: nil)
             present(activityViewController, animated: true)
         }.dispose(in: disposeBag)
         
-        safariButton.reactive.tap.throttle(for: 0.3).observeNext { [self] _ in
+        safariButton.reactive.tap.throttle(for: Constants.buttonThrottleTime).observeNext { [self] _ in
             guard let url = viewModel.geniusURL else { return }
-            Haptic.play(".")
+            Haptic.play(Constants.tinyTap)
             let safariViewController = SFSafariViewController(url: url, configuration: SFSafariViewController.Configuration())
             safariViewController.preferredControlTintColor = .tintColor
             present(safariViewController, animated: true)
         }.dispose(in: disposeBag)
         
-        notesButton.reactive.tap.throttle(for: 0.3).observeNext { [self] _ in
+        notesButton.reactive.tap.throttle(for: Constants.buttonThrottleTime).observeNext { [self] _ in
             guard let description = viewModel.description.value?.typographized else { return }
-            Haptic.play(".")
+            Haptic.play(Constants.tinyTap)
             let paragraphStyle = NSMutableParagraphStyle()
             paragraphStyle.alignment = NSTextAlignment.left
-            paragraphStyle.lineSpacing = 0.5
+            paragraphStyle.lineSpacing = .half
             
             let attributedMessageText = NSMutableAttributedString(
                 string: description,
@@ -316,8 +313,8 @@ extension LyricsViewController: UIContextMenuInteractionDelegate {
         configurationForMenuAtLocation location: CGPoint
     ) -> UIContextMenuConfiguration? {
         guard albumArtImageView.loaded else { return nil }
-        UIView.animate(withDuration: 0.2, delay: 0.5) { [self] in
-            albumArtContainerView.layer.shadowOpacity = 0
+        UIView.animate(withDuration: Constants.defaultAnimationDuration, delay: .half) { [self] in
+            albumArtContainerView.layer.shadowOpacity = .zero
         }
         
         let controller = ImagePreviewController(viewModel.song.albumArt, placeholder: albumArtThumbnail)
@@ -364,8 +361,8 @@ extension LyricsViewController: UIContextMenuInteractionDelegate {
     }
     
     func contextMenuInteraction(_ interaction: UIContextMenuInteraction, willEndFor configuration: UIContextMenuConfiguration, animator: UIContextMenuInteractionAnimating?) {
-        UIView.animate(withDuration: 0.2, delay: 0.3) { [self] in
-            albumArtContainerView.layer.shadowOpacity = Constants.albumArtShadowOpacity
+        UIView.animate(withDuration: Constants.defaultAnimationDuration, delay: Constants.defaultAnimationDelay) { [self] in
+            albumArtContainerView.layer.shadowOpacity = Constants.defaultShadowOpacity
         }
     }
     

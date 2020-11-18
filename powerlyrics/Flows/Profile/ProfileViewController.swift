@@ -12,10 +12,6 @@ import UIKit
 
 class ProfileViewController: ViewController, ProfileScene {
     
-    fileprivate enum Constants {
-        static let albumArtShadowOpacity: Float = 0.3
-    }
-    
     // MARK: - Outlets
     
     @IBOutlet private weak var tableView: TableView!
@@ -114,7 +110,7 @@ extension ProfileViewController {
             let item = viewModel.items[itemAt: indexPath]
             
             if case .action(let actionCellViewModel) = item {
-                Haptic.play(".")
+                Haptic.play(Constants.tinyTap)
                 if actionCellViewModel.action == .likedSongs {
                     flowLikedSongs?()
                 } else if actionCellViewModel.action == .signOut {
@@ -198,7 +194,7 @@ extension ProfileViewController: UITableViewDelegate {
                 color: .black,
                 radius: 6,
                 offset: CGSize(width: .zero, height: 3),
-                opacity: Constants.albumArtShadowOpacity,
+                opacity: Constants.defaultShadowOpacity,
                 viewCornerRadius: avatarDimensionConstraint.constant / 2
             )
         }
@@ -214,8 +210,8 @@ extension ProfileViewController: UIContextMenuInteractionDelegate {
         configurationForMenuAtLocation location: CGPoint
     ) -> UIContextMenuConfiguration? {
         guard avatarImageView.loaded else { return nil }
-        UIView.animate(withDuration: 0.2, delay: 0.5) { [self] in
-            avatarContainerView.layer.shadowOpacity = 0
+        UIView.animate(withDuration: Constants.defaultAnimationDuration, delay: .half) { [self] in
+            avatarContainerView.layer.shadowOpacity = .zero
         }
     
         let controller = ImagePreviewController(viewModel.fullAvatar.value, placeholder: avatarImageView.image)
@@ -257,14 +253,14 @@ extension ProfileViewController: UIContextMenuInteractionDelegate {
         if error != nil {
             window.topViewController?.present(UIAlertController(title: "Failed to save image", message: "Please check application permissions and try again.", preferredStyle: .alert).with { $0.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))}, animated: true, completion: nil)
         } else {
-            Haptic.play(".-O")
+            Haptic.play(Constants.successTaps)
             window.topViewController?.present(UIAlertController(title: "Image saved successfuly", message: "Check your gallery to find it.", preferredStyle: .alert).with { $0.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))}, animated: true, completion: nil)
         }
     }
     
     func contextMenuInteraction(_ interaction: UIContextMenuInteraction, willEndFor configuration: UIContextMenuConfiguration, animator: UIContextMenuInteractionAnimating?) {
-        UIView.animate(withDuration: 0.2, delay: 0.3) { [self] in
-            avatarContainerView.layer.shadowOpacity = Constants.albumArtShadowOpacity
+        UIView.animate(withDuration: Constants.defaultAnimationDuration, delay: Constants.defaultAnimationDelay) { [self] in
+            avatarContainerView.layer.shadowOpacity = Constants.defaultShadowOpacity
         }
     }
     

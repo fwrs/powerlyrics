@@ -11,25 +11,42 @@ import UIKit
 
 class HomeCoordinator: Coordinator {
     
+    // MARK: - Instance properties
+    
     let router: Router
+    
+    // MARK: - Init
 
     init(router: Router, resolver: Resolver) {
         self.router = router
         super.init(resolver: resolver)
     }
     
+    // MARK: - Scenes
+    
     func showLyrics(for song: SharedSong, placeholder: UIImage?) {
-        let lyricsCoordinator = resolver.resolve(LyricsCoordinator.self, arguments: Router(), rootViewController, { [self] in
-            childCoordinators.removeAll { $0.isKind(of: LyricsCoordinator.self) }
-        }, song, placeholder)!
+        let lyricsCoordinator = resolver.resolve(
+            LyricsCoordinator.self,
+            arguments:
+                Router(),
+                rootViewController,
+                { [self] in childCoordinators.removeAll { $0.isKind(of: LyricsCoordinator.self) } },
+                song,
+                placeholder
+        )!
         childCoordinators.append(lyricsCoordinator)
         lyricsCoordinator.start()
     }
     
     func showSetup(mode: SetupMode) {
-        let setupCoordinator = resolver.resolve(SetupCoordinator.self, arguments: Router(), rootViewController, { [self] in
-            childCoordinators.removeAll { $0.isKind(of: SetupCoordinator.self) }
-        }, mode)!
+        let setupCoordinator = resolver.resolve(
+            SetupCoordinator.self,
+            arguments:
+                Router(),
+                rootViewController,
+                { [self] in childCoordinators.removeAll { $0.isKind(of: SetupCoordinator.self) } },
+                mode
+        )!
         childCoordinators.append(setupCoordinator)
         setupCoordinator.start()
     }
@@ -49,6 +66,8 @@ class HomeCoordinator: Coordinator {
         }
         router.push(scene)
     }
+    
+    // MARK: - Coordinator
     
     override func start() {
         let scene = resolver.resolve(HomeScene.self)

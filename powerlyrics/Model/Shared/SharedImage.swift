@@ -9,6 +9,16 @@
 import Kingfisher
 import UIKit
 
+// MARK: - Constants
+
+extension Constants {
+    
+    static let loadedTag = 10
+    
+}
+
+// MARK: - SharedImage
+
 enum SharedImage: Equatable, Hashable {
     case local(UIImage)
     case external(URL)
@@ -39,18 +49,18 @@ extension UIImageView {
     }
     
     var loaded: Bool {
-        tag == 10
+        tag == Constants.loadedTag
     }
 
     func populate(with newImage: SharedImage?, placeholder: UIImage? = nil, result: ((Result<RetrieveImageResult, KingfisherError>) -> Void)? = nil) {
-        tag = 0
+        tag = .zero
         switch newImage {
         case .local(let localImage):
             image = localImage
-            tag = 10
+            tag = Constants.loadedTag
         case .external(let imageURL):
             kf.setImage(with: imageURL, placeholder: placeholder ?? UIImageView.placeholder, completionHandler: { [self] res in
-                tag = 10
+                tag = Constants.loadedTag
                 result?(res)
             })
         case .none:

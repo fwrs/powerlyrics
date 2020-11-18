@@ -12,6 +12,12 @@ import ReactiveKit
 import Then
 import UIKit
 
+fileprivate extension Constants {
+    
+    static let tinyDelay = 0.01
+    
+}
+
 class GenreStatsViewController: ViewController, GenreStatsScene {
     
     // MARK: - Outlets
@@ -36,7 +42,7 @@ class GenreStatsViewController: ViewController, GenreStatsScene {
     
     // MARK: - Flows
     
-    var flowLyrics: ((SharedSong, UIImage?) -> Void)?
+    var flowLyrics: DefaultSharedSongPreviewAction?
     
     var flowDismiss: DefaultAction?
     
@@ -81,7 +87,7 @@ extension GenreStatsViewController {
         panModalSetNeedsLayoutUpdate()
     
         viewModel.items.observeNext { [self] _ in
-            delay(0.01) {
+            delay(Constants.tinyDelay) {
                 panModalSetNeedsLayoutUpdate()
                 panModalTransition(to: .shortForm)
             }
@@ -104,12 +110,12 @@ extension GenreStatsViewController {
                 if items.count - 1 == indexPath.row {
                     cell.separatorInset = .zero
                 } else {
-                    cell.separatorInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 0)
+                    cell.separatorInset = UIEdgeInsets().with { $0.left = Constants.space16 }
                 }
                 return cell
             case .empty:
                 let cell = tableView.dequeue(GenreEmptyCell.self, indexPath: indexPath)
-                cell.separatorInset = .init(top: 0, left: tableView.bounds.width, bottom: 0, right: 0)
+                cell.separatorInset = UIEdgeInsets().with { $0.left = tableView.bounds.width }
                 cell.isUserInteractionEnabled = false
                 cell.selectionStyle = .none
                 return cell
@@ -121,7 +127,7 @@ extension GenreStatsViewController {
         tableView.reactive.selectedRowIndexPath.observeNext { [self] indexPath in
             tableView.deselectRow(at: indexPath, animated: true)
             lastSelectedIndexPath = indexPath
-            Haptic.play(".")
+            Haptic.play(Constants.tinyTap)
             if case .song(let songCellViewModel) = viewModel.items[indexPath.row] {
                 flowLyrics?(songCellViewModel.song, nil)
             }
@@ -140,12 +146,8 @@ extension GenreStatsViewController {
             return
         }
         navigationBarBackgroundHidden = tableView.contentOffset.y < 10
-        UIView.transition(with: titleBackgroundView, duration: 0.3, options: .transitionCrossDissolve) { [self] in
-            titleBackgroundView.isHidden = tableView.contentOffset.y < 10
-        }
-        UIView.transition(with: titleShadowView, duration: 0.3, options: .transitionCrossDissolve) { [self] in
-            titleShadowView.isHidden = tableView.contentOffset.y < 10
-        }
+        titleBackgroundView.fadeDisplay(visible: tableView.contentOffset.y > 10)
+        titleShadowView.fadeDisplay(visible: tableView.contentOffset.y > 10)
     }
     
 }

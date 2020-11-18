@@ -6,9 +6,8 @@
 //  Copyright © 2020 Ilya Kulinkovich. All rights reserved.
 //
 
-import Foundation
-
 enum ActionCellAction: Equatable {
+    
     case likedSongs
     case connectToSpotify
     case manageAccount
@@ -35,8 +34,11 @@ enum ActionCellAction: Equatable {
             return "Source code"
         }
     }
+    
 }
 
 struct ActionCellViewModel: Equatable {
+    
     let action: ActionCellAction
+    
 }

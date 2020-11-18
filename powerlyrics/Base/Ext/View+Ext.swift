@@ -43,23 +43,23 @@ extension UIView {
         color: UIColor,
         radius: CGFloat,
         offset: CGSize = .zero,
-        opacity: Float = 0.5,
-        spread: CGFloat = 0,
-        viewCornerRadius: CGFloat = 0,
+        opacity: Float = .half,
+        spread: CGFloat = .zero,
+        viewCornerRadius: CGFloat = .zero,
         viewSquircle: Bool = false
     ) {
-        layer.shadowColor = color.cgColor
+        layer.shadowColor = color.cg
         layer.shadowOffset = offset
         layer.shadowRadius = radius
         layer.shadowOpacity = opacity
-        if spread == 0 {
+        if spread == .zero {
             layer.shadowPath = nil
         } else {
             let dx = CGFloat(-spread)
             let rect = layer.bounds.insetBy(dx: dx, dy: dx)
             layer.shadowPath = UIBezierPath(rect: rect).cgPath
         }
-        if viewCornerRadius != 0 {
+        if viewCornerRadius != .zero {
             if viewSquircle {
                 layer.shadowPath = UIBezierPath.superellipse(in: bounds, cornerRadius: CGFloat(viewCornerRadius + 1)).cgPath
             } else {

@@ -13,6 +13,48 @@ import RealmSwift
 import Then
 import UIKit
 
+// MARK: - Constants
+
+extension Constants {
+    
+    static let baseLikedSongCounts = Array(repeating: CGFloat.zero, count: RealmLikedSongGenre.total)
+    
+}
+
+fileprivate extension Constants {
+    
+    static let transforms: [(CGFloat, CGFloat)] = [(1, 0), (1, 1), (0, 1), (-1, 1), (1, 0), (1, 1), (0, 1), (-1, 1)]
+    
+    static let backgroundAppearanceDuration: TimeInterval = 0.9
+    
+    static let descriptionAppearanceDuration: TimeInterval = 0.55
+    
+    static let buttonAppearanceBaseDuration: TimeInterval = 0.5
+    
+    static let noDataAppearanceDuration: TimeInterval = 0.6
+    
+    static let flipDuration: TimeInterval = 0.4
+    
+    static let tinyDelay: TimeInterval = 0.05
+    
+    static let descriptionAppearanceDelay: TimeInterval = 0.45
+    
+    static let flipPerspective: CGFloat = -.one / 500.0
+    
+    static let smallAngleMultiplier: CGFloat = 0.05
+    
+    static let largeAngleMultiplier: CGFloat = 0.2
+    
+    static let concealedGenreMapAlpha: CGFloat = 0.8
+    
+    static let springDamping: CGFloat = 0.6
+    
+    static let inverseAngles = 4...7
+    
+}
+
+// MARK: - GenreMapViewController
+
 class GenreMapViewController: ViewController, GenreMapScene {
     
     // MARK: - Outlets
@@ -21,13 +63,13 @@ class GenreMapViewController: ViewController, GenreMapScene {
     
     @IBOutlet private weak var genreMapView: GenreMapView!
     
-    @IBOutlet private var genreMapButtons: [UIButton]!
-    
     @IBOutlet private weak var descriptionLabel: UILabel!
     
     @IBOutlet private weak var notEnoughDataView: UIView!
     
     @IBOutlet private weak var secondaryMapAlignmentConstraint: NSLayoutConstraint!
+    
+    @IBOutlet private var genreMapButtons: [UIButton]!
     
     // MARK: - Instance properties
     
@@ -38,8 +80,6 @@ class GenreMapViewController: ViewController, GenreMapScene {
     var goingBackFromPush: Bool = false
     
     var justAnimatedReappear: Bool = false
-    
-    var noData: Bool = false
     
     // MARK: - Flows
     
@@ -53,84 +93,53 @@ class GenreMapViewController: ViewController, GenreMapScene {
         super.viewDidLoad()
 
         setupView()
-        genreMapView.addBehavior()
-        genreMapBackgroundView.alpha = 0
-        genreMapView.alpha = 0
-        descriptionLabel.alpha = 0
-        for i in 0..<8 {
-            genreMapButtons[i].alpha = 0
-        }
-        notEnoughDataView.alpha = 0
+        
+        reset()
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        viewModel.loadData()
+        genreMapView.values = viewModel.values.value
+        let noData = viewModel.noData.value
         if shouldAnimate {
-            load()
-            UIView.animate(withDuration: 0.5, delay: 0.1, options: .curveEaseOut) { [self] in
-                genreMapBackgroundView.alpha = 1
+            UIView.animate(withDuration: .half, delay: .oOne, options: .curveEaseOut) { [self] in
+                genreMapBackgroundView.alpha = .one
             }
-            UIView.animate(withDuration: 0.9, delay: 0.15, options: .curveEaseOut) { [self] in
-                genreMapView.alpha = 1
+            UIView.animate(withDuration: Constants.backgroundAppearanceDuration, delay: Constants.fastAnimationDuration, options: .curveEaseOut) { [self] in
+                genreMapView.alpha = .one
             }
-            delay(0.15) { [self] in
+            delay(Constants.fastAnimationDuration) { [self] in
                 genreMapView.animatePathChange()
             }
-            for i in 0..<8 {
-                UIView.animate(withDuration: 0.5 + (Double(i) / 10), delay: 0.1 + 0.05 * Double(i) + pow(0.95, Double(i))/20, options: .curveEaseOut) { [self] in
-                    genreMapButtons[i].alpha = 1
+            for i in .zero..<RealmLikedSongGenre.total {
+                UIView.animate(withDuration: Constants.buttonAppearanceBaseDuration + (Double(i) / 10), delay: .oOne + Constants.tinyDelay * Double(i) + pow(0.95, Double(i)) / 20, options: .curveEaseOut) { [self] in
+                    genreMapButtons[i].alpha = .one
                 }
             }
-            UIView.animate(withDuration: 0.55, delay: 0.45, options: .curveEaseIn) { [self] in
-                descriptionLabel.alpha = 1
+            UIView.animate(withDuration: Constants.descriptionAppearanceDuration, delay: Constants.descriptionAppearanceDelay, options: .curveEaseIn) { [self] in
+                descriptionLabel.alpha = .one
             }
             if noData {
                 notEnoughDataView.isHidden = false
-                notEnoughDataView.alpha = 0
-                UIView.animate(withDuration: 0.6, delay: 0.05, options: .curveEaseOut) { [self] in
-                    notEnoughDataView.alpha = 1
+                notEnoughDataView.alpha = .zero
+                UIView.animate(withDuration: Constants.noDataAppearanceDuration, delay: Constants.tinyDelay, options: .curveEaseOut) { [self] in
+                    notEnoughDataView.alpha = .one
                 }
             } else {
                 notEnoughDataView.isHidden = true
             }
             shouldAnimate = false
         } else {
-            let counts = [Realm.likedSongs(with: .rock).count,
-                          Realm.likedSongs(with: .classic).count,
-                          Realm.likedSongs(with: .rap).count,
-                          Realm.likedSongs(with: .country).count,
-                          Realm.likedSongs(with: .acoustic).count,
-                          Realm.likedSongs(with: .pop).count,
-                          Realm.likedSongs(with: .jazz).count,
-                          Realm.likedSongs(with: .edm).count]
-            
-            if counts.filter({ $0 != 0 }).count < 2 {
-                noData = true
-                genreMapView.values = [Int](0..<8).map { _ in 0 }
-            } else {
-                noData = false
-                let total = ([.rock, .classic, .rap, .country, .acoustic, .pop, .jazz, .edm]
-                    .map { CGFloat(Realm.likedSongs(with: $0).count) } + [0.0001]).max().safe
-                genreMapView.values = [
-                    CGFloat(Realm.likedSongs(with: .rock).count) / total,
-                    CGFloat(Realm.likedSongs(with: .classic).count) / total,
-                    CGFloat(Realm.likedSongs(with: .rap).count) / total,
-                    CGFloat(Realm.likedSongs(with: .country).count) / total,
-                    CGFloat(Realm.likedSongs(with: .acoustic).count) / total,
-                    CGFloat(Realm.likedSongs(with: .pop).count) / total,
-                    CGFloat(Realm.likedSongs(with: .jazz).count) / total,
-                    CGFloat(Realm.likedSongs(with: .edm).count) / total
-                ].map { max(0.012, $0) }
-            }
             if (notEnoughDataView.isHidden && noData) || (!notEnoughDataView.isHidden && !noData) {
                 if noData {
                     notEnoughDataView.isHidden = false
-                    notEnoughDataView.alpha = 0
+                    notEnoughDataView.alpha = .zero
                 } else {
-                    notEnoughDataView.alpha = 1
+                    notEnoughDataView.alpha = .one
                 }
-                UIView.animate(withDuration: 0.5) { [self] in
-                    notEnoughDataView.alpha = noData ? 1 : 0
+                UIView.animate(withDuration: .half) { [self] in
+                    notEnoughDataView.alpha = noData ? .one : .zero
                 } completion: { [self] _ in
                     if !noData {
                         notEnoughDataView.isHidden = true
@@ -147,8 +156,8 @@ class GenreMapViewController: ViewController, GenreMapScene {
         super.viewWillAppear(animated)
         
         if goingBackFromPush {
-            UIView.animate(withDuration: 0.3) { [self] in
-                genreMapBackgroundView.alpha = 1
+            UIView.animate { [self] in
+                genreMapBackgroundView.alpha = .one
                 genreMapBackgroundView.layer.transform = CATransform3DIdentity
             }
         }
@@ -158,17 +167,18 @@ class GenreMapViewController: ViewController, GenreMapScene {
         if genreMapBackgroundView == nil {
             return
         }
-        genreMapBackgroundView.alpha = 0
-        genreMapView.alpha = 0
-        descriptionLabel.alpha = 0
-        for i in 0..<8 {
-            genreMapButtons[i].alpha = 0
+        genreMapBackgroundView.alpha = .zero
+        genreMapView.alpha = .zero
+        descriptionLabel.alpha = .zero
+        for i in .zero..<RealmLikedSongGenre.total {
+            genreMapButtons[i].alpha = .zero
         }
-        noData = false
-        notEnoughDataView.alpha = 0
+        viewModel.values.value = Constants.baseLikedSongCounts
+        viewModel.noData.value = false
+        notEnoughDataView.alpha = .zero
         shouldAnimate = true
-        genreMapView.oldValues = [0, 0, 0, 0, 0, 0, 0, 0]
-        genreMapView.values = [0, 0, 0, 0, 0, 0, 0, 0]
+        genreMapView.oldValues = Constants.baseLikedSongCounts
+        genreMapView.values = Constants.baseLikedSongCounts
         genreMapView.addBehavior()
     }
         
@@ -176,9 +186,9 @@ class GenreMapViewController: ViewController, GenreMapScene {
     
 }
 
+// MARK: - Setup
+
 extension GenreMapViewController {
-    
-    // MARK: - Setup
 
     func setupView() {
         if !UIDevice.current.hasNotch {
@@ -187,7 +197,7 @@ extension GenreMapViewController {
         
         let text = descriptionLabel.text.safe.typographized
         let paragraphStyle = NSMutableParagraphStyle()
-        paragraphStyle.lineSpacing = 2
+        paragraphStyle.lineSpacing = .two
 
         let attrString = NSMutableAttributedString(string: text)
         attrString.addAttribute(.paragraphStyle, value: paragraphStyle, range: NSRange(location: 0, length: attrString.length))
@@ -195,17 +205,15 @@ extension GenreMapViewController {
         attrString.addAttribute(.foregroundColor, value: UIColor.tintColor, range: NSString(string: text).range(of: "liked music"))
         
         descriptionLabel.attributedText = attrString
-        
-        let transforms: [(CGFloat, CGFloat)] = [(1, 0), (1, 1), (0, 1), (-1, 1), (1, 0), (1, 1), (0, 1), (-1, 1)]
-        
-        descriptionLabel.reactive.longPressGesture(minimumPressDuration: 0).observeNext { [self] recognizer in
+
+        descriptionLabel.reactive.longPressGesture(minimumPressDuration: .zero).observeNext { [self] recognizer in
             if recognizer.state == .ended || recognizer.state == .cancelled {
                 let attrString = NSMutableAttributedString(string: text)
-                attrString.addAttribute(.paragraphStyle, value: paragraphStyle, range: NSRange(location: 0, length: attrString.length))
+                attrString.addAttribute(.paragraphStyle, value: paragraphStyle, range: NSRange(location: .zero, length: attrString.length))
                 
                 attrString.addAttribute(.foregroundColor, value: UIColor.tintColor, range: NSString(string: text).range(of: "liked music"))
                 
-                UIView.transition(with: descriptionLabel, duration: 0.08, options: .transitionCrossDissolve) {
+                UIView.transition(with: descriptionLabel, duration: Constants.buttonTapDuration, options: .transitionCrossDissolve) {
                     descriptionLabel.attributedText = attrString
                 }
             }
@@ -213,11 +221,11 @@ extension GenreMapViewController {
             switch recognizer.state {
             case .began:
                 let attrString = NSMutableAttributedString(string: text)
-                attrString.addAttribute(.paragraphStyle, value: paragraphStyle, range: NSRange(location: 0, length: attrString.length))
+                attrString.addAttribute(.paragraphStyle, value: paragraphStyle, range: NSRange(location: .zero, length: attrString.length))
                 
                 attrString.addAttribute(.foregroundColor, value: UIColor.highlightTintColor, range: NSString(string: text).range(of: "liked music"))
                 
-                UIView.transition(with: descriptionLabel, duration: 0.08, options: .transitionCrossDissolve) {
+                UIView.transition(with: descriptionLabel, duration: Constants.buttonTapDuration, options: .transitionCrossDissolve) {
                     descriptionLabel.attributedText = attrString
                 }
             case .ended:
@@ -230,62 +238,32 @@ extension GenreMapViewController {
         genreMapButtons.enumerated().forEach { index, button in
             button.reactive.tap.observeNext { [self] in
                 var rotationWithPerspective = CATransform3DIdentity
-                rotationWithPerspective.m34 = -1.0 / 500.0
-                let angle = [4, 5, 6, 7].contains(index) ? -0.2 * CGFloat.pi : 0.2 * CGFloat.pi
+                rotationWithPerspective.m34 = Constants.flipPerspective
+                let angle = Constants.inverseAngles.contains(index).sign * -Constants.largeAngleMultiplier * CGFloat.pi
                 
-                UIView.animate(withDuration: 0.4, delay: 0, usingSpringWithDamping: 0.6, initialSpringVelocity: 1) {
+                UIView.animate(withDuration: Constants.flipDuration, delay: .zero, usingSpringWithDamping: Constants.springDamping, initialSpringVelocity: .two) {
                     genreMapBackgroundView.layer.transform =
-                        CATransform3DRotate(rotationWithPerspective, angle, transforms[index].0, transforms[index].1, 0)
-                    genreMapBackgroundView.alpha = 0.8
+                        CATransform3DRotate(rotationWithPerspective, angle, Constants.transforms[index].0, Constants.transforms[index].1, .zero)
+                    genreMapBackgroundView.alpha = Constants.concealedGenreMapAlpha
                 }
                 flowGenre?(RealmLikedSongGenre(rawValue: index) ?? .unknown)
                 goingBackFromPush = true
             }.dispose(in: disposeBag)
             
             button.reactive.controlEvents([.touchDown, .touchDragEnter]).observeNext { [self] in
-                UIView.animate(withDuration: 0.4, delay: 0, usingSpringWithDamping: 0.6, initialSpringVelocity: 1) {
+                UIView.animate(withDuration: Constants.flipDuration, delay: .zero, usingSpringWithDamping: Constants.springDamping, initialSpringVelocity: .one) {
                     var rotationWithPerspective = CATransform3DIdentity
-                    rotationWithPerspective.m34 = -1.0 / 1000.0
-                    let angle = [4, 5, 6, 7].contains(index) ? 0.05 * CGFloat.pi : -0.05 * CGFloat.pi
-                    genreMapBackgroundView.layer.transform = CATransform3DRotate(rotationWithPerspective, angle, transforms[index].0, transforms[index].1, 0)
+                    rotationWithPerspective.m34 = Constants.flipPerspective
+                    let angle = Constants.inverseAngles.contains(index).sign * Constants.smallAngleMultiplier * CGFloat.pi
+                    genreMapBackgroundView.layer.transform = CATransform3DRotate(rotationWithPerspective, angle, Constants.transforms[index].0, Constants.transforms[index].1, .zero)
                 }
             }.dispose(in: disposeBag)
             
             button.reactive.controlEvents(.touchDragExit).observeNext { [self] in
-                UIView.animate(withDuration: 0.4, delay: 0, usingSpringWithDamping: 0.1, initialSpringVelocity: 0) {
+                UIView.animate(withDuration: Constants.flipDuration, delay: .zero, usingSpringWithDamping: .oOne, initialSpringVelocity: .zero) {
                     genreMapBackgroundView.layer.transform = CATransform3DIdentity
                 }
             }.dispose(in: disposeBag)
-        }
-    }
-    
-    func load() {
-        let total = ([.rock, .classic, .rap, .country, .acoustic, .pop, .jazz, .edm]
-            .map { CGFloat(Realm.likedSongs(with: $0).count) } + [0.0001]).max().safe
-        
-        let counts = [Realm.likedSongs(with: .rock).count,
-                      Realm.likedSongs(with: .classic).count,
-                      Realm.likedSongs(with: .rap).count,
-                      Realm.likedSongs(with: .country).count,
-                      Realm.likedSongs(with: .acoustic).count,
-                      Realm.likedSongs(with: .pop).count,
-                      Realm.likedSongs(with: .jazz).count,
-                      Realm.likedSongs(with: .edm).count]
-
-        if counts.filter({ $0 != 0 }).count < 2 {
-            noData = true
-            genreMapView.values = [Int](0..<8).map { _ in 0 }
-        } else {
-            genreMapView.values = [
-                CGFloat(Realm.likedSongs(with: .rock).count) / total,
-                CGFloat(Realm.likedSongs(with: .classic).count) / total,
-                CGFloat(Realm.likedSongs(with: .rap).count) / total,
-                CGFloat(Realm.likedSongs(with: .country).count) / total,
-                CGFloat(Realm.likedSongs(with: .acoustic).count) / total,
-                CGFloat(Realm.likedSongs(with: .pop).count) / total,
-                CGFloat(Realm.likedSongs(with: .jazz).count) / total,
-                CGFloat(Realm.likedSongs(with: .edm).count) / total
-            ].map { max(0.012, $0) }
         }
     }
     

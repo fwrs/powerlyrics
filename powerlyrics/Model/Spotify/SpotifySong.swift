@@ -6,7 +6,7 @@
 //  Copyright © 2020 Ilya Kulinkovich. All rights reserved.
 //
 
-import Foundation
+import UIKit
 
 struct SpotifySong: Codable, Equatable {
     
@@ -37,7 +37,8 @@ struct SpotifySong: Codable, Equatable {
 extension SpotifySong {
     
     var asSharedSong: SharedSong {
-        let spotifyURL = externalURLs?["spotify"]?.flatMap { $0 }
+        let spotifyURL = externalURLs?[Constants.spotifySystemName]?.flatMap { $0 }
+        
         return SharedSong(
             name: name,
             artists: artists.map(\.name),

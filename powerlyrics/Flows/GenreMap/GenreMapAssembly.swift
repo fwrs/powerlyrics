@@ -18,8 +18,8 @@ class GenreMapAssembly: Assembly {
 
     override func assemble(container: Container) {
         
-        container.register(GenreMapViewModel.self) { _ in
-            GenreMapViewModel()
+        container.register(GenreMapViewModel.self) { resolver in
+            GenreMapViewModel(realmService: resolver.resolve(RealmServiceProtocol.self)!)
         }
         
         container.register(GenreMapScene.self) { resolver in

@@ -6,25 +6,21 @@
 //  Copyright © 2020 Ilya Kulinkovich. All rights reserved.
 //
 
-import Foundation
-
-extension Shared {
+struct SharedLyricsSection {
     
-    struct LyricsSection {
-        var name: String?
-        var contents: [String]
-    }
-    
-    typealias Lyrics = [LyricsSection]
-    
-    struct LyricsResult {
-        
-        let lyrics: Lyrics
-        let genre: RealmLikedSongGenre
-        
-    }
+    var name: String?
+    var contents: [String]
     
 }
 
-typealias DefaultLyricsAction = (Shared.Lyrics) -> Void
-typealias DefaultLyricsResultAction = (Shared.LyricsResult) -> Void
+typealias SharedLyrics = [SharedLyricsSection]
+
+struct SharedLyricsResult {
+    
+    let lyrics: SharedLyrics
+    let genre: RealmLikedSongGenre
+    
+}
+
+typealias DefaultSharedLyricsAction = (SharedLyrics) -> Void
+typealias DefaultSharedLyricsResultAction = (SharedLyricsResult) -> Void

@@ -12,6 +12,7 @@ class LoadingCell: UITableViewCell {
     
     override func layoutSubviews() {
         super.layoutSubviews()
+        
         for view in subviews where view != contentView {
             view.removeFromSuperview()
         }

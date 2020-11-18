@@ -19,7 +19,10 @@ class SetupOfflineAssembly: Assembly {
     override func assemble(container: Container) {
         
         container.register(SetupOfflineViewModel.self) { resolver in
-            SetupOfflineViewModel(spotifyProvider: resolver.resolve(SpotifyProvider.self)!)
+            SetupOfflineViewModel(
+                spotifyProvider: resolver.resolve(SpotifyProvider.self)!,
+                realmService: resolver.resolve(RealmServiceProtocol.self)!
+            )
         }
         
         container.register(SetupOfflineScene.self) { resolver in

@@ -10,11 +10,15 @@ import Haptica
 import Kingfisher
 import UIKit
 
-class SongCell: TableViewCell {
+// MARK: - Constants
+
+fileprivate extension Constants {
     
-    fileprivate enum Constants {
-        static let albumArtShadowOpacity: Float = 0.3
-    }
+}
+
+// MARK: - SongCell
+
+class SongCell: TableViewCell {
     
     // MARK: - Outlets
     
@@ -46,6 +50,8 @@ class SongCell: TableViewCell {
     
     @IBOutlet private weak var nthPlaceAccessoryLabel: UILabel!
     
+    // MARK: - Instance properties
+    
     var dominantColor: UIColor?
     
     var songContainer: UIView {
@@ -56,7 +62,13 @@ class SongCell: TableViewCell {
         albumArtImageView.image
     }
     
-    private var fullImage: SharedImage?
+    var contextMenuHandler: ImageContextMenuInteractionHandler?
+    
+    // MARK: - Static properties
+    
+    static var storedColors: [SharedSong: UIColor] = [:]
+    
+    // MARK: - Lifecycle
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -65,44 +77,45 @@ class SongCell: TableViewCell {
             color: .black,
             radius: 6,
             offset: CGSize(width: 0, height: 3),
-            opacity: Constants.albumArtShadowOpacity,
+            opacity: Constants.defaultShadowOpacity,
             viewCornerRadius: 8,
             viewSquircle: true
         )
-        
-        let interaction = UIContextMenuInteraction(delegate: self)
+        let contextMenuHandler = ImageContextMenuInteractionHandler(shadowFadeView: albumArtContainerView, imageView: albumArtImageView)
+        self.contextMenuHandler = contextMenuHandler
+        let interaction = UIContextMenuInteraction(delegate: contextMenuHandler)
         albumArtImageView.addInteraction(interaction)
     }
     
     override func setHighlighted(_ highlighted: Bool, animated: Bool) {
-        let highlightColor = dominantColor?.adjust(hueBy: 1, saturationBy: 1, brightnessBy: 1.5) ?? Asset.Colors.highlightCellColor.color
+        let highlightColor = dominantColor?.adjust(brightnessBy: .oneHalfth) ?? Asset.Colors.highlightCellColor.color
         let baseColor = dominantColor ?? Asset.Colors.normalCellColor.color
-        UIView.animate(withDuration: (highlighted || !animated) ? 0.03 : 0.3) { [self] in
-            backgroundColorView.backgroundColor = highlighted ? highlightColor : (dominantColor ?? .clear)
+        UIView.animate(withDuration: (highlighted || !animated) ? (Constants.defaultAnimationDuration * .oOne) : Constants.defaultAnimationDuration) { [self] in
+            backgroundColorView.backgroundColor = highlighted ? highlightColor : dominantColor.safe
             accessoryBackgroundView.backgroundColor = highlighted ? highlightColor : baseColor
         }
-        UIView.transition(with: accessoryFadeOutView, duration: (highlighted || !animated) ? 0.03 : 0.3, options: .transitionCrossDissolve) { [self] in
+        UIView.transition(with: accessoryFadeOutView, duration: (highlighted || !animated) ? (Constants.defaultAnimationDuration * .oOne) : Constants.defaultAnimationDuration, options: .transitionCrossDissolve) { [self] in
             (accessoryFadeOutView.gradientLayer).colors = highlighted ?
-                [highlightColor.withAlphaComponent(0).cgColor, highlightColor.cgColor] :
-                [baseColor.withAlphaComponent(0).cgColor, baseColor.cgColor]
+                [highlightColor.transparent.cg, highlightColor.cg] :
+                [baseColor.transparent.cg, baseColor.cg]
         }
     }
     
     override func setSelected(_ selected: Bool, animated: Bool) {
-        let highlightColor = dominantColor?.adjust(hueBy: 1, saturationBy: 1, brightnessBy: 1.5) ?? Asset.Colors.highlightCellColor.color
+        let highlightColor = dominantColor?.adjust(brightnessBy: .oneHalfth) ?? Asset.Colors.highlightCellColor.color
         let baseColor = dominantColor ?? Asset.Colors.normalCellColor.color
-        UIView.animate(withDuration: (selected || !animated) ? 0.03 : 0.3) { [self] in
-            backgroundColorView.backgroundColor = selected ? highlightColor : (dominantColor ?? .clear)
+        UIView.animate(withDuration: (selected || !animated) ? (Constants.defaultAnimationDuration * .oOne) : Constants.defaultAnimationDuration) { [self] in
+            backgroundColorView.backgroundColor = selected ? highlightColor : dominantColor.safe
             accessoryBackgroundView.backgroundColor = selected ? highlightColor : baseColor
         }
-        UIView.transition(with: accessoryFadeOutView, duration: (selected || !animated) ? 0.03 : 0.3, options: .transitionCrossDissolve) { [self] in
+        UIView.transition(with: accessoryFadeOutView, duration: (selected || !animated) ? (Constants.defaultAnimationDuration * .oOne) : Constants.defaultAnimationDuration, options: .transitionCrossDissolve) { [self] in
             (accessoryFadeOutView.gradientLayer).colors = selected ?
-                [highlightColor.withAlphaComponent(0).cgColor, highlightColor.cgColor] :
-                [baseColor.withAlphaComponent(0).cgColor, baseColor.cgColor]
+                [highlightColor.transparent.cg, highlightColor.cg] :
+                [baseColor.transparent.cg, baseColor.cg]
         }
     }
     
-    static var storedColors: [SharedSong: UIColor] = [:]
+    // MARK: - Configure
     
     func configure(with viewModel: SongCellViewModel) {
         songLabel.text = viewModel.song.name.typographized
@@ -111,15 +124,15 @@ class SongCell: TableViewCell {
         albumArtImageView.populate(with: viewModel.song.thumbnailAlbumArt) { [self] result in
             if case .success(let value) = result, viewModel.shouldDisplayDominantColor {
                 if let color = SongCell.storedColors[viewModel.song] {
-                    (accessoryFadeOutView.gradientLayer).colors = [color.withAlphaComponent(0).cgColor, color.cgColor]
+                    (accessoryFadeOutView.gradientLayer).colors = [color.transparent.cg, color.cg]
                     accessoryBackgroundView.backgroundColor = color
                     dominantColor = color
                     return
                 }
                 value.image.getColors(quality: .lowest, { colors in
-                    let color = colors?.primary.adjust(hueBy: 1, saturationBy: 1, brightnessBy: 0.5) ?? .clear
+                    let color = (colors?.primary.adjust(brightnessBy: .half)).safe
                     backgroundColorView.backgroundColor = color
-                    (accessoryFadeOutView.gradientLayer).colors = [color.withAlphaComponent(0).cgColor, color.cgColor]
+                    (accessoryFadeOutView.gradientLayer).colors = [color.transparent.cg, color.cg]
                     accessoryBackgroundView.backgroundColor = color
                     dominantColor = color
 
@@ -127,13 +140,15 @@ class SongCell: TableViewCell {
                 })
             }
         }
+        
         if !viewModel.shouldDisplayDominantColor {
             dominantColor = nil
-            (accessoryFadeOutView.gradientLayer).colors = [Asset.Colors.normalCellColor.color.withAlphaComponent(0).cgColor, Asset.Colors.normalCellColor.color.cgColor]
+            (accessoryFadeOutView.gradientLayer).colors = [Asset.Colors.normalCellColor.color.transparent.cg, Asset.Colors.normalCellColor.color.cg]
             accessoryBackgroundView.backgroundColor = Asset.Colors.normalCellColor.color
             backgroundColorView.backgroundColor = .clear
         }
-        fullImage = viewModel.song.albumArt
+        
+        contextMenuHandler?.updateFullImage(with: viewModel.song.albumArt)
         
         accessoryStackView.isHidden = viewModel.accessory == nil
         
@@ -155,67 +170,6 @@ class SongCell: TableViewCell {
             spotifyLogoAccessoryView.isHidden = true
             heartIconAccessoryView.isHidden = true
             nthPlaceAccessoryView.isHidden = true
-        }
-    }
-    
-}
-
-extension SongCell: UIContextMenuInteractionDelegate {
-    
-    func contextMenuInteraction(
-        _ interaction: UIContextMenuInteraction,
-        configurationForMenuAtLocation location: CGPoint
-    ) -> UIContextMenuConfiguration? {
-        guard albumArtImageView.loaded else { return nil }
-        UIView.animate(withDuration: 0.2, delay: 0.5) { [self] in
-            albumArtContainerView.layer.shadowOpacity = 0
-        }
-        let controller = ImagePreviewController(fullImage, placeholder: albumArtImageView.image)
-        return UIContextMenuConfiguration(
-            identifier: nil,
-            previewProvider: { controller },
-            actionProvider: { _ in
-                UIMenu(children: [UIAction(
-                    title: "Copy",
-                    image: UIImage(systemName: "doc.on.doc"),
-                    identifier: nil,
-                    attributes: []) { _ in
-                    if let image = controller?.imageView.image {
-                        UIPasteboard.general.image = image
-                    }
-                }] + [UIAction(
-                    title: "Download",
-                    image: UIImage(systemName: "square.and.arrow.down"),
-                    identifier: nil,
-                    attributes: []) { [self] _ in
-                    if let image = controller?.imageView.image {
-                        UIImageWriteToSavedPhotosAlbum(image, self, #selector(image(image:didFinishSavingWithError:contextInfo:)), nil)
-                    }
-                }] + [UIAction(
-                    title: "Share",
-                    image: UIImage(systemName: "square.and.arrow.up"),
-                    identifier: nil,
-                    attributes: []) { [self] _ in
-                    if let image = controller?.imageView.image {
-                        window?.topViewController?.present(UIActivityViewController(activityItems: [image], applicationActivities: nil), animated: true, completion: nil)
-                    }
-                }])
-            }
-        )
-    }
-    
-    @objc private func image(image: UIImage!, didFinishSavingWithError error: NSError!, contextInfo: AnyObject!) {
-        if error != nil {
-            window?.topViewController?.present(UIAlertController(title: "Failed to save image", message: "Please check application permissions and try again.", preferredStyle: .alert).with { $0.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))}, animated: true, completion: nil)
-        } else {
-            Haptic.play(".-O")
-            window?.topViewController?.present(UIAlertController(title: "Image saved successfuly", message: "Check your gallery to find it.", preferredStyle: .alert).with { $0.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))}, animated: true, completion: nil)
-        }
-    }
-    
-    func contextMenuInteraction(_ interaction: UIContextMenuInteraction, willEndFor configuration: UIContextMenuConfiguration, animator: UIContextMenuInteractionAnimating?) {
-        UIView.animate(withDuration: 0.2, delay: 0.3) { [self] in
-            albumArtContainerView.layer.shadowOpacity = Constants.albumArtShadowOpacity
         }
     }
     

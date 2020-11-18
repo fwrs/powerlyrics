@@ -22,6 +22,14 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         resolver.resolve(SpotifyProvider.self)!
     }()
     
+    lazy var keychainService: KeychainServiceProtocol = {
+        resolver.resolve(KeychainServiceProtocol.self)!
+    }()
+    
+    lazy var realmService: RealmServiceProtocol = {
+        resolver.resolve(RealmServiceProtocol.self)!
+    }()
+    
     lazy var tabBarCoordinator: TabBarCoordinator = {
         resolver.resolve(TabBarCoordinator.self)!
     }()
@@ -60,7 +68,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         spotifyProvider.logout(reset: false)
         spotifyProvider.handle(url: url) { [self] in
             let loadingAlert = UIAlertController(title: nil, message: nil, preferredStyle: .alert).with {
-                $0.addLoadingUI()
+                $0.addLoadingUI(title: "Please wait")
             }
             alertTopMostViewController(controller: loadingAlert)
             self.loadingAlert = loadingAlert
@@ -101,7 +109,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         spotifyProvider.reactive
             .request(.userInfo)
             .map(SpotifyUserInfoResponse.self)
-            .start { event in
+            .start { [self] event in
                 switch event {
                 case .value(let response):
                     if response.explicitContent.filterEnabled == true && response.explicitContent.filterLocked == true {
@@ -109,8 +117,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                         return
                     }
                     
-                    Realm.saveUserData(spotifyUserInfo: response)
-                    Config.getResolver().resolve(KeychainStorageProtocol.self)!.setEncodable(true, for: .spotifyAuthorizedWithAccount)
+                    realmService.saveUserData(spotifyUserInfo: response)
+                    keychainService.setEncodable(true, for: .spotifyAuthorizedWithAccount)
                     success()
                 case .failed:
                     failure(false)

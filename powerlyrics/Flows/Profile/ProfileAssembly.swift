@@ -19,7 +19,10 @@ class ProfileAssembly: Assembly {
     override func assemble(container: Container) {
         
         container.register(ProfileViewModel.self) { resolver in
-            ProfileViewModel(spotifyProvider: resolver.resolve(SpotifyProvider.self)!)
+            ProfileViewModel(
+                spotifyProvider: resolver.resolve(SpotifyProvider.self)!,
+                realmService: resolver.resolve(RealmServiceProtocol.self)!
+            )
         }
         
         container.register(ProfileScene.self) { resolver in

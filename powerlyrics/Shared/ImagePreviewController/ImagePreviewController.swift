@@ -9,6 +9,7 @@
 import UIKit
 
 class ImagePreviewController: UIViewController {
+    
     let imageView = UIImageView()
     
     init?(_ image: SharedImage?, placeholder: UIImage? = nil) {
@@ -20,11 +21,13 @@ class ImagePreviewController: UIViewController {
         preferredContentSize = newSize
         imageView.contentMode = .scaleAspectFill
         imageView.clipsToBounds = true
+        
         if image != nil || placeholder == nil {
             imageView.populate(with: image, placeholder: placeholder)
         } else if let placeholder = placeholder {
             imageView.populate(with: .local(placeholder))
         }
+        
         view = imageView
     }
     

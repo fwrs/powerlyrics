@@ -8,9 +8,13 @@
 
 import UIKit
 
-class EmptyView: UIView {
+class EmptyView: View {
+    
+    // MARK: - Outlets
 
     @IBOutlet private weak var moonImageView: UIImageView!
+    
+    // MARK: - Lifecycle
     
     override func awakeFromNib() {
         super.awakeFromNib()

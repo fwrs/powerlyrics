@@ -10,7 +10,7 @@ import Swinject
 import UIKit
 
 protocol SongListScene: ViewController {
-    var flowLyrics: ((SharedSong, UIImage?) -> Void)? { get set }
+    var flowLyrics: DefaultSharedSongPreviewAction? { get set }
 }
 
 enum SongListFlow: Equatable {
@@ -27,7 +27,8 @@ class SongListAssembly: Assembly {
         container.register(SongListViewModel.self) { (resolver, flow: SongListFlow) in
             SongListViewModel(
                 flow: flow,
-                spotifyProvider: resolver.resolve(SpotifyProvider.self)!
+                spotifyProvider: resolver.resolve(SpotifyProvider.self)!,
+                realmService: resolver.resolve(RealmServiceProtocol.self)!
             )
         }
         
