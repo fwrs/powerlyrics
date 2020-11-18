@@ -31,6 +31,8 @@ class LoadingButton: UIButton {
         }
     }
     
+    private var storedTitleColor: UIColor?
+    
     private(set) var activityView: UIActivityIndicatorView = .init(style: .medium)
     
     override init(frame: CGRect) {
@@ -48,18 +50,21 @@ class LoadingButton: UIButton {
     private func configure() {
         activityView.hidesWhenStopped = true
         self.addSubview(activityView)
-
+        activityView.translatesAutoresizingMaskIntoConstraints = false
+        activityView.color = .white
+        bringSubviewToFront(activityView)
         NSLayoutConstraint.activate([
             activityView.centerXAnchor.constraint(equalTo: centerXAnchor),
             activityView.centerYAnchor.constraint(equalTo: centerYAnchor)
         ])
+        storedTitleColor = titleColor(for: .normal)
     }
     
     private func changeLoadingState(isLoading: Bool) {
         isEnabled = !isLoading
         
-        UIView.animate(withDuration: 0.3) {
-            self.titleLabel?.alpha = isLoading ? 0 : 1
+        UIView.transition(with: self, duration: 0.1, options: .transitionCrossDissolve) { [self] in
+            setTitleColor(isLoading ? .clear : (storedTitleColor ?? .label), for: .normal)
         }
         
         if isLoading {

@@ -10,6 +10,7 @@ import UIKit
 
 protocol ProfileScene: ViewController {
     var flowLikedSongs: DefaultAction? { get set }
+    var flowSetup: DefaultSetupModeAction? { get set }
 }
 
 class ProfileAssembly: Assembly {

@@ -57,6 +57,7 @@ class RealmLikedSong: Object {
     @objc dynamic var thumbnailAlbumArtURL: String?
     @objc dynamic var albumArtURL: String?
     @objc dynamic var geniusURL: String?
+    @objc dynamic var likeDate = Date()
     
     let artists = List<String>()
     

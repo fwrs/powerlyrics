@@ -17,11 +17,21 @@ class GenreStatsViewController: ViewController, GenreStatsScene {
     
     @IBOutlet private weak var tableView: TableView!
     
+    @IBOutlet private weak var titleLabel: UILabel!
+    
+    @IBOutlet private weak var titleBackgroundView: UIVisualEffectView!
+    
+    @IBOutlet private weak var titleShadowView: UIView!
+    
     // MARK: - Instance properties
     
     var viewModel: GenreStatsViewModel!
     
     private var lastSelectedIndexPath: IndexPath?
+    
+    var initial: Bool = true
+    
+    var navigationBarBackgroundHidden = true
     
     // MARK: - Flows
     
@@ -45,6 +55,15 @@ class GenreStatsViewController: ViewController, GenreStatsScene {
         }
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        if !initial {
+            viewModel.reload()
+        }
+        initial = false
+    }
+    
     // MARK: - Actions
     
 }
@@ -56,10 +75,18 @@ extension GenreStatsViewController {
     func setupView() {
         tableView.register(SongCell.self)
         tableView.register(GenreInfoCell.self)
-        tableView.register(GenreEmptyCell
-                            .self)
+        tableView.register(GenreEmptyCell.self)
         
-        viewModel.items.bind(to: tableView) { items, indexPath, uiTableView in
+        panModalSetNeedsLayoutUpdate()
+    
+        viewModel.items.observeNext { [self] _ in
+            delay(0.01) {
+                panModalSetNeedsLayoutUpdate()
+                panModalTransition(to: .shortForm)
+            }
+        }.dispose(in: disposeBag)
+        
+        viewModel.items.bind(to: tableView, rowAnimation: .fade) { items, indexPath, uiTableView in
             let tableView = uiTableView as! TableView
             let item = items[indexPath.row]
             switch item {
@@ -75,6 +102,8 @@ extension GenreStatsViewController {
                 cell.configure(with: songCellViewModel)
                 if items.count - 1 == indexPath.row {
                     cell.separatorInset = .zero
+                } else {
+                    cell.separatorInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 0)
                 }
                 return cell
             case .empty:
@@ -91,27 +120,31 @@ extension GenreStatsViewController {
         tableView.reactive.selectedRowIndexPath.observeNext { [self] indexPath in
             tableView.deselectRow(at: indexPath, animated: true)
             lastSelectedIndexPath = indexPath
+            Haptic.play(".")
             if case .song(let songCellViewModel) = viewModel.items[indexPath.row] {
                 flowLyrics?(songCellViewModel.song, nil)
             }
         }.dispose(in: disposeBag)
         
-        navigationItem.title = viewModel.genre.localizedName
+        titleLabel.text = viewModel.genre.localizedName
         
         updateNavigationBarAppearance()
     }
     
     func updateNavigationBarAppearance() {
-        let appearance = UINavigationBarAppearance()
-        if tableView.contentOffset.y < 1 {
-            appearance.configureWithTransparentBackground()
-        } else {
-            appearance.configureWithDefaultBackground()
+        if navigationBarBackgroundHidden && tableView.contentOffset.y < 10 {
+            return
         }
-        appearance.titleTextAttributes = [
-            .font: FontFamily.RobotoMono.semiBold.font(size: 17)
-        ]
-        navigationItem.standardAppearance = appearance
+        if !navigationBarBackgroundHidden && tableView.contentOffset.y >= 10 {
+            return
+        }
+        navigationBarBackgroundHidden = tableView.contentOffset.y < 10
+        UIView.transition(with: titleBackgroundView, duration: 0.3, options: .transitionCrossDissolve) { [self] in
+            titleBackgroundView.isHidden = tableView.contentOffset.y < 10
+        }
+        UIView.transition(with: titleShadowView, duration: 0.3, options: .transitionCrossDissolve) { [self] in
+            titleShadowView.isHidden = tableView.contentOffset.y < 10
+        }
     }
     
 }
@@ -142,10 +175,6 @@ extension GenreStatsViewController: PanModalPresentable {
     
     var cornerRadius: CGFloat {
         30
-    }
-    
-    var shortFormHeight: PanModalHeight {
-        viewModel.isEmpty ? .intrinsicHeight : .maxHeightWithTopInset(300)
     }
     
 }

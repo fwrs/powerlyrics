@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17156" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17506" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17125"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17505"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
@@ -17,7 +17,7 @@
         <!--Setup Offline View Controller-->
         <scene sceneID="d87-TQ-MCH">
             <objects>
-                <viewController storyboardIdentifier="SetupOfflineViewController" interfaceStyle="dark" id="mjG-hh-iaC" customClass="SetupOfflineViewController" customModule="powerlyrics" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="SetupOfflineViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" interfaceStyle="dark" id="mjG-hh-iaC" customClass="SetupOfflineViewController" customModule="powerlyrics" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="4ll-nT-gZG">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="842"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -59,7 +59,7 @@ for logging in without Spotify.</string>
                                                     <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Name" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="bxv-mv-GEY">
                                                         <rect key="frame" x="10" y="0.0" width="362" height="44"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                        <textInputTraits key="textInputTraits"/>
+                                                        <textInputTraits key="textInputTraits" autocapitalizationType="words" returnKeyType="continue" textContentType="name"/>
                                                     </textField>
                                                 </subviews>
                                                 <color key="backgroundColor" red="0.46274509803921571" green="0.46274509803921571" blue="0.50196078431372548" alpha="0.23999999999999999" colorSpace="custom" customColorSpace="calibratedRGB"/>
@@ -111,7 +111,7 @@ for logging in without Spotify.</string>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="6.5" translatesAutoresizingMaskIntoConstraints="NO" id="J09-yS-CR0">
                                 <rect key="frame" x="44" y="661.5" width="326" height="98.5"/>
                                 <subviews>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ab5-JQ-ryD">
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ab5-JQ-ryD" customClass="LoadingButton" customModule="powerlyrics" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="0.0" width="326" height="46"/>
                                         <color key="backgroundColor" name="DarkTintColor"/>
                                         <constraints>
@@ -139,6 +139,7 @@ for logging in without Spotify.</string>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="mqb-D3-UcX"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <color key="tintColor" name="TintColor"/>
                         <constraints>
                             <constraint firstItem="c6z-MH-ztT" firstAttribute="leading" secondItem="mqb-D3-UcX" secondAttribute="leading" constant="16" id="288-aA-xcR"/>
                             <constraint firstItem="c6z-MH-ztT" firstAttribute="centerX" secondItem="mqb-D3-UcX" secondAttribute="centerX" id="5Qb-gc-X0w"/>
@@ -157,6 +158,8 @@ for logging in without Spotify.</string>
                         <outlet property="buttonsStackView" destination="J09-yS-CR0" id="vsI-Xh-epQ"/>
                         <outlet property="formStackView" destination="c6z-MH-ztT" id="csc-fR-xrQ"/>
                         <outlet property="mainButton" destination="ab5-JQ-ryD" id="bfX-cB-J75"/>
+                        <outlet property="nameTextField" destination="bxv-mv-GEY" id="Zj3-iK-vi8"/>
+                        <outlet property="over18Switch" destination="E1j-6L-qjZ" id="Cei-rh-auh"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Fse-X7-fJW" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -167,6 +170,9 @@ for logging in without Spotify.</string>
     <resources>
         <namedColor name="DarkTintColor">
             <color red="0.81999999284744263" green="0.54900002479553223" blue="0.33700001239776611" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="TintColor">
+            <color red="0.9179999828338623" green="0.68199998140335083" blue="0.49799999594688416" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>

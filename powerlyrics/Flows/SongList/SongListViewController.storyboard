@@ -3,6 +3,7 @@
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17505"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -11,7 +12,7 @@
         <!--songs-->
         <scene sceneID="jr3-pR-ajE">
             <objects>
-                <viewController storyboardIdentifier="SongListViewController" interfaceStyle="dark" id="9j1-xF-Za6" customClass="SongListViewController" customModule="powerlyrics" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="SongListViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" interfaceStyle="dark" id="9j1-xF-Za6" customClass="SongListViewController" customModule="powerlyrics" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="bwb-9C-yoL">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -20,7 +21,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                             </tableView>
-                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="large" translatesAutoresizingMaskIntoConstraints="NO" id="IB9-x8-S2o">
+                            <activityIndicatorView opaque="NO" alpha="0.0" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="large" translatesAutoresizingMaskIntoConstraints="NO" id="IB9-x8-S2o">
                                 <rect key="frame" x="0.0" y="88" width="414" height="120"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="120" id="f8A-tV-8kv"/>
@@ -29,6 +30,7 @@
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="lVi-Hh-Fi4"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <color key="tintColor" name="TintColor"/>
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="rpq-9B-PzZ" secondAttribute="trailing" id="I4U-IE-9CU"/>
                             <constraint firstAttribute="trailing" secondItem="IB9-x8-S2o" secondAttribute="trailing" id="Q6J-3G-Vwt"/>
@@ -53,6 +55,9 @@
         </scene>
     </scenes>
     <resources>
+        <namedColor name="TintColor">
+            <color red="0.9179999828338623" green="0.68199998140335083" blue="0.49799999594688416" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>

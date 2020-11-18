@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>543236285272-tkms20j6g57djdajkfbpcq01lfbql3k8.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.543236285272-tkms20j6g57djdajkfbpcq01lfbql3k8</string>
+	<key>API_KEY</key>
+	<string>AIzaSyCH3noSzv_k3yXQiJ4x2cNDfOAQHAkrGBs</string>
+	<key>GCM_SENDER_ID</key>
+	<string>543236285272</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>live.ilyusha.powerlyrics</string>
+	<key>PROJECT_ID</key>
+	<string>superpoweredlyrics</string>
+	<key>STORAGE_BUCKET</key>
+	<string>superpoweredlyrics.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:543236285272:ios:caab6452fc967c4786bb2d</string>
+	<key>DATABASE_URL</key>
+	<string>https://superpoweredlyrics.firebaseio.com</string>
+</dict>
+</plist>

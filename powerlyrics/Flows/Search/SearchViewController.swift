@@ -28,6 +28,8 @@ class SearchViewController: ViewController, SearchScene {
     
     @IBOutlet private weak var nothingWasFoundSubtitleLabel: UILabel!
     
+    @IBOutlet private weak var trendsFailStackView: UIStackView!
+        
     // MARK: - Instance properties
     
     var viewModel: SearchViewModel!
@@ -61,6 +63,10 @@ class SearchViewController: ViewController, SearchScene {
         }
     }
     
+    @IBAction private func tappedReloadTrendsButton(_ sender: Any) {
+        viewModel.loadTrends()
+    }
+        
 }
 
 extension SearchViewController {
@@ -88,6 +94,30 @@ extension SearchViewController {
     }
     
     func setupObservers() {
+        viewModel.trendsFailed.observeNext { [self] failed in
+            UIView.transition(
+                with: trendsFailStackView,
+                duration: 0.3,
+                options: .transitionCrossDissolve,
+                animations: {
+                    trendsFailStackView.isHidden = !failed
+                }
+            )
+        }.dispose(in: disposeBag)
+        viewModel.internetError.observeNext { [self] isError in
+            setNoInternetView(isVisible: isError) {
+                let text = searchController.searchBar.text.safe
+                viewModel.search(for: text)
+            }
+            UIView.transition(
+                with: noResultsView,
+                duration: 0.3,
+                options: .transitionCrossDissolve,
+                animations: {
+                    noResultsView.isHidden = isError || !searchController.searchBar.text.safe.isEmpty
+                }
+            )
+        }.dispose(in: disposeBag)
         searchController.searchBar.reactive.text.compactMap { $0 }.dropFirst(1).debounce(for: 0.3, queue: .main).observeNext { [self] query in
             viewModel.search(for: query)
             UIView.transition(
@@ -100,7 +130,8 @@ extension SearchViewController {
             )
         }.dispose(in: disposeBag)
         
-        combineLatest(viewModel.items, viewModel.isLoading, viewModel.isRefreshing).observeNext { [self] songs, isLoading, isRefreshing in
+        combineLatest(viewModel.items, viewModel.isLoading, viewModel.isRefreshing, viewModel.internetError).observeNext { [self] songs, isLoading, isRefreshing, isError in
+            if isError { return }
             UIView.transition(
                 with: noResultsView,
                 duration: 0.3,
@@ -156,6 +187,7 @@ extension SearchViewController {
         viewModel.trends.bind(to: trendsCollectionView, cellType: TrendCell.self) { cell, cellViewModel in
             cell.configure(with: cellViewModel)
             cell.didTap = { [self] in
+                Haptic.play(".")
                 UIView.transition(
                     with: noResultsView,
                     duration: 0.3,

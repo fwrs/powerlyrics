@@ -75,12 +75,16 @@ class GenreMapView: UIView {
         self.layer.addSublayer(shapeLayer)
     }
     
-    func animatePathChange() {
+    var oldValues: [CGFloat] = [0, 0, 0, 0, 0, 0, 0, 0]
+    
+    func animatePathChange(fast: Bool = false) {
         var prevDelay = 0.0
+        let group = DispatchGroup()
         for i in 0..<8 {
-            delay((prevDelay + pow(0.9, Double(i+1))) / 20) { [self] in
+            group.enter()
+            delay((prevDelay + pow(fast ? 0.3 : 0.9, Double(i+1))) / 20) { [self] in
                 let baseInset: CGFloat = 95
-                let newPath = roseGraph(inset: baseInset, rect: bounds, values: values.enumerated().map { $0 > i ? 0 : CGFloat($1) }).cgPath
+                let newPath = roseGraph(inset: baseInset, rect: bounds, values: values.enumerated().map { $0 > i ? oldValues[$0] : CGFloat($1) }).cgPath
                 let animation = CABasicAnimation(keyPath: "path")
                 animation.duration = 0.5
                 animation.fromValue = shapeLayer.presentation()?.path
@@ -91,8 +95,14 @@ class GenreMapView: UIView {
                 shapeLayer.path = shapeLayer.presentation()?.path
                 shapeLayer.removeAllAnimations()
                 shapeLayer.add(animation, forKey: "path")
+                delay(0.5) {
+                    group.leave()
+                }
             }
-            prevDelay += pow(0.9, Double(i+1))
+            prevDelay += pow(fast ? 0.3 : 0.9, Double(i+1))
+        }
+        group.notify(queue: .main) { [self] in
+            oldValues = values
         }
         
     }

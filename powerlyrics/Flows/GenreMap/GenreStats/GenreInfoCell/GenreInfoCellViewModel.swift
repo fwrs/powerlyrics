@@ -14,6 +14,14 @@ enum GenreInfoLevel {
     case overwhelming // 80% ≤ count / avg < 100%
     
     init(count: Int, average: Float) {
+        if count == 1 {
+            self = .low
+            return
+        }
+        if count < 3 {
+            self = .ok
+            return
+        }
         switch Float(count) / average {
         case 0.2..<0.45:
             self = .ok
@@ -46,7 +54,7 @@ enum GenreInfoLevel {
         case .ok:
             return "Looks like you have some interest in \(genre.localizedName), with total of \(count) song\(count.sIfNotOne) liked."
         case .good:
-            return "Having liked \(count) song\(count.sIfNotOne)s from \(genre.localizedName), like you’re a fan of it!"
+            return "Having liked \(count) song\(count.sIfNotOne)s from \(genre.localizedName), looks like you’re a fan of it!"
         case .overwhelming:
             return "Looks like you’re a huge fan of \(genre.localizedName), maybe try exploring some other genres."
         }

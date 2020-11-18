@@ -21,16 +21,20 @@ class GenreStatsViewModel: ViewModel {
     
     let genre: RealmLikedSongGenre
     
-    let isEmpty: Bool
+    let isEmpty = Observable(false)
     
     init(genre: RealmLikedSongGenre) {
         self.genre = genre
+        super.init()
+        reload()
+    }
+    
+    func reload() {
         let songs = Realm.likedSongs(with: genre)
             .map { GenreStatsCell.song(SongCellViewModel(song: $0.asSharedSong)) }
-        self.isEmpty = songs.isEmpty
-        super.init()
-        let average = ([.rock, .classic, .rap, .country, .acoustic, .pop, .jazz, .edm]
-                    .map { Float(Realm.likedSongs(with: $0).count) }).reduce(0.0, +) / Float(Realm.likedSongsCount)
+        let counts = ([.rock, .classic, .rap, .country, .acoustic, .pop, .jazz, .edm]
+                        .map { Float(Realm.likedSongs(with: $0).count) })
+        let average = counts.reduce(0.0, +) / Float(counts.filter { $0 != 0 }.count)
         if songs.isEmpty {
             items.replace(with: [
                 .empty
@@ -44,6 +48,7 @@ class GenreStatsViewModel: ViewModel {
                 ))
             ] + songs, performDiff: true)
         }
+        isEmpty.value = songs.isEmpty
     }
     
 }

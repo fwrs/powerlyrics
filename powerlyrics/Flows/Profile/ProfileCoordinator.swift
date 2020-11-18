@@ -22,6 +22,9 @@ class ProfileCoordinator: Coordinator {
         scene?.flowLikedSongs = { [weak self] in
             self?.showLikedSongs()
         }
+        scene?.flowSetup = { [weak self] mode in
+            self?.showSetup(mode: mode)
+        }
         router.push(scene, animated: false)
     }
     
@@ -43,6 +46,14 @@ class ProfileCoordinator: Coordinator {
         }, song, placeholder)!
         childCoordinators.append(lyricsCoordinator)
         lyricsCoordinator.start()
+    }
+    
+    func showSetup(mode: SetupMode) {
+        let setupCoordinator = resolver.resolve(SetupCoordinator.self, arguments: Router(), rootViewController, { [self] in
+            childCoordinators.removeAll { $0.isKind(of: SetupCoordinator.self) }
+        }, mode)!
+        childCoordinators.append(setupCoordinator)
+        setupCoordinator.start()
     }
     
 }

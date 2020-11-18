@@ -11,7 +11,7 @@
         <!--search-->
         <scene sceneID="Sb6-nf-07f">
             <objects>
-                <viewController storyboardIdentifier="SearchViewController" interfaceStyle="dark" id="8Km-R5-V3q" customClass="SearchViewController" customModule="powerlyrics" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="SearchViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" interfaceStyle="dark" id="8Km-R5-V3q" customClass="SearchViewController" customModule="powerlyrics" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="p1g-WG-Ve3">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -102,6 +102,25 @@ receive suggestions</string>
                                             <constraint firstAttribute="height" constant="60" id="buB-3G-tqa"/>
                                         </constraints>
                                     </activityIndicatorView>
+                                    <stackView hidden="YES" opaque="NO" contentMode="scaleToFill" distribution="equalSpacing" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="zhv-0J-wID">
+                                        <rect key="frame" x="86.5" y="521.5" width="241.5" height="33"/>
+                                        <subviews>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Failed to load trends. " textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="I0n-Gd-LpE">
+                                                <rect key="frame" x="0.0" y="6.5" width="163.5" height="20.5"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                <nil key="textColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xyW-k6-pPE">
+                                                <rect key="frame" x="163.5" y="0.0" width="78" height="33"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                <state key="normal" title="Try again?"/>
+                                                <connections>
+                                                    <action selector="tappedReloadTrendsButton:" destination="8Km-R5-V3q" eventType="touchUpInside" id="Mmt-rD-FMa"/>
+                                                </connections>
+                                            </button>
+                                        </subviews>
+                                    </stackView>
                                 </subviews>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <constraints>
@@ -112,8 +131,10 @@ receive suggestions</string>
                                     <constraint firstItem="r8L-W9-VQx" firstAttribute="leading" secondItem="eaC-uH-Hwv" secondAttribute="leading" constant="18" id="85y-CL-geK"/>
                                     <constraint firstItem="ZMi-Hm-ZWd" firstAttribute="top" secondItem="r8L-W9-VQx" secondAttribute="top" id="8vu-Ak-ORF"/>
                                     <constraint firstAttribute="trailing" secondItem="2gs-oQ-R3L" secondAttribute="trailing" constant="60" id="CLw-FZ-G7c"/>
+                                    <constraint firstItem="zhv-0J-wID" firstAttribute="centerX" secondItem="r8L-W9-VQx" secondAttribute="centerX" id="EO4-KY-Z4W"/>
                                     <constraint firstItem="ovM-qu-J7F" firstAttribute="trailing" secondItem="2gs-oQ-R3L" secondAttribute="trailing" id="KFY-QO-wvs"/>
                                     <constraint firstItem="ovM-qu-J7F" firstAttribute="leading" secondItem="2gs-oQ-R3L" secondAttribute="leading" id="KtN-Dn-rOr"/>
+                                    <constraint firstItem="zhv-0J-wID" firstAttribute="top" secondItem="r8L-W9-VQx" secondAttribute="top" id="QT2-F6-OwH"/>
                                     <constraint firstItem="Tzg-Mi-g4q" firstAttribute="top" secondItem="2gs-oQ-R3L" secondAttribute="bottom" constant="27.5" id="XlB-EX-M7c"/>
                                     <constraint firstAttribute="bottom" secondItem="r8L-W9-VQx" secondAttribute="bottom" constant="25" id="bMX-L2-ixb"/>
                                     <constraint firstItem="r8L-W9-VQx" firstAttribute="top" secondItem="Tzg-Mi-g4q" secondAttribute="bottom" constant="25" id="gXp-Si-8sB"/>
@@ -161,6 +182,7 @@ receive suggestions</string>
                         <outlet property="tableView" destination="ftC-Eq-hSW" id="Z44-Xn-V9K"/>
                         <outlet property="trendsActivityIndicator" destination="ZMi-Hm-ZWd" id="2Hb-31-uxt"/>
                         <outlet property="trendsCollectionView" destination="r8L-W9-VQx" id="eMN-KP-ON3"/>
+                        <outlet property="trendsFailStackView" destination="zhv-0J-wID" id="255-BT-GHI"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="1TL-wx-ZSt" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>

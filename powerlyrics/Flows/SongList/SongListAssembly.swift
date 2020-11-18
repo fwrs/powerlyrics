@@ -12,10 +12,10 @@ protocol SongListScene: ViewController {
     var flowLyrics: ((SharedSong, UIImage?) -> Void)? { get set }
 }
 
-enum SongListFlow {
+enum SongListFlow: Equatable {
     case albumTracks(SpotifyAlbum)
-    case trendingSongs
-    case viralSongs
+    case trendingSongs(preview: [SharedSong])
+    case viralSongs(preview: [SharedSong])
     case likedSongs
 }
 

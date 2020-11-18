@@ -45,7 +45,10 @@ extension LyricsSectionCell: UIContextMenuInteractionDelegate {
         _ interaction: UIContextMenuInteraction,
         configurationForMenuAtLocation location: CGPoint
     ) -> UIContextMenuConfiguration? {
-        let copyElement = UIAction(title: "Copy", image: UIImage(systemName: "doc.on.doc")) { _ in }
+        let copyElement = UIAction(title: "Copy", image: UIImage(systemName: "doc.on.doc")) { [self] _ in
+            let text = contentsLabel.text
+            UIPasteboard.general.string = text
+        }
         UIView.animate(withDuration: 0.1, delay: 0.1) { [self] in
             backgroundColor = .systemBackground
         }

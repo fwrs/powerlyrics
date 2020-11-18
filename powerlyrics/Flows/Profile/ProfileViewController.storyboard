@@ -12,7 +12,7 @@
         <!--Profile-->
         <scene sceneID="ePI-h5-cdU">
             <objects>
-                <viewController storyboardIdentifier="ProfileViewController" interfaceStyle="dark" id="uKt-ds-NTL" customClass="ProfileViewController" customModule="powerlyrics" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="ProfileViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" interfaceStyle="dark" id="uKt-ds-NTL" customClass="ProfileViewController" customModule="powerlyrics" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="bPg-9Q-9sd">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -114,6 +114,7 @@
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="aOb-qH-KNs"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <color key="tintColor" name="TintColor"/>
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="j4n-CT-Dpy" secondAttribute="trailing" id="3Gs-vV-VpL"/>
                             <constraint firstItem="01W-08-cKF" firstAttribute="leading" secondItem="bPg-9Q-9sd" secondAttribute="leading" id="9yC-He-i9L"/>

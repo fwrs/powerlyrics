@@ -5,6 +5,7 @@
 //  Created by Ilya Kulinkovich on 10/4/20.
 //
 
+import RealmSwift
 import Swinject
 import UIKit
 
@@ -68,6 +69,9 @@ class SetupCoordinator: Coordinator {
                 dismissCompletion()
             })
         }
+        scene.flowSpotifyLogin = { [self] in
+            spotifyProvider.login(from: scene)
+        }
         router.push(scene, animated: false)
         base.present(router, animated: true)
     }
@@ -80,13 +84,9 @@ class SetupCoordinator: Coordinator {
             })
         }
         scene.flowSpotifyLoginOffline = { [self] in
-            spotifyProvider.loginWithoutUser { success in
-                if success {
-                    base.dismiss(animated: true, completion: {
-                        dismissCompletion()
-                    })
-                }
-            }
+            base.dismiss(animated: true, completion: {
+                dismissCompletion()
+            })
         }
         router.push(scene)
     }

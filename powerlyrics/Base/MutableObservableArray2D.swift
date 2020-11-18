@@ -17,3 +17,13 @@ extension MutableObservableArray2D where Value: TreeChangesetProtocol, Value.Col
     }
     
 }
+
+extension MutableObservableArray2D where Value: TreeChangesetProtocol, Value.Collection: Array2DProtocol, SectionMetadata == (), Item: Equatable {
+    
+    func set(_ items: [(SectionMetadata, [Item])]) {
+        replace(with: Array2D(sectionsWithItems: items.filter { $0.1.nonEmpty }) as! Value.Collection, performDiff: true, areEqual: { lhs, rhs in
+            lhs.item == rhs.item
+        })
+    }
+    
+}

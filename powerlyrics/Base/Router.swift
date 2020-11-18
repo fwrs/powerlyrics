@@ -61,4 +61,8 @@ extension Router: PanModalPresentable {
         (topViewController as! PanModalPresentable).longFormHeight
     }
     
+    var anchorModalToLongForm: Bool {
+        (topViewController as! PanModalPresentable).anchorModalToLongForm
+    }
+    
 }

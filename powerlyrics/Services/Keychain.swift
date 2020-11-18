@@ -38,8 +38,9 @@ final class KeychainStorage: KeychainStorageProtocol {
     
     enum Key: String {
         case spotifyToken
+        case spotifyAuthorizedWithAccount
         
-        static let all: [Key] = [.spotifyToken]
+        static let all: [Key] = [.spotifyToken, .spotifyAuthorizedWithAccount]
     }
     
     func setEncodable<T: Encodable>(_ value: T?, for key: Key) {

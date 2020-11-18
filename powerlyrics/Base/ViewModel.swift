@@ -22,12 +22,15 @@ class ViewModel {
         }
     }
     
+    func onLoadingEnd() {}
+    
     func endLoading(_ refresh: Bool) {
         if refresh {
             isRefreshing.value = false
         } else {
             isLoading.value = false
         }
+        onLoadingEnd()
     }
     
 }

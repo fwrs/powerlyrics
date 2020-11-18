@@ -11,8 +11,8 @@ import UIKit
 protocol HomeScene: ViewController {
     var flowLyrics: ((SharedSong, UIImage?) -> Void)? { get set }
     var flowSetup: DefaultSetupModeAction? { get set }
-    var flowTrends: DefaultAction? { get set }
-    var flowVirals: DefaultAction? { get set }
+    var flowTrends: DefaultSharedSongListAction? { get set }
+    var flowVirals: DefaultSharedSongListAction? { get set }
 }
 
 class HomeAssembly: Assembly {

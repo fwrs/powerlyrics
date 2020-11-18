@@ -79,5 +79,7 @@
 	</array>
 	<key>UIUserInterfaceStyle</key>
 	<string>Dark</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>Enabling this will allow you to save photos</string>
 </dict>
 </plist>

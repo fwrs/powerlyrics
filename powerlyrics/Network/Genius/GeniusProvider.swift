@@ -23,8 +23,12 @@ extension GeniusProvider {
         }
     }
     
-    static func scrape(url: URL, completionHandler: DefaultLyricsResultAction?) {
+    static func scrape(url: URL, completionHandler: DefaultLyricsResultAction?, failureHandler: DefaultAction?) {
         AF.request(url).response { response in
+            if case .failure = response.result {
+                failureHandler?()
+                return
+            }
             guard let string = response.data?.string,
                   let doc: Document = try? SwiftSoup.parse(string),
                   let lyricsContainer = try? doc.select("div[class^='lyrics']"),
@@ -52,14 +56,14 @@ extension GeniusProvider {
             // MARK: - Genre parsing
             
             var genre: RealmLikedSongGenre = .unknown
-            let genreNames = [["rock", "indie", "metal"], // => .rock
-                              ["classic", "non-music"],   // => .classic
-                              ["trap", "rap", "r-b"],     // => .rap
-                              ["country"],                // => .country
-                              ["acoustic"],               // => .acoustic
-                              ["pop"],                    // => .pop
-                              ["jazz"],                   // => .jazz
-                              ["electr", "dance"]]        // => .edm
+            let genreNames = [["rock", "indie", "metal"],                            // => .rock
+                              ["classic", "non-music", "literat"],                   // => .classic
+                              ["trap", "rap", "r-b"],                                // => .rap
+                              ["country"],                                           // => .country
+                              ["acoustic"],                                          // => .acoustic
+                              ["pop"],                                               // => .pop
+                              ["jazz", "swing"],                                     // => .jazz
+                              ["electr", "dance", "tranc", "ambien", "future bass"]] // => .edm
             let content = (try? doc.outerHtml()).safe.components(separatedBy: "\\\"songRelationships\\\"").first.safe
             let genreRegEx = try! NSRegularExpression(pattern: "genius\\.com\\/tags\\/(.*?)(&quot;|\\\")")
             if let genreRange = genreRegEx.matches(in: content, options: [], range: NSRange(location: 0, length: content.count)).max(by: { $0.range.location < $1.range.location })?.range {
@@ -73,7 +77,7 @@ extension GeniusProvider {
             
             // to be done
 
-            completionHandler?(Shared.LyricsResult(lyrics: lyrics, genre: genre, notes: ""))
+            completionHandler?(Shared.LyricsResult(lyrics: lyrics, genre: genre))
         }
     }
         

@@ -8,7 +8,7 @@
 import UIKit
 
 class ImagePreviewController: UIViewController {
-    private let imageView = UIImageView()
+    let imageView = UIImageView()
     
     init?(_ image: SharedImage?, placeholder: UIImage? = nil) {
         super.init(nibName: nil, bundle: nil)

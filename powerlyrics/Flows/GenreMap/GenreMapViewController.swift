@@ -65,6 +65,7 @@ class GenreMapViewController: ViewController, GenreMapScene {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         if shouldAnimate {
+            load()
             UIView.animate(withDuration: 0.5, delay: 0.1, options: .curveEaseOut) { [self] in
                 genreMapBackgroundView.alpha = 1
             }
@@ -85,13 +86,57 @@ class GenreMapViewController: ViewController, GenreMapScene {
             if noData {
                 notEnoughDataView.isHidden = false
                 notEnoughDataView.alpha = 0
-                UIView.animate(withDuration: 0.7, delay: 0.55, options: .curveEaseOut) { [self] in
+                UIView.animate(withDuration: 0.6, delay: 0.05, options: .curveEaseOut) { [self] in
                     notEnoughDataView.alpha = 1
                 }
             } else {
                 notEnoughDataView.isHidden = true
             }
             shouldAnimate = false
+        } else {
+            let counts = [Realm.likedSongs(with: .rock).count,
+                          Realm.likedSongs(with: .classic).count,
+                          Realm.likedSongs(with: .rap).count,
+                          Realm.likedSongs(with: .country).count,
+                          Realm.likedSongs(with: .acoustic).count,
+                          Realm.likedSongs(with: .pop).count,
+                          Realm.likedSongs(with: .jazz).count,
+                          Realm.likedSongs(with: .edm).count]
+            
+            if counts.filter({ $0 != 0 }).count < 2 {
+                noData = true
+                genreMapView.values = [Int](0..<8).map { _ in 0 }
+            } else {
+                noData = false
+                let total = ([.rock, .classic, .rap, .country, .acoustic, .pop, .jazz, .edm]
+                    .map { CGFloat(Realm.likedSongs(with: $0).count) } + [0.0001]).max().safe
+                genreMapView.values = [
+                    CGFloat(Realm.likedSongs(with: .rock).count) / total,
+                    CGFloat(Realm.likedSongs(with: .classic).count) / total,
+                    CGFloat(Realm.likedSongs(with: .rap).count) / total,
+                    CGFloat(Realm.likedSongs(with: .country).count) / total,
+                    CGFloat(Realm.likedSongs(with: .acoustic).count) / total,
+                    CGFloat(Realm.likedSongs(with: .pop).count) / total,
+                    CGFloat(Realm.likedSongs(with: .jazz).count) / total,
+                    CGFloat(Realm.likedSongs(with: .edm).count) / total
+                ].map { max(0.012, $0) }
+            }
+            if (notEnoughDataView.isHidden && noData) || (!notEnoughDataView.isHidden && !noData) {
+                if noData {
+                    notEnoughDataView.isHidden = false
+                    notEnoughDataView.alpha = 0
+                } else {
+                    notEnoughDataView.alpha = 1
+                }
+                UIView.animate(withDuration: 0.5) { [self] in
+                    notEnoughDataView.alpha = noData ? 1 : 0
+                } completion: { [self] _ in
+                    if !noData {
+                        notEnoughDataView.isHidden = true
+                    }
+                }
+            }
+            genreMapView.animatePathChange(fast: true)
         }
         
         goingBackFromPush = false
@@ -106,6 +151,24 @@ class GenreMapViewController: ViewController, GenreMapScene {
                 genreMapBackgroundView.layer.transform = CATransform3DIdentity
             }
         }
+    }
+    
+    func reset() {
+        if genreMapBackgroundView == nil {
+            return
+        }
+        genreMapBackgroundView.alpha = 0
+        genreMapView.alpha = 0
+        descriptionLabel.alpha = 0
+        for i in 0..<8 {
+            genreMapButtons[i].alpha = 0
+        }
+        noData = false
+        notEnoughDataView.alpha = 0
+        shouldAnimate = true
+        genreMapView.oldValues = [0, 0, 0, 0, 0, 0, 0, 0]
+        genreMapView.values = [0, 0, 0, 0, 0, 0, 0, 0]
+        genreMapView.addBehavior()
     }
         
     // MARK: - Actions
@@ -174,7 +237,6 @@ extension GenreMapViewController {
                         CATransform3DRotate(rotationWithPerspective, angle, transforms[index].0, transforms[index].1, 0)
                     genreMapBackgroundView.alpha = 0.8
                 }
-                
                 flowGenre?(RealmLikedSongGenre(rawValue: index) ?? .unknown)
                 goingBackFromPush = true
             }.dispose(in: disposeBag)
@@ -193,34 +255,36 @@ extension GenreMapViewController {
                     genreMapBackgroundView.layer.transform = CATransform3DIdentity
                 }
             }.dispose(in: disposeBag)
-            
-            let total = ([.rock, .classic, .rap, .country, .acoustic, .pop, .jazz, .edm]
-                .map { CGFloat(Realm.likedSongs(with: $0).count) } + [0.0001]).max().safe
-            
-            let counts = [Realm.likedSongs(with: .rock).count,
-                          Realm.likedSongs(with: .classic).count,
-                          Realm.likedSongs(with: .rap).count,
-                          Realm.likedSongs(with: .country).count,
-                          Realm.likedSongs(with: .acoustic).count,
-                          Realm.likedSongs(with: .pop).count,
-                          Realm.likedSongs(with: .jazz).count,
-                          Realm.likedSongs(with: .edm).count]
+        }
+    }
+    
+    func load() {
+        let total = ([.rock, .classic, .rap, .country, .acoustic, .pop, .jazz, .edm]
+            .map { CGFloat(Realm.likedSongs(with: $0).count) } + [0.0001]).max().safe
+        
+        let counts = [Realm.likedSongs(with: .rock).count,
+                      Realm.likedSongs(with: .classic).count,
+                      Realm.likedSongs(with: .rap).count,
+                      Realm.likedSongs(with: .country).count,
+                      Realm.likedSongs(with: .acoustic).count,
+                      Realm.likedSongs(with: .pop).count,
+                      Realm.likedSongs(with: .jazz).count,
+                      Realm.likedSongs(with: .edm).count]
 
-            if counts.filter({ $0 != 0 }).count < 2 {
-                noData = true
-                genreMapView.values = [Int](0..<8).map { _ in 0 }
-            } else {
-                genreMapView.values = [
-                    CGFloat(Realm.likedSongs(with: .rock).count) / total,
-                    CGFloat(Realm.likedSongs(with: .classic).count) / total,
-                    CGFloat(Realm.likedSongs(with: .rap).count) / total,
-                    CGFloat(Realm.likedSongs(with: .country).count) / total,
-                    CGFloat(Realm.likedSongs(with: .acoustic).count) / total,
-                    CGFloat(Realm.likedSongs(with: .pop).count) / total,
-                    CGFloat(Realm.likedSongs(with: .jazz).count) / total,
-                    CGFloat(Realm.likedSongs(with: .edm).count) / total
-                ].map { max(0.012, $0) }
-            }
+        if counts.filter({ $0 != 0 }).count < 2 {
+            noData = true
+            genreMapView.values = [Int](0..<8).map { _ in 0 }
+        } else {
+            genreMapView.values = [
+                CGFloat(Realm.likedSongs(with: .rock).count) / total,
+                CGFloat(Realm.likedSongs(with: .classic).count) / total,
+                CGFloat(Realm.likedSongs(with: .rap).count) / total,
+                CGFloat(Realm.likedSongs(with: .country).count) / total,
+                CGFloat(Realm.likedSongs(with: .acoustic).count) / total,
+                CGFloat(Realm.likedSongs(with: .pop).count) / total,
+                CGFloat(Realm.likedSongs(with: .jazz).count) / total,
+                CGFloat(Realm.likedSongs(with: .edm).count) / total
+            ].map { max(0.012, $0) }
         }
     }
     

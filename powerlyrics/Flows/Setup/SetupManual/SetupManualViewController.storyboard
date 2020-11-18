@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17156" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17506" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17125"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17505"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
@@ -12,7 +12,7 @@
         <!--Setup Manual View Controller-->
         <scene sceneID="d87-TQ-MCH">
             <objects>
-                <viewController storyboardIdentifier="SetupManualViewController" interfaceStyle="dark" id="mjG-hh-iaC" customClass="SetupManualViewController" customModule="powerlyrics" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="SetupManualViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" interfaceStyle="dark" id="mjG-hh-iaC" customClass="SetupManualViewController" customModule="powerlyrics" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="4ll-nT-gZG">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="842"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -67,6 +67,7 @@ extra features?</string>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="mqb-D3-UcX"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <color key="tintColor" name="TintColor"/>
                         <constraints>
                             <constraint firstItem="mqb-D3-UcX" firstAttribute="bottom" secondItem="J09-yS-CR0" secondAttribute="bottom" constant="48" id="DFJ-hU-PYk"/>
                             <constraint firstItem="cNO-5X-k1x" firstAttribute="top" secondItem="iSh-pB-TKo" secondAttribute="bottom" constant="32" id="GOw-9i-DiH"/>

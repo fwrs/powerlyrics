@@ -9,8 +9,10 @@ import Foundation
 import RealmSwift
 
 class RealmStats: Object {
-    @objc dynamic var likedSongs = 0
+
     @objc dynamic var searches = 0
-    @objc dynamic var discoveries = 0
-    @objc dynamic var viewedArtists = 0
+    
+    let discoveries = List<Int>()
+    let viewedArtists = List<Int>()
+
 }

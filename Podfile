@@ -54,6 +54,10 @@ target 'powerlyrics' do
   # Token storage
   pod 'KeychainAccess'
   
+  # Firebase Analytics
+  
+  pod 'Firebase/Analytics'
+  
   # Fix for Realm
   post_install do |installer|
     installer.pods_project.targets.each do |target|

@@ -10,6 +10,7 @@ import UIKit
 
 protocol SetupManualScene: ViewController {
     var flowDismiss: DefaultAction? { get set }
+    var flowSpotifyLogin: DefaultAction? { get set }
 }
 
 class SetupManualAssembly: Assembly {

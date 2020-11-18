@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="17156" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="17506" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17126"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17505"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -17,6 +17,10 @@
                 <rect key="frame" x="0.0" y="0.0" width="344" height="93"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bsh-JQ-ElH">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="93"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    </view>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="aT5-mE-W2y">
                         <rect key="frame" x="0.0" y="0.0" width="344" height="93"/>
                         <subviews>
@@ -71,29 +75,105 @@
                             <constraint firstItem="qqv-f1-8WK" firstAttribute="top" secondItem="aT5-mE-W2y" secondAttribute="top" constant="16" id="gze-Op-wIm"/>
                         </constraints>
                     </view>
+                    <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="umQ-8N-Y7f">
+                        <rect key="frame" x="259" y="0.0" width="85" height="93"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vAL-Xl-7BF" customClass="GradientView" customModule="powerlyrics" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="0.0" width="40" height="93"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="40" id="wvL-zj-IuY"/>
+                                </constraints>
+                            </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="NI0-W0-WhX">
+                                <rect key="frame" x="40" y="0.0" width="45" height="93"/>
+                                <color key="backgroundColor" systemColor="secondarySystemGroupedBackgroundColor"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="45" id="3bX-b8-Dwo"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                    </stackView>
+                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="SpotifyLogoAccessory" translatesAutoresizingMaskIntoConstraints="NO" id="MVO-Pr-Qe7">
+                        <rect key="frame" x="308.5" y="33.5" width="26" height="26"/>
+                    </imageView>
+                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="HeartAccessory" translatesAutoresizingMaskIntoConstraints="NO" id="5Vd-ft-I6I">
+                        <rect key="frame" x="311.5" y="37.5" width="20" height="18"/>
+                    </imageView>
+                    <stackView opaque="NO" alpha="0.80000000000000004" contentMode="scaleToFill" alignment="top" translatesAutoresizingMaskIntoConstraints="NO" id="Ltr-m6-YQw">
+                        <rect key="frame" x="312" y="30" width="22" height="33.5"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="#" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZCE-2P-1Lr">
+                                <rect key="frame" x="0.0" y="0.0" width="9" height="23"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="23" id="zDG-t3-JDV"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="b3w-e7-FS1">
+                                <rect key="frame" x="9" y="0.0" width="13" height="33.5"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="28"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                    </stackView>
                 </subviews>
                 <constraints>
+                    <constraint firstItem="Ltr-m6-YQw" firstAttribute="centerY" secondItem="umQ-8N-Y7f" secondAttribute="centerY" id="5MG-Yl-Nm7"/>
+                    <constraint firstItem="5Vd-ft-I6I" firstAttribute="centerY" secondItem="umQ-8N-Y7f" secondAttribute="centerY" id="9km-Cu-uOt"/>
+                    <constraint firstItem="umQ-8N-Y7f" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="Ii0-lO-Qp5"/>
+                    <constraint firstItem="MVO-Pr-Qe7" firstAttribute="centerX" secondItem="NI0-W0-WhX" secondAttribute="centerX" id="KOD-4b-Nce"/>
                     <constraint firstAttribute="trailing" secondItem="aT5-mE-W2y" secondAttribute="trailing" id="PoU-ok-DSr"/>
+                    <constraint firstItem="MVO-Pr-Qe7" firstAttribute="centerY" secondItem="umQ-8N-Y7f" secondAttribute="centerY" id="SMN-sN-C7l"/>
                     <constraint firstAttribute="bottom" secondItem="aT5-mE-W2y" secondAttribute="bottom" id="Y96-vO-EFx"/>
                     <constraint firstAttribute="trailing" secondItem="FBI-Cp-cFe" secondAttribute="trailing" constant="16" id="cbB-kZ-Xz9"/>
                     <constraint firstItem="aT5-mE-W2y" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="dwP-FQ-QMX"/>
                     <constraint firstItem="aT5-mE-W2y" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="eBg-k6-6hN"/>
+                    <constraint firstAttribute="trailing" secondItem="Ltr-m6-YQw" secondAttribute="trailing" constant="10" id="gV4-go-PII"/>
+                    <constraint firstAttribute="trailing" secondItem="umQ-8N-Y7f" secondAttribute="trailing" id="ldl-0i-NmH"/>
+                    <constraint firstAttribute="bottom" secondItem="umQ-8N-Y7f" secondAttribute="bottom" id="tQi-ZJ-YMZ"/>
+                    <constraint firstItem="5Vd-ft-I6I" firstAttribute="centerX" secondItem="NI0-W0-WhX" secondAttribute="centerX" id="v30-KY-VnB"/>
                 </constraints>
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
+            <constraints>
+                <constraint firstItem="njF-e1-oar" firstAttribute="top" secondItem="bsh-JQ-ElH" secondAttribute="top" id="6MZ-6i-UZL"/>
+                <constraint firstItem="bsh-JQ-ElH" firstAttribute="leading" secondItem="njF-e1-oar" secondAttribute="leading" id="6aI-tq-syf"/>
+                <constraint firstItem="njF-e1-oar" firstAttribute="trailing" secondItem="bsh-JQ-ElH" secondAttribute="trailing" id="g92-1n-jbG"/>
+                <constraint firstItem="bsh-JQ-ElH" firstAttribute="bottom" secondItem="njF-e1-oar" secondAttribute="bottom" id="msK-g7-FnY"/>
+            </constraints>
             <connections>
+                <outlet property="accessoryBackgroundView" destination="NI0-W0-WhX" id="M3G-V8-VcB"/>
+                <outlet property="accessoryFadeOutView" destination="vAL-Xl-7BF" id="C7W-0Z-vBQ"/>
+                <outlet property="accessoryStackView" destination="umQ-8N-Y7f" id="M98-gI-gmC"/>
                 <outlet property="albumArtContainerView" destination="qqv-f1-8WK" id="Wv0-fv-HgE"/>
                 <outlet property="albumArtImageView" destination="9iH-PS-o9F" id="TGW-L5-P7m"/>
                 <outlet property="artistLabel" destination="Y7Q-rd-r5X" id="3iI-Pr-han"/>
+                <outlet property="backgroundColorView" destination="bsh-JQ-ElH" id="lFW-Wt-W0g"/>
+                <outlet property="heartIconAccessoryView" destination="5Vd-ft-I6I" id="ILi-P1-upt"/>
+                <outlet property="nthPlaceAccessoryLabel" destination="b3w-e7-FS1" id="Gaw-vK-Vnf"/>
+                <outlet property="nthPlaceAccessoryView" destination="Ltr-m6-YQw" id="ujX-x4-xuh"/>
                 <outlet property="songLabel" destination="6fp-qj-We3" id="p78-dh-nr2"/>
                 <outlet property="songView" destination="aT5-mE-W2y" id="hAK-SZ-j4W"/>
+                <outlet property="spotifyLogoAccessoryView" destination="MVO-Pr-Qe7" id="czr-Wj-kMn"/>
             </connections>
             <point key="canvasLocation" x="15.217391304347828" y="79.352678571428569"/>
         </tableViewCell>
     </objects>
     <resources>
+        <image name="HeartAccessory" width="20" height="18"/>
+        <image name="SpotifyLogoAccessory" width="26" height="26"/>
         <systemColor name="secondaryLabelColor">
             <color red="0.23529411764705882" green="0.23529411764705882" blue="0.2627450980392157" alpha="0.59999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+        <systemColor name="secondarySystemGroupedBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
     </resources>
 </document>

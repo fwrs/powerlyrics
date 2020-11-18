@@ -83,6 +83,8 @@ extension SpotifyProvider {
         ) {
             DispatchQueue.main.async {
                 let safariViewController = SFSafariViewController(url: url, configuration: SFSafariViewController.Configuration())
+                safariViewController.preferredControlTintColor = .tintColor
+                safariViewController.dismissButtonStyle = .cancel
                 presentingViewController.present(safariViewController, animated: true)
             }
         }
@@ -93,17 +95,19 @@ extension SpotifyProvider {
             if case .success(let response) = result {
                 SpotifyProvider.token = SpotifyToken(data: response.data)
                 completion(true)
+                SpotifyProvider.keychain.setEncodable(false, for: .spotifyAuthorizedWithAccount)
                 return
             }
             completion(false)
         }
     }
     
-    func logout() {
+    func logout(reset: Bool = true) {
         SpotifyProvider.token = nil
         SpotifyProvider.keychain.delete(for: .spotifyToken)
+        SpotifyProvider.keychain.delete(for: .spotifyAuthorizedWithAccount)
         
-        Realm.unsetUserData()
+        Realm.unsetUserData(reset: reset)
     }
     
     var loggedIn: Bool {

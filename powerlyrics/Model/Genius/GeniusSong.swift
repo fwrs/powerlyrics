@@ -9,6 +9,19 @@ import Foundation
 
 struct GeniusSong: Codable, Equatable {
     
+    struct GeniusDescription: Codable, Equatable {
+        
+        let plain: String
+        
+    }
+    
+    struct GeniusMedia: Codable, Equatable {
+        
+        let provider: String
+        let url: URL?
+        
+    }
+    
     let id: Int
     let url: URL?
     let title: String
@@ -17,14 +30,23 @@ struct GeniusSong: Codable, Equatable {
     let songArtImageURL: URL?
     let songArtImageThumbnailURL: URL?
     
+    let producerArtists: [GeniusArtist]?
+    let album: GeniusAlbum?
+    let media: [GeniusMedia]?
+    let description: GeniusDescription?
+    
     enum CodingKeys: String, CodingKey {
         case primaryArtist = "primary_artist"
         case songArtImageURL = "song_art_image_url"
         case songArtImageThumbnailURL = "song_art_image_thumbnail_url"
+        case producerArtists = "producer_artists"
         
+        case album
         case id
         case url
         case title
+        case media
+        case description
     }
     
 }

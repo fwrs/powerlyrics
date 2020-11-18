@@ -253,3 +253,101 @@ extension UIView {
     }
     
 }
+
+extension UIColor {
+    
+    public func adjust(hueBy hue: CGFloat = 0, saturationBy saturation: CGFloat = 0, brightnessBy brightness: CGFloat = 0) -> UIColor {
+        var currentHue: CGFloat = 0.0
+        var currentSaturation: CGFloat = 0.0
+        var currentBrigthness: CGFloat = 0.0
+        var currentAlpha: CGFloat = 0.0
+        
+        if getHue(&currentHue, saturation: &currentSaturation, brightness: &currentBrigthness, alpha: &currentAlpha) {
+            return UIColor(hue: currentHue * hue,
+                           saturation: currentSaturation * saturation,
+                           brightness: currentBrigthness * brightness,
+                           alpha: currentAlpha)
+        } else {
+            return self
+        }
+    }
+    
+}
+
+public extension DispatchQueue {
+    
+    private static var _onceTracker = [String]()
+    private static var _allButOnceTracker = [String]()
+    
+    class func once(file: String = #file,
+                           function: String = #function,
+                           line: Int = #line,
+                           block: () -> Void) {
+        let token = "\(file):\(function):\(line)"
+        once(token: token, block: block)
+    }
+    
+    class func allButOnce(file: String = #file,
+                           function: String = #function,
+                           line: Int = #line,
+                           block: () -> Void) {
+        let token = "\(file):\(function):\(line)"
+        allButOnce(token: token, block: block)
+    }
+    
+    class func once(token: String,
+                           block: () -> Void) {
+        objc_sync_enter(self)
+        defer { objc_sync_exit(self) }
+        
+        guard !_onceTracker.contains(token) else { return }
+        
+        _onceTracker.append(token)
+        block()
+    }
+    
+    class func allButOnce(token: String,
+                           block: () -> Void) {
+        objc_sync_enter(self)
+        defer { objc_sync_exit(self) }
+        
+        guard _allButOnceTracker.contains(token) else {
+            _allButOnceTracker.append(token)
+            return
+        }
+        
+        block()
+    }
+
+}
+
+extension UIAlertController {
+
+    func addLoadingUI() {
+        let vc = UIViewController()
+        let activityIndicator = UIActivityIndicatorView()
+        activityIndicator.style = .medium
+        activityIndicator.color = .white
+        activityIndicator.startAnimating()
+        NSLayoutConstraint.activate([
+            activityIndicator.widthAnchor.constraint(equalToConstant: 20)
+        ])
+        let label = UILabel()
+        label.text = "Please wait"
+        label.font = .systemFont(ofSize: 17, weight: .semibold)
+        let stackView = UIStackView(arrangedSubviews: [activityIndicator, label])
+        stackView.spacing = 8
+        stackView.axis = .horizontal
+        stackView.alignment = .center
+        vc.preferredContentSize = CGSize(width: label.intrinsicContentSize.width + 28, height: 70)
+        stackView.frame = CGRect(x: 0, y: 0, width: label.intrinsicContentSize.width + 28, height: 70)
+        vc.view.addSubview(stackView)
+        label.sizeToFit()
+        self.setValue(vc, forKey: "contentViewController")
+    }
+
+    func dismissActivityIndicator() {
+        self.setValue(nil, forKey: "contentViewController")
+        self.dismiss(animated: false)
+    }
+}

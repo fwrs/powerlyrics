@@ -13,7 +13,7 @@ class GenreEmptyCell: TableViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        moonImageView.image = moonImageView.image?.withTintColor(UIColor.label.withAlphaComponent(0.6), renderingMode: .alwaysOriginal)
+        moonImageView.image = moonImageView.image?.withTintColor(.label, renderingMode: .alwaysOriginal)
     }
     
 }

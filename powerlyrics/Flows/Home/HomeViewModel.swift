@@ -7,11 +7,13 @@
 
 import Bond
 import ReactiveKit
+import RealmSwift
 
 enum HomeSection: Equatable {
     case nowPlaying
     case trending
     case viral
+    case likedToday
     
     var localizedTitle: String {
         switch self {
@@ -21,6 +23,8 @@ enum HomeSection: Equatable {
             return "Trending"
         case .viral:
             return "Viral"
+        case .likedToday:
+            return "Liked Today"
         }
     }
 }
@@ -33,9 +37,13 @@ class HomeViewModel: ViewModel {
     
     private var currentlyPlayingSong = [SharedSong]()
     
-    private var trendingSongs = [SharedSong]()
+    var trendingSongs = [SharedSong]()
     
-    private var viralSongs = [SharedSong]()
+    var viralSongs = [SharedSong]()
+    
+    let isError = Observable(false)
+    
+    let isSpotifyAccount = Observable(true)
     
     init(spotifyProvider: SpotifyProvider) {
         self.spotifyProvider = spotifyProvider
@@ -44,11 +52,22 @@ class HomeViewModel: ViewModel {
     var shouldSignUp: Bool {
         !spotifyProvider.loggedIn
     }
+    
+    private var fails = true
+    
+    func checkSpotifyAccount() {
+        let isSpotifyAccount: Bool? = (Config.getResolver().resolve(KeychainStorageProtocol.self)!.getDecodable(for: .spotifyAuthorizedWithAccount) as Bool?)
+        
+        self.isSpotifyAccount.value = isSpotifyAccount == true
+    }
 
     func loadData(refresh: Bool = false) {
-        self.startLoading(refresh)
+        startLoading(refresh)
+        isError.value = false
         
         let group = DispatchGroup()
+        
+        fails = true
         
         group.enter()
         spotifyProvider.reactive
@@ -59,6 +78,7 @@ class HomeViewModel: ViewModel {
                 case .value(let response):
                     currentlyPlayingSong = [response.item.asSharedSong]
                     group.leave()
+                    fails = false
                 case .failed:
                     currentlyPlayingSong = .init()
                     group.leave()
@@ -76,8 +96,10 @@ class HomeViewModel: ViewModel {
                 case .value(let response):
                     trendingSongs = response.items.map(\.asSharedSong)
                     group.leave()
+                    fails = false
                 case .failed(let error):
                     print(error)
+                    group.leave()
                 default:
                     break
                 }
@@ -92,8 +114,10 @@ class HomeViewModel: ViewModel {
                 case .value(let response):
                     viralSongs = response.items.map(\.asSharedSong)
                     group.leave()
+                    fails = false
                 case .failed(let error):
                     print(error)
+                    group.leave()
                 default:
                     break
                 }
@@ -102,26 +126,41 @@ class HomeViewModel: ViewModel {
         group.notify(queue: .main) { [self] in
             endLoading(refresh)
             
-            let currentlyPlayingSongsSection = currentlyPlayingSong.map { HomeCell.song(SongCellViewModel(song: $0)) }
-            
-            var trendingSongsSection = trendingSongs.prefix(3).map { HomeCell.song(SongCellViewModel(song: $0)) }
-            
-            if trendingSongs.count > 3 {
-                trendingSongsSection.append(.action(ActionCellViewModel(action: .seeTrendingSongs)))
-            }
-            
-            var viralSongsSection = viralSongs.prefix(3).map { HomeCell.song(SongCellViewModel(song: $0)) }
-            
-            if viralSongs.count > 3 {
-                viralSongsSection.append(.action(ActionCellViewModel(action: .seeViralSongs)))
-            }
-            
-            items.set([
-                (.nowPlaying, currentlyPlayingSongsSection),
-                (.trending, trendingSongsSection),
-                (.viral, viralSongsSection)
-            ])
+            updateState()
         }
+    }
+    
+    func updateState() {
+        if fails {
+            isError.value = true
+            items.set([])
+            return
+        }
+        
+        let currentlyPlayingSongsSection = currentlyPlayingSong.map { HomeCell.song(SongCellViewModel(song: $0, accessory: .spotifyLogo, shouldDisplayDominantColor: true)) }
+        
+        var trendingSongsSection = trendingSongs.prefix(3).enumerated().map { HomeCell.song(SongCellViewModel(song: $1, accessory: .ranking(nth: $0 + 1))) }
+        
+        if trendingSongs.count > 3 {
+            trendingSongsSection.append(.action(ActionCellViewModel(action: .seeTrendingSongs)))
+        }
+        
+        let likedToday = Realm.likedSongs().filter { Calendar.current.isDateInToday($0.likeDate) }
+        
+        let likedTodaySection = likedToday.map { HomeCell.song(SongCellViewModel(song: $0.asSharedSong, accessory: .likeLogo)) }
+        
+        var viralSongsSection = viralSongs.prefix(3).enumerated().map { HomeCell.song(SongCellViewModel(song: $1, accessory: .ranking(nth: $0 + 1))) }
+        
+        if viralSongs.count > 3 {
+            viralSongsSection.append(.action(ActionCellViewModel(action: .seeViralSongs)))
+        }
+        
+        items.set([
+            (.nowPlaying, currentlyPlayingSongsSection),
+            (.trending, trendingSongsSection),
+            (.viral, viralSongsSection),
+            (.likedToday, likedTodaySection)
+        ])
     }
     
 }

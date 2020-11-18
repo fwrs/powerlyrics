@@ -6,6 +6,7 @@
 //
 
 import Haptica
+import SafariServices
 import UIKit
 
 class LyricsViewController: ViewController, LyricsScene {
@@ -107,7 +108,19 @@ extension LyricsViewController {
         navigationItem.scrollEdgeAppearance = appearance
         
         navigationItem.leftBarButtonItem?.reactive.tap.observeNext { [self] _ in
+            Haptic.play(".")
             flowDismiss?()
+        }.dispose(in: disposeBag)
+        
+        navigationItem.rightBarButtonItem?.reactive.tap.observeNext { [self] _ in
+            if let url = viewModel.spotifyURL.value ?? viewModel.song.spotifyURL {
+                Haptic.play(".")
+                UIApplication.shared.open(url, options: [:], completionHandler: nil)
+            } else {
+                present(UIAlertController(title: "Not found", message: "We couldn’t find this item on Spotify.", preferredStyle: .alert).with {
+                    $0.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+                }, animated: true, completion: nil)
+            }
         }.dispose(in: disposeBag)
         
         navigationItem.leftBarButtonItem?.image = navigationItem.leftBarButtonItem?.image?
@@ -122,7 +135,7 @@ extension LyricsViewController {
             viewSquircle: true
         )
         
-        tableView.contentInset = UIEdgeInsets(top: 200 - safeAreaInsets.top, left: .zero, bottom: -safeAreaInsets.bottom, right: .zero)
+        tableView.contentInset = UIEdgeInsets(top: 200 - safeAreaInsets.top - (UIDevice.current.hasNotch ? 0 : 30), left: .zero, bottom: -safeAreaInsets.bottom, right: .zero)
         tableView.allowsSelection = false
         tableView.delegate = self
         
@@ -137,6 +150,34 @@ extension LyricsViewController {
     }
     
     func setupObservers() {
+        viewModel.album.dropFirst(1).observeNext { [self] album in
+            let text = "From album “\(album)”"
+            let attrString = NSMutableAttributedString(string: text, attributes: [.foregroundColor: UIColor.label])
+            
+            attrString.addAttribute(.foregroundColor, value: UIColor.secondaryLabel, range: NSRange(location: 0, length: "From album “".count))
+            attrString.addAttribute(.foregroundColor, value: UIColor.secondaryLabel, range: NSRange(location: text.count - 1, length: 1))
+            
+            UIView.transition(with: firstInfoLabel, duration: 0.3, options: .transitionCrossDissolve) {
+                firstInfoLabel.attributedText = attrString
+                firstInfoLabel.isHidden = false
+            }
+        }.dispose(in: disposeBag)
+        
+        viewModel.producers.dropFirst(1).observeNext { [self] producers in
+            guard producers.nonEmpty else { return }
+            let text = "Produced by \(producers.joined(separator: " & "))"
+            let attrString = NSMutableAttributedString(string: text, attributes: [.foregroundColor: UIColor.label])
+            
+            attrString.addAttribute(.foregroundColor, value: UIColor.secondaryLabel, range: NSRange(location: 0, length: "Produced by ".count))
+            if producers.count > 1 {
+                attrString.addAttribute(.foregroundColor, value: UIColor.secondaryLabel, range: NSRange(location: "Produced by ".count + producers.first.safe.count, length: 3))
+            }
+            
+            UIView.transition(with: secondInfoLabel, duration: 0.3, options: .transitionCrossDissolve) {
+                secondInfoLabel.attributedText = attrString
+            }
+        }.dispose(in: disposeBag)
+        
         viewModel.lyrics.bind(to: tableView, cellType: LyricsSectionCell.self, rowAnimation: .fade) { (cell, item) in
             cell.configure(with: LyricsSectionCellViewModel(section: item))
         }.dispose(in: disposeBag)
@@ -144,6 +185,12 @@ extension LyricsViewController {
         viewModel.isLoading.observeNext { [self] loading in
             UIView.animate(withDuration: 0.35) {
                 activityIndicator.alpha = loading ? 1 : 0
+            }
+        }.dispose(in: disposeBag)
+        
+        viewModel.isFailed.observeNext { [self] failed in
+            setNoInternetView(isVisible: failed) {
+                viewModel.loadData()
             }
         }.dispose(in: disposeBag)
         
@@ -160,10 +207,6 @@ extension LyricsViewController {
                     for: .normal
                 )
                 likeButton.setTitle(isLiked ? "liked" : "like", for: .normal)
-            } completion: { _ in
-                if isLiked {
-                    Haptic.play(".-o")
-                }
             }
         }.dispose(in: disposeBag)
         
@@ -179,18 +222,69 @@ extension LyricsViewController {
             button.reactive.controlEvents([.touchDragExit, .touchUpInside]).observeNext { [self] _ in
                 likeButton.layer.removeAllAnimations()
                 UIView.animate(withDuration: 0.15) {
-                    button.alpha = 1
+                    button.alpha = 0.8
                 }
             }.dispose(in: disposeBag)
         }
         
         likeButton.reactive.tap.throttle(for: 0.3).observeNext { [self] _ in
-            guard viewModel.geniusID != nil else { return }
+            guard viewModel.genre.value != nil else { return }
             if viewModel.isLiked.value {
                 viewModel.unlikeSong()
+                Haptic.play(".")
             } else {
                 viewModel.likeSong()
+                Haptic.play(".-o--.-O---.-o--.-O", delay: 0.2)
             }
+        }.dispose(in: disposeBag)
+        
+        shareButton.reactive.tap.throttle(for: 0.3).observeNext { [self] _ in
+            guard let url = viewModel.geniusURL else { return }
+            Haptic.play(".")
+            let items = ["Just discovered this awesome song using powerlyrics app: \(url.absoluteURL)"]
+            let activityViewController = UIActivityViewController(activityItems: items, applicationActivities: nil)
+            present(activityViewController, animated: true)
+        }.dispose(in: disposeBag)
+        
+        safariButton.reactive.tap.throttle(for: 0.3).observeNext { [self] _ in
+            guard let url = viewModel.geniusURL else { return }
+            Haptic.play(".")
+            let safariViewController = SFSafariViewController(url: url, configuration: SFSafariViewController.Configuration())
+            safariViewController.preferredControlTintColor = .tintColor
+            present(safariViewController, animated: true)
+        }.dispose(in: disposeBag)
+        
+        notesButton.reactive.tap.throttle(for: 0.3).observeNext { [self] _ in
+            guard let description = viewModel.description.value?.typographized else { return }
+            Haptic.play(".")
+            let paragraphStyle = NSMutableParagraphStyle()
+            paragraphStyle.alignment = NSTextAlignment.left
+            paragraphStyle.lineSpacing = 0.5
+            
+            let attributedMessageText = NSMutableAttributedString(
+                string: description,
+                attributes: [
+                    NSAttributedString.Key.paragraphStyle: paragraphStyle,
+                    NSAttributedString.Key.font: UIFont.systemFont(ofSize: 14.0)
+                ]
+            )
+            
+            let titleParagraphStyle = NSMutableParagraphStyle()
+            titleParagraphStyle.alignment = NSTextAlignment.center
+            
+            let attributedTitleText = NSMutableAttributedString(
+                string: "Story",
+                attributes: [
+                    NSAttributedString.Key.paragraphStyle: titleParagraphStyle,
+                    NSAttributedString.Key.font: UIFont.systemFont(ofSize: 16.0, weight: .medium)
+                ]
+            )
+            
+            present(UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet).with {
+                $0.addAction(UIAlertAction(title: "Close", style: .default, handler: nil))
+                $0.setValue(attributedMessageText, forKey: "attributedMessage")
+                $0.setValue(attributedTitleText, forKey: "attributedTitle")
+            }, animated: true, completion: nil)
         }.dispose(in: disposeBag)
     }
     
@@ -215,13 +309,47 @@ extension LyricsViewController: UIContextMenuInteractionDelegate {
             albumArtContainerView.layer.shadowOpacity = 0
         }
         
+        let controller = ImagePreviewController(viewModel.song.albumArt, placeholder: albumArtThumbnail)
         return UIContextMenuConfiguration(
             identifier: nil,
-            previewProvider: { [self] in ImagePreviewController(viewModel.song.albumArt, placeholder: albumArtThumbnail) },
-            actionProvider: { suggestedActions in
-                UIMenu(children: suggestedActions)
+            previewProvider: { controller },
+            actionProvider: { _ in
+                UIMenu(children: [UIAction(
+                    title: "Copy",
+                    image: UIImage(systemName: "doc.on.doc"),
+                    identifier: nil,
+                    attributes: []) { _ in
+                    if let image = controller?.imageView.image {
+                        UIPasteboard.general.image = image
+                    }
+                }] + [UIAction(
+                    title: "Download",
+                    image: UIImage(systemName: "square.and.arrow.down"),
+                    identifier: nil,
+                    attributes: []) { [self] _ in
+                    if let image = controller?.imageView.image {
+                        UIImageWriteToSavedPhotosAlbum(image, self, #selector(image(image:didFinishSavingWithError:contextInfo:)), nil)
+                    }
+                }] + [UIAction(
+                    title: "Share",
+                    image: UIImage(systemName: "square.and.arrow.up"),
+                    identifier: nil,
+                    attributes: []) { [self] _ in
+                    if let image = controller?.imageView.image {
+                        window.topViewController?.present(UIActivityViewController(activityItems: [image], applicationActivities: nil), animated: true, completion: nil)
+                    }
+                }])
             }
         )
+    }
+    
+    @objc private func image(image: UIImage!, didFinishSavingWithError error: NSError!, contextInfo: AnyObject!) {
+        if error != nil {
+            window.topViewController?.present(UIAlertController(title: "Failed to save image", message: "Please check application permissions and try again.", preferredStyle: .alert).with { $0.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))}, animated: true, completion: nil)
+        } else {
+            Haptic.play(".-O")
+            window.topViewController?.present(UIAlertController(title: "Image saved successfuly", message: "Check your gallery to find it.", preferredStyle: .alert).with { $0.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))}, animated: true, completion: nil)
+        }
     }
     
     func contextMenuInteraction(_ interaction: UIContextMenuInteraction, willEndFor configuration: UIContextMenuConfiguration, animator: UIContextMenuInteractionAnimating?) {
@@ -235,19 +363,20 @@ extension LyricsViewController: UIContextMenuInteractionDelegate {
 extension LyricsViewController: UITableViewDelegate {
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        let topPadding = min(270, max(44 + safeAreaInsets.top - 14, -scrollView.contentOffset.y + 12) + 14)
+        let total: CGFloat = 270.0 - (UIDevice.current.hasNotch ? 0.0 : 30.0)
+        let topPadding = min(total, max(44 + safeAreaInsets.top - 14, -scrollView.contentOffset.y + 12) + 14)
         navigationBarHeightConstraint.constant = topPadding
         tableView.verticalScrollIndicatorInsets.top = topPadding - safeAreaInsets.top - 44
         if scrollView.contentOffset.y >= -100 {
-            navigationItem.title = songLabel.text.safe
+            navigationItem.title = songLabel.text.safe.lowercased()
         } else {
             navigationItem.title = "lyrics"
         }
-        buttonsStackView.alpha = pow(topPadding / 270, 20)
-        secondInfoLabel.alpha = pow((topPadding + 27) / 270, 20)
-        firstInfoLabel.alpha = pow((topPadding + 38) / 270, 20)
-        songView.alpha = pow((topPadding + 40) / 270, 7)
-        let songViewAdjustment = pow((topPadding + 36) / 270, 5)
+        buttonsStackView.alpha = pow(topPadding / total, 20)
+        secondInfoLabel.alpha = pow((topPadding + 27) / total, 20)
+        firstInfoLabel.alpha = pow((topPadding + 38) / total, 20)
+        songView.alpha = pow((topPadding + 40) / total, 7)
+        let songViewAdjustment = pow((topPadding + 36) / total, 5)
         songView.transform = .init(translationX: 0, y: -pow((1 - min((songViewAdjustment) + 0.3, 1)) * (3.68), 3) * 1.3)
     }
     

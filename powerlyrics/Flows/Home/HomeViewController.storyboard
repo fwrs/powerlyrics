@@ -16,7 +16,7 @@
         <!--Home-->
         <scene sceneID="MJw-y6-ltG">
             <objects>
-                <viewController storyboardIdentifier="HomeViewController" interfaceStyle="dark" id="glh-Ct-83S" customClass="HomeViewController" customModule="powerlyrics" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="HomeViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" interfaceStyle="dark" id="glh-Ct-83S" customClass="HomeViewController" customModule="powerlyrics" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="2t8-ib-fFr">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>

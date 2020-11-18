@@ -20,7 +20,6 @@ extension Shared {
         
         let lyrics: Lyrics
         let genre: RealmLikedSongGenre
-        let notes: String
         
     }
     

@@ -7,15 +7,16 @@
 
 import Foundation
 
-struct SharedSong: Codable, Equatable {
+struct SharedSong: Codable, Equatable, Hashable {
     var name: String
     let artists: [String]
     
     let albumArt: SharedImage?
     let thumbnailAlbumArt: SharedImage?
     
-    let geniusID: Int?
-    let geniusURL: URL?
+    var geniusID: Int?
+    var geniusURL: URL?
+    var spotifyURL: URL?
 }
 
 extension SharedSong {
@@ -42,3 +43,4 @@ extension SharedSong {
 }
 
 typealias DefaultSharedSongAction = (SharedSong) -> Void
+typealias DefaultSharedSongListAction = ([SharedSong]) -> Void

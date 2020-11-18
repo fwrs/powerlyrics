@@ -17,8 +17,8 @@ class SetupOfflineAssembly: Assembly {
 
     override func assemble(container: Container) {
         
-        container.register(SetupOfflineViewModel.self) { _ in
-            SetupOfflineViewModel()
+        container.register(SetupOfflineViewModel.self) { resolver in
+            SetupOfflineViewModel(spotifyProvider: resolver.resolve(SpotifyProvider.self)!)
         }
         
         container.register(SetupOfflineScene.self) { resolver in

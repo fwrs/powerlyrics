@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17156" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17506" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17126"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17505"/>
         <capability name="Image references" minToolsVersion="12.0"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
@@ -13,7 +13,7 @@
         <!--lyrics-->
         <scene sceneID="m53-aE-XMH">
             <objects>
-                <viewController storyboardIdentifier="LyricsViewController" interfaceStyle="dark" id="QSr-X0-TRS" customClass="LyricsViewController" customModule="powerlyrics" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="LyricsViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" interfaceStyle="dark" id="QSr-X0-TRS" customClass="LyricsViewController" customModule="powerlyrics" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="S94-To-ayu">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -96,56 +96,74 @@
                                                 <constraint firstAttribute="bottom" secondItem="96y-dm-XQN" secondAttribute="bottom" constant="16" id="n7Y-qg-0jW"/>
                                             </constraints>
                                         </view>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="First info label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Zjp-MZ-qGq">
-                                            <rect key="frame" x="16" y="178" width="96" height="18"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                                            <nil key="textColor"/>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Zjp-MZ-qGq">
+                                            <rect key="frame" x="16" y="178" width="384" height="18"/>
+                                            <attributedString key="attributedText">
+                                                <fragment content="Unknown album">
+                                                    <attributes>
+                                                        <color key="NSColor" systemColor="secondaryLabelColor"/>
+                                                        <font key="NSFont" metaFont="system" size="15"/>
+                                                        <paragraphStyle key="NSParagraphStyle" alignment="natural" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
+                                                    </attributes>
+                                                </fragment>
+                                            </attributedString>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Second info label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nMD-Dq-gdn">
-                                            <rect key="frame" x="16" y="200" width="118" height="18"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                                            <nil key="textColor"/>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nMD-Dq-gdn">
+                                            <rect key="frame" x="16" y="200" width="384" height="18"/>
+                                            <attributedString key="attributedText">
+                                                <fragment content="Unknown producer">
+                                                    <attributes>
+                                                        <color key="NSColor" systemColor="secondaryLabelColor"/>
+                                                        <font key="NSFont" metaFont="system" size="15"/>
+                                                        <paragraphStyle key="NSParagraphStyle" alignment="natural" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
+                                                    </attributes>
+                                                </fragment>
+                                            </attributedString>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <stackView opaque="NO" contentMode="scaleToFill" distribution="equalSpacing" spacing="18" translatesAutoresizingMaskIntoConstraints="NO" id="h8c-L7-BUn">
+                                        <stackView opaque="NO" contentMode="scaleToFill" distribution="equalSpacing" alignment="center" spacing="18" translatesAutoresizingMaskIntoConstraints="NO" id="h8c-L7-BUn">
                                             <rect key="frame" x="16" y="226" width="331.5" height="32"/>
                                             <subviews>
                                                 <button opaque="NO" alpha="0.80000000000000004" contentMode="scaleToFill" semanticContentAttribute="forceLeftToRight" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageWhenHighlighted="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Bka-VT-Y7D">
-                                                    <rect key="frame" x="0.0" y="0.0" width="57.5" height="32"/>
+                                                    <rect key="frame" x="0.0" y="5" width="57.5" height="22"/>
                                                     <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <inset key="contentEdgeInsets" minX="0.0" minY="0.0" maxX="10" maxY="0.0"/>
                                                     <inset key="titleEdgeInsets" minX="5" minY="0.0" maxX="-5" maxY="0.0"/>
+                                                    <inset key="imageEdgeInsets" minX="0.0" minY="1" maxX="0.0" maxY="0.0"/>
                                                     <state key="normal" title="like">
                                                         <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <imageReference key="image" image="heart" catalog="system" renderingMode="template"/>
                                                     </state>
                                                 </button>
                                                 <button opaque="NO" alpha="0.80000000000000004" contentMode="scaleToFill" semanticContentAttribute="forceLeftToRight" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageWhenHighlighted="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LYV-dA-JhP">
-                                                    <rect key="frame" x="75.5" y="0.0" width="74" height="32"/>
+                                                    <rect key="frame" x="75.5" y="5" width="74" height="22"/>
                                                     <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <inset key="contentEdgeInsets" minX="0.0" minY="0.0" maxX="10" maxY="0.0"/>
                                                     <inset key="titleEdgeInsets" minX="5" minY="0.0" maxX="-5" maxY="0.0"/>
+                                                    <inset key="imageEdgeInsets" minX="0.0" minY="-0.5" maxX="0.0" maxY="0.0"/>
                                                     <state key="normal" title="share">
                                                         <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <imageReference key="image" image="square.and.arrow.up" catalog="system" renderingMode="template"/>
                                                     </state>
                                                 </button>
                                                 <button opaque="NO" alpha="0.80000000000000004" contentMode="scaleToFill" semanticContentAttribute="forceLeftToRight" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageWhenHighlighted="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="v2k-lm-wsR">
-                                                    <rect key="frame" x="167.5" y="0.0" width="74" height="32"/>
+                                                    <rect key="frame" x="167.5" y="5" width="74" height="22"/>
                                                     <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <inset key="contentEdgeInsets" minX="0.0" minY="0.0" maxX="10" maxY="0.0"/>
                                                     <inset key="titleEdgeInsets" minX="5" minY="0.0" maxX="-5" maxY="0.0"/>
+                                                    <inset key="imageEdgeInsets" minX="0.0" minY="2.5" maxX="0.0" maxY="0.0"/>
                                                     <state key="normal" title="safari">
                                                         <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <imageReference key="image" image="safari" catalog="system" renderingMode="template"/>
                                                     </state>
                                                 </button>
                                                 <button opaque="NO" alpha="0.80000000000000004" contentMode="scaleToFill" semanticContentAttribute="forceLeftToRight" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageWhenHighlighted="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zVs-UO-dOM">
-                                                    <rect key="frame" x="259.5" y="0.0" width="72" height="32"/>
+                                                    <rect key="frame" x="259.5" y="5" width="72" height="22"/>
                                                     <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <inset key="contentEdgeInsets" minX="0.0" minY="0.0" maxX="10" maxY="0.0"/>
                                                     <inset key="titleEdgeInsets" minX="5" minY="0.0" maxX="-5" maxY="0.0"/>
+                                                    <inset key="imageEdgeInsets" minX="0.0" minY="2" maxX="0.0" maxY="0.0"/>
                                                     <state key="normal" title="story">
                                                         <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <imageReference key="image" image="note.text" catalog="system" renderingMode="template"/>
@@ -161,13 +179,15 @@
                                     <constraints>
                                         <constraint firstItem="fLV-pl-iEb" firstAttribute="leading" secondItem="pmY-aL-oM1" secondAttribute="leading" id="0pM-2b-slM"/>
                                         <constraint firstItem="Zjp-MZ-qGq" firstAttribute="leading" secondItem="pmY-aL-oM1" secondAttribute="leading" constant="16" id="3Zk-v7-oLE"/>
-                                        <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="h8c-L7-BUn" secondAttribute="trailing" constant="16" id="5Ks-qT-sD8"/>
+                                        <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="h8c-L7-BUn" secondAttribute="trailing" id="5Ks-qT-sD8"/>
                                         <constraint firstItem="h8c-L7-BUn" firstAttribute="top" secondItem="nMD-Dq-gdn" secondAttribute="bottom" constant="8" symbolic="YES" id="8M7-ch-5mB"/>
                                         <constraint firstItem="nMD-Dq-gdn" firstAttribute="top" secondItem="Zjp-MZ-qGq" secondAttribute="bottom" constant="4" id="DMf-xZ-Bvh"/>
                                         <constraint firstItem="nMD-Dq-gdn" firstAttribute="leading" secondItem="Zjp-MZ-qGq" secondAttribute="leading" id="IG6-fL-aGh"/>
                                         <constraint firstItem="h8c-L7-BUn" firstAttribute="leading" secondItem="pmY-aL-oM1" secondAttribute="leading" constant="16" id="Pfn-yr-qJq"/>
                                         <constraint firstItem="Zjp-MZ-qGq" firstAttribute="top" secondItem="fLV-pl-iEb" secondAttribute="bottom" id="Z81-fj-bNA"/>
+                                        <constraint firstAttribute="trailing" secondItem="nMD-Dq-gdn" secondAttribute="trailing" constant="14" id="jHE-5g-Y8P"/>
                                         <constraint firstAttribute="trailing" secondItem="fLV-pl-iEb" secondAttribute="trailing" constant="31" id="naA-kk-TfM"/>
+                                        <constraint firstAttribute="trailing" secondItem="Zjp-MZ-qGq" secondAttribute="trailing" constant="14" id="sZt-He-p9d"/>
                                     </constraints>
                                 </view>
                                 <constraints>
@@ -182,7 +202,7 @@
                                     <constraint firstAttribute="height" constant="0.40000000000000002" id="Gsd-aV-42b"/>
                                 </constraints>
                             </view>
-                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="large" translatesAutoresizingMaskIntoConstraints="NO" id="8et-Yq-luJ">
+                            <activityIndicatorView opaque="NO" alpha="0.0" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="large" translatesAutoresizingMaskIntoConstraints="NO" id="8et-Yq-luJ">
                                 <rect key="frame" x="0.0" y="270.5" width="414" height="120"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="120" id="mFl-go-Muc"/>
@@ -191,6 +211,7 @@
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="2cb-bH-5Lw"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <color key="tintColor" name="TintColor"/>
                         <constraints>
                             <constraint firstItem="3mS-Xg-Sf4" firstAttribute="top" secondItem="lJ0-8B-cWp" secondAttribute="bottom" id="23b-9b-oiO"/>
                             <constraint firstAttribute="bottom" secondItem="wrX-Ge-sWc" secondAttribute="bottom" id="2ji-fF-JTc"/>
@@ -233,7 +254,7 @@
                         </userDefinedRuntimeAttributes>
                     </navigationItem>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
-                    <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
+                    <nil key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="activityIndicator" destination="8et-Yq-luJ" id="ntv-YU-re1"/>
                         <outlet property="albumArtContainerView" destination="96y-dm-XQN" id="ViD-aF-tjf"/>
@@ -267,6 +288,9 @@
         <image name="square.and.arrow.up" catalog="system" width="115" height="128"/>
         <namedColor name="GrayButtonColor">
             <color red="0.66699999570846558" green="0.66699999570846558" blue="0.66699999570846558" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="TintColor">
+            <color red="0.9179999828338623" green="0.68199998140335083" blue="0.49799999594688416" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <systemColor name="labelColor">
             <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>

@@ -75,6 +75,11 @@
 		B85116C225607AE600BA1C69 /* GenreEmptyCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B85116C025607AE600BA1C69 /* GenreEmptyCell.xib */; };
 		B851B71E2554719D00504F45 /* View.swift in Sources */ = {isa = PBXBuildFile; fileRef = B851B71D2554719D00504F45 /* View.swift */; };
 		B8526C6F252689CF005FC7D3 /* ServicesAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8526C6E252689CF005FC7D3 /* ServicesAssembly.swift */; };
+		B85272B82561A31900CC9A4B /* LoadingCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B85272B62561A31900CC9A4B /* LoadingCell.swift */; };
+		B85272B92561A31900CC9A4B /* LoadingCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B85272B72561A31900CC9A4B /* LoadingCell.xib */; };
+		B85272BE2561BC5D00CC9A4B /* GradientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B85272BD2561BC5D00CC9A4B /* GradientView.swift */; };
+		B85272C12561DCAE00CC9A4B /* GeniusAlbum.swift in Sources */ = {isa = PBXBuildFile; fileRef = B85272C02561DCAE00CC9A4B /* GeniusAlbum.swift */; };
+		B85272C82562641F00CC9A4B /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = B85272C72562641F00CC9A4B /* GoogleService-Info.plist */; };
 		B861E7A62528A7AA00A7C864 /* ImagePreviewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B861E7A52528A7AA00A7C864 /* ImagePreviewController.swift */; };
 		B8624FC4252627330096EEF3 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = B8624FC6252627330096EEF3 /* Localizable.strings */; };
 		B8698E05252938DD0043F3AA /* TranslationAnimation.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8698E04252938DD0043F3AA /* TranslationAnimation.swift */; };
@@ -234,8 +239,14 @@
 		B85116C025607AE600BA1C69 /* GenreEmptyCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GenreEmptyCell.xib; sourceTree = "<group>"; };
 		B851B71D2554719D00504F45 /* View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = View.swift; sourceTree = "<group>"; };
 		B8526C6E252689CF005FC7D3 /* ServicesAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServicesAssembly.swift; sourceTree = "<group>"; };
+		B85272B62561A31900CC9A4B /* LoadingCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingCell.swift; sourceTree = "<group>"; };
+		B85272B72561A31900CC9A4B /* LoadingCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LoadingCell.xib; sourceTree = "<group>"; };
+		B85272BD2561BC5D00CC9A4B /* GradientView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradientView.swift; sourceTree = "<group>"; };
+		B85272C02561DCAE00CC9A4B /* GeniusAlbum.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeniusAlbum.swift; sourceTree = "<group>"; };
+		B85272C72562641F00CC9A4B /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		B861E7A52528A7AA00A7C864 /* ImagePreviewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePreviewController.swift; sourceTree = "<group>"; };
 		B8624FC5252627330096EEF3 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		B864979B25632D820098D847 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Localizable.strings; sourceTree = "<group>"; };
 		B8698E04252938DD0043F3AA /* TranslationAnimation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TranslationAnimation.swift; sourceTree = "<group>"; };
 		B86D5BFE2529F4BA0026B764 /* SetupInitViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetupInitViewController.swift; sourceTree = "<group>"; };
 		B86D5C012529F4C90026B764 /* SetupInitViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = SetupInitViewController.storyboard; sourceTree = "<group>"; };
@@ -428,6 +439,7 @@
 				B82A6F0B25266FC100A567B1 /* Fonts */,
 				B829CC81254D63AD007B3C8E /* Gen */,
 				B8C8BCE02525ED6100E55708 /* Info.plist */,
+				B85272C72562641F00CC9A4B /* GoogleService-Info.plist */,
 				B8C8BCDB2525ED6100E55708 /* Assets.xcassets */,
 				B86F6EA9252624F0003296B0 /* Colors.xcassets */,
 				B8624FC6252627330096EEF3 /* Localizable.strings */,
@@ -506,6 +518,7 @@
 			children = (
 				B84814612543918D00CD5638 /* GeniusResponses.swift */,
 				B84814652543922300CD5638 /* GeniusSong.swift */,
+				B85272C02561DCAE00CC9A4B /* GeniusAlbum.swift */,
 				B84814682543930C00CD5638 /* GeniusArtist.swift */,
 			);
 			path = Genius;
@@ -518,6 +531,23 @@
 				B85116C025607AE600BA1C69 /* GenreEmptyCell.xib */,
 			);
 			path = GenreEmptyCell;
+			sourceTree = "<group>";
+		};
+		B85272B52561A30300CC9A4B /* LoadingCell */ = {
+			isa = PBXGroup;
+			children = (
+				B85272B62561A31900CC9A4B /* LoadingCell.swift */,
+				B85272B72561A31900CC9A4B /* LoadingCell.xib */,
+			);
+			path = LoadingCell;
+			sourceTree = "<group>";
+		};
+		B85272BC2561BC5000CC9A4B /* GradientView */ = {
+			isa = PBXGroup;
+			children = (
+				B85272BD2561BC5D00CC9A4B /* GradientView.swift */,
+			);
+			path = GradientView;
 			sourceTree = "<group>";
 		};
 		B861E7A82528A7AF00A7C864 /* ImagePreviewController */ = {
@@ -544,6 +574,8 @@
 		B86A46492526873E00394D3B /* Shared */ = {
 			isa = PBXGroup;
 			children = (
+				B85272BC2561BC5000CC9A4B /* GradientView */,
+				B85272B52561A30300CC9A4B /* LoadingCell */,
 				B81A9F7B2560970E00F4575C /* EmptyView */,
 				B81A9F732560955700F4575C /* NoInternetView */,
 				B8A3FF552551D98E00FA589A /* CenteredCollectionViewLayout */,
@@ -936,6 +968,7 @@
 			knownRegions = (
 				en,
 				Base,
+				ru,
 			);
 			mainGroup = B8C8BCC62525ED6000E55708;
 			productRefGroup = B8C8BCD02525ED6000E55708 /* Products */;
@@ -990,6 +1023,8 @@
 				B86F6E0D25260A03003296B0 /* HomeViewController.storyboard in Resources */,
 				B86D5C022529F4C90026B764 /* SetupInitViewController.storyboard in Resources */,
 				B82A6F2C25267DA100A567B1 /* RobotoMono-Regular.ttf in Resources */,
+				B85272B92561A31900CC9A4B /* LoadingCell.xib in Resources */,
+				B85272C82562641F00CC9A4B /* GoogleService-Info.plist in Resources */,
 				B891F89925574DB700AE2810 /* GenreInfoCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1112,6 +1147,7 @@
 				B8B9D45B252906E100E77A09 /* LyricsAssembly.swift in Sources */,
 				B875DE2E254C1137005D0C51 /* TrendCellViewModel.swift in Sources */,
 				B8DCAB972528DB4900C399FE /* SearchBinder.swift in Sources */,
+				B85272B82561A31900CC9A4B /* LoadingCell.swift in Sources */,
 				B8C8BCF52525EEBE00E55708 /* HomeCoordinator.swift in Sources */,
 				B8E20D1325275AC100D0E04C /* Misc.swift in Sources */,
 				B8DEAB5C2527297300C9F96D /* ProfileCoordinator.swift in Sources */,
@@ -1137,6 +1173,7 @@
 				B8F79E7F252A0D2C0060CB14 /* SetupOfflineViewModel.swift in Sources */,
 				B829CC86254D63C2007B3C8E /* Fonts.gen.swift in Sources */,
 				B888BA542529310C00189CFF /* SpotifySong.swift in Sources */,
+				B85272C12561DCAE00CC9A4B /* GeniusAlbum.swift in Sources */,
 				B8B84E3F25604063007BC2B1 /* SongListAssembly.swift in Sources */,
 				B829CC85254D63C2007B3C8E /* Assets.gen.swift in Sources */,
 				B8AFCD00252661D000F18A4E /* Color+Ext.swift in Sources */,
@@ -1148,6 +1185,7 @@
 				B891F8A025574FBE00AE2810 /* GenreInfoCellViewModel.swift in Sources */,
 				B8C5EBB32544758200E7FBA1 /* LyricsSectionCell.swift in Sources */,
 				B84813F42543804700CD5638 /* SharedSong.swift in Sources */,
+				B85272BE2561BC5D00CC9A4B /* GradientView.swift in Sources */,
 				B829CC5B254D5CB3007B3C8E /* Tokens.swift in Sources */,
 				B8A3FF572551D9A500FA589A /* CenteredCollectionViewLayout.swift in Sources */,
 				B891F867255734DB00AE2810 /* GenreStatsViewController.swift in Sources */,
@@ -1205,6 +1243,7 @@
 			isa = PBXVariantGroup;
 			children = (
 				B8624FC5252627330096EEF3 /* en */,
+				B864979B25632D820098D847 /* ru */,
 			);
 			name = Localizable.strings;
 			sourceTree = "<group>";
@@ -1216,6 +1255,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
@@ -1277,6 +1317,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
@@ -1336,6 +1377,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = ZR828QFWZF;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",

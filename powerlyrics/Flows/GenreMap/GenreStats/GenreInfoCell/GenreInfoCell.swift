@@ -14,8 +14,21 @@ class GenreInfoCell: TableViewCell {
     @IBOutlet private weak var descriptionLabel: UILabel!
 
     func configure(with viewModel: GenreInfoCellViewModel) {
+        let text = viewModel.level.localizedDescription(count: viewModel.count, genre: viewModel.genre)
+        
+        let paragraphStyle = NSMutableParagraphStyle()
+        paragraphStyle.lineSpacing = 2
+
+        let attrString = NSMutableAttributedString(string: text)
+        attrString.addAttribute(.paragraphStyle, value: paragraphStyle, range: NSRange(location: 0, length: attrString.length))
+        
+        attrString.addAttribute(.font, value: UIFont.systemFont(ofSize: 18, weight: .bold), range: NSString(string: text).range(of: viewModel.genre.localizedName))
+
+        attrString.addAttribute(.font, value: UIFont.systemFont(ofSize: 18, weight: .bold), range: NSString(string: text).range(of: String(viewModel.count)))
+
         emojiLabel.text = viewModel.level.emoji
-        descriptionLabel.text = viewModel.level.localizedDescription(count: viewModel.count, genre: viewModel.genre)
+        descriptionLabel.attributedText = attrString
+        
     }
     
 }

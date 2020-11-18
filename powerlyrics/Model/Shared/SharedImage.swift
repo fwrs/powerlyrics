@@ -5,9 +5,10 @@
 //  Created by Ilya Kulinkovich on 10/23/20.
 //
 
+import Kingfisher
 import UIKit
 
-enum SharedImage: Equatable {
+enum SharedImage: Equatable, Hashable {
     case local(UIImage)
     case external(URL)
 }
@@ -40,15 +41,16 @@ extension UIImageView {
         tag == 10
     }
 
-    func populate(with newImage: SharedImage?, placeholder: UIImage? = nil) {
+    func populate(with newImage: SharedImage?, placeholder: UIImage? = nil, result: ((Result<RetrieveImageResult, KingfisherError>) -> Void)? = nil) {
         tag = 0
         switch newImage {
         case .local(let localImage):
             image = localImage
             tag = 10
         case .external(let imageURL):
-            kf.setImage(with: imageURL, placeholder: placeholder ?? UIImageView.placeholder, completionHandler: { [self] _ in
+            kf.setImage(with: imageURL, placeholder: placeholder ?? UIImageView.placeholder, completionHandler: { [self] res in
                 tag = 10
+                result?(res)
             })
         case .none:
             image = UIImageView.placeholder

@@ -14,6 +14,7 @@ enum ActionCellAction: Equatable {
     case signOut
     case seeTrendingSongs
     case seeViralSongs
+    case appSourceCode
     
     var localizedTitle: String {
         switch self {
@@ -29,6 +30,8 @@ enum ActionCellAction: Equatable {
             return "Discover all trending songs"
         case .seeViralSongs:
             return "Discover all viral songs"
+        case .appSourceCode:
+            return "Source code"
         }
     }
 }

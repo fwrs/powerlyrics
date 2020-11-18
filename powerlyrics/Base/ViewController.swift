@@ -33,9 +33,23 @@ class ViewController: UIViewController, UITabBarControllerDelegate {
     
     private var emptyView: EmptyView?
     
-    func setNoInternetView(isVisible: Bool) {
+    private var isNoInternetViewVisible = false
+    
+    private var isEmptyViewVisible = false
+    
+    func setNoInternetView(isVisible: Bool, onTapRefresh: @escaping DefaultAction) {
         if isVisible {
+            if isNoInternetViewVisible { return }
+            isNoInternetViewVisible = true
+            if let view = noInternetView {
+                UIView.animate(withDuration: 0.3) {
+                    view.alpha = 1
+                }
+                return
+            }
+            noInternetView?.layer.removeAllAnimations()
             let newNoInternetView = NoInternetView.loadFromNib()
+            newNoInternetView.onRefresh = onTapRefresh
             view.addSubview(newNoInternetView)
             view.bringSubviewToFront(newNoInternetView)
             NSLayoutConstraint.activate([
@@ -50,19 +64,30 @@ class ViewController: UIViewController, UITabBarControllerDelegate {
                 newNoInternetView.alpha = 1
             }
         } else {
-            guard let currentNoInternetView = noInternetView else { return }
-            currentNoInternetView.alpha = 1
-            UIView.animate(withDuration: 0.3) {
-                currentNoInternetView.alpha = 0
+            if !isNoInternetViewVisible { return }
+            isNoInternetViewVisible = false
+            noInternetView?.alpha = 1
+            UIView.animate(withDuration: 0.3) { [self] in
+                noInternetView?.alpha = 0
             } completion: { [self] _ in
-                currentNoInternetView.removeFromSuperview()
-                noInternetView = nil
+                if !isNoInternetViewVisible {
+                    noInternetView?.removeFromSuperview()
+                    noInternetView = nil
+                }
             }
         }
     }
     
     func setEmptyView(isVisible: Bool) {
         if isVisible {
+            if isEmptyViewVisible { return }
+            isEmptyViewVisible = true
+            if let view = emptyView {
+                UIView.animate(withDuration: 0.3) {
+                    view.alpha = 1
+                }
+                return
+            }
             let newEmptyView = EmptyView.loadFromNib()
             view.addSubview(newEmptyView)
             view.bringSubviewToFront(newEmptyView)
@@ -78,13 +103,16 @@ class ViewController: UIViewController, UITabBarControllerDelegate {
                 newEmptyView.alpha = 1
             }
         } else {
-            guard let currentEmptyView = emptyView else { return }
-            currentEmptyView.alpha = 1
-            UIView.animate(withDuration: 0.3) {
-                currentEmptyView.alpha = 0
+            if !isEmptyViewVisible { return }
+            isEmptyViewVisible = false
+            emptyView?.alpha = 1
+            UIView.animate(withDuration: 0.3) { [self] in
+                emptyView?.alpha = 0
             } completion: { [self] _ in
-                currentEmptyView.removeFromSuperview()
-                emptyView = nil
+                if !isEmptyViewVisible {
+                    emptyView?.removeFromSuperview()
+                    emptyView = nil
+                }
             }
         }
     }

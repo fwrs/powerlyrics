@@ -22,9 +22,7 @@ extension Realm {
         )
     }
     
-    static func saveUserData(name: String, over18: Bool, premium: Bool = false, avatar: SharedImage?, thumbnailAvatar: SharedImage?) {
-        
-        unsetUserData()
+    static func saveUserData(name: String, over18: Bool, premium: Bool = false, avatar: SharedImage? = nil, thumbnailAvatar: SharedImage? = nil) {
         
         let account = RealmAccount()
         account.name = name
@@ -38,8 +36,11 @@ extension Realm {
             account.thumbnailAvatarURL = url.absoluteString
         }
         
+        let stats = RealmStats()
+        
         try! realm.write {
             realm.add(account)
+            realm.add(stats)
         }
         
     }
@@ -48,10 +49,16 @@ extension Realm {
         realm.objects(RealmAccount.self).first
     }
     
-    static func unsetUserData() {
+    static func unsetUserData(reset: Bool = true) {
 
-        try! realm.write {
-            realm.deleteAll()
+        if reset {
+            try! realm.write {
+                realm.deleteAll()
+            }
+        } else {
+            try! realm.write {
+                realm.delete(realm.objects(RealmAccount.self))
+            }
         }
         
     }
@@ -67,6 +74,7 @@ extension Realm {
         likedSong.name = song.name
         likedSong.artists.append(objectsIn: song.artists)
         likedSong.genre = genre
+        likedSong.likeDate = Date()
         
         if case .external(let url) = song.albumArt {
             likedSong.albumArtURL = url.absoluteString
@@ -100,6 +108,34 @@ extension Realm {
     
     static func likedSongs() -> [RealmLikedSong] {
         Array(realm.objects(RealmLikedSong.self))
+    }
+    
+    static var stats: RealmStats? {
+        realm.objects(RealmStats.self).first
+    }
+    
+    static func incrementSearchesStat() {
+        if let stat = realm.objects(RealmStats.self).first {
+            try! realm.write {
+                stat.searches += 1
+            }
+        }
+    }
+    
+    static func incrementDiscoveriesStat(with id: Int) {
+        if let stat = realm.objects(RealmStats.self).first, !stat.discoveries.contains(id) {
+            try! realm.write {
+                stat.discoveries.append(id)
+            }
+        }
+    }
+    
+    static func incrementViewedArtistsStat(with id: Int) {
+        if let stat = realm.objects(RealmStats.self).first, !stat.viewedArtists.contains(id) {
+            try! realm.write {
+                stat.viewedArtists.append(id)
+            }
+        }
     }
     
 }

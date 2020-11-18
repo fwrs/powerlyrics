@@ -14,11 +14,11 @@ class LyricsViewModel: ViewModel {
     
     let geniusProvider: GeniusProvider
     
-    let song: SharedSong
+    var song: SharedSong
     
     let lyrics = MutableObservableArray<Shared.LyricsSection>()
     
-    let genre = Observable(RealmLikedSongGenre.unknown)
+    let genre: Observable<RealmLikedSongGenre?> = Observable(nil)
     
     let isLiked = Observable(false)
     
@@ -26,16 +26,32 @@ class LyricsViewModel: ViewModel {
     
     var geniusURL: URL?
     
+    let isFailed = Observable(false)
+    
+    let producers = Observable([String]())
+    
+    let album = Observable("")
+    
+    let spotifyURL: Observable<URL?> = .init(nil)
+    
+    let description: Observable<String?> = .init(nil)
+    
     init(geniusProvider: GeniusProvider, song: SharedSong) {
         self.geniusProvider = geniusProvider
         self.song = song
     }
     
     func loadData() {
+        let onFailure = { [self] in
+            isLoading.value = false
+            isFailed.value = true
+        }
+        
         let onLyricsFetch: DefaultLyricsResultAction = { [self] result in
             let newLyrics = result.lyrics
             genre.value = result.genre
             isLoading.value = false
+            isFailed.value = false
             lyrics.batchUpdate { array in
                 for item in newLyrics {
                     array.append(item)
@@ -43,15 +59,41 @@ class LyricsViewModel: ViewModel {
             }
         }
         
-        let onSongFetch: DefaultURLAction = { url in
-            GeniusProvider.scrape(url: url, completionHandler: onLyricsFetch)
+        let onSongFetch: (URL, Int) -> Void = { [self] url, id in
+            GeniusProvider.scrape(url: url, completionHandler: onLyricsFetch, failureHandler: {
+                onFailure()
+            })
+            
+            geniusProvider.reactive
+                .request(.getSong(id: id))
+                .map(GeniusSongResponse.self)
+                .start { [self] event in
+                    switch event {
+                    case .value(let response):
+                        if let producers = response.response.song.producerArtists?.prefix(2) {
+                            self.producers.value = producers.map { $0.name.clean.typographized }
+                        }
+                        if let album = response.response.song.album {
+                            self.album.value = album.name.clean.typographized
+                            Realm.incrementDiscoveriesStat(with: album.id)
+                        }
+                        let artistId = response.response.song.primaryArtist.id
+                        Realm.incrementViewedArtistsStat(with: artistId)
+                        spotifyURL.value = response.response.song.media?.first { $0.provider == "spotify" }?.url
+                        description.value = response.response.song.description?.plain
+                    case .failed(let error):
+                        print(error)
+                    default:
+                        break
+                    }
+                }
         }
         isLoading.value = true
         if let geniusURL = song.geniusURL, let geniusID = song.geniusID {
             self.geniusURL = geniusURL
             self.geniusID = geniusID
             isLiked.value = Realm.findLikedSong(geniusID: geniusID) != nil
-            onSongFetch(geniusURL)
+            onSongFetch(geniusURL, geniusID)
             return
         }
         
@@ -63,12 +105,15 @@ class LyricsViewModel: ViewModel {
                 case .value(let response):
                     let filteredData = response.response.hits.filter { ($0.result.url?.absoluteString).safe.hasSuffix("-lyrics") && !$0.result.primaryArtist.name.contains("Genius") && !$0.result.primaryArtist.name.contains("Spotify") }
                     guard filteredData.nonEmpty, let url = filteredData[0].result.url else { return }
-                    geniusID = filteredData[0].result.id
-                    geniusURL = filteredData[0].result.url
+                    let id = filteredData[0].result.id
+                    geniusID = id
+                    geniusURL = url
+                    song.geniusID = geniusID
+                    song.geniusURL = geniusURL
                     isLiked.value = Realm.findLikedSong(geniusID: filteredData[0].result.id) != nil
-                    onSongFetch(url)
-                case .failed(let error):
-                    print(error)
+                    onSongFetch(url, id)
+                case .failed:
+                    onFailure()
                 default:
                     break
                 }
@@ -76,8 +121,8 @@ class LyricsViewModel: ViewModel {
     }
     
     func likeSong() {
-        guard let geniusID = geniusID, let geniusURL = geniusURL?.absoluteString else { return }
-        Realm.like(song: song, genre: genre.value, geniusID: geniusID, geniusURL: geniusURL)
+        guard let geniusID = geniusID, let geniusURL = geniusURL?.absoluteString, let genre = genre.value else { return }
+        Realm.like(song: song, genre: genre, geniusID: geniusID, geniusURL: geniusURL)
         isLiked.value = true
     }
     

@@ -31,7 +31,6 @@ class GenreMapCoordinator: Coordinator {
     
     func showGenre(_ genre: RealmLikedSongGenre) {
         let scene = resolver.resolve(GenreStatsScene.self, argument: genre)!
-        let genreRouter = Router(rootViewController: scene)
         if let tabBarController = router.tabBarController {
             let blurView = UIVisualEffectView(effect: nil)
             UIView.animate(withDuration: 0.35, delay: 0, options: .curveEaseOut) {
@@ -50,9 +49,9 @@ class GenreMapCoordinator: Coordinator {
             }
         }
         scene.flowLyrics = { [weak self] (song, placeholder) in
-            self?.showLyrics(for: song, placeholder: placeholder, from: genreRouter)
+            self?.showLyrics(for: song, placeholder: placeholder, from: scene)
         }
-        router.presentPanModal(genreRouter)
+        router.presentPanModal(scene)
     }
     
     private var genreViewControllerRouter: UIViewController?

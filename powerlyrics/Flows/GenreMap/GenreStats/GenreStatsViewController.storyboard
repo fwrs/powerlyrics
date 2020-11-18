@@ -1,17 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17156" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17506" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17126"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17505"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
+    <customFonts key="customFonts">
+        <array key="RobotoMono-SemiBold.ttf">
+            <string>RobotoMono-SemiBold</string>
+        </array>
+    </customFonts>
     <scenes>
-        <!--genre-->
+        <!--Genre Stats View Controller-->
         <scene sceneID="CYV-kx-6Y9">
             <objects>
-                <viewController storyboardIdentifier="GenreStatsViewController" interfaceStyle="dark" id="etc-m4-N07" customClass="GenreStatsViewController" customModule="powerlyrics" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="GenreStatsViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" interfaceStyle="dark" id="etc-m4-N07" customClass="GenreStatsViewController" customModule="powerlyrics" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="RK0-ig-02w">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="842"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -21,22 +27,57 @@
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <inset key="separatorInset" minX="16" minY="0.0" maxX="0.0" maxY="0.0"/>
                             </tableView>
+                            <visualEffectView hidden="YES" opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wHa-Bl-k9m">
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="44"/>
+                                <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="vJb-Hi-pbg">
+                                    <rect key="frame" x="0.0" y="0.0" width="414" height="44"/>
+                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                </view>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="44" id="LnG-6I-sWY"/>
+                                </constraints>
+                                <blurEffect style="systemChromeMaterial"/>
+                            </visualEffectView>
+                            <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="DZm-5o-Xpp">
+                                <rect key="frame" x="0.0" y="44" width="414" height="0.5"/>
+                                <color key="backgroundColor" red="0.1058823529" green="0.1058823529" blue="0.1058823529" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="0.40000000000000002" id="EDr-ym-WiL"/>
+                                </constraints>
+                            </view>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rnQ-3h-1JP">
+                                <rect key="frame" x="186" y="12" width="42" height="20"/>
+                                <fontDescription key="fontDescription" name="RobotoMono-SemiBold" family="Roboto Mono" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6sk-ar-nEe"/>
-                        <color key="backgroundColor" systemColor="systemBlueColor"/>
+                        <color key="backgroundColor" systemColor="secondarySystemBackgroundColor"/>
+                        <color key="tintColor" name="TintColor"/>
                         <constraints>
                             <constraint firstItem="XGt-kr-4Ks" firstAttribute="leading" secondItem="RK0-ig-02w" secondAttribute="leading" id="0Sh-eK-9Oh"/>
+                            <constraint firstItem="DZm-5o-Xpp" firstAttribute="trailing" secondItem="6sk-ar-nEe" secondAttribute="trailing" id="2s9-1W-ODS"/>
                             <constraint firstAttribute="trailing" secondItem="XGt-kr-4Ks" secondAttribute="trailing" id="EnY-eo-G5C"/>
+                            <constraint firstItem="rnQ-3h-1JP" firstAttribute="centerY" secondItem="wHa-Bl-k9m" secondAttribute="centerY" id="Owe-nS-QIt"/>
+                            <constraint firstItem="wHa-Bl-k9m" firstAttribute="leading" secondItem="6sk-ar-nEe" secondAttribute="leading" id="Ynu-Ru-VZI"/>
+                            <constraint firstItem="6sk-ar-nEe" firstAttribute="trailing" secondItem="wHa-Bl-k9m" secondAttribute="trailing" id="ZLo-hM-OgT"/>
                             <constraint firstItem="XGt-kr-4Ks" firstAttribute="top" secondItem="RK0-ig-02w" secondAttribute="top" id="buS-ry-xjy"/>
+                            <constraint firstItem="wHa-Bl-k9m" firstAttribute="top" secondItem="6sk-ar-nEe" secondAttribute="top" id="dCY-1E-dQ6"/>
+                            <constraint firstItem="rnQ-3h-1JP" firstAttribute="centerX" secondItem="wHa-Bl-k9m" secondAttribute="centerX" id="dGY-KT-t34"/>
                             <constraint firstAttribute="bottom" secondItem="XGt-kr-4Ks" secondAttribute="bottom" id="kCe-zf-TOC"/>
+                            <constraint firstItem="DZm-5o-Xpp" firstAttribute="leading" secondItem="6sk-ar-nEe" secondAttribute="leading" id="qFT-lW-nkU"/>
+                            <constraint firstItem="DZm-5o-Xpp" firstAttribute="top" secondItem="wHa-Bl-k9m" secondAttribute="bottom" id="xv1-3R-uwT"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" title="genre" id="ufT-Xi-f5g"/>
-                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
+                    <nil key="simulatedTopBarMetrics"/>
                     <nil key="simulatedBottomBarMetrics"/>
                     <modalPageSheetSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
                     <connections>
                         <outlet property="tableView" destination="XGt-kr-4Ks" id="A0T-3e-ePO"/>
+                        <outlet property="titleBackgroundView" destination="wHa-Bl-k9m" id="EHW-N8-Lnp"/>
+                        <outlet property="titleLabel" destination="rnQ-3h-1JP" id="GxY-98-epO"/>
+                        <outlet property="titleShadowView" destination="DZm-5o-Xpp" id="aM1-9d-QKG"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="O55-Ic-crm" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -45,11 +86,14 @@
         </scene>
     </scenes>
     <resources>
+        <namedColor name="TintColor">
+            <color red="0.9179999828338623" green="0.68199998140335083" blue="0.49799999594688416" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <systemColor name="secondarySystemBackgroundColor">
+            <color red="0.94901960784313721" green="0.94901960784313721" blue="0.96862745098039216" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-        </systemColor>
-        <systemColor name="systemBlueColor">
-            <color red="0.0" green="0.47843137254901963" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>

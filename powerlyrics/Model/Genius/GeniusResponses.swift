@@ -6,8 +6,9 @@
 //
 
 import Foundation
-    
+
 struct GeniusSearchResponse: Codable, Equatable {
+    
     struct SearchResponseInner: Codable, Equatable {
         enum HitType: String, Codable, Equatable {
             case song
@@ -22,4 +23,15 @@ struct GeniusSearchResponse: Codable, Equatable {
     }
     
     let response: SearchResponseInner
+    
+}
+
+struct GeniusSongResponse: Codable, Equatable {
+    
+    struct SongResponseInner: Codable, Equatable {
+        let song: GeniusSong
+    }
+    
+    let response: SongResponseInner
+    
 }

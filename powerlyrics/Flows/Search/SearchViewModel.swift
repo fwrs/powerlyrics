@@ -8,6 +8,7 @@
 import Bond
 import ReactiveKit
 import ReactiveSwift
+import RealmSwift
 
 enum SearchSection {
     
@@ -53,6 +54,10 @@ class SearchViewModel: ViewModel {
     
     let nothingWasFound = Observable(false)
     
+    let internetError = Observable(false)
+    
+    let trendsFailed = Observable(false)
+    
     private var searchSongsResult = [SharedSong]()
     
     private var searchAlbumsResult = [SpotifyAlbum]()
@@ -63,6 +68,8 @@ class SearchViewModel: ViewModel {
     }
     
     func loadTrends() {
+        trendsAreLoading.value = true
+        trendsFailed.value = false
         spotifyProvider.reactive
             .request(.trendingSongs)
             .map(SpotifyPlaylistSongsResponse.self)
@@ -80,8 +87,9 @@ class SearchViewModel: ViewModel {
                         performDiff: true
                     )
                     trendsAreLoading.value = false
-                case .failed(let error):
-                    print(error)
+                case .failed:
+                    trendsFailed.value = true
+                    trendsAreLoading.value = false
                 default:
                     break
                 }
@@ -97,6 +105,8 @@ class SearchViewModel: ViewModel {
         startLoading(refresh)
         
         let group = DispatchGroup()
+        var failedGenius = false
+        var failedSpotify = false
         
         group.enter()
         latestSearchSongsRequest?.dispose()
@@ -108,8 +118,8 @@ class SearchViewModel: ViewModel {
                 case .value(let response):
                     searchSongsResult = response.response.hits.map { $0.result.asSharedSong }
                     group.leave()
-                case .failed(let error):
-                    print(error)
+                case .failed:
+                    failedGenius = true
                     group.leave()
                 default:
                     break
@@ -132,6 +142,7 @@ class SearchViewModel: ViewModel {
                     group.leave()
                 case .failed:
                     searchAlbumsResult = []
+                    failedSpotify = true
                     group.leave()
                 default:
                     break
@@ -147,7 +158,16 @@ class SearchViewModel: ViewModel {
             
             let albumsSection = searchAlbumsResult.isEmpty ? [] : [SearchCell.albums(AlbumsCellViewModel(albums: searchAlbumsResult))]
             
+            internetError.value = failedGenius && failedSpotify
+            
+            if failedGenius && failedSpotify {
+                items.set([])
+                return
+            }
+            
             nothingWasFound.value = topResultSection.isEmpty && songsSection.isEmpty && albumsSection.isEmpty
+            
+            Realm.incrementSearchesStat()
             
             items.set([
                 (.topResult, topResultSection),
@@ -160,6 +180,7 @@ class SearchViewModel: ViewModel {
     func reset() {
         items.removeAllItemsAndSections()
         nothingWasFound.value = false
+        internetError.value = false
     }
     
 }

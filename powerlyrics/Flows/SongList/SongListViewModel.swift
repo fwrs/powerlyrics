@@ -9,6 +9,11 @@ import Bond
 import ReactiveKit
 import RealmSwift
 
+enum SongListCell: Equatable {
+    case song(SongCellViewModel)
+    case loading
+}
+
 class SongListViewModel: ViewModel {
     
     let flow: SongListFlow
@@ -17,7 +22,11 @@ class SongListViewModel: ViewModel {
     
     let title = Observable(String())
     
-    let songs = MutableObservableArray<SongCellViewModel>()
+    let items = MutableObservableArray<SongListCell>()
+    
+    let failed = Observable(false)
+    
+    let isLoadingWithPreview = Observable(false)
     
     init(flow: SongListFlow, spotifyProvider: SpotifyProvider) {
         self.flow = flow
@@ -27,9 +36,9 @@ class SongListViewModel: ViewModel {
     }
     
     func loadData(refresh: Bool = false) {
-        startLoading(refresh)
         switch flow {
         case .albumTracks(let album):
+            startLoading(refresh)
             spotifyProvider.reactive
                 .request(.albumSongs(albumID: album.id))
                 .map(SpotifyAlbumSongsResponse.self)
@@ -37,15 +46,24 @@ class SongListViewModel: ViewModel {
                     switch event {
                     case .value(let response):
                         let albumSongs = response.items
-                        songs.replace(with: albumSongs.map { SongCellViewModel(song: $0.asSharedSong(with: album)) }, performDiff: true)
+                        items.replace(with: albumSongs.map { .song(SongCellViewModel(song: $0.asSharedSong(with: album))) }, performDiff: true)
                         endLoading(refresh)
-                    case .failed(let error):
-                        print(error)
+                        failed.value = false
+                    case .failed:
+                        items.replace(with: [], performDiff: true)
+                        failed.value = true
+                        endLoading(refresh)
                     default:
                         break
                     }
                 }
-        case .trendingSongs:
+        case .trendingSongs(let preview):
+            failed.value = false
+            isLoadingWithPreview.value = true
+            if refresh {
+                startLoading(refresh)
+            }
+            items.replace(with: preview.enumerated().map { .song(SongCellViewModel(song: $1, accessory: .ranking(nth: $0 + 1))) } + [.loading], performDiff: true)
             spotifyProvider.reactive
                 .request(.trendingSongs)
                 .map(SpotifyPlaylistSongsResponse.self)
@@ -53,15 +71,25 @@ class SongListViewModel: ViewModel {
                     switch event {
                     case .value(let response):
                         let trendingSongs = response.items
-                        songs.replace(with: trendingSongs.map { SongCellViewModel(song: $0.asSharedSong) }, performDiff: true)
+                        items.replace(with: trendingSongs.enumerated().map { .song(SongCellViewModel(song: $1.asSharedSong, accessory: .ranking(nth: $0 + 1))) }, performDiff: true)
                         endLoading(refresh)
-                    case .failed(let error):
-                        print(error)
+                        isLoadingWithPreview.value = false
+                    case .failed:
+                        items.replace(with: [], performDiff: true)
+                        failed.value = true
+                        endLoading(refresh)
+                        isLoadingWithPreview.value = false
                     default:
                         break
                     }
                 }
-        case .viralSongs:
+        case .viralSongs(let preview):
+            isLoadingWithPreview.value = true
+            failed.value = false
+            if refresh {
+                startLoading(refresh)
+            }
+            items.replace(with: preview.enumerated().map { .song(SongCellViewModel(song: $1, accessory: .ranking(nth: $0 + 1))) } + [.loading], performDiff: true)
             spotifyProvider.reactive
                 .request(.viralSongs)
                 .map(SpotifyPlaylistSongsResponse.self)
@@ -69,17 +97,25 @@ class SongListViewModel: ViewModel {
                     switch event {
                     case .value(let response):
                         let viralSongs = response.items
-                        songs.replace(with: viralSongs.map { SongCellViewModel(song: $0.asSharedSong) }, performDiff: true)
+                        items.replace(with: viralSongs.enumerated().map { .song(SongCellViewModel(song: $1.asSharedSong, accessory: .ranking(nth: $0 + 1))) }, performDiff: true)
                         endLoading(refresh)
-                    case .failed(let error):
-                        print(error)
+                        isLoadingWithPreview.value = false
+                    case .failed:
+                        items.replace(with: [], performDiff: true)
+                        failed.value = true
+                        endLoading(refresh)
+                        isLoadingWithPreview.value = false
                     default:
                         break
                     }
                 }
         case .likedSongs:
+            failed.value = false
+            if refresh {
+                startLoading(refresh)
+            }
             let likedSongs = Realm.likedSongs()
-            songs.replace(with: likedSongs.map { SongCellViewModel(song: $0.asSharedSong) }, performDiff: true)
+            items.replace(with: likedSongs.map { .song(SongCellViewModel(song: $0.asSharedSong, accessory: .likeLogo)) }, performDiff: true)
             endLoading(refresh)
         }
     }
@@ -89,9 +125,9 @@ class SongListViewModel: ViewModel {
         case .albumTracks(let album):
             title.value = album.name
         case .trendingSongs:
-            title.value = "trending songs"
+            title.value = "trending"
         case .viralSongs:
-            title.value = "viral songs"
+            title.value = "viral"
         case .likedSongs:
             title.value = "liked songs"
         }

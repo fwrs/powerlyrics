@@ -59,10 +59,10 @@ extension SetupInitViewController {
     }
     
     func setupObservers() {
-        mainButton.reactive.tap.observeNext { [self] _ in
+        mainButton.reactive.tap.throttle(for: 0.3).observeNext { [self] _ in
             flowSpotifyLogin?()
         }.dispose(in: disposeBag)
-        secondaryButton.reactive.tap.observeNext { [self] _ in
+        secondaryButton.reactive.tap.throttle(for: 0.3).observeNext { [self] _ in
             flowOfflineSetup?()
         }.dispose(in: disposeBag)
     }

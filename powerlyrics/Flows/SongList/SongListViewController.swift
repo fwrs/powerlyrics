@@ -24,6 +24,8 @@ class SongListViewController: ViewController, SongListScene {
     
     private var lastSelectedIndexPath: IndexPath?
     
+    var initial = true
+    
     // MARK: - Flows
     
     var flowLyrics: ((SharedSong, UIImage?) -> Void)?
@@ -39,6 +41,16 @@ class SongListViewController: ViewController, SongListScene {
         viewModel.loadData()
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        if !initial {
+            if viewModel.flow == .likedSongs {
+                viewModel.loadData()
+            }
+        }
+        initial = false
+    }
+    
 }
 
 extension SongListViewController {
@@ -47,12 +59,27 @@ extension SongListViewController {
 
     func setupView() {
         tableView.register(SongCell.self)
+        tableView.register(LoadingCell.self)
+        tableView.cellLayoutMarginsFollowReadableWidth = false
     }
     
     func setupObservers() {
-        viewModel.title.bind(to: navigationItem.reactive.title).dispose(in: disposeBag)
-        viewModel.songs.bind(to: tableView, cellType: SongCell.self) { songCell, songCellViewModel in
-            songCell.configure(with: songCellViewModel)
+        viewModel.title.map { $0.lowercased() }.bind(to: navigationItem.reactive.title).dispose(in: disposeBag)
+        viewModel.items.bind(to: tableView) { items, indexPath, uiTableView in
+            let tableView = uiTableView as! TableView
+            let item = items[indexPath.row]
+            switch item {
+            case .song(let songCellViewModel):
+                let cell = tableView.dequeue(SongCell.self, indexPath: indexPath)
+                cell.configure(with: songCellViewModel)
+                return cell
+            case .loading:
+                let cell = tableView.dequeue(LoadingCell.self, indexPath: indexPath)
+                cell.isUserInteractionEnabled = false
+                cell.selectionStyle = .none
+                cell.separatorInset = UIEdgeInsets(top: 0, left: .greatestFiniteMagnitude, bottom: 0, right: 0)
+                return cell
+            }
         }
         
         viewModel.isRefreshing.observeNext { [self] isRefreshing in
@@ -75,8 +102,18 @@ extension SongListViewController {
             lastSelectedIndexPath = indexPath
             tableView.deselectRow(at: indexPath, animated: true)
             Haptic.play(".")
-            let songCellViewModel = viewModel.songs[indexPath.row]
-            flowLyrics?(songCellViewModel.song, (tableView.cellForRow(at: indexPath) as? SongCell)?.currentImage)
+            let item = viewModel.items[indexPath.row]
+            if case .song(let songCellViewModel) = item {
+                flowLyrics?(songCellViewModel.song, (tableView.cellForRow(at: indexPath) as? SongCell)?.currentImage)
+            }
+        }.dispose(in: disposeBag)
+        combineLatest(viewModel.items.map(\.collection.isEmpty), viewModel.isLoading, viewModel.isRefreshing, viewModel.failed, viewModel.isLoadingWithPreview).dropFirst(2).observeNext { [self] isEmpty, isLoading, isRefreshing, isFailed, isLoadingWithPreview in
+            setEmptyView(isVisible: isEmpty && !isLoading && !isRefreshing && !isFailed && !isLoadingWithPreview)
+        }.dispose(in: disposeBag)
+        viewModel.failed.observeNext { [self] isFailed in
+            setNoInternetView(isVisible: isFailed) {
+                viewModel.loadData()
+            }
         }.dispose(in: disposeBag)
     }
     

@@ -42,6 +42,9 @@ class ProfileBinder<Changeset: SectionedDataSourceChangeset>: TableViewBinderDat
                 fatalError("Invalid cell")
             }
         }
+        rowReloadAnimation = .fade
+        rowInsertionAnimation = .none
+        rowDeletionAnimation = .none
     }
 
 }

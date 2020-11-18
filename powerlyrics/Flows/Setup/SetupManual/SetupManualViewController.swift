@@ -23,6 +23,8 @@ class SetupManualViewController: ViewController, SetupManualScene {
     
     var flowDismiss: DefaultAction?
     
+    var flowSpotifyLogin: DefaultAction?
+    
     // MARK: - Lifecycle
 
     override func viewDidLoad() {
@@ -49,7 +51,11 @@ extension SetupManualViewController {
     }
     
     func setupObservers() {
-        secondaryButton.reactive.tap.observeNext { [self] _ in
+        mainButton.reactive.tap.throttle(for: 0.3).observeNext { [self] _ in
+            flowSpotifyLogin?()
+        }.dispose(in: disposeBag)
+        
+        secondaryButton.reactive.tap.throttle(for: 0.3).observeNext { [self] _ in
             flowDismiss?()
         }.dispose(in: disposeBag)
     }

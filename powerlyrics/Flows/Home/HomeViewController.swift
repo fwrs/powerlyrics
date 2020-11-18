@@ -8,6 +8,7 @@
 import Bond
 import Haptica
 import ReactiveKit
+import SafariServices
 import UIKit
 
 class HomeViewController: ViewController, HomeScene {
@@ -24,16 +25,18 @@ class HomeViewController: ViewController, HomeScene {
     
     private var lastSelectedIndexPath: IndexPath?
     
+    private var initialLoad = true
+    
     // MARK: - Flows
     
     var flowLyrics: ((SharedSong, UIImage?) -> Void)?
     
     var flowSetup: DefaultSetupModeAction?
     
-    var flowTrends: DefaultAction?
+    var flowTrends: DefaultSharedSongListAction?
     
-    var flowVirals: DefaultAction?
-    
+    var flowVirals: DefaultSharedSongListAction?
+
     // MARK: - Lifecycle
 
     override func viewDidLoad() {
@@ -46,7 +49,26 @@ class HomeViewController: ViewController, HomeScene {
             flowSetup?(.initial)
         } else {
             viewModel.loadData()
+            viewModel.checkSpotifyAccount()
         }
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        if !initialLoad {
+            viewModel.checkSpotifyAccount()
+        }
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        if !initialLoad {
+            viewModel.updateState()
+        }
+        
+        initialLoad = false
     }
 
 }
@@ -61,7 +83,15 @@ extension HomeViewController {
     }
     
     func setupObservers() {
+        viewModel.isSpotifyAccount.observeNext { [self] isSpotifyAccount in
+            navigationItem.rightBarButtonItem?.image = isSpotifyAccount ? UIImage(systemName: "gear") : UIImage(systemName: "person.crop.circle.badge.plus")
+        }.dispose(in: disposeBag)
         viewModel.items.bind(to: tableView, using: HomeBinder())
+        viewModel.isError.observeNext { [self] isError in
+            setNoInternetView(isVisible: isError) {
+                viewModel.loadData()
+            }
+        }.dispose(in: disposeBag)
         viewModel.isRefreshing.observeNext { [self] isRefreshing in
             tableView.isRefreshing = isRefreshing
         }.dispose(in: disposeBag)
@@ -80,7 +110,14 @@ extension HomeViewController {
         }.dispose(in: disposeBag)
         navigationItem.rightBarButtonItem?.reactive.tap.throttle(for: 0.5).observeNext { [self] _ in
             Haptic.play(".")
-            flowSetup?(.manual)
+            if viewModel.isSpotifyAccount.value {
+                let url = URL(string: "https://www.spotify.com/account/overview/")!
+                let safariViewController = SFSafariViewController(url: url, configuration: SFSafariViewController.Configuration())
+                safariViewController.preferredControlTintColor = .tintColor
+                present(safariViewController, animated: true)
+            } else {
+                flowSetup?(.manual)
+            }
         }.dispose(in: disposeBag)
         tableView.reactive.selectedRowIndexPath.observeNext { [self] indexPath in
             lastSelectedIndexPath = indexPath
@@ -89,11 +126,11 @@ extension HomeViewController {
             let cell = viewModel.items[itemAt: indexPath]
             if case .song(let viewModel) = cell {
                 flowLyrics?(viewModel.song, (tableView.cellForRow(at: indexPath) as? SongCell)?.currentImage)
-            } else if case .action(let viewModel) = cell {
-                if viewModel.action == .seeTrendingSongs {
-                    flowTrends?()
-                } else if viewModel.action == .seeViralSongs {
-                    flowVirals?()
+            } else if case .action(let actionCellViewModel) = cell {
+                if actionCellViewModel.action == .seeTrendingSongs {
+                    flowTrends?(Array(viewModel.trendingSongs.prefix(3)))
+                } else if actionCellViewModel.action == .seeViralSongs {
+                    flowVirals?(Array(viewModel.viralSongs.prefix(3)))
                 }
             }
         }.dispose(in: disposeBag)
