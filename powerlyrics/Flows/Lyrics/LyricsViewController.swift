@@ -3,6 +3,7 @@
 //  powerlyrics
 //
 //  Created by Ilya Kulinkovich on 10/3/20.
+//  Copyright © 2020 Ilya Kulinkovich. All rights reserved.
 //
 
 import Haptica
@@ -244,7 +245,7 @@ extension LyricsViewController {
                 Haptic.play(".")
             } else {
                 viewModel.likeSong()
-                Haptic.play(".-o--.-O---.-o--.-O", delay: 0.2)
+                Haptic.play(".-o--.-O", delay: 0.2)
             }
         }.dispose(in: disposeBag)
         

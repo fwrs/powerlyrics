@@ -3,6 +3,7 @@
 //  powerlyrics
 //
 //  Created by Ilya Kulinkovich on 10/1/20.
+//  Copyright © 2020 Ilya Kulinkovich. All rights reserved.
 //
 
 import Haptica
@@ -119,7 +120,6 @@ class ViewController: UIViewController, UITabBarControllerDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // to be localized
         let backItem = UIBarButtonItem()
         backItem.title = "Back"
         navigationItem.backBarButtonItem = backItem

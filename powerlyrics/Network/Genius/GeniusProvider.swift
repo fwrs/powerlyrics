@@ -3,6 +3,7 @@
 //  powerlyrics
 //
 //  Created by Ilya Kulinkovich on 10/24/20.
+//  Copyright © 2020 Ilya Kulinkovich. All rights reserved.
 //
 
 import Alamofire
@@ -56,14 +57,14 @@ extension GeniusProvider {
             // MARK: - Genre parsing
             
             var genre: RealmLikedSongGenre = .unknown
-            let genreNames = [["rock", "indie", "metal"],                            // => .rock
-                              ["classic", "non-music", "literat"],                   // => .classic
-                              ["trap", "rap", "r-b"],                                // => .rap
-                              ["country"],                                           // => .country
-                              ["acoustic"],                                          // => .acoustic
-                              ["pop"],                                               // => .pop
-                              ["jazz", "swing"],                                     // => .jazz
-                              ["electr", "dance", "tranc", "ambien", "future bass"]] // => .edm
+            let genreNames = [["rock", "indie", "metal"],
+                              ["classic", "non-music", "literat"],
+                              ["trap", "rap", "r-b"],
+                              ["country"],
+                              ["acoustic"],
+                              ["pop"],
+                              ["jazz", "swing"],
+                              ["electr", "dance", "tranc", "ambien", "future bass"]]
             let content = (try? doc.outerHtml()).safe.components(separatedBy: "\\\"songRelationships\\\"").first.safe
             let genreRegEx = try! NSRegularExpression(pattern: "genius\\.com\\/tags\\/(.*?)(&quot;|\\\")")
             if let genreRange = genreRegEx.matches(in: content, options: [], range: NSRange(location: 0, length: content.count)).max(by: { $0.range.location < $1.range.location })?.range {
@@ -72,10 +73,6 @@ extension GeniusProvider {
                     genre = RealmLikedSongGenre(rawValue: genreInt) ?? .unknown
                 }
             }
-            
-            // MARK: - Notes parsing
-            
-            // to be done
 
             completionHandler?(Shared.LyricsResult(lyrics: lyrics, genre: genre))
         }

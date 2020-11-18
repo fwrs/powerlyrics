@@ -3,6 +3,7 @@
 //  powerlyrics
 //
 //  Created by Ilya Kulinkovich on 10/2/20.
+//  Copyright © 2020 Ilya Kulinkovich. All rights reserved.
 //
 
 import UIKit
@@ -84,10 +85,10 @@ struct UIImageColors {
 }
 
 enum UIImageColorsQuality: CGFloat {
-    case lowest = 50 // 50px
-    case low = 100 // 100px
-    case high = 250 // 250px
-    case highest = 0 // No scale
+    case lowest = 50
+    case low = 100
+    case high = 250
+    case highest = 0
 }
 
 fileprivate struct UIImageColorsCounter {
@@ -134,9 +135,6 @@ fileprivate extension Double {
     }
     
     func with(minSaturation: Double) -> Double {
-        // Ref: https://en.wikipedia.org/wiki/HSL_and_HSV
-        
-        // Convert RGB to HSV
         let _r = r/255
         let _g = g/255
         let _b = b/255
@@ -164,9 +162,7 @@ fileprivate extension Double {
         if H < 0 {
             H += 6
         }
-        
-        // Back to RGB
-        
+
         C = V*minSaturation
         let X = C*(1-fabs(fmod(H,2)-1))
         var R, G, B: Double

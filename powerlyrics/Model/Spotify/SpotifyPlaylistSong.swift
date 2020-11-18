@@ -3,6 +3,7 @@
 //  powerlyrics
 //
 //  Created by Ilya Kulinkovich on 10/27/20.
+//  Copyright © 2020 Ilya Kulinkovich. All rights reserved.
 //
 
 import Foundation

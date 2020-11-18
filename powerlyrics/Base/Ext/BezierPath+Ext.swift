@@ -3,6 +3,7 @@
 //  powerlyrics
 //
 //  Created by Ilya Kulinkovich on 10/2/20.
+//  Copyright © 2020 Ilya Kulinkovich. All rights reserved.
 //
 
 import UIKit
@@ -11,8 +12,6 @@ extension UIBezierPath {
 
     static func superellipse(in rect: CGRect, cornerRadius: CGFloat) -> UIBezierPath {
 
-        // (Corner radius can't exceed half of the shorter side; correct if
-        //  necessary:)
         let minSide = min(rect.width, rect.height)
         let radius = min(cornerRadius, minSide/2)
 
@@ -21,19 +20,15 @@ extension UIBezierPath {
         let bottomLeft = CGPoint(x: rect.minX, y: rect.maxY)
         let bottomRight = CGPoint(x: rect.maxX, y: rect.maxY)
 
-        // The two points of the segment along the top side (clockwise):
         let p0 = CGPoint(x: rect.minX + radius, y: rect.minY)
         let p1 = CGPoint(x: rect.maxX - radius, y: rect.minY)
 
-        // The two points of the segment along the right side (clockwise):
         let p2 = CGPoint(x: rect.maxX, y: rect.minY + radius)
         let p3 = CGPoint(x: rect.maxX, y: rect.maxY - radius)
 
-        // The two points of the segment along the bottom side (clockwise):
         let p4 = CGPoint(x: rect.maxX - radius, y: rect.maxY)
         let p5 = CGPoint(x: rect.minX + radius, y: rect.maxY)
 
-        // The two points of the segment along the left side (clockwise):
         let p6 = CGPoint(x: rect.minX, y: rect.maxY - radius)
         let p7 = CGPoint(x: rect.minX, y: rect.minY + radius)
 

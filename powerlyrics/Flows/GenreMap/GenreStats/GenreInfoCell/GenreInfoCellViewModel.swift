@@ -3,15 +3,16 @@
 //  powerlyrics
 //
 //  Created by Ilya Kulinkovich on 11/8/20.
+//  Copyright © 2020 Ilya Kulinkovich. All rights reserved.
 //
 
 import Foundation
 
 enum GenreInfoLevel {
-    case low          //  0% ≤ count / avg <  20%
-    case ok           // 20% ≤ count / avg <  45%
-    case good         // 45% ≤ count / avg <  80%
-    case overwhelming // 80% ≤ count / avg < 100%
+    case low
+    case ok
+    case good
+    case overwhelming
     
     init(count: Int, average: Float) {
         if count == 1 {
