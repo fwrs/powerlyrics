@@ -97,8 +97,7 @@ class HomeViewModel: ViewModel {
                     trendingSongs = response.items.map(\.asSharedSong)
                     group.leave()
                     fails = false
-                case .failed(let error):
-                    print(error)
+                case .failed:
                     group.leave()
                 default:
                     break
@@ -115,8 +114,7 @@ class HomeViewModel: ViewModel {
                     viralSongs = response.items.map(\.asSharedSong)
                     group.leave()
                     fails = false
-                case .failed(let error):
-                    print(error)
+                case .failed:
                     group.leave()
                 default:
                     break

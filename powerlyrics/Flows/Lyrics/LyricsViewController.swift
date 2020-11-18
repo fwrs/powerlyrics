@@ -150,6 +150,16 @@ extension LyricsViewController {
     }
     
     func setupObservers() {
+        viewModel.lyricsNotFound.observeNext { [self] isNotFound in
+            if isNotFound {
+                present(UIAlertController(title: "Lyrics not available", message: "This song isn’t stored in the Genius database.", preferredStyle: .alert).with {
+                    $0.addAction(UIAlertAction(title: "OK", style: .default, handler: { _ in
+                        flowDismiss?()
+                    }))
+                }, animated: true, completion: nil)
+            }
+        }.dispose(in: disposeBag)
+        
         viewModel.album.dropFirst(1).observeNext { [self] album in
             let text = "From album “\(album)”"
             let attrString = NSMutableAttributedString(string: text, attributes: [.foregroundColor: UIColor.label])

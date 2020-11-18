@@ -60,8 +60,7 @@ final class KeychainStorage: KeychainStorageProtocol {
         do {
             guard let data = try keychain.getData(key.rawValue) else { return nil }
             return try decoder.decode(T.self, from: data)
-        } catch let error {
-            print(error)
+        } catch {
             return nil
         }
     }

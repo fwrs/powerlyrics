@@ -36,6 +36,8 @@ class LyricsViewModel: ViewModel {
     
     let description: Observable<String?> = .init(nil)
     
+    let lyricsNotFound = Observable(false)
+    
     init(geniusProvider: GeniusProvider, song: SharedSong) {
         self.geniusProvider = geniusProvider
         self.song = song
@@ -81,8 +83,6 @@ class LyricsViewModel: ViewModel {
                         Realm.incrementViewedArtistsStat(with: artistId)
                         spotifyURL.value = response.response.song.media?.first { $0.provider == "spotify" }?.url
                         description.value = response.response.song.description?.plain
-                    case .failed(let error):
-                        print(error)
                     default:
                         break
                     }
@@ -104,7 +104,10 @@ class LyricsViewModel: ViewModel {
                 switch event {
                 case .value(let response):
                     let filteredData = response.response.hits.filter { ($0.result.url?.absoluteString).safe.hasSuffix("-lyrics") && !$0.result.primaryArtist.name.contains("Genius") && !$0.result.primaryArtist.name.contains("Spotify") }
-                    guard filteredData.nonEmpty, let url = filteredData[0].result.url else { return }
+                    guard filteredData.nonEmpty, let url = filteredData[0].result.url else {
+                        lyricsNotFound.value = true
+                        return
+                    }
                     let id = filteredData[0].result.id
                     geniusID = id
                     geniusURL = url

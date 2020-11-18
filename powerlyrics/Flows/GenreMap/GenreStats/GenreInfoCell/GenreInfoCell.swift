@@ -13,6 +13,8 @@ class GenreInfoCell: TableViewCell {
     
     @IBOutlet private weak var descriptionLabel: UILabel!
 
+    @IBOutlet private weak var songsLabel: UILabel!
+    
     func configure(with viewModel: GenreInfoCellViewModel) {
         let text = viewModel.level.localizedDescription(count: viewModel.count, genre: viewModel.genre)
         
@@ -28,7 +30,7 @@ class GenreInfoCell: TableViewCell {
 
         emojiLabel.text = viewModel.level.emoji
         descriptionLabel.attributedText = attrString
-        
+        songsLabel.text = viewModel.count == 1 ? "Here’s the song:" : "Here’s the songs:"
     }
     
 }

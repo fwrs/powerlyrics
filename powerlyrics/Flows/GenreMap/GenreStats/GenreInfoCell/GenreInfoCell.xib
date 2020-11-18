@@ -51,6 +51,7 @@
             <connections>
                 <outlet property="descriptionLabel" destination="JJ0-f3-MQ4" id="gfv-dI-l4A"/>
                 <outlet property="emojiLabel" destination="60a-ut-Ye6" id="tIF-Wv-2io"/>
+                <outlet property="songsLabel" destination="4wW-SU-V62" id="IRT-AD-IVa"/>
             </connections>
             <point key="canvasLocation" x="137.68115942028987" y="147.99107142857142"/>
         </tableViewCell>
