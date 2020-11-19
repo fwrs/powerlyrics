@@ -15,7 +15,6 @@ import RealmSwift
 fileprivate extension Constants {
     
     static let minimumTotalValue: CGFloat = 0.0001
-    
     static let minimumChartValue: CGFloat = 0.012
     
 }

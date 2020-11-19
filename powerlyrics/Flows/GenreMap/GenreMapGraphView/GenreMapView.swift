@@ -13,11 +13,8 @@ import UIKit
 fileprivate extension Constants {
     
     static let baseInset: CGFloat = 95
-    
     static let chartAnimationTimingFunction = CAMediaTimingFunction(controlPoints: 0.075, 0.82, 0.165, 1)
-    
     static let chartAnimationDelayGrowth: Double = 20
-    
     static let path = "path"
     
 }

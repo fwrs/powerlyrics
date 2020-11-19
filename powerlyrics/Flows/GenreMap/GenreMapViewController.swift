@@ -17,7 +17,6 @@ import UIKit
 extension Constants {
     
     static let baseLikedSongCounts = Array(repeating: CGFloat.zero, count: RealmLikedSongGenre.total)
-    
     static let likedMusicButtonText = "liked music"
     
 }
@@ -25,32 +24,20 @@ extension Constants {
 fileprivate extension Constants {
     
     static let transforms: [(CGFloat, CGFloat)] = [(1, 0), (1, 1), (0, 1), (-1, 1), (1, 0), (1, 1), (0, 1), (-1, 1)]
+    static let inverseAngles = 4...7
     
     static let backgroundAppearanceDuration: TimeInterval = 0.9
-    
     static let descriptionAppearanceDuration: TimeInterval = 0.55
-    
     static let buttonAppearanceBaseDuration: TimeInterval = 0.5
-    
     static let noDataAppearanceDuration: TimeInterval = 0.6
-    
     static let flipDuration: TimeInterval = 0.4
-    
     static let tinyDelay: TimeInterval = 0.05
-    
     static let descriptionAppearanceDelay: TimeInterval = 0.45
-    
-    static let flipPerspective: CGFloat = -.one / 500.0
-    
-    static let smallAngleMultiplier: CGFloat = 0.05
-    
+    static let flipPerspective: CGFloat = -1 / 500.0
+    static let smallAngleMultiplier: CGFloat = 0.025
     static let largeAngleMultiplier: CGFloat = 0.2
-    
     static let concealedGenreMapAlpha: CGFloat = 0.8
-    
     static let springDamping: CGFloat = 0.6
-    
-    static let inverseAngles = 4...7
     
     static let descriptionParagraphStyle = NSMutableParagraphStyle().with {
         $0.lineSpacing = .two
@@ -287,14 +274,14 @@ extension GenreMapViewController {
         
         descriptionLabel.reactive.longPressGesture(minimumPressDuration: .zero).observeNext { [self] recognizer in
             if recognizer.state == .ended || recognizer.state == .cancelled {
-                UIView.transition(with: descriptionLabel, duration: Constants.buttonTapDuration, options: .transitionCrossDissolve) {
+                UIView.fadeUpdate(descriptionLabel, duration: Constants.buttonTapDuration) {
                     descriptionLabel.attributedText = generateAttributedDescriptionText()
                 }
             }
             
             switch recognizer.state {
             case .began:
-                UIView.transition(with: descriptionLabel, duration: Constants.buttonTapDuration, options: .transitionCrossDissolve) {
+                UIView.fadeUpdate(descriptionLabel, duration: Constants.buttonTapDuration) {
                     descriptionLabel.attributedText = generateAttributedDescriptionText(highlight: true)
                 }
             case .ended:

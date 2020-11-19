@@ -13,7 +13,6 @@ import UIKit
 fileprivate extension Constants {
     
     static let gradientBeginPoint = CGPoint.zero
-    
     static let gradientEndPoint = CGPoint(x: CGFloat.one, y: .zero)
     
 }

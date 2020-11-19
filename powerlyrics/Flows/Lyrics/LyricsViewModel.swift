@@ -16,9 +16,7 @@ import UIKit
 fileprivate extension Constants {
     
     static let lyricsSuffix = "-lyrics"
-    
     static let spotifyAuthor = "Spotify"
-    
     static let geniusAuthor = "Genius"
     
 }
@@ -71,14 +69,14 @@ class LyricsViewModel: ViewModel {
     
     func loadData() {
         let onFailure = { [self] in
-            isLoading.value = false
+            endLoading()
             isFailed.value = true
         }
         
         let onLyricsFetch: DefaultSharedLyricsResultAction = { [self] result in
             let newLyrics = result.lyrics
             genre.value = result.genre
-            isLoading.value = false
+            endLoading()
             isFailed.value = false
             lyrics.batchUpdate { array in
                 for item in newLyrics {
@@ -114,7 +112,7 @@ class LyricsViewModel: ViewModel {
                     }
                 }
         }
-        isLoading.value = true
+        startLoading()
         if let geniusURL = song.geniusURL, let geniusID = song.geniusID {
             self.geniusURL = geniusURL
             self.geniusID = geniusID
@@ -135,6 +133,7 @@ class LyricsViewModel: ViewModel {
                             !$0.result.primaryArtist.name.contains(Constants.spotifyAuthor)
                     }
                     guard filteredData.nonEmpty, let url = filteredData[.zero].result.url else {
+                        endLoading()
                         lyricsNotFound.value = true
                         return
                     }

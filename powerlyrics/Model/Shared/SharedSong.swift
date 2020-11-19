@@ -60,6 +60,8 @@ extension SharedSong {
     
 }
 
+// MARK: - Actions
+
 typealias DefaultSharedSongAction = (SharedSong) -> Void
 typealias DefaultSharedSongListAction = ([SharedSong]) -> Void
 typealias DefaultSharedSongPreviewAction = (SharedSong, UIImage?) -> Void

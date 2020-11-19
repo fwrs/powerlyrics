@@ -15,7 +15,6 @@ import UIKit
 extension Constants {
     
     static let buttonTapDuration: TimeInterval = 0.08
-    
     static let tryAgainText = "try again"
     
 }
@@ -35,6 +34,8 @@ class NoInternetView: View {
     let disposeBag = DisposeBag()
     
     var onRefresh: DefaultAction?
+    
+    var tappedRetryButton = false
     
     // MARK: - Lifecycle
     
@@ -70,7 +71,11 @@ class NoInternetView: View {
                     subtitleLabel.attributedText = attrString
                 }
             case .ended:
+                if tappedRetryButton {
+                    return
+                }
                 onRefresh?()
+                tappedRetryButton = true
             default:
                 break
             }
@@ -85,6 +90,12 @@ class NoInternetView: View {
         } else {
             return nil
         }
+    }
+    
+    // MARK: - Helper methods
+    
+    func reset() {
+        tappedRetryButton = false
     }
 
 }

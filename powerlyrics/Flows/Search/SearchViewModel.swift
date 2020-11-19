@@ -162,8 +162,11 @@ class SearchViewModel: ViewModel {
             .start { [self] event in
                 switch event {
                 case .value(let response):
-                    if response.albums.items.count > .one {
-                        searchAlbumsResult = Array(response.albums.items.prefix(Constants.maxPlaylistPreviewCount))
+                    let deduplicated = response.albums.items.dedup {
+                        $0.name == $1.name && $0.artists == $1.artists
+                    }
+                    if deduplicated.nonEmpty {
+                        searchAlbumsResult = Array(deduplicated.prefix(Constants.maxPlaylistPreviewCount))
                     } else {
                         searchAlbumsResult = []
                     }

@@ -15,14 +15,12 @@ import RealmSwift
 fileprivate extension Constants {
     
     static let buildNumber = Bundle.main.object(forInfoDictionaryKey: "CFBundleVersion") as! String
-    
+    static let footerText = "Build \(buildNumber) — Powered by RapGenius \(year)"
+    static let userPlaceholder = "Unknown user"
+
     static let year = DateFormatter().with {
         $0.dateFormat = "yyyy"
     }.string(from: Date())
-    
-    static let footerText = "Build \(buildNumber) — Powered by RapGenius \(year)"
-    
-    static let userPlaceholder = "Unknown user"
     
 }
 

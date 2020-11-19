@@ -13,7 +13,6 @@ import Swinject
 fileprivate extension Constants {
     
     static let defaultDateFormat = "yyyy-MM-dd HH:mm:ss"
-    
     static let defaultLocale = "en_US_POSIX"
     
 }

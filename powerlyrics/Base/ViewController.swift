@@ -53,7 +53,9 @@ class ViewController: UIViewController, UITabBarControllerDelegate {
             if isNoInternetViewVisible { return }
             isNoInternetViewVisible = true
             if let view = noInternetView {
-                view.fadeShow()
+                UIView.fadeShow(view) {
+                    view.reset()
+                }
                 return
             }
             noInternetView?.layer.removeAllAnimations()
@@ -68,14 +70,15 @@ class ViewController: UIViewController, UITabBarControllerDelegate {
                 newNoInternetView.rightAnchor.constraint(equalTo: view.rightAnchor)
             ])
             noInternetView = newNoInternetView
-            newNoInternetView.fadeShow()
+            UIView.fadeShow(newNoInternetView)
         } else {
             if !isNoInternetViewVisible { return }
             isNoInternetViewVisible = false
-            noInternetView?.fadeHide { [self] in
+            guard let noInternetView = noInternetView else { return }
+            UIView.fadeHide(noInternetView) { [self] in
                 if !isNoInternetViewVisible {
-                    noInternetView?.removeFromSuperview()
-                    noInternetView = nil
+                    noInternetView.removeFromSuperview()
+                    self.noInternetView = nil
                 }
             }
         }
@@ -86,7 +89,7 @@ class ViewController: UIViewController, UITabBarControllerDelegate {
             if isEmptyViewVisible { return }
             isEmptyViewVisible = true
             if let view = emptyView {
-                view.fadeShow()
+                UIView.fadeShow(view)
                 return
             }
             let newEmptyView = EmptyView.fromNib
@@ -99,15 +102,16 @@ class ViewController: UIViewController, UITabBarControllerDelegate {
                 newEmptyView.rightAnchor.constraint(equalTo: view.rightAnchor)
             ])
             emptyView = newEmptyView
-            newEmptyView.fadeShow()
+            UIView.fadeShow(newEmptyView)
         } else {
             if !isEmptyViewVisible { return }
             isEmptyViewVisible = false
             emptyView?.alpha = 1
-            emptyView?.fadeHide { [self] in
+            guard let emptyView = emptyView else { return }
+            UIView.fadeHide(emptyView) { [self] in
                 if !isEmptyViewVisible {
-                    emptyView?.removeFromSuperview()
-                    emptyView = nil
+                    emptyView.removeFromSuperview()
+                    self.emptyView = nil
                 }
             }
         }

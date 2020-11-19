@@ -11,9 +11,7 @@
 fileprivate extension Constants {
     
     static let okRange: Range<Float> = 0.2..<0.45
-    
     static let goodRange: Range<Float> = 0.45..<0.8
-    
     static let overwhelmingRange: PartialRangeFrom<Float> = 0.8...
     
 }

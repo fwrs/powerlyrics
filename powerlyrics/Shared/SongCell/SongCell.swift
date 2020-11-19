@@ -10,14 +10,6 @@ import Haptica
 import Kingfisher
 import UIKit
 
-// MARK: - Constants
-
-fileprivate extension Constants {
-    
-}
-
-// MARK: - SongCell
-
 class SongCell: TableViewCell {
     
     // MARK: - Outlets

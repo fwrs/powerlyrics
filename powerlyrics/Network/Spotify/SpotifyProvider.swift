@@ -17,15 +17,11 @@ import UIKit
 fileprivate extension Constants {
     
     static let authorizationHeader = "Authorization"
-    
     static let authorizationBasic = "Basic"
-    
     static let authorizationBearer = "Bearer"
     
     static let code = "code"
-    
     static let scopes = "user-read-private user-read-email user-library-modify user-library-read user-read-currently-playing user-read-playback-state"
-    
     static let authorizeURL = "https://accounts.spotify.com/authorize"
     
 }

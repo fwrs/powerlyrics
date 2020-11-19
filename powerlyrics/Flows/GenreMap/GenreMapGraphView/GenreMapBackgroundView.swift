@@ -13,14 +13,11 @@ import UIKit
 fileprivate extension Constants {
     
     static let lineWidth: CGFloat = 2
-    
     static let baseInset: CGFloat = 95
-    
     static let extraInset: CGFloat = 60
     
     static let edgeColor = Asset.Colors.genreMapEdgeGrey.color.cg
-    
-    static let guidingLineColor = Asset.Colors.genreMapEdgeGrey.color.cg
+    static let guidingLineColor = Asset.Colors.genreMapGuidingLineGrey.color.cg
     
 }
 

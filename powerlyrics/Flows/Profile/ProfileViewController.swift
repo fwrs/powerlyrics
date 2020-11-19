@@ -16,26 +16,21 @@ import UIKit
 fileprivate extension Constants {
     
     static let registerDateFormat = "d MMM yyyy"
-
     static let unknownRegisterDateText = "Unknown register date"
-    
     static let registeredText = "Registered"
-    
     static let confirmLogOutActionTitle = "Reset and sign out"
-    
-    static let cancelLogOutAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil )
-    
-    static let logOutAlert = UIAlertController(
-        title: "Are you sure you want to sign out?",
-        message: "This will delete all local data, including liked songs, but not Spotify data. There’s no undoing this.",
-        preferredStyle: .alert
-    )
-    
     static let githubURL = URL(string: "https://www.github.com/fwrs/powerlyrics")!
-    
     static let tinyDelay: TimeInterval = 0.01
-    
     static let defaultTopPadding: CGFloat = 250
+    static let cancelLogOutAction = UIAlertAction(title: Constants.cancel, style: .cancel, handler: nil )
+
+    static var logOutAlert: UIAlertController {
+        UIAlertController(
+            title: "Are you sure you want to sign out?",
+            message: "This will delete all local data, including liked songs, but not Spotify data. There’s no undoing this.",
+            preferredStyle: .alert
+        )
+    }
     
     static let topPaddingFunction = { (contentOffset: CGFloat, safeAreaInsets: UIEdgeInsets) -> CGFloat in
         min(
@@ -52,13 +47,15 @@ fileprivate extension Constants {
         }
     }
     
-    static let translationYAvatarFunction = { (progress: CGFloat) -> CGFloat in ((-312.831 * pow(progress, 4) + 840.079 * pow(progress, 3) - 793.935 * pow(progress, 2) + 287.687 * progress) * (UIDevice.current.hasNotch ? 1 : 0.55)) + (UIDevice.current.hasNotch ? 0 : (7 * progress - 7)) }
-    
-    static let translationYUserInfoFunction = { (progress: CGFloat) -> CGFloat in (215.556 * progress - 155.556 * pow(progress, 2)) - (UIDevice.current.hasNotch ? 0 : 9) }
-    
-    static let avatarHeightFunction = { (progress: CGFloat) -> CGFloat in (105 - 61 * progress) * (UIDevice.current.hasNotch ? 1 : 0.9) }
-    
-    static let avatarScaleFunction = { (progress: CGFloat) -> CGFloat in min(1 - progress + (UIDevice.current.hasNotch ? 0.8 : 0.77), 1) }
+    static let translationYAvatarFunction = { (progress: CGFloat) -> CGFloat in
+        ((-312.831 * pow(progress, 4) + 840.079 * pow(progress, 3) - 793.935 * pow(progress, 2) + 287.687 * progress) *
+            (UIDevice.current.hasNotch ? 1 : 0.55)) + (UIDevice.current.hasNotch ? 0 : (7 * progress - 7)) }
+    static let translationYUserInfoFunction = { (progress: CGFloat) -> CGFloat in
+        (215.556 * progress - 155.556 * pow(progress, 2)) - (UIDevice.current.hasNotch ? 0 : 9) }
+    static let avatarHeightFunction = { (progress: CGFloat) -> CGFloat in
+        (105 - 61 * progress) * (UIDevice.current.hasNotch ? 1 : 0.9) }
+    static let avatarScaleFunction = { (progress: CGFloat) -> CGFloat in
+        min(1 - progress + (UIDevice.current.hasNotch ? 0.8 : 0.77), 1) }
     
 }
 

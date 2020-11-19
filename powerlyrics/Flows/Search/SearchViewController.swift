@@ -16,7 +16,6 @@ import UIKit
 fileprivate extension Constants {
     
     static let nothingWasFoundText = "Nothing was found\nfor your query"
-    
     static let startTypingText = "Start typing to\nreceive suggestions"
     
 }
@@ -78,6 +77,24 @@ class SearchViewController: ViewController, SearchScene {
             searchController.dismiss(animated: true)
         }
     }
+    
+    override func keyboardWillShow(frame: CGRect) {
+        super.keyboardWillShow(frame: frame)
+        
+        UIView.animate { [self] in
+            tableView.contentInset.bottom = frame.height - (tabBarController?.tabBar.frame.height).safe
+            tableView.verticalScrollIndicatorInsets.bottom = frame.height - (tabBarController?.tabBar.frame.height).safe
+        }
+    }
+    
+    override func keyboardWillHide(frame: CGRect) {
+        super.keyboardWillHide(frame: frame)
+        
+        UIView.animate { [self] in
+            tableView.contentInset.bottom = .zero
+            tableView.verticalScrollIndicatorInsets.bottom = .zero
+        }
+    }
         
 }
 
@@ -96,12 +113,14 @@ extension SearchViewController {
         navigationItem.scrollEdgeAppearance = appearance
         
         searchController.searchBar.searchTextField.leftView?.tintColor = .secondaryLabel
+        searchController.searchBar.autocorrectionType = .yes
         searchController.hidesNavigationBarDuringPresentation = false
         searchController.obscuresBackgroundDuringPresentation = false
         searchController.searchBar.delegate = self
         
         navigationItem.searchController = searchController
 
+        addKeyboardWillShowNotification()
         addKeyboardWillHideNotification()
 
         searchIconImageView.image = searchIconImageView.image?.withTintColor(.label, renderingMode: .alwaysOriginal)
@@ -117,7 +136,7 @@ extension SearchViewController {
         
         searchController.searchBar.reactive.text.compactMap { $0 }.dropFirst(.one).debounce(for: Constants.buttonThrottleTime, queue: .main).observeNext { [self] query in
             viewModel.search(for: query)
-            noResultsView.fadeDisplay(visible: query.isEmpty)
+            UIView.fadeDisplay(noResultsView, visible: query.isEmpty)
         }.dispose(in: disposeBag)
         
         tableView.reactive.selectedRowIndexPath.observeNext { [self] indexPath in
@@ -141,7 +160,7 @@ extension SearchViewController {
     func setupOutput() {
         
         viewModel.trendsFailed.observeNext { [self] failed in
-            trendsFailStackView.fadeDisplay(visible: failed)
+            UIView.fadeDisplay(trendsFailStackView, visible: failed)
         }.dispose(in: disposeBag)
         
         viewModel.isFailed.observeNext { [self] isFailed in
@@ -149,17 +168,19 @@ extension SearchViewController {
                 let text = searchController.searchBar.text.safe
                 viewModel.search(for: text)
             }
-            noResultsView.fadeDisplay(visible: !isFailed && searchController.searchBar.text.safe.isEmpty)
+            UIView.fadeDisplay(noResultsView, visible: !isFailed && searchController.searchBar.text.safe.isEmpty)
         }.dispose(in: disposeBag)
         
         combineLatest(viewModel.items, viewModel.isLoading, viewModel.isRefreshing, viewModel.isFailed).observeNext { [self] songs, isLoading, isRefreshing, isFailed in
             if isFailed { return }
-            noResultsView.fadeDisplay(visible: !isLoading && !isRefreshing &&
+            UIView.fadeDisplay(noResultsView, visible: !isLoading && !isRefreshing &&
                 (songs.collection.numberOfSections == .zero ||
                     songs.collection.numberOfItems(inSection: .zero) == .zero))
         }.dispose(in: disposeBag)
         
-        viewModel.trendsLoading.map(\.negated).bind(to: trendsActivityIndicator.reactive.isHidden).dispose(in: disposeBag)
+        viewModel.trendsLoading.observeNext(with: { [self] isLoading in
+            UIView.fadeDisplay(trendsActivityIndicator, visible: isLoading)
+        }).dispose(in: disposeBag)
         
         viewModel.isRefreshing.observeNext { [self] isRefreshing in
             tableView.isRefreshing = isRefreshing
@@ -170,7 +191,7 @@ extension SearchViewController {
                 tableView.isUserInteractionEnabled = false
                 tableView.isScrollEnabled = false
             }
-            activityIndicator.fadeDisplay(visible: loading, duration: .pointOne)
+            UIView.fadeDisplay(activityIndicator, visible: loading, duration: .pointOne)
             UIView.animate(withDuration: .pointOne, delay: .zero, options: .curveEaseOut) {
                 tableView.alpha = loading ? .pointThree : .one
             } completion: { _ in
@@ -197,7 +218,7 @@ extension SearchViewController {
             cell.configure(with: cellViewModel)
             cell.didTap = { [self] in
                 Haptic.play(Constants.tinyTap)
-                noResultsView.fadeHide()
+                UIView.fadeHide(noResultsView)
                 let query = "\(cellViewModel.song.name) \(Constants.dash) \(cellViewModel.song.artists.first.safe)"
                 searchController.searchBar.text = query
                 searchController.isActive = true
@@ -223,7 +244,7 @@ extension SearchViewController: UISearchBarDelegate {
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         guard !viewModel.isLoading.value && !viewModel.isRefreshing.value else { return }
         viewModel.reset()
-        noResultsView.fadeShow()
+        UIView.fadeShow(noResultsView)
         searchBar.setShowsCancelButton(false, animated: true)
     }
     

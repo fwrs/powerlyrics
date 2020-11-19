@@ -14,7 +14,6 @@ import UIKit
 fileprivate extension Constants {
     
     static let twoAlbumsStackViewSpacing: CGFloat = 50
-    
     static let threeAlbumsStackViewSpacing: CGFloat = 15
     
 }
@@ -80,8 +79,10 @@ class AlbumsCell: TableViewCell {
                 albumArrangedSubviews[safe: index]?.reactive.tapGesture().observeNext { [self] _ in
                     didTapAlbum?(album)
                 }.dispose(in: disposeBag)
+                albumArrangedSubviews[safe: index]?.isHidden = false
             } else {
                 albumArrangedSubviews[safe: index]?.isHidden = true
+                albumNameLabels[safe: index]?.text = .init()
             }
             stackView.spacing = index == .two && album == nil ?
                 Constants.twoAlbumsStackViewSpacing :

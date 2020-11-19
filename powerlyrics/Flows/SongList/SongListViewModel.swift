@@ -15,9 +15,7 @@ import RealmSwift
 fileprivate extension Constants {
     
     static let trendingTitle = "trending"
-    
     static let viralTitle = "viral"
-    
     static let likedSongsTitle = "liked songs"
     
 }

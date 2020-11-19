@@ -13,11 +13,8 @@ import UIKit
 fileprivate extension Constants {
     
     static let likedSongsText = (singular: "liked song", plural: "liked songs")
-    
     static let searchesText = (singular: "search", plural: "searches")
-    
     static let discoveriesText = (singular: "new discovery", plural: "new discoveries")
-    
     static let viewedArtistsText = (singular: "viewed artist", plural: "viewed artists")
     
 }

@@ -13,10 +13,7 @@ import UIKit
 extension Constants {
     
     static let contextMenuFadeOutDelay: TimeInterval = 0.8
-    
-    static let paragraphStyle = NSMutableParagraphStyle().with {
-        $0.lineSpacing = 4
-    }
+    static let paragraphStyle = NSMutableParagraphStyle().with { $0.lineSpacing = 4 }
     
 }
 

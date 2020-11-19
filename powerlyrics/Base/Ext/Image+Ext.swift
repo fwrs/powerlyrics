@@ -8,21 +8,20 @@
 
 import UIKit
 
+// MARK: - Constants
+
 fileprivate extension Constants {
     
     static let colorComponentsCount = 4
-    
     static let maxColorValue: CGFloat = 255
-    
     static let red = 0
-    
     static let green = 1
-    
     static let blue = 2
-    
     static let alpha = 3
     
 }
+
+// MARK: - UIImage
 
 extension UIImage {
     

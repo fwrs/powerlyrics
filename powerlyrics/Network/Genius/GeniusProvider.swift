@@ -16,27 +16,20 @@ import Swinject
 extension Constants {
     
     static let sectionBegin: Character = "["
-    
     static let sectionEnd: Character = "]"
     
 }
 
 fileprivate extension Constants {
     
-    static let bearerToken = "Bearer"
-    
-    static let authorizationHeader = "Authorization"
-    
-    static let lyricsWrapperSelector = "div[class^='lyrics']"
-    
-    static let brSelector = "br"
-    
-    static let tagTypeSeparator = "\\\"songRelationships\\\""
-    
     static let genreRegEx = try! NSRegularExpression(pattern: "genius\\.com\\/tags\\/(.*?)(&quot;|\\\")")
     
+    static let bearerToken = "Bearer"
+    static let authorizationHeader = "Authorization"
+    static let lyricsWrapperSelector = "div[class^='lyrics']"
+    static let brSelector = "br"
+    static let tagTypeSeparator = "\\\"songRelationships\\\""
     static let htmlEscapedQuoteMark = "&quot;"
-    
     static let urlSeparator = "/"
     
 }

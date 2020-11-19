@@ -19,7 +19,7 @@ class ViewModel {
     
     let isEmpty = Observable(false)
     
-    func startLoading(_ refresh: Bool) {
+    func startLoading(_ refresh: Bool = false) {
         if refresh {
             isRefreshing.value = true
         } else {
@@ -29,7 +29,7 @@ class ViewModel {
     
     func onLoadingEnd() {}
     
-    func endLoading(_ refresh: Bool) {
+    func endLoading(_ refresh: Bool = false) {
         if refresh {
             isRefreshing.value = false
         } else {

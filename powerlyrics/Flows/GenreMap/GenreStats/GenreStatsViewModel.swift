@@ -14,7 +14,7 @@ import RealmSwift
 
 enum GenreStatsCell: Equatable {
     
-    case song(SongCellViewModel)
+    case song(SongCellViewModel, last: Bool = false)
     case genreInfo(GenreInfoCellViewModel)
     case empty
     
@@ -50,8 +50,15 @@ class GenreStatsViewModel: ViewModel {
     // MARK: - Load data
     
     func loadData() {
-        let songs = realmService.likedSongs(with: genre)
-            .map { GenreStatsCell.song(SongCellViewModel(song: $0.asSharedSong)) }
+        let likedSongs = realmService.likedSongs(with: genre)
+        let songs = likedSongs
+            .enumerated()
+            .map { index, item in
+                GenreStatsCell.song(
+                    SongCellViewModel(song: item.asSharedSong),
+                    last: likedSongs.count - .one == index
+                )
+            }
         
         let counts = RealmLikedSongGenre.all.map { Float(realmService.likedSongs(with: $0).count) }
         let average = counts.reduce(.zero, +) / Float(counts.filter { $0 != .zero }.count)

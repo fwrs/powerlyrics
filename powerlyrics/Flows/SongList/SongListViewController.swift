@@ -113,7 +113,7 @@ extension SongListViewController {
         }.dispose(in: disposeBag)
         
         viewModel.isLoading.observeNext { [self] loading in
-            activityIndicator.fadeDisplay(visible: loading)
+            UIView.fadeDisplay(activityIndicator, visible: loading)
             if loading {
                 tableView.unsetRefreshControl()
             } else {

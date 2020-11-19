@@ -20,23 +20,26 @@ extension Constants {
 fileprivate extension Constants {
     
     static let download = (title: "Download", icon: UIImage(systemName: "square.and.arrow.down"))
-    
     static let share = (title: "Share", icon: UIImage(systemName: "square.and.arrow.up"))
     
-    static let failedToShareAlert = UIAlertController(
-        title: "Failed to save image",
-        message: "Please check application permissions and try again.",
-        preferredStyle: .alert
-    ).with {
-        $0.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+    static var failedToShareAlert: UIAlertController {
+        UIAlertController(
+            title: "Failed to save image",
+            message: "Please check application permissions and try again.",
+            preferredStyle: .alert
+        ).with {
+            $0.addAction(UIAlertAction(title: Constants.ok, style: .default, handler: nil))
+        }
     }
     
-    static let shareSucceededAlert = UIAlertController(
-        title: "Image saved successfuly",
-        message: "Check your gallery to find it.",
-        preferredStyle: .alert
-    ).with {
-        $0.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+    static var shareSucceededAlert: UIAlertController {
+        UIAlertController(
+            title: "Image saved successfuly",
+            message: "Check your gallery to find it.",
+            preferredStyle: .alert
+        ).with {
+            $0.addAction(UIAlertAction(title: Constants.ok, style: .default, handler: nil))
+        }
     }
     
 }
@@ -106,7 +109,10 @@ class ImageContextMenuInteractionHandler: NSObject, UIContextMenuInteractionDele
                     identifier: nil,
                     attributes: []) { [self] _ in
                     if let image = controller?.imageView.image {
-                        window.topViewController?.present(UIActivityViewController(activityItems: [image], applicationActivities: nil), animated: true, completion: nil)
+                        window.topViewController?.present(UIActivityViewController(
+                            activityItems: [image],
+                            applicationActivities: nil
+                        ), animated: true, completion: nil)
                     }
                 }])
             }

@@ -16,7 +16,6 @@ import UIKit
 extension Constants {
     
     static let accountManagementURL = URL(string: "https://www.spotify.com/account/overview/")!
-    
     static let maxPlaylistPreviewCount = 3
     
 }
@@ -24,7 +23,6 @@ extension Constants {
 fileprivate extension Constants {
     
     static let personCheckIcon = UIImage(systemName: "person.crop.circle.badge.checkmark")
-    
     static let personPlusIcon = UIImage(systemName: "person.crop.circle.badge.plus")
     
 }
@@ -163,7 +161,7 @@ extension HomeViewController {
         }.dispose(in: disposeBag)
         
         viewModel.isLoading.observeNext { [self] loading in
-            activityIndicator.fadeDisplay(visible: loading)
+            UIView.fadeDisplay(activityIndicator, visible: loading)
             
             if loading {
                 tableView.unsetRefreshControl()

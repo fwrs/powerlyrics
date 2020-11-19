@@ -12,17 +12,21 @@ import UIKit
 
 extension Constants {
     
-    static let unsuitableForMinorsAlert = UIAlertController(
-        title: "Unsuitable for minors",
-        message: "You have to be over 18 years old in order to use this app.",
-        preferredStyle: .alert
-    )
+    static var unsuitableForMinorsAlert: UIAlertController {
+        UIAlertController(
+            title: "Unsuitable for minors",
+            message: "You have to be over 18 years old in order to use this app.",
+            preferredStyle: .alert
+        )
+    }
     
-    static let failedToSignInAlert = UIAlertController(
-        title: "Failed to sign in",
-        message: "Please try again.",
-        preferredStyle: .alert
-    )
+    static var failedToSignInAlert: UIAlertController {
+        UIAlertController(
+            title: "Failed to sign in",
+            message: "Please try again.",
+            preferredStyle: .alert
+        )
+    }
     
 }
 
@@ -30,11 +34,13 @@ fileprivate extension Constants {
     
     static let keyboardOffsets: (CGFloat, CGFloat, CGFloat) = (2, 17, 30)
     
-    static let enterNameAlert = UIAlertController(
-        title: "Please enter your name",
-        message: "In order to register we need to know your name and whether you’re older than 18 years old.",
-        preferredStyle: .alert
-    )
+    static var enterNameAlert: UIAlertController {
+        UIAlertController(
+            title: "Please enter your name",
+            message: "In order to register we need to know your name and whether you’re older than 18 years old.",
+            preferredStyle: .alert
+        )
+    }
     
 }
 

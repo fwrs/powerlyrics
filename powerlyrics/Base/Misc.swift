@@ -188,6 +188,25 @@ extension Array where Element: Equatable {
     
 }
 
+extension Array {
+    
+    func dedup(where predicate: @escaping (Element, Element) throws -> Bool) rethrows -> [Element] {
+        var buffer: [Element] = []
+
+        for element in self {
+            
+            if try buffer.contains(where: { try predicate(element, $0) }) {
+                continue
+            }
+
+            buffer.append(element)
+        }
+
+        return buffer
+    }
+    
+}
+
 extension CGRect {
     
     var randomPointInRect: CGPoint {
@@ -354,32 +373,29 @@ extension UIAlertController {
 
 extension UIView {
     
-    func fadeShow(duration: TimeInterval = Constants.defaultAnimationDuration, completion: DefaultAction? = nil) {
-        UIView.transition(with: self, duration: duration, options: .transitionCrossDissolve) { [self] in
-            isHidden = false
+    class func fadeShow(_ view: UIView, duration: TimeInterval = Constants.defaultAnimationDuration, completion: DefaultAction? = nil) {
+        fadeDisplay(view, visible: true, duration: duration, completion: completion)
+    }
+    
+    class func fadeHide(_ view: UIView, duration: TimeInterval = Constants.defaultAnimationDuration, completion: DefaultAction? = nil) {
+        fadeDisplay(view, visible: false, duration: duration, completion: completion)
+    }
+    
+    class func fadeDisplay(_ view: UIView, visible: Bool, duration: TimeInterval = Constants.defaultAnimationDuration, completion: DefaultAction? = nil) {
+        if view.isHidden && visible {
+            view.isHidden = false
+        }
+        view.alpha = (visible && view.isHidden) ? 0 : 1
+        UIView.animate(withDuration: duration) {
+            view.alpha = visible ? 1 : 0
         } completion: { _ in
+            view.isHidden = view.alpha == 0
             completion?()
         }
     }
     
-    func fadeHide(duration: TimeInterval = Constants.defaultAnimationDuration, completion: DefaultAction? = nil) {
-        UIView.transition(with: self, duration: duration, options: .transitionCrossDissolve) { [self] in
-            isHidden = true
-        } completion: { _ in
-            completion?()
-        }
-    }
-    
-    func fadeDisplay(visible: Bool, duration: TimeInterval = Constants.defaultAnimationDuration, completion: DefaultAction? = nil) {
-        UIView.transition(with: self, duration: duration, options: .transitionCrossDissolve) { [self] in
-            isHidden = !visible
-        } completion: { _ in
-            completion?()
-        }
-    }
-    
-    func fadeUpdate(duration: TimeInterval = Constants.defaultAnimationDelay, changes: DefaultAction?, completion: DefaultAction? = nil) {
-        UIView.transition(with: self, duration: duration, options: .transitionCrossDissolve) {
+    class func fadeUpdate(_ view: UIView, duration: TimeInterval = Constants.defaultAnimationDelay, changes: DefaultAction?, completion: DefaultAction? = nil) {
+        transition(with: view, duration: duration, options: .transitionCrossDissolve) {
             changes?()
         } completion: { _ in
             completion?()
@@ -387,11 +403,11 @@ extension UIView {
     }
     
     class func animate(withDuration duration: TimeInterval, options: UIView.AnimationOptions = [], animations: @escaping () -> Void, completion: ((Bool) -> Void)? = nil) {
-        UIView.animate(withDuration: duration, delay: .zero, options: options, animations: animations, completion: completion)
+        animate(withDuration: duration, delay: .zero, options: options, animations: animations, completion: completion)
     }
     
     class func animate(options: UIView.AnimationOptions = [], animations: @escaping () -> Void, completion: ((Bool) -> Void)? = nil) {
-        UIView.animate(withDuration: Constants.defaultAnimationDuration, delay: .zero, options: options, animations: animations, completion: completion)
+        animate(withDuration: Constants.defaultAnimationDuration, delay: .zero, options: options, animations: animations, completion: completion)
     }
     
 }

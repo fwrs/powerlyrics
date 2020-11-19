@@ -23,7 +23,6 @@ extension Constants {
 fileprivate extension Constants {
     
     static let tinyDelay = 0.01
-    
     static let navigationBarBlurThreshold: CGFloat = 10
     
 }
@@ -93,8 +92,8 @@ class GenreStatsViewController: ViewController, GenreStatsScene {
             return
         }
         navigationBarBackgroundHidden = tableView.contentOffset.y < Constants.navigationBarBlurThreshold
-        titleBackgroundView.fadeDisplay(visible: tableView.contentOffset.y > Constants.navigationBarBlurThreshold)
-        titleShadowView.fadeDisplay(visible: tableView.contentOffset.y > Constants.navigationBarBlurThreshold)
+        UIView.fadeDisplay(titleBackgroundView, visible: tableView.contentOffset.y > Constants.navigationBarBlurThreshold)
+        UIView.fadeDisplay(titleShadowView, visible: tableView.contentOffset.y > Constants.navigationBarBlurThreshold)
     }
     
 }
@@ -129,7 +128,7 @@ extension GenreStatsViewController {
             tableView.deselectRow(at: indexPath, animated: true)
             lastSelectedIndexPath = indexPath
             Haptic.play(Constants.tinyTap)
-            if case .song(let songCellViewModel) = viewModel.items[indexPath.row] {
+            if case .song(let songCellViewModel, _) = viewModel.items[indexPath.row] {
                 flowLyrics?(songCellViewModel.song, nil)
             }
         }.dispose(in: disposeBag)
@@ -158,10 +157,10 @@ extension GenreStatsViewController {
                 cell.selectionStyle = .none
                 cell.separatorInset = .zero
                 return cell
-            case .song(let songCellViewModel):
+            case .song(let songCellViewModel, let last):
                 let cell = tableView.dequeue(SongCell.self, indexPath: indexPath)
                 cell.configure(with: songCellViewModel)
-                if items.count - 1 == indexPath.row {
+                if last {
                     cell.separatorInset = .zero
                 } else {
                     cell.separatorInset = UIEdgeInsets().with { $0.left = Constants.space16 }

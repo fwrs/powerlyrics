@@ -16,52 +16,50 @@ fileprivate extension Constants {
     static let heartbeatTap = ".-o--.-O"
     
     static let cutoffs: (CGFloat, CGFloat, CGFloat, CGFloat) = (27, 38, 36, 40)
-    
     static let largeCutoffs: (CGFloat, CGFloat) = (100, 205)
     
     static let space7: CGFloat = 7
-    
     static let space5: CGFloat = 5
-    
     static let space12: CGFloat = 12
-    
     static let space14: CGFloat = 14
     
     static let baseContentInset: CGFloat = 200
-    
     static let baseNavigationBarHeight: CGFloat = 270
-    
     static let contentInsetNotchAdjustment: CGFloat = 30
     
-    static let songViewTransformYFunction = { (songViewAdjustment: CGFloat) -> CGFloat in
-        (-pow((1 - min((songViewAdjustment) + 0.3, 1)) * (3.68), 3) * 1.3)
+    static let lyricsTitle = "lyrics"
+    static let storyTitle = "Story"
+    static let shareText = "Just discovered this awesome song using powerlyrics app:"
+    static let producedByText = "Produced by"
+    static let likeText = "like"
+    static let likedText = "liked"
+    static let fromAlbumText = "From album"
+    static let unknownDescriptionText = "No information"
+    
+    static var notFoundSpotifyAlert: UIAlertController {
+        UIAlertController(
+            title: "Not found",
+            message: "We couldn’t find this item on Spotify.",
+            preferredStyle: .alert
+        )
     }
     
-    static let lyricsTitle = "lyrics"
-    
-    static let storyTitle = "Story"
-    
-    static let shareText = "Just discovered this awesome song using powerlyrics app:"
-    
-    static let producedByText = "Produced by"
-    
-    static let likeText = "like"
-    
-    static let likedText = "liked"
-    
-    static let fromAlbumText = "From album"
-    
-    static let notFoundSpotifyAlert = UIAlertController(title: "Not found", message: "We couldn’t find this item on Spotify.", preferredStyle: .alert)
-    
-    static let notAvailableAlert = UIAlertController(title: "Lyrics not available", message: "This song isn’t stored in the Genius database.", preferredStyle: .alert)
+    static var notAvailableAlert: UIAlertController {
+        UIAlertController(
+            title: "Lyrics not available",
+            message: "This song isn’t stored in the Genius database.",
+            preferredStyle: .alert
+        )
+    }
     
     static let filledHeartImage = UIImage(systemName: "heart.fill")!
-    
     static let heartImage = UIImage(systemName: "heart")!
     
     static let storyTitleFont = UIFont.systemFont(ofSize: 16.0, weight: .medium)
-    
     static let storyContentFont = UIFont.systemFont(ofSize: 14.0)
+    
+    static let songViewTransformYFunction = { (songViewAdjustment: CGFloat) -> CGFloat in
+        (-pow((1 - min((songViewAdjustment) + 0.3, 1)) * (3.68), 3) * 1.3) }
     
 }
 
@@ -255,7 +253,10 @@ extension LyricsViewController {
             guard let url = viewModel.geniusURL else { return }
             Haptic.play(Constants.tinyTap)
             let items = ["\(Constants.shareText) \(url.absoluteURL)"]
-            let activityViewController = UIActivityViewController(activityItems: items, applicationActivities: nil)
+            let activityViewController = UIActivityViewController(
+                activityItems: items,
+                applicationActivities: nil
+            )
             present(activityViewController, animated: true)
         }.dispose(in: disposeBag)
         
@@ -266,7 +267,11 @@ extension LyricsViewController {
         }.dispose(in: disposeBag)
         
         notesButton.reactive.tap.throttle(for: Constants.buttonThrottleTime).observeNext { [self] _ in
-            guard let description = viewModel.description.value?.typographized else { return }
+            guard var description = viewModel.description.value?.clean.typographized else { return }
+            if description == Constants.question {
+                description = Constants.unknownDescriptionText
+            }
+            
             Haptic.play(Constants.tinyTap)
             let paragraphStyle = NSMutableParagraphStyle()
             paragraphStyle.alignment = NSTextAlignment.left
@@ -320,7 +325,7 @@ extension LyricsViewController {
             attrString.addAttribute(.foregroundColor, value: UIColor.secondaryLabel, range: NSRange(location: .zero, length: "\(Constants.fromAlbumText) “".count))
             attrString.addAttribute(.foregroundColor, value: UIColor.secondaryLabel, range: NSRange(location: text.count - .one, length: .one))
             
-            firstInfoLabel.fadeUpdate {
+            UIView.fadeUpdate(firstInfoLabel) {
                 firstInfoLabel.attributedText = attrString
             }
         }.dispose(in: disposeBag)
@@ -335,7 +340,7 @@ extension LyricsViewController {
                 attrString.addAttribute(.foregroundColor, value: UIColor.secondaryLabel, range: NSRange(location: "\(Constants.producedByText) ".count + producers.first.safe.count, length: .three))
             }
             
-            secondInfoLabel.fadeUpdate {
+            UIView.fadeUpdate(secondInfoLabel) {
                 secondInfoLabel.attributedText = attrString
             }
         }.dispose(in: disposeBag)
@@ -345,7 +350,7 @@ extension LyricsViewController {
         }.dispose(in: disposeBag)
         
         viewModel.isLoading.observeNext { [self] loading in
-            activityIndicator.fadeDisplay(visible: loading)
+            UIView.fadeDisplay(activityIndicator, visible: loading)
         }.dispose(in: disposeBag)
         
         viewModel.isFailed.observeNext { [self] failed in
@@ -359,7 +364,7 @@ extension LyricsViewController {
         }.dispose(in: disposeBag)
         
         viewModel.isLiked.observeNext { [self] isLiked in
-            buttonsStackView.fadeUpdate {
+            UIView.fadeUpdate(buttonsStackView) {
                 likeButton.setImage(
                     isLiked ?
                         Constants.filledHeartImage.withTintColor(.label, renderingMode: .alwaysOriginal) :

@@ -13,18 +13,14 @@ import Moya
 fileprivate extension Constants {
     
     static let trendingSongsPlaylistID = "37i9dQZEVXbMDoHDwVN2tF"
-    
     static let viralSongsPlaylistID = "37i9dQZEVXbLiRSasKsNU9"
     
     static let refreshTokenCode = "refresh_token"
-    
     static let authorizationCode = "authorization_code"
-    
     static let clientCredentialsCode = "client_credentials"
-    
     static let albumSearchType = "album"
     
-    static let defaultAlbumSearchLimit = 3
+    static let defaultAlbumSearchLimit = 10
     
 }
 

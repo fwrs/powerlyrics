@@ -17,7 +17,6 @@ import UIKit
 fileprivate extension Constants {
     
     static let pleaseWaitText = "Please wait"
-    
     static let googleServicePlist = Bundle.main.path(forResource: "GoogleService-Info", ofType: "plist")
     
 }

@@ -13,11 +13,8 @@ import UIKit
 fileprivate extension Constants {
     
     static let lineSpacing: CGFloat = 2
-    
     static let boldFont = UIFont.systemFont(ofSize: 18, weight: .bold)
-    
     static let hereSongTextPlural = "Here’s the songs:"
-    
     static let hereSongTextSingular = "Here’s the song:"
     
 }
