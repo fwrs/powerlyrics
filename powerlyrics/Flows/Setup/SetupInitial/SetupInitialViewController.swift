@@ -1,5 +1,5 @@
 //
-//  SetupInitViewController.swift
+//  SetupInitialViewController.swift
 //  powerlyrics
 //
 //  Created by Ilya Kulinkovich on 10/4/20.
@@ -12,13 +12,13 @@ import UIKit
 
 extension Constants {
     
-    static let pleaseWaitText = "Please wait"
+    static let pleaseWaitText = "Please wait…"
     
 }
 
-// MARK: - SetupInitViewController
+// MARK: - SetupInitialViewController
 
-class SetupInitViewController: ViewController, SetupInitScene {
+class SetupInitialViewController: ViewController, SetupInitialScene {
     
     // MARK: - Outlets
     
@@ -106,7 +106,7 @@ class SetupInitViewController: ViewController, SetupInitScene {
 
 // MARK: - Setup
 
-extension SetupInitViewController {
+extension SetupInitialViewController {
     
     // MARK: - View
 
@@ -135,19 +135,17 @@ extension SetupInitViewController {
     
     func setupOutput() {
         
-        viewModel.loginState.observe { [weak self] event in
-            switch event {
-            case .next(let isLoading):
+        viewModel.loginState.observeNext { [weak self] result in
+            switch result {
+            case .ok(let isLoading):
                 self?.setLoading(visible: isLoading)
                 if !isLoading {
                     self?.flowDismiss?()
                 }
-            case .failed(let error):
+            case .fail(let error):
                 self?.setLoading(visible: false) {
                     self?.show(error: error)
                 }
-            default:
-                break
             }
         }.dispose(in: disposeBag)
         
@@ -157,7 +155,7 @@ extension SetupInitViewController {
 
 // MARK: - TranslationAnimationView
 
-extension SetupInitViewController: TranslationAnimationView {
+extension SetupInitialViewController: TranslationAnimationView {
     
     var translationViews: [UIView] {
         [brandingStackView]

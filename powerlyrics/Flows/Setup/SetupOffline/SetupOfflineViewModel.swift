@@ -47,7 +47,7 @@ class SetupOfflineViewModel: ViewModel {
     
     // MARK: - Observables
     
-    let loginState = PassthroughSubject<Bool, SetupOfflineError>()
+    let loginState = PassthroughSubject<LoginResult<SetupOfflineError>, Never>()
     
     // MARK: - Init
     
@@ -72,21 +72,21 @@ class SetupOfflineViewModel: ViewModel {
     
     func login(name: String, over18: Bool) {
         if let error = validate(name: name, over18: over18) {
-            loginState.on(.failed(.validation(error)))
+            loginState.on(.next(.fail(.validation(error))))
             return
         }
         
         realmService.saveUserData(name: name, over18: over18)
         
-        loginState.on(.next(true))
+        loginState.on(.next(.ok(isLoading: true)))
         
         spotifyProvider.loginWithoutUser { [weak self] success in
             guard let self = self else { return }
             if success {
-                self.loginState.on(.next(false))
+                self.loginState.on(.next(.ok(isLoading: false)))
                 NotificationCenter.default.post(name: .appDidLogin, object: nil, userInfo: nil)
             } else {
-                self.loginState.on(.failed(.network(.networkFailed)))
+                self.loginState.on(.next(.fail(.network(.networkFailed))))
                 self.realmService.unsetUserData()
             }
         }

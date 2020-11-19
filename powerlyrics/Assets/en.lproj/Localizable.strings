@@ -8,29 +8,67 @@
 
 "appName" = "powerlyrics";
 
-/* tab bar */
+/* MARK: - Tab bar */
 
 "tabBar.home" = "Home";
 "tabBar.search" = "Search";
 "tabBar.genremap" = "GenreMap";
 "tabBar.profile" = "Profile";
 
-/* home */
+/* MARK: - Shared */
+
+"shared.ok" = "OK";
+"shared.cancel" = "Cancel";
+
+/* MARK: - Setup */
+
+"setup.welcomeTo" = "Welcome to";
+"setup.signInAndConnect" = "Sign in and connect to Spotify";
+"setup.signInAndConnect" = "Connect to Spotify later";
+"setup.extraDataRequired" = "Some extra data is required\nfor logging in without Spotify.";
+"setup.name" = "Name";
+"setup.over18" = "Over 18";
+"setup.finish" = "Finish setup";
+"setup.nameEmptyAlert.title" = "Please enter your name";
+"setup.nameEmptyAlert.message" = "In order to register we need to know your name and whether you’re older than 18 years old.";
+"setup.under18Alert.title" = "Unsuitable for minors";
+"setup.under18Alert.message" = "You have to be over 18 years old in order to use this app.";
+"setup.networkAlert.title" = "Failed to sign in";
+"setup.networkAlert.message" = "Please try again.";
+"setup.pleaseWait" = "Please wait…";
+
+/* MARK: - Home */
 
 "home.navBar.connectToSpotify" = "Connect to Spotify";
+"home.section.nowPlaying" = "Now playing";
+"home.section.trending" = "Trending";
+"home.section.viral" = "Viral";
+"home.section.likedToday" = "Liked today";
 
-/* search */
+/* MARK: - Search */
 
 "search.title" = "search";
 
-/* genremap */
+/* MARK: - GenreMap */
 
 "genremap.title" = "genremap";
 
-/* genremap */
+/* MARK: - Profile */
 
 "profile.title" = "profile";
 
-/* lyrics */
+/* MARK: - Lyrics */
 
 "lyrics.title" = "lyrics";
+
+/* MARK: - Song list */
+
+/* MARK: - Action cell */
+
+"actionCell.likedSongs" = "Liked songs";
+"actionCell.connectToSpotify" = "Connect to Spotify";
+"actionCell.manageAccount" = "Manage account";
+"actionCell.signOut" = "Sign out";
+"actionCell.seeTrendingSongs" = "Discover all trending songs";
+"actionCell.seeViralSongs" = "Discover all viral songs";
+"actionCell.appSourceCode" = "Source code";

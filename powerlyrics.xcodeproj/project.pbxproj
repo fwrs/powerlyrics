@@ -54,7 +54,7 @@
 		B82C7D4A2566B10C00578FA7 /* Notifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = B82C7D492566B10C00578FA7 /* Notifications.swift */; };
 		B82C7D4D2566BF3600578FA7 /* SetupSharedSpotifyViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B82C7D4C2566BF3600578FA7 /* SetupSharedSpotifyViewModel.swift */; };
 		B82C7D502566E60C00578FA7 /* PresenterCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B82C7D4F2566E60C00578FA7 /* PresenterCoordinator.swift */; };
-		B836B3EA2549963B00E703B5 /* SetupInitAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = B836B3E92549963B00E703B5 /* SetupInitAssembly.swift */; };
+		B836B3EA2549963B00E703B5 /* SetupInitialAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = B836B3E92549963B00E703B5 /* SetupInitialAssembly.swift */; };
 		B84063D42542E9B500144CE2 /* SpotifyResponses.swift in Sources */ = {isa = PBXBuildFile; fileRef = B84063D32542E9B500144CE2 /* SpotifyResponses.swift */; };
 		B84063D72542EA1B00144CE2 /* SpotifyAlbum.swift in Sources */ = {isa = PBXBuildFile; fileRef = B84063D62542EA1B00144CE2 /* SpotifyAlbum.swift */; };
 		B84063DC2542EA3C00144CE2 /* SpotifyArtist.swift in Sources */ = {isa = PBXBuildFile; fileRef = B84063DB2542EA3C00144CE2 /* SpotifyArtist.swift */; };
@@ -84,8 +84,8 @@
 		B8624FC4252627330096EEF3 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = B8624FC6252627330096EEF3 /* Localizable.strings */; };
 		B86674392567095F0049A145 /* SetupAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = B86674382567095F0049A145 /* SetupAssembly.swift */; };
 		B8698E05252938DD0043F3AA /* TranslationAnimation.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8698E04252938DD0043F3AA /* TranslationAnimation.swift */; };
-		B86D5BFF2529F4BA0026B764 /* SetupInitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B86D5BFE2529F4BA0026B764 /* SetupInitViewController.swift */; };
-		B86D5C022529F4C90026B764 /* SetupInitViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B86D5C012529F4C90026B764 /* SetupInitViewController.storyboard */; };
+		B86D5BFF2529F4BA0026B764 /* SetupInitialViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B86D5BFE2529F4BA0026B764 /* SetupInitialViewController.swift */; };
+		B86D5C022529F4C90026B764 /* SetupInitialViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B86D5C012529F4C90026B764 /* SetupInitialViewController.storyboard */; };
 		B86D5C082529FD4F0026B764 /* SetupCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B86D5C072529FD4F0026B764 /* SetupCoordinator.swift */; };
 		B86E82A825656CAF00D5E06A /* RealmService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B86E82A725656CAF00D5E06A /* RealmService.swift */; };
 		B86F6E0825260894003296B0 /* Storyboard+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = B86F6E0725260894003296B0 /* Storyboard+Ext.swift */; };
@@ -219,7 +219,7 @@
 		B82C7D492566B10C00578FA7 /* Notifications.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Notifications.swift; sourceTree = "<group>"; };
 		B82C7D4C2566BF3600578FA7 /* SetupSharedSpotifyViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetupSharedSpotifyViewModel.swift; sourceTree = "<group>"; };
 		B82C7D4F2566E60C00578FA7 /* PresenterCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresenterCoordinator.swift; sourceTree = "<group>"; };
-		B836B3E92549963B00E703B5 /* SetupInitAssembly.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SetupInitAssembly.swift; sourceTree = "<group>"; };
+		B836B3E92549963B00E703B5 /* SetupInitialAssembly.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SetupInitialAssembly.swift; sourceTree = "<group>"; };
 		B84063D32542E9B500144CE2 /* SpotifyResponses.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpotifyResponses.swift; sourceTree = "<group>"; };
 		B84063D62542EA1B00144CE2 /* SpotifyAlbum.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpotifyAlbum.swift; sourceTree = "<group>"; };
 		B84063DB2542EA3C00144CE2 /* SpotifyArtist.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpotifyArtist.swift; sourceTree = "<group>"; };
@@ -250,8 +250,8 @@
 		B864979B25632D820098D847 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Localizable.strings; sourceTree = "<group>"; };
 		B86674382567095F0049A145 /* SetupAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetupAssembly.swift; sourceTree = "<group>"; };
 		B8698E04252938DD0043F3AA /* TranslationAnimation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TranslationAnimation.swift; sourceTree = "<group>"; };
-		B86D5BFE2529F4BA0026B764 /* SetupInitViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetupInitViewController.swift; sourceTree = "<group>"; };
-		B86D5C012529F4C90026B764 /* SetupInitViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = SetupInitViewController.storyboard; sourceTree = "<group>"; };
+		B86D5BFE2529F4BA0026B764 /* SetupInitialViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetupInitialViewController.swift; sourceTree = "<group>"; };
+		B86D5C012529F4C90026B764 /* SetupInitialViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = SetupInitialViewController.storyboard; sourceTree = "<group>"; };
 		B86D5C072529FD4F0026B764 /* SetupCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetupCoordinator.swift; sourceTree = "<group>"; };
 		B86E82A3256566BA00D5E06A /* Tokens.example.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tokens.example.swift; sourceTree = "<group>"; };
 		B86E82A725656CAF00D5E06A /* RealmService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealmService.swift; sourceTree = "<group>"; };
@@ -606,7 +606,7 @@
 				B86D5C072529FD4F0026B764 /* SetupCoordinator.swift */,
 				B86674382567095F0049A145 /* SetupAssembly.swift */,
 				B82C7D4C2566BF3600578FA7 /* SetupSharedSpotifyViewModel.swift */,
-				B8F79E64252A0C330060CB14 /* SetupInit */,
+				B8F79E64252A0C330060CB14 /* SetupInitial */,
 				B8F79E5F252A08980060CB14 /* SetupOffline */,
 				B8F79E66252A0C460060CB14 /* SetupManual */,
 			);
@@ -897,14 +897,14 @@
 			path = SetupOffline;
 			sourceTree = "<group>";
 		};
-		B8F79E64252A0C330060CB14 /* SetupInit */ = {
+		B8F79E64252A0C330060CB14 /* SetupInitial */ = {
 			isa = PBXGroup;
 			children = (
-				B836B3E92549963B00E703B5 /* SetupInitAssembly.swift */,
-				B86D5BFE2529F4BA0026B764 /* SetupInitViewController.swift */,
-				B86D5C012529F4C90026B764 /* SetupInitViewController.storyboard */,
+				B836B3E92549963B00E703B5 /* SetupInitialAssembly.swift */,
+				B86D5BFE2529F4BA0026B764 /* SetupInitialViewController.swift */,
+				B86D5C012529F4C90026B764 /* SetupInitialViewController.storyboard */,
 			);
-			path = SetupInit;
+			path = SetupInitial;
 			sourceTree = "<group>";
 		};
 		B8F79E66252A0C460060CB14 /* SetupManual */ = {
@@ -1035,7 +1035,7 @@
 				B829CC68254D622C007B3C8E /* BuildCell.xib in Resources */,
 				B82A6F2325267DA100A567B1 /* RobotoMono-BoldItalic.ttf in Resources */,
 				B86F6E0D25260A03003296B0 /* HomeViewController.storyboard in Resources */,
-				B86D5C022529F4C90026B764 /* SetupInitViewController.storyboard in Resources */,
+				B86D5C022529F4C90026B764 /* SetupInitialViewController.storyboard in Resources */,
 				B82A6F2C25267DA100A567B1 /* RobotoMono-Regular.ttf in Resources */,
 				B85272B92561A31900CC9A4B /* LoadingCell.xib in Resources */,
 				B85272C82562641F00CC9A4B /* GoogleService-Info.plist in Resources */,
@@ -1136,7 +1136,7 @@
 				B8698E05252938DD0043F3AA /* TranslationAnimation.swift in Sources */,
 				B84E96B5252E156800B35578 /* GenreMapBackgroundView.swift in Sources */,
 				B829C5EC25262BBF005E48BA /* IB+Localization.swift in Sources */,
-				B86D5BFF2529F4BA0026B764 /* SetupInitViewController.swift in Sources */,
+				B86D5BFF2529F4BA0026B764 /* SetupInitialViewController.swift in Sources */,
 				B81831B42555B41E0035F320 /* RealmLikedSong.swift in Sources */,
 				B829CC71254D6254007B3C8E /* ProfileAssembly.swift in Sources */,
 				B85116C125607AE600BA1C69 /* GenreEmptyCell.swift in Sources */,
@@ -1182,7 +1182,7 @@
 				B8C8BCEB2525EE4E00E55708 /* TabBarCoordinator.swift in Sources */,
 				B86F6E662526199D003296B0 /* BaseAssembly.swift in Sources */,
 				B8C8BCD32525ED6000E55708 /* AppDelegate.swift in Sources */,
-				B836B3EA2549963B00E703B5 /* SetupInitAssembly.swift in Sources */,
+				B836B3EA2549963B00E703B5 /* SetupInitialAssembly.swift in Sources */,
 				B86674392567095F0049A145 /* SetupAssembly.swift in Sources */,
 				B8F79E7F252A0D2C0060CB14 /* SetupOfflineViewModel.swift in Sources */,
 				B829CC86254D63C2007B3C8E /* Fonts.gen.swift in Sources */,

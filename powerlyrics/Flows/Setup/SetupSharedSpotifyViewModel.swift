@@ -9,6 +9,15 @@
 import Bond
 import ReactiveKit
 
+// MARK: - LoginResult
+
+enum LoginResult<T: Error> {
+    
+    case ok(isLoading: Bool)
+    case fail(T)
+    
+}
+
 // MARK: - LoginError
 
 enum LoginError: Error {
@@ -34,7 +43,7 @@ class SetupSharedSpotifyViewModel: ViewModel {
     
     // MARK: - Observables
     
-    let loginState = PassthroughSubject<Bool, LoginError>()
+    let loginState = PassthroughSubject<LoginResult<LoginError>, Never>()
     
     // MARK: - Init
     
@@ -55,15 +64,15 @@ class SetupSharedSpotifyViewModel: ViewModel {
         spotifyProvider.logout(reset: false)
         
         spotifyProvider.handle(url: url) { [weak self] in
-            self?.loginState.on(.next(true))
+            self?.loginState.on(.next(.ok(isLoading: true)))
             self?.loadUserData { [weak self] in
                 guard let self = self else { return }
-                self.loginState.on(.next(false))
+                self.loginState.on(.next(.ok(isLoading: false)))
                 NotificationCenter.default.post(name: .appDidLogin, object: nil, userInfo: nil)
             } failure: { [weak self] error in
                 guard let self = self else { return }
                 self.spotifyProvider.logout(reset: true)
-                self.loginState.on(.failed(error))
+                self.loginState.on(.next(.fail(error)))
             }
         }
         

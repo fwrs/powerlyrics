@@ -74,7 +74,7 @@ class SetupCoordinator: Coordinator {
     // MARK: - Scenes
     
     func showInitSetup() {
-        let scene = resolver.resolve(SetupInitScene.self)!
+        let scene = resolver.resolve(SetupInitialScene.self)!
         scene.flowDismiss = { [weak self] in
             self?.source.dismiss(animated: true, completion: {
                 self?.presenter?.clearChildren(Self.self)

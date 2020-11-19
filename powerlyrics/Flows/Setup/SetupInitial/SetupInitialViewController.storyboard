@@ -14,10 +14,10 @@
         </array>
     </customFonts>
     <scenes>
-        <!--Setup Init View Controller-->
+        <!--Setup Initial View Controller-->
         <scene sceneID="d87-TQ-MCH">
             <objects>
-                <viewController storyboardIdentifier="SetupInitViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" interfaceStyle="dark" id="mjG-hh-iaC" customClass="SetupInitViewController" customModule="powerlyrics" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="SetupInitialViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" interfaceStyle="dark" id="mjG-hh-iaC" customClass="SetupInitialViewController" customModule="powerlyrics" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="4ll-nT-gZG">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="842"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>

@@ -178,17 +178,15 @@ extension SetupOfflineViewController {
     
     func setupOutput() {
         
-        viewModel.loginState.observe { [weak self] event in
-            switch event {
-            case .next(let isLoading):
+        viewModel.loginState.observeNext { [weak self] result in
+            switch result {
+            case .ok(let isLoading):
                 self?.mainButton.isLoading = isLoading
                 if !isLoading {
                     self?.flowDismiss?()
                 }
-            case .failed(let error):
+            case .fail(let error):
                 self?.show(error: error)
-            default:
-                break
             }
         }.dispose(in: disposeBag)
         
