@@ -23,7 +23,7 @@ extension Constants {
 
 fileprivate extension Constants {
     
-    static let gearIcon = UIImage(systemName: "gear")
+    static let personCheckIcon = UIImage(systemName: "person.crop.circle.badge.checkmark")
     
     static let personPlusIcon = UIImage(systemName: "person.crop.circle.badge.plus")
     
@@ -148,7 +148,7 @@ extension HomeViewController {
         
         viewModel.isSpotifyAccount.observeNext { [self] isSpotifyAccount in
             navigationItem.rightBarButtonItem?.image = isSpotifyAccount ?
-                Constants.gearIcon :
+                Constants.personCheckIcon :
                 Constants.personPlusIcon
         }.dispose(in: disposeBag)
         
