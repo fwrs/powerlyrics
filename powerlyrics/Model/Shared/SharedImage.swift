@@ -1,5 +1,5 @@
 //
-//  Image.swift
+//  SharedImage.swift
 //  powerlyrics
 //
 //  Created by Ilya Kulinkovich on 10/23/20.
