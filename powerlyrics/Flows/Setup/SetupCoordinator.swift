@@ -6,9 +6,7 @@
 //  Copyright © 2020 Ilya Kulinkovich. All rights reserved.
 //
 
-import RealmSwift
 import Swinject
-import UIKit
 
 // MARK: - SetupMode
 
@@ -23,39 +21,41 @@ typealias DefaultSetupModeAction = (SetupMode) -> Void
 
 class SetupCoordinator: Coordinator {
     
+    // MARK: - DI
+    
+    let spotifyProvider: SpotifyProvider
+    
     // MARK: - Instance properties
     
-    let mode: SetupMode
+    let source: UIViewController
     
     let router: Router
     
-    let base: UIViewController
-    
-    let dismissCompletion: DefaultAction
+    let mode: SetupMode
     
     var interactionController: UIPercentDrivenInteractiveTransition?
     
-    let spotifyProvider: SpotifyProvider
+    weak var presenter: PresenterCoordinator?
     
     // MARK: - Init
 
     init(
-        mode: SetupMode,
-        router: Router,
+        source: UIViewController,
         resolver: Resolver,
-        base: UIViewController,
+        presenter: PresenterCoordinator,
         spotifyProvider: SpotifyProvider,
-        dismissCompletion: @escaping DefaultAction
+        mode: SetupMode
     ) {
+        self.source = source
         self.mode = mode
-        self.router = router
-        self.base = base
-        self.dismissCompletion = dismissCompletion
+        self.router = Router()
+        self.presenter = presenter
         self.spotifyProvider = spotifyProvider
+        
         super.init(resolver: resolver)
-        let appearance = UINavigationBarAppearance()
-        appearance.configureWithTransparentBackground()
+        
         router.delegate = self
+        
         if mode == .initial {
             router.isModalInPresentation = true
         }
@@ -70,54 +70,45 @@ class SetupCoordinator: Coordinator {
             showManualSetup()
         }
     }
-    
-    override var rootViewController: UIViewController {
-        router
-    }
-    
+
     // MARK: - Scenes
     
     func showInitSetup() {
         let scene = resolver.resolve(SetupInitScene.self)!
-        scene.flowDismiss = { [self] in
-            base.dismiss(animated: true, completion: {
-                dismissCompletion()
+        scene.flowDismiss = { [weak self] in
+            self?.source.dismiss(animated: true, completion: {
+                self?.presenter?.clearChildren(Self.self)
             })
         }
-        scene.flowOfflineSetup = { [self] in
-            showOfflineSetup()
+        scene.flowOfflineSetup = { [weak self] in
+            self?.showOfflineSetup()
         }
-        scene.flowSpotifyLogin = { [self] in
-            spotifyProvider.login(from: scene)
+        scene.flowSpotifyLogin = { [weak self] in
+            self?.spotifyProvider.login(from: scene)
         }
         router.push(scene, animated: false)
-        base.present(router, animated: true)
+        source.present(router, animated: true)
     }
     
     func showManualSetup() {
         let scene = resolver.resolve(SetupManualScene.self)!
-        scene.flowDismiss = { [self] in
-            base.dismiss(animated: true, completion: {
-                dismissCompletion()
+        scene.flowDismiss = { [weak self] in
+            self?.source.dismiss(animated: true, completion: {
+                self?.presenter?.clearChildren(Self.self)
             })
         }
-        scene.flowSpotifyLogin = { [self] in
-            spotifyProvider.login(from: scene)
+        scene.flowSpotifyLogin = { [weak self] in
+            self?.spotifyProvider.login(from: scene)
         }
         router.push(scene, animated: false)
-        base.present(router, animated: true)
+        source.present(router, animated: true)
     }
     
     func showOfflineSetup() {
         let scene = resolver.resolve(SetupOfflineScene.self)!
-        scene.flowDismiss = { [self] in
-            base.dismiss(animated: true, completion: {
-                dismissCompletion()
-            })
-        }
-        scene.flowSpotifyLoginOffline = { [self] in
-            base.dismiss(animated: true, completion: {
-                dismissCompletion()
+        scene.flowDismiss = { [weak self] in
+            self?.source.dismiss(animated: true, completion: {
+                self?.presenter?.clearChildren(Self.self)
             })
         }
         router.push(scene)

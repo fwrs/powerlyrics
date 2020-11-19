@@ -98,8 +98,8 @@ final class KeychainService: KeychainServiceProtocol {
     }
     
     func reset() {
-        Key.all.forEach { [self] key in
-            delete(for: key)
+        Key.all.forEach { [weak self] key in
+            self?.delete(for: key)
         }
     }
     

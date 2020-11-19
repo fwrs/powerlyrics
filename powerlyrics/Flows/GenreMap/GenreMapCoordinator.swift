@@ -8,7 +8,6 @@
 
 import PanModal
 import Swinject
-import UIKit
 
 fileprivate extension Constants {
     
@@ -46,10 +45,6 @@ class GenreMapCoordinator: Coordinator {
         router.push(scene, animated: false)
     }
     
-    override var rootViewController: UIViewController {
-        router
-    }
-    
     // MARK: - Scenes
     
     func showGenre(_ genre: RealmLikedSongGenre) {
@@ -82,15 +77,10 @@ class GenreMapCoordinator: Coordinator {
         router.presentPanModal(scene)
     }
     
-    func showLyrics(for song: SharedSong, placeholder: UIImage?, from sourceViewController: UIViewController) {
+    func showLyrics(for song: SharedSong, placeholder: UIImage?, from viewController: UIViewController) {
         let lyricsCoordinator = resolver.resolve(
             LyricsCoordinator.self,
-            arguments:
-                Router(),
-                sourceViewController,
-            { [self] in childCoordinators.removeAll { $0.isKind(of: LyricsCoordinator.self) } },
-            song,
-            placeholder
+            arguments: viewController, self as PresenterCoordinator, song, placeholder
         )!
         childCoordinators.append(lyricsCoordinator)
         lyricsCoordinator.start()
@@ -102,7 +92,7 @@ class GenreMapCoordinator: Coordinator {
             guard let self = self else {
                 return
             }
-            self.showLyrics(for: song, placeholder: placeholder, from: self.rootViewController)
+            self.showLyrics(for: song, placeholder: placeholder, from: self.router)
         }
         router.push(scene)
     }

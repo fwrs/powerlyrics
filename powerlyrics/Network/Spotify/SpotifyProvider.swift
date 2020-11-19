@@ -7,10 +7,8 @@
 //
 
 import Moya
-import RealmSwift
 import SafariServices
 import Swinject
-import UIKit
 
 // MARK: - Constants
 
@@ -124,11 +122,11 @@ extension SpotifyProvider {
     }
     
     func loginWithoutUser(completion: @escaping DefaultBoolAction) {
-        request(.newLocalToken) { [self] result in
+        request(.newLocalToken) { [weak self] result in
             if case .success(let response) = result {
                 SpotifyProvider.token = SpotifyToken(data: response.data)
                 completion(true)
-                keychainService.setEncodable(false, for: .spotifyAuthorizedWithAccount)
+                self?.keychainService.setEncodable(false, for: .spotifyAuthorizedWithAccount)
                 return
             }
             completion(false)

@@ -102,26 +102,28 @@ class GenreMapView: UIView {
         for i in .zero..<RealmLikedSongGenre.total {
             group.enter()
             
-            delay((prevDelay + pow(fast ? .pointThree : .pointThree * .three, Double(i + .one))) / Constants.chartAnimationDelayGrowth) { [self] in
+            delay((prevDelay + pow(fast ? .pointThree : .pointThree * .three, Double(i + .one))) / Constants.chartAnimationDelayGrowth) { [weak self] in
+                guard let self = self else { return }
+                
                 let baseInset: CGFloat = Constants.baseInset
                 
-                let newPath = radarChart(
+                let newPath = self.radarChart(
                     inset: baseInset,
-                    rect: bounds,
-                    values: values.enumerated().map { $0 > i ? oldValues[$0] : CGFloat($1) }
+                    rect: self.bounds,
+                    values: self.values.enumerated().map { $0 > i ? self.oldValues[$0] : CGFloat($1) }
                 ).cgPath
                 
                 let animation = CABasicAnimation(keyPath: Constants.path)
                 
                 animation.duration = .half
-                animation.fromValue = shapeLayer.presentation()?.path
+                animation.fromValue = self.shapeLayer.presentation()?.path
                 animation.toValue = newPath
                 animation.timingFunction = Constants.chartAnimationTimingFunction
                 animation.fillMode = .forwards
                 animation.isRemovedOnCompletion = false
-                shapeLayer.path = shapeLayer.presentation()?.path
-                shapeLayer.removeAllAnimations()
-                shapeLayer.add(animation, forKey: Constants.path)
+                self.shapeLayer.path = self.shapeLayer.presentation()?.path
+                self.shapeLayer.removeAllAnimations()
+                self.shapeLayer.add(animation, forKey: Constants.path)
                 
                 delay(.half) {
                     group.leave()
@@ -131,8 +133,9 @@ class GenreMapView: UIView {
             prevDelay += pow(fast ? .pointThree : .pointThree * .three, Double(i + .one))
         }
         
-        group.notify(queue: .main) { [self] in
-            oldValues = values
+        group.notify(queue: .main) { [weak self] in
+            guard let self = self else { return }
+            self.oldValues = self.values
         }
         
     }

@@ -8,7 +8,6 @@
 
 import ObjectiveC
 import Swinject
-import UIKit
 
 class Assembly: Swinject.Assembly {
     

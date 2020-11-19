@@ -9,7 +9,6 @@
 import Bond
 import ReactiveKit
 import ReactiveSwift
-import RealmSwift
 
 // MARK: - Constants
 
@@ -99,10 +98,10 @@ class SearchViewModel: ViewModel {
         spotifyProvider.reactive
             .request(.trendingSongs)
             .map(SpotifyPlaylistSongsResponse.self)
-            .start { [self] event in
+            .start { [weak self] event in
                 switch event {
                 case .value(let response):
-                    trends.replace(
+                    self?.trends.replace(
                         with: response.items
                             .prefix(Constants.maxTrendsCount)
                             .map { $0.asSharedSong.strippedFeatures }
@@ -112,10 +111,10 @@ class SearchViewModel: ViewModel {
                             },
                         performDiff: true
                     )
-                    trendsLoading.value = false
+                    self?.trendsLoading.value = false
                 case .failed:
-                    trendsFailed.value = true
-                    trendsLoading.value = false
+                    self?.trendsFailed.value = true
+                    self?.trendsLoading.value = false
                 default:
                     break
                 }
@@ -141,10 +140,10 @@ class SearchViewModel: ViewModel {
         latestSearchSongsRequest = geniusProvider.reactive
             .request(.searchSongs(query: query))
             .map(GeniusSearchResponse.self)
-            .start { [self] event in
+            .start { [weak self] event in
                 switch event {
                 case .value(let response):
-                    searchSongsResult = response.response.hits.map { $0.result.asSharedSong }
+                    self?.searchSongsResult = response.response.hits.map { $0.result.asSharedSong }
                     group.leave()
                 case .failed:
                     failedGenius = true
@@ -159,20 +158,20 @@ class SearchViewModel: ViewModel {
         latestSearchAlbumsRequest = spotifyProvider.reactive
             .request(.searchAlbums(query: query))
             .map(SpotifySearchAlbumsResponse.self)
-            .start { [self] event in
+            .start { [weak self] event in
                 switch event {
                 case .value(let response):
                     let deduplicated = response.albums.items.dedup {
                         $0.name == $1.name && $0.artists == $1.artists
                     }
                     if deduplicated.nonEmpty {
-                        searchAlbumsResult = Array(deduplicated.prefix(Constants.maxPlaylistPreviewCount))
+                        self?.searchAlbumsResult = Array(deduplicated.prefix(Constants.maxPlaylistPreviewCount))
                     } else {
-                        searchAlbumsResult = []
+                        self?.searchAlbumsResult = []
                     }
                     group.leave()
                 case .failed:
-                    searchAlbumsResult = []
+                    self?.searchAlbumsResult = []
                     failedSpotify = true
                     group.leave()
                 default:
@@ -180,27 +179,29 @@ class SearchViewModel: ViewModel {
                 }
             }
         
-        group.notify(queue: .main) { [self] in
-            endLoading(refresh)
+        group.notify(queue: .main) { [weak self] in
+            guard let self = self else { return }
             
-            let topResultSection = [searchSongsResult.first].compactMap { $0 }.map { SearchCell.song(SongCellViewModel(song: $0)) }
+            self.endLoading(refresh)
             
-            let songsSection = Array(searchSongsResult.dropFirst().prefix(Constants.maxPlaylistPreviewCount).map { SearchCell.song(SongCellViewModel(song: $0)) })
+            let topResultSection = [self.searchSongsResult.first].compactMap { $0 }.map { SearchCell.song(SongCellViewModel(song: $0)) }
             
-            let albumsSection = searchAlbumsResult.isEmpty ? [] : [SearchCell.albums(AlbumsCellViewModel(albums: searchAlbumsResult))]
+            let songsSection = Array(self.searchSongsResult.dropFirst().prefix(Constants.maxPlaylistPreviewCount).map { SearchCell.song(SongCellViewModel(song: $0)) })
             
-            isFailed.value = failedGenius && failedSpotify
+            let albumsSection = self.searchAlbumsResult.isEmpty ? [] : [SearchCell.albums(AlbumsCellViewModel(albums: self.searchAlbumsResult))]
+            
+            self.isFailed.value = failedGenius && failedSpotify
             
             if failedGenius && failedSpotify {
-                items.set([])
+                self.items.set([])
                 return
             }
             
-            nothingWasFound.value = topResultSection.isEmpty && songsSection.isEmpty && albumsSection.isEmpty
+            self.nothingWasFound.value = topResultSection.isEmpty && songsSection.isEmpty && albumsSection.isEmpty
             
-            realmService.incrementSearchesStat()
+            self.realmService.incrementSearchesStat()
             
-            items.set([
+            self.items.set([
                 (.topResult, topResultSection),
                 (.songs, songsSection),
                 (.albums, albumsSection)

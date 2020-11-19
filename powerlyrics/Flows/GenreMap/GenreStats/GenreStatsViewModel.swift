@@ -8,7 +8,6 @@
 
 import Bond
 import ReactiveKit
-import RealmSwift
 
 // MARK: - GenreStatsCell
 

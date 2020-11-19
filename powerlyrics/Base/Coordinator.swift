@@ -20,8 +20,4 @@ class Coordinator: NSObject {
     
     func start() {}
     
-    var rootViewController: UIViewController {
-        fatalError("Inaccessible")
-    }
-    
 }

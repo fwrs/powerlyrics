@@ -8,7 +8,6 @@
 
 import Bond
 import ReactiveKit
-import RealmSwift
 
 // MARK: - Constants
 
@@ -68,21 +67,22 @@ class SongListViewModel: ViewModel {
             spotifyProvider.reactive
                 .request(.albumSongs(albumID: album.id))
                 .map(SpotifyAlbumSongsResponse.self)
-                .start { [self] event in
+                .start { [weak self] event in
+                    guard let self = self else { return }
                     switch event {
                     case .value(let response):
                         let albumSongs = response.items
-                        items.replace(
+                        self.items.replace(
                             with: albumSongs
                                 .map { .song(SongCellViewModel(song: $0.asSharedSong(with: album))) },
                             performDiff: true
                         )
-                        endLoading(refresh)
-                        isFailed.value = false
+                        self.endLoading(refresh)
+                        self.isFailed.value = false
                     case .failed:
-                        items.replace(with: [], performDiff: true)
-                        isFailed.value = true
-                        endLoading(refresh)
+                        self.items.replace(with: [], performDiff: true)
+                        self.isFailed.value = true
+                        self.endLoading(refresh)
                     default:
                         break
                     }
@@ -97,22 +97,23 @@ class SongListViewModel: ViewModel {
             spotifyProvider.reactive
                 .request(.trendingSongs)
                 .map(SpotifyPlaylistSongsResponse.self)
-                .start { [self] event in
+                .start { [weak self] event in
+                    guard let self = self else { return }
                     switch event {
                     case .value(let response):
                         let trendingSongs = response.items
-                        items.replace(
+                        self.items.replace(
                             with: trendingSongs.enumerated()
                                 .map { .song(SongCellViewModel(song: $1.asSharedSong, accessory: .ranking(nth: $0 + .one))) },
                             performDiff: true
                         )
-                        endLoading(refresh)
-                        isLoadingWithPreview.value = false
+                        self.endLoading(refresh)
+                        self.isLoadingWithPreview.value = false
                     case .failed:
-                        items.replace(with: [], performDiff: true)
-                        isFailed.value = true
-                        endLoading(refresh)
-                        isLoadingWithPreview.value = false
+                        self.items.replace(with: [], performDiff: true)
+                        self.isFailed.value = true
+                        self.endLoading(refresh)
+                        self.isLoadingWithPreview.value = false
                     default:
                         break
                     }
@@ -127,22 +128,23 @@ class SongListViewModel: ViewModel {
             spotifyProvider.reactive
                 .request(.viralSongs)
                 .map(SpotifyPlaylistSongsResponse.self)
-                .start { [self] event in
+                .start { [weak self] event in
+                    guard let self = self else { return }
                     switch event {
                     case .value(let response):
                         let viralSongs = response.items
-                        items.replace(
+                        self.items.replace(
                             with: viralSongs.enumerated()
                                 .map { .song(SongCellViewModel(song: $1.asSharedSong, accessory: .ranking(nth: $0 + .one))) },
                             performDiff: true
                         )
-                        endLoading(refresh)
-                        isLoadingWithPreview.value = false
+                        self.endLoading(refresh)
+                        self.isLoadingWithPreview.value = false
                     case .failed:
-                        items.replace(with: [], performDiff: true)
-                        isFailed.value = true
-                        endLoading(refresh)
-                        isLoadingWithPreview.value = false
+                        self.items.replace(with: [], performDiff: true)
+                        self.isFailed.value = true
+                        self.endLoading(refresh)
+                        self.isLoadingWithPreview.value = false
                     default:
                         break
                     }

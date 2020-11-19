@@ -7,7 +7,6 @@
 //
 
 import PanModal
-import UIKit
 
 class Router: UINavigationController {
     

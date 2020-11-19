@@ -8,7 +8,6 @@
 
 import Haptica
 import ReactiveKit
-import UIKit
 
 // MARK: - Constants
 
@@ -75,10 +74,10 @@ class ViewController: UIViewController, UITabBarControllerDelegate {
             if !isNoInternetViewVisible { return }
             isNoInternetViewVisible = false
             guard let noInternetView = noInternetView else { return }
-            UIView.fadeHide(noInternetView) { [self] in
-                if !isNoInternetViewVisible {
+            UIView.fadeHide(noInternetView) { [weak self] in
+                if self?.isNoInternetViewVisible == false {
                     noInternetView.removeFromSuperview()
-                    self.noInternetView = nil
+                    self?.noInternetView = nil
                 }
             }
         }
@@ -108,10 +107,10 @@ class ViewController: UIViewController, UITabBarControllerDelegate {
             isEmptyViewVisible = false
             emptyView?.alpha = 1
             guard let emptyView = emptyView else { return }
-            UIView.fadeHide(emptyView) { [self] in
-                if !isEmptyViewVisible {
+            UIView.fadeHide(emptyView) { [weak self] in
+                if self?.isEmptyViewVisible == false {
                     emptyView.removeFromSuperview()
-                    self.emptyView = nil
+                    self?.emptyView = nil
                 }
             }
         }
@@ -191,8 +190,8 @@ class ViewController: UIViewController, UITabBarControllerDelegate {
                 let shouldScrollToTop = !searchController.isActive
                 searchController.searchBar.becomeFirstResponder()
                 guard shouldScrollToTop else { return }
-                delay(0.05) { [self] in
-                    scrollToTop()
+                delay(0.05) { [weak self] in
+                    self?.scrollToTop()
                 }
             }
         } else {

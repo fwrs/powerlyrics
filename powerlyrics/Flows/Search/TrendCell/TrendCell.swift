@@ -8,7 +8,6 @@
 
 import Bond
 import ReactiveKit
-import UIKit
 
 class TrendCell: CollectionViewCell {
     
@@ -30,8 +29,8 @@ class TrendCell: CollectionViewCell {
     
     func configure(with viewModel: TrendCellViewModel) {
         mainButton.setTitle(viewModel.song.name, for: .normal)
-        mainButton.reactive.tap.observeNext { [self] _ in
-            didTap?()
+        mainButton.reactive.tap.observeNext { [weak self] _ in
+            self?.didTap?()
         }.dispose(in: disposeBag)
     }
 

@@ -7,7 +7,16 @@
 //
 
 import Swinject
-import UIKit
+
+// MARK: - Constants
+
+fileprivate extension Constants {
+    
+    static let numberOfTabs = 4
+    
+}
+
+// MARK: - TabBarCoordinator
 
 class TabBarCoordinator: Coordinator {
     
@@ -23,34 +32,44 @@ class TabBarCoordinator: Coordinator {
     override func start() {
         let tabBarController = UITabBarController()
         
+        let routers = [Router(), Router(), Router(), Router()]
+        
         childCoordinators = [
             /* Home */
             resolver.resolve(
                 HomeCoordinator.self,
-                argument: Router()
+                argument: routers[.zero]
             ),
             /* Search */
             resolver.resolve(
                 SearchCoordinator.self,
-                argument: Router()
+                argument: routers[.one]
             ),
             /* GenreMap */
             resolver.resolve(
                 GenreMapCoordinator.self,
-                argument: Router()
+                argument: routers[.two]
             ),
             /* Profile */
             resolver.resolve(
                 ProfileCoordinator.self,
-                argument: Router()
+                argument: routers[.three]
             )
         ].compactMap { $0 }
         
         childCoordinators.forEach { $0.start() }
         
-        tabBarController.setViewControllers(childCoordinators.map(\.rootViewController), animated: false)
+        tabBarController.setViewControllers(routers, animated: false)
+        
+        DispatchQueue.once {
+            window.rootViewController = tabBarController
+        }
 
-        window.rootViewController = tabBarController
+        DispatchQueue.allButOnce {
+            UIView.fadeUpdate(window) { [weak self] in
+                self?.window.rootViewController = tabBarController
+            }
+        }
     }
     
 }

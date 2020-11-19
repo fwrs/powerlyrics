@@ -73,13 +73,14 @@ extension LyricsSectionCell: UIContextMenuInteractionDelegate {
         let copyElement = UIAction(
             title: Constants.copy.title,
             image: Constants.copy.icon
-        ) { [self] _ in
-            let text = contentsLabel.text
+        ) { [weak self] _ in
+            guard let self = self else { return }
+            let text = self.contentsLabel.text
             UIPasteboard.general.string = text
         }
         
-        UIView.animate(withDuration: .pointOne, delay: .pointOne) { [self] in
-            backgroundColor = .systemBackground
+        UIView.animate(withDuration: .pointOne, delay: .pointOne) { [weak self] in
+            self?.backgroundColor = .systemBackground
         }
         
         return UIContextMenuConfiguration(
@@ -95,8 +96,8 @@ extension LyricsSectionCell: UIContextMenuInteractionDelegate {
         UIView.animate(
             withDuration: .oneHalfth * .pointOne,
             delay: Constants.contextMenuFadeOutDelay
-        ) { [self] in
-            backgroundColor = .clear
+        ) { [weak self] in
+            self?.backgroundColor = .clear
         }
     }
     

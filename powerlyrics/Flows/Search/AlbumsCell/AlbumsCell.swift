@@ -7,7 +7,6 @@
 //
 
 import Haptica
-import UIKit
 
 // MARK: - Constants
 
@@ -76,8 +75,8 @@ class AlbumsCell: TableViewCell {
                 albumArtImageViews[safe: index]?.populate(with: album.thumbnailAlbumArt)
                 albumNameLabels[safe: index]?.text = album.name
                 contextMenuHandlers[safe: index]?.updateFullImage(with: album.albumArt)
-                albumArrangedSubviews[safe: index]?.reactive.tapGesture().observeNext { [self] _ in
-                    didTapAlbum?(album)
+                albumArrangedSubviews[safe: index]?.reactive.tapGesture().observeNext { [weak self] _ in
+                    self?.didTapAlbum?(album)
                 }.dispose(in: disposeBag)
                 albumArrangedSubviews[safe: index]?.isHidden = false
             } else {

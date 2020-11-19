@@ -9,7 +9,6 @@
 import Bond
 import Haptica
 import ReactiveKit
-import UIKit
 
 // MARK: - SongListViewController
 
@@ -74,13 +73,15 @@ extension SongListViewController {
     // MARK: - Input
     
     func setupInput() {
-        tableView.reactive.selectedRowIndexPath.observeNext { [self] indexPath in
-            lastSelectedIndexPath = indexPath
-            tableView.deselectRow(at: indexPath, animated: true)
+        tableView.reactive.selectedRowIndexPath.observeNext { [weak self] indexPath in
+            guard let self = self else { return }
+            
+            self.lastSelectedIndexPath = indexPath
+            self.tableView.deselectRow(at: indexPath, animated: true)
             Haptic.play(Constants.tinyTap)
-            let item = viewModel.items[indexPath.row]
+            let item = self.viewModel.items[indexPath.row]
             if case .song(let songCellViewModel) = item {
-                flowLyrics?(songCellViewModel.song, (tableView.cellForRow(at: indexPath) as? SongCell)?.currentImage)
+                self.flowLyrics?(songCellViewModel.song, (self.tableView.cellForRow(at: indexPath) as? SongCell)?.currentImage)
             }
         }.dispose(in: disposeBag)
     }
@@ -108,29 +109,38 @@ extension SongListViewController {
             }
         }
         
-        viewModel.isRefreshing.observeNext { [self] isRefreshing in
-            tableView.isRefreshing = isRefreshing
+        viewModel.isRefreshing.observeNext { [weak self] isRefreshing in
+            self?.tableView.isRefreshing = isRefreshing
         }.dispose(in: disposeBag)
         
-        viewModel.isLoading.observeNext { [self] loading in
-            UIView.fadeDisplay(activityIndicator, visible: loading)
+        viewModel.isLoading.observeNext { [weak self] loading in
+            guard let self = self else { return }
+            
+            UIView.fadeDisplay(self.activityIndicator, visible: loading)
+            
             if loading {
-                tableView.unsetRefreshControl()
+                self.tableView.unsetRefreshControl()
             } else {
-                tableView.setRefreshControl { [self] in
-                    viewModel.loadData(refresh: true)
+                self.tableView.setRefreshControl { [weak self] in
+                    self?.viewModel.loadData(refresh: true)
                 }
-                scrollToTop()
+                self.scrollToTop()
             }
         }.dispose(in: disposeBag)
         
-        combineLatest(viewModel.items.map(\.collection.isEmpty), viewModel.isLoading, viewModel.isRefreshing, viewModel.isFailed, viewModel.isLoadingWithPreview).dropFirst(.two).observeNext { [self] isEmpty, isLoading, isRefreshing, isFailed, isLoadingWithPreview in
-            setEmptyView(isVisible: isEmpty && !isLoading && !isRefreshing && !isFailed && !isLoadingWithPreview)
+        combineLatest(
+            viewModel.items.map(\.collection.isEmpty),
+            viewModel.isLoading,
+            viewModel.isRefreshing,
+            viewModel.isFailed,
+            viewModel.isLoadingWithPreview
+        ).dropFirst(.two).observeNext { [weak self] isEmpty, isLoading, isRefreshing, isFailed, isLoadingWithPreview in
+            self?.setEmptyView(isVisible: isEmpty && !isLoading && !isRefreshing && !isFailed && !isLoadingWithPreview)
         }.dispose(in: disposeBag)
         
-        viewModel.isFailed.observeNext { [self] isFailed in
-            setNoInternetView(isVisible: isFailed) {
-                viewModel.loadData()
+        viewModel.isFailed.observeNext { [weak self] isFailed in
+            self?.setNoInternetView(isVisible: isFailed) {
+                self?.viewModel.loadData()
             }
         }.dispose(in: disposeBag)
         

@@ -9,19 +9,26 @@
 import Bond
 import Haptica
 import ReactiveKit
-import UIKit
 
 // MARK: - Constants
 
 fileprivate extension Constants {
+    
+    // MARK: - Text
     
     static let registerDateFormat = "d MMM yyyy"
     static let unknownRegisterDateText = "Unknown register date"
     static let registeredText = "Registered"
     static let confirmLogOutActionTitle = "Reset and sign out"
     static let githubURL = URL(string: "https://www.github.com/fwrs/powerlyrics")!
+    
+    // MARK: - Numeric
+    
     static let tinyDelay: TimeInterval = 0.01
     static let defaultTopPadding: CGFloat = 250
+    
+    // MARK: - Alerts
+    
     static let cancelLogOutAction = UIAlertAction(title: Constants.cancel, style: .cancel, handler: nil )
 
     static var logOutAlert: UIAlertController {
@@ -32,30 +39,32 @@ fileprivate extension Constants {
         )
     }
     
-    static let topPaddingFunction = { (contentOffset: CGFloat, safeAreaInsets: UIEdgeInsets) -> CGFloat in
+    // MARK: - Curves
+    
+    static let topPaddingFunction = { (x: CGFloat, safeAreaInsets: UIEdgeInsets) -> CGFloat in
         min(
             Constants.defaultTopPadding - (UIDevice.current.hasNotch ? .zero : Constants.space20),
-            max(44 + safeAreaInsets.top, -contentOffset - 22 + (UIDevice.current.hasNotch ? 0 : 4))
+            max(44 + safeAreaInsets.top, -x - 22 + (UIDevice.current.hasNotch ? 0 : 4))
         )
     }
     
-    static let progressFunction = { (topPadding: CGFloat) -> CGFloat in
+    static let progressFunction = { (x: CGFloat) -> CGFloat in
         if UIDevice.current.hasNotch {
-            return 125.0 / 79 - topPadding / 158
+            return 125.0 / 79 - x / 158
         } else {
-            return 115.0 / 83 - topPadding / 166
+            return 115.0 / 83 - x / 166
         }
     }
     
-    static let translationYAvatarFunction = { (progress: CGFloat) -> CGFloat in
-        ((-312.831 * pow(progress, 4) + 840.079 * pow(progress, 3) - 793.935 * pow(progress, 2) + 287.687 * progress) *
-            (UIDevice.current.hasNotch ? 1 : 0.55)) + (UIDevice.current.hasNotch ? 0 : (7 * progress - 7)) }
-    static let translationYUserInfoFunction = { (progress: CGFloat) -> CGFloat in
-        (215.556 * progress - 155.556 * pow(progress, 2)) - (UIDevice.current.hasNotch ? 0 : 9) }
-    static let avatarHeightFunction = { (progress: CGFloat) -> CGFloat in
-        (105 - 61 * progress) * (UIDevice.current.hasNotch ? 1 : 0.9) }
-    static let avatarScaleFunction = { (progress: CGFloat) -> CGFloat in
-        min(1 - progress + (UIDevice.current.hasNotch ? 0.8 : 0.77), 1) }
+    static let translationYAvatarFunction = { (x: CGFloat) -> CGFloat in
+        ((-312.831 * pow(x, 4) + 840.079 * pow(x, 3) - 793.935 * pow(x, 2) + 287.687 * x) *
+            (UIDevice.current.hasNotch ? 1 : 0.55)) + (UIDevice.current.hasNotch ? .zero : (7 * x - 7)) }
+    static let translationYUserInfoFunction = { (x: CGFloat) -> CGFloat in
+        (215.556 * x - 155.556 * pow(x, 2)) - (UIDevice.current.hasNotch ? .zero : 9) }
+    static let avatarHeightFunction = { (x: CGFloat) -> CGFloat in
+        (105 - 61 * x) * (UIDevice.current.hasNotch ? 1 : 0.9) }
+    static let avatarScaleFunction = { (x: CGFloat) -> CGFloat in
+        min(1 - x + (UIDevice.current.hasNotch ? 0.8 : 0.77), 1) }
     
 }
 
@@ -117,6 +126,14 @@ class ProfileViewController: ViewController, ProfileScene {
         setupOutput()
         
         viewModel.loadData()
+        
+        _ = NotificationCenter.default.addObserver(
+            forName: .appDidLogin,
+            object: nil,
+            queue: nil
+        ) { [weak self] _ in
+            self?.viewModel.loadData()
+        }
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -135,11 +152,10 @@ class ProfileViewController: ViewController, ProfileScene {
     func presentSignOutAlert() {
         
         present(Constants.logOutAlert.with {
-            $0.addAction(UIAlertAction(title: Constants.confirmLogOutActionTitle, style: .destructive) { [self] _ in
-                viewModel.spotifyProvider.logout()
-                viewModel.loadData()
-                viewModel.resetAllViewControllers(window: window)
-                flowSetup?(.initial)
+            $0.addAction(UIAlertAction(title: Constants.confirmLogOutActionTitle, style: .destructive) { [weak self] _ in
+                guard let self = self else { return }
+                self.viewModel.spotifyProvider.logout()
+                NotificationCenter.default.post(name: .appDidLogout, object: nil, userInfo: nil)
             })
             $0.addAction(Constants.cancelLogOutAction)
         }, animated: true, completion: nil)
@@ -189,29 +205,31 @@ extension ProfileViewController {
     
     func setupInput() {
         
-        tableView.reactive.selectedRowIndexPath.observeNext { [self] indexPath in
-            let item = viewModel.items[itemAt: indexPath]
+        tableView.reactive.selectedRowIndexPath.observeNext { [weak self] indexPath in
+            guard let self = self else { return }
+            
+            let item = self.viewModel.items[itemAt: indexPath]
             
             if case .action(let actionCellViewModel) = item {
                 Haptic.play(Constants.tinyTap)
                 
                 switch actionCellViewModel.action {
                 case .likedSongs:
-                    flowLikedSongs?()
+                    self.flowLikedSongs?()
                 case .manageAccount:
-                    flowSafari?(Constants.accountManagementURL)
+                    self.flowSafari?(Constants.accountManagementURL)
                 case .appSourceCode:
-                    flowSafari?(Constants.githubURL)
+                    self.flowSafari?(Constants.githubURL)
                 case .connectToSpotify:
-                    flowSetup?(.manual)
+                    self.flowSetup?(.manual)
                 case .signOut:
-                    presentSignOutAlert()
+                    self.presentSignOutAlert()
                 default:
                     break
                 }
             }
             
-            tableView.deselectRow(at: indexPath, animated: true)
+            self.tableView.deselectRow(at: indexPath, animated: true)
         }.dispose(in: disposeBag)
         
     }
@@ -224,8 +242,8 @@ extension ProfileViewController {
         
         viewModel.name.bind(to: userNameLabel.reactive.text).dispose(in: disposeBag)
         viewModel.premium.map(\.negated).bind(to: premiumIconImageView.reactive.isHidden).dispose(in: disposeBag)
-        viewModel.avatar.observeNext { [self] image in
-            avatarImageView.populate(with: image)
+        viewModel.avatar.observeNext { [weak self] image in
+            self?.avatarImageView.populate(with: image)
         }.dispose(in: disposeBag)
         
         viewModel.registerDate
@@ -241,8 +259,8 @@ extension ProfileViewController {
             .bind(to: registerDateLabel.reactive.text)
             .dispose(in: disposeBag)
         
-        viewModel.avatar.observeNext { [self] image in
-            contextMenuHandler?.updateFullImage(with: image)
+        viewModel.avatar.observeNext { [weak self] image in
+            self?.contextMenuHandler?.updateFullImage(with: image)
         }.dispose(in: disposeBag)
     }
     
@@ -284,13 +302,14 @@ extension ProfileViewController: UITableViewDelegate {
         
         userInfoStackView.alpha = pow(.one - progress, Constants.space8)
         
-        delay(shouldDrawShadow ? Constants.tinyDelay : .zero) { [self] in
-            avatarContainerView.shadow(
+        delay(shouldDrawShadow ? Constants.tinyDelay : .zero) { [weak self] in
+            guard let self = self else { return }
+            self.avatarContainerView.shadow(
                 color: Constants.albumArtShadowColor,
                 radius: Constants.albumArtShadowRadius,
                 offset: Constants.albumArtShadowOffset,
                 opacity: Constants.defaultShadowOpacity,
-                viewCornerRadius: avatarDimensionConstraint.constant / .two
+                viewCornerRadius: self.avatarDimensionConstraint.constant / .two
             )
         }
         

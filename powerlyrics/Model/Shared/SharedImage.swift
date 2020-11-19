@@ -7,7 +7,6 @@
 //
 
 import Kingfisher
-import UIKit
 
 // MARK: - Constants
 
@@ -59,10 +58,14 @@ extension UIImageView {
             image = localImage
             tag = Constants.loadedTag
         case .external(let imageURL):
-            kf.setImage(with: imageURL, placeholder: placeholder ?? UIImageView.placeholder, completionHandler: { [self] res in
-                tag = Constants.loadedTag
-                result?(res)
-            })
+            kf.setImage(
+                with: imageURL,
+                placeholder: placeholder ?? UIImageView.placeholder,
+                completionHandler: { [weak self] res in
+                    self?.tag = Constants.loadedTag
+                    result?(res)
+                }
+            )
         case .none:
             image = UIImageView.placeholder
         }

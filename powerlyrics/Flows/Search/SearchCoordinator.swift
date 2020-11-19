@@ -7,7 +7,6 @@
 //
 
 import Swinject
-import UIKit
 
 class SearchCoordinator: Coordinator {
     
@@ -35,21 +34,12 @@ class SearchCoordinator: Coordinator {
         router.push(scene, animated: false)
     }
     
-    override var rootViewController: UIViewController {
-        router
-    }
-    
     // MARK: - Scenes
     
     func showLyrics(for song: SharedSong, placeholder: UIImage?) {
         let lyricsCoordinator = resolver.resolve(
             LyricsCoordinator.self,
-            arguments:
-                Router(),
-                rootViewController,
-                { [self] in childCoordinators.removeAll { $0.isKind(of: LyricsCoordinator.self) } },
-                song,
-                placeholder
+            arguments: router, self as PresenterCoordinator, song, placeholder
         )!
         childCoordinators.append(lyricsCoordinator)
         lyricsCoordinator.start()

@@ -8,7 +8,6 @@
 
 import Haptica
 import Kingfisher
-import UIKit
 
 class SongCell: TableViewCell {
     
@@ -85,12 +84,12 @@ class SongCell: TableViewCell {
     override func setHighlighted(_ highlighted: Bool, animated: Bool) {
         let highlightColor = dominantColor?.adjust(brightnessBy: .oneHalfth) ?? Asset.Colors.highlightCellColor.color
         let baseColor = dominantColor ?? Asset.Colors.normalCellColor.color
-        UIView.animate(withDuration: (highlighted || !animated) ? (Constants.defaultAnimationDuration * .pointOne) : Constants.defaultAnimationDuration) { [self] in
-            backgroundColorView.backgroundColor = highlighted ? highlightColor : dominantColor.safe
-            accessoryBackgroundView.backgroundColor = highlighted ? highlightColor : baseColor
+        UIView.animate(withDuration: (highlighted || !animated) ? (Constants.defaultAnimationDuration * .pointOne) : Constants.defaultAnimationDuration) { [weak self] in
+            self?.backgroundColorView.backgroundColor = highlighted ? highlightColor : (self?.dominantColor).safe
+            self?.accessoryBackgroundView.backgroundColor = highlighted ? highlightColor : baseColor
         }
-        UIView.transition(with: accessoryFadeOutView, duration: (highlighted || !animated) ? (Constants.defaultAnimationDuration * .pointOne) : Constants.defaultAnimationDuration, options: .transitionCrossDissolve) { [self] in
-            (accessoryFadeOutView.gradientLayer).colors = highlighted ?
+        UIView.fadeUpdate(accessoryFadeOutView, duration: (highlighted || !animated) ? (Constants.defaultAnimationDuration * .pointOne) : Constants.defaultAnimationDuration) { [weak self] in
+            self?.accessoryFadeOutView.gradientLayer.colors = highlighted ?
                 [highlightColor.transparent.cg, highlightColor.cg] :
                 [baseColor.transparent.cg, baseColor.cg]
         }
@@ -99,12 +98,12 @@ class SongCell: TableViewCell {
     override func setSelected(_ selected: Bool, animated: Bool) {
         let highlightColor = dominantColor?.adjust(brightnessBy: .oneHalfth) ?? Asset.Colors.highlightCellColor.color
         let baseColor = dominantColor ?? Asset.Colors.normalCellColor.color
-        UIView.animate(withDuration: (selected || !animated) ? (Constants.defaultAnimationDuration * .pointOne) : Constants.defaultAnimationDuration) { [self] in
-            backgroundColorView.backgroundColor = selected ? highlightColor : dominantColor.safe
-            accessoryBackgroundView.backgroundColor = selected ? highlightColor : baseColor
+        UIView.animate(withDuration: (selected || !animated) ? (Constants.defaultAnimationDuration * .pointOne) : Constants.defaultAnimationDuration) { [weak self] in
+            self?.backgroundColorView.backgroundColor = selected ? highlightColor : (self?.dominantColor).safe
+            self?.accessoryBackgroundView.backgroundColor = selected ? highlightColor : baseColor
         }
-        UIView.transition(with: accessoryFadeOutView, duration: (selected || !animated) ? (Constants.defaultAnimationDuration * .pointOne) : Constants.defaultAnimationDuration, options: .transitionCrossDissolve) { [self] in
-            (accessoryFadeOutView.gradientLayer).colors = selected ?
+        UIView.fadeUpdate(accessoryFadeOutView, duration: (selected || !animated) ? (Constants.defaultAnimationDuration * .pointOne) : Constants.defaultAnimationDuration) { [weak self] in
+            self?.accessoryFadeOutView.gradientLayer.colors = selected ?
                 [highlightColor.transparent.cg, highlightColor.cg] :
                 [baseColor.transparent.cg, baseColor.cg]
         }
@@ -116,20 +115,25 @@ class SongCell: TableViewCell {
         songLabel.text = viewModel.song.name.typographized
         artistLabel.text = viewModel.song.artistsString.typographized
         backgroundColorView.backgroundColor = .clear
-        albumArtImageView.populate(with: viewModel.song.thumbnailAlbumArt) { [self] result in
+        albumArtImageView.populate(with: viewModel.song.thumbnailAlbumArt) { [weak self] result in
             if case .success(let value) = result, viewModel.shouldDisplayDominantColor {
                 if let color = SongCell.storedColors[viewModel.song] {
-                    (accessoryFadeOutView.gradientLayer).colors = [color.transparent.cg, color.cg]
-                    accessoryBackgroundView.backgroundColor = color
-                    dominantColor = color
+                    self?.accessoryFadeOutView.gradientLayer.colors = [color.transparent.cg, color.cg]
+                    self?.accessoryBackgroundView.backgroundColor = color
+                    self?.dominantColor = color
                     return
                 }
-                value.image.getColors(quality: .lowest, { colors in
+                value.image.getColors(quality: .lowest, { [weak self] colors in
+                    guard let self = self else { return }
                     let color = (colors?.primary.adjust(brightnessBy: .half)).safe
-                    backgroundColorView.backgroundColor = color
-                    (accessoryFadeOutView.gradientLayer).colors = [color.transparent.cg, color.cg]
-                    accessoryBackgroundView.backgroundColor = color
-                    dominantColor = color
+                    UIView.animate { [weak self] in
+                        self?.backgroundColorView.backgroundColor = color
+                        self?.accessoryBackgroundView.backgroundColor = color
+                    }
+                    UIView.fadeUpdate(self.accessoryFadeOutView) { [weak self] in
+                        self?.accessoryFadeOutView.gradientLayer.colors = [color.transparent.cg, color.cg]
+                    }
+                    self.dominantColor = color
 
                     SongCell.storedColors[viewModel.song] = color
                 })

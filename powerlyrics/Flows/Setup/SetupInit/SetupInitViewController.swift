@@ -8,6 +8,16 @@
 
 import UIKit
 
+// MARK: - Constants
+
+extension Constants {
+    
+    static let pleaseWaitText = "Please wait"
+    
+}
+
+// MARK: - SetupInitViewController
+
 class SetupInitViewController: ViewController, SetupInitScene {
     
     // MARK: - Outlets
@@ -19,6 +29,16 @@ class SetupInitViewController: ViewController, SetupInitScene {
     @IBOutlet private weak var brandingStackView: UIStackView!
     
     @IBOutlet private weak var buttonsStackView: UIStackView!
+    
+    // MARK: - Instance properties
+    
+    var selfOrSafari: UIViewController {
+        presentedViewController ?? self
+    }
+    
+    var viewModel: SetupSharedSpotifyViewModel!
+
+    var loadingAlert: UIAlertController?
     
     // MARK: - Flows
     
@@ -35,6 +55,51 @@ class SetupInitViewController: ViewController, SetupInitScene {
         
         setupView()
         setupInput()
+        setupOutput()
+        
+        _ = NotificationCenter.default.addObserver(
+            forName: .appDidOpenURL,
+            object: nil,
+            queue: nil
+        ) { [weak self] notification in
+            guard let self = self, let url = notification.userInfo?[NotificationKey.url] as? URL,
+                  self.navigationController?.topViewController == self else { return }
+            self.viewModel.appDidOpenURL(url: url)
+        }
+    }
+    
+    // MARK: - Helper methods
+
+    func show(error: LoginError) {
+        switch error {
+        case .networkError:
+            selfOrSafari.present(Constants.failedToSignInAlert.with {
+                $0.addAction(UIAlertAction(title: Constants.ok, style: .default, handler: { [weak self] _ in
+                    self?.presentedViewController?.dismiss(animated: true, completion: nil)
+                }))
+            }, animated: true, completion: nil)
+        case .underage:
+            selfOrSafari.present(Constants.unsuitableForMinorsAlert.with {
+                $0.addAction(UIAlertAction(title: Constants.ok, style: .default, handler: { [weak self] _ in
+                    self?.presentedViewController?.dismiss(animated: true, completion: nil)
+                }))
+            }, animated: true, completion: nil)
+        }
+    }
+    
+    func setLoading(visible: Bool, completion: DefaultAction? = nil) {
+        if !visible {
+            loadingAlert?.dismiss(animated: true, completion: completion)
+            loadingAlert = nil
+            return
+        }
+        
+        let loadingAlert = UIAlertController(title: nil, message: nil, preferredStyle: .alert).with {
+            $0.addLoadingUI(title: Constants.pleaseWaitText)
+        }
+        
+        selfOrSafari.present(loadingAlert, animated: true, completion: completion)
+        self.loadingAlert = loadingAlert
     }
     
 }
@@ -57,13 +122,35 @@ extension SetupInitViewController {
     // MARK: - Input
     
     func setupInput() {
-        mainButton.reactive.tap.throttle(for: Constants.buttonThrottleTime).observeNext { [self] _ in
-            flowSpotifyLogin?()
+        mainButton.reactive.tap.throttle(for: Constants.buttonThrottleTime).observeNext { [weak self] _ in
+            self?.flowSpotifyLogin?()
         }.dispose(in: disposeBag)
         
-        secondaryButton.reactive.tap.throttle(for: Constants.buttonThrottleTime).observeNext { [self] _ in
-            flowOfflineSetup?()
+        secondaryButton.reactive.tap.throttle(for: Constants.buttonThrottleTime).observeNext { [weak self] _ in
+            self?.flowOfflineSetup?()
         }.dispose(in: disposeBag)
+    }
+    
+    // MARK: - Output
+    
+    func setupOutput() {
+        
+        viewModel.loginState.observe { [weak self] event in
+            switch event {
+            case .next(let isLoading):
+                self?.setLoading(visible: isLoading)
+                if !isLoading {
+                    self?.flowDismiss?()
+                }
+            case .failed(let error):
+                self?.setLoading(visible: false) {
+                    self?.show(error: error)
+                }
+            default:
+                break
+            }
+        }.dispose(in: disposeBag)
+        
     }
     
 }

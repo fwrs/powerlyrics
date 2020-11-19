@@ -7,7 +7,6 @@
 //
 
 import Swinject
-import UIKit
 
 // MARK: - GenreMapScene
 

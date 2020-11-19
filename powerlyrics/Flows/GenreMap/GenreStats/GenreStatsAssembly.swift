@@ -8,7 +8,6 @@
 
 import PanModal
 import Swinject
-import UIKit
 
 // MARK: - GenreStatsScene
 

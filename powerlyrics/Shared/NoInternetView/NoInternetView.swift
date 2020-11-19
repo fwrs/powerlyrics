@@ -8,7 +8,6 @@
 
 import Bond
 import ReactiveKit
-import UIKit
 
 // MARK: - Constants
 
@@ -50,13 +49,15 @@ class NoInternetView: View {
         attrString.addAttribute(.foregroundColor, value: UIColor.tintColor, range: NSString(string: text).range(of: Constants.tryAgainText))
         subtitleLabel.attributedText = attrString
         
-        subtitleLabel.reactive.longPressGesture(minimumPressDuration: 0).observeNext { [self] recognizer in
+        subtitleLabel.reactive.longPressGesture(minimumPressDuration: 0).observeNext { [weak self] recognizer in
             if recognizer.state == .ended || recognizer.state == .cancelled {
                 let attrString = NSMutableAttributedString(string: text)
                 
                 attrString.addAttribute(.foregroundColor, value: UIColor.tintColor, range: NSString(string: text).range(of: Constants.tryAgainText))
                 
-                UIView.transition(with: subtitleLabel, duration: Constants.buttonTapDuration, options: .transitionCrossDissolve) {
+                guard let subtitleLabel = self?.subtitleLabel else { return }
+                
+                UIView.fadeUpdate(subtitleLabel, duration: Constants.buttonTapDuration) {
                     subtitleLabel.attributedText = attrString
                 }
             }
@@ -67,15 +68,17 @@ class NoInternetView: View {
                 
                 attrString.addAttribute(.foregroundColor, value: UIColor.highlightTintColor, range: NSString(string: text).range(of: Constants.tryAgainText))
                 
-                UIView.transition(with: subtitleLabel, duration: Constants.buttonTapDuration, options: .transitionCrossDissolve) {
+                guard let subtitleLabel = self?.subtitleLabel else { return }
+                
+                UIView.fadeUpdate(subtitleLabel, duration: Constants.buttonTapDuration) {
                     subtitleLabel.attributedText = attrString
                 }
             case .ended:
-                if tappedRetryButton {
+                if self?.tappedRetryButton == true {
                     return
                 }
-                onRefresh?()
-                tappedRetryButton = true
+                self?.onRefresh?()
+                self?.tappedRetryButton = true
             default:
                 break
             }

@@ -9,7 +9,6 @@
 import Bond
 import Haptica
 import ReactiveKit
-import UIKit
 
 // MARK: - Constants
 
@@ -81,18 +80,20 @@ class SearchViewController: ViewController, SearchScene {
     override func keyboardWillShow(frame: CGRect) {
         super.keyboardWillShow(frame: frame)
         
-        UIView.animate { [self] in
-            tableView.contentInset.bottom = frame.height - (tabBarController?.tabBar.frame.height).safe
-            tableView.verticalScrollIndicatorInsets.bottom = frame.height - (tabBarController?.tabBar.frame.height).safe
+        UIView.animate { [weak self] in
+            guard let self = self else { return }
+            let tabBarHeight = (self.tabBarController?.tabBar.frame.height).safe
+            self.tableView.contentInset.bottom = frame.height - tabBarHeight
+            self.tableView.verticalScrollIndicatorInsets.bottom = frame.height - tabBarHeight
         }
     }
     
     override func keyboardWillHide(frame: CGRect) {
         super.keyboardWillHide(frame: frame)
         
-        UIView.animate { [self] in
-            tableView.contentInset.bottom = .zero
-            tableView.verticalScrollIndicatorInsets.bottom = .zero
+        UIView.animate { [weak self] in
+            self?.tableView.contentInset.bottom = .zero
+            self?.tableView.verticalScrollIndicatorInsets.bottom = .zero
         }
     }
         
@@ -134,23 +135,28 @@ extension SearchViewController {
         tap.cancelsTouchesInView = false
         view.addGestureRecognizer(tap)
         
-        searchController.searchBar.reactive.text.compactMap { $0 }.dropFirst(.one).debounce(for: Constants.buttonThrottleTime, queue: .main).observeNext { [self] query in
-            viewModel.search(for: query)
-            UIView.fadeDisplay(noResultsView, visible: query.isEmpty)
+        searchController.searchBar.reactive.text.compactMap { $0 }.dropFirst(.one).debounce(for: Constants.buttonThrottleTime, queue: .main).observeNext { [weak self] query in
+            guard let self = self else { return }
+            self.viewModel.search(for: query)
+            UIView.fadeDisplay(self.noResultsView, visible: query.isEmpty)
         }.dispose(in: disposeBag)
         
-        tableView.reactive.selectedRowIndexPath.observeNext { [self] indexPath in
-            lastSelectedIndexPath = indexPath
-            tableView.deselectRow(at: indexPath, animated: true)
+        tableView.reactive.selectedRowIndexPath.observeNext { [weak self] indexPath in
+            guard let self = self else { return }
+            self.lastSelectedIndexPath = indexPath
+            self.tableView.deselectRow(at: indexPath, animated: true)
             Haptic.play(Constants.tinyTap)
-            let item = viewModel.items[itemAt: indexPath]
+            let item = self.viewModel.items[itemAt: indexPath]
             if case .song(let songViewModel) = item {
-                flowLyrics?(songViewModel.song, (tableView.cellForRow(at: indexPath) as? SongCell)?.currentImage)
+                self.flowLyrics?(
+                    songViewModel.song,
+                    (self.tableView.cellForRow(at: indexPath) as? SongCell)?.currentImage
+                )
             }
         }.dispose(in: disposeBag)
         
-        reloadTrendsButton.reactive.tap.observeNext { [self] _ in
-            viewModel.loadTrends()
+        reloadTrendsButton.reactive.tap.observeNext { [weak self] _ in
+            self?.viewModel.loadTrends()
         }.dispose(in: disposeBag)
         
     }
@@ -159,71 +165,79 @@ extension SearchViewController {
     
     func setupOutput() {
         
-        viewModel.trendsFailed.observeNext { [self] failed in
-            UIView.fadeDisplay(trendsFailStackView, visible: failed)
+        viewModel.trendsFailed.observeNext { [weak self] failed in
+            guard let self = self else { return }
+            UIView.fadeDisplay(self.trendsFailStackView, visible: failed)
         }.dispose(in: disposeBag)
         
-        viewModel.isFailed.observeNext { [self] isFailed in
-            setNoInternetView(isVisible: isFailed) {
-                let text = searchController.searchBar.text.safe
-                viewModel.search(for: text)
+        viewModel.isFailed.observeNext { [weak self] isFailed in
+            guard let self = self else { return }
+            self.setNoInternetView(isVisible: isFailed) {
+                let text = self.searchController.searchBar.text.safe
+                self.viewModel.search(for: text)
             }
-            UIView.fadeDisplay(noResultsView, visible: !isFailed && searchController.searchBar.text.safe.isEmpty)
+            UIView.fadeDisplay(self.noResultsView, visible: !isFailed &&
+                self.searchController.searchBar.text.safe.isEmpty)
         }.dispose(in: disposeBag)
         
-        combineLatest(viewModel.items, viewModel.isLoading, viewModel.isRefreshing, viewModel.isFailed).observeNext { [self] songs, isLoading, isRefreshing, isFailed in
+        combineLatest(viewModel.items, viewModel.isLoading, viewModel.isRefreshing, viewModel.isFailed).observeNext { [weak self] songs, isLoading, isRefreshing, isFailed in
+            guard let self = self else { return }
             if isFailed { return }
-            UIView.fadeDisplay(noResultsView, visible: !isLoading && !isRefreshing &&
+            UIView.fadeDisplay(self.noResultsView, visible: !isLoading && !isRefreshing &&
                 (songs.collection.numberOfSections == .zero ||
                     songs.collection.numberOfItems(inSection: .zero) == .zero))
         }.dispose(in: disposeBag)
         
-        viewModel.trendsLoading.observeNext(with: { [self] isLoading in
-            UIView.fadeDisplay(trendsActivityIndicator, visible: isLoading)
+        viewModel.trendsLoading.observeNext(with: { [weak self] isLoading in
+            guard let self = self else { return }
+            UIView.fadeDisplay(self.trendsActivityIndicator, visible: isLoading)
         }).dispose(in: disposeBag)
         
-        viewModel.isRefreshing.observeNext { [self] isRefreshing in
-            tableView.isRefreshing = isRefreshing
+        viewModel.isRefreshing.observeNext { [weak self] isRefreshing in
+            self?.tableView.isRefreshing = isRefreshing
         }.dispose(in: disposeBag)
         
-        viewModel.isLoading.removeDuplicates().observeNext { [self] loading in
+        viewModel.isLoading.removeDuplicates().observeNext { [weak self] loading in
+            guard let self = self else { return }
             if loading {
-                tableView.isUserInteractionEnabled = false
-                tableView.isScrollEnabled = false
+                self.tableView.isUserInteractionEnabled = false
+                self.tableView.isScrollEnabled = false
             }
-            UIView.fadeDisplay(activityIndicator, visible: loading, duration: .pointOne)
+            UIView.fadeDisplay(self.activityIndicator, visible: loading, duration: .pointOne)
             UIView.animate(withDuration: .pointOne, delay: .zero, options: .curveEaseOut) {
-                tableView.alpha = loading ? .pointThree : .one
+                self.tableView.alpha = loading ? .pointThree : .one
             } completion: { _ in
                 if !loading {
-                    tableView.isUserInteractionEnabled = true
-                    tableView.isScrollEnabled = true
+                    self.tableView.isUserInteractionEnabled = true
+                    self.tableView.isScrollEnabled = true
                 }
             }
             if loading {
-                tableView.unsetRefreshControl()
+                self.tableView.unsetRefreshControl()
             } else {
-                tableView.setRefreshControl { [self] in
-                    viewModel.search(for: searchController.searchBar.text.safe, refresh: true)
+                self.tableView.setRefreshControl { [weak self] in
+                    guard let self = self else { return }
+                    self.viewModel.search(for: self.searchController.searchBar.text.safe, refresh: true)
                 }
-                scrollToTop()
+                self.scrollToTop()
             }
         }.dispose(in: disposeBag)
         
-        viewModel.items.bind(to: tableView, using: SearchBinder(albumTapAction: { [self] album in
-            flowAlbum?(album)
+        viewModel.items.bind(to: tableView, using: SearchBinder(albumTapAction: { [weak self] album in
+            self?.flowAlbum?(album)
         }))
         
         viewModel.trends.bind(to: trendsCollectionView, cellType: TrendCell.self) { cell, cellViewModel in
             cell.configure(with: cellViewModel)
-            cell.didTap = { [self] in
+            cell.didTap = { [weak self] in
+                guard let self = self else { return }
                 Haptic.play(Constants.tinyTap)
-                UIView.fadeHide(noResultsView)
+                UIView.fadeHide(self.noResultsView)
                 let query = "\(cellViewModel.song.name) \(Constants.dash) \(cellViewModel.song.artists.first.safe)"
-                searchController.searchBar.text = query
-                searchController.isActive = true
-                searchController.searchBar.setShowsCancelButton(true, animated: true)
-                viewModel.search(for: query)
+                self.searchController.searchBar.text = query
+                self.searchController.isActive = true
+                self.searchController.searchBar.setShowsCancelButton(true, animated: true)
+                self.viewModel.search(for: query)
             }
         }
         

@@ -7,7 +7,6 @@
 //
 
 import Swinject
-import UIKit
 
 // MARK: - SetupManualScene
 
@@ -24,8 +23,9 @@ class SetupManualAssembly: Assembly {
 
     override func assemble(container: Container) {
         
-        container.register(SetupManualScene.self) { _ in
+        container.register(SetupManualScene.self) { resolver in
             let viewController = UIStoryboard.createController(SetupManualViewController.self)
+            viewController.viewModel = resolver.resolve(SetupSharedSpotifyViewModel.self)
             return viewController
         }
         

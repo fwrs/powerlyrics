@@ -26,8 +26,8 @@ class TableView: UITableView {
             if newValue {
                 customRefreshControl?.beginRefreshing()
             } else {
-                delay(0.5) { [self] in
-                    customRefreshControl?.endRefreshing()
+                delay(0.5) { [weak self] in
+                    self?.customRefreshControl?.endRefreshing()
                 }
             }
         }
@@ -48,9 +48,9 @@ class TableView: UITableView {
     }
     
     @discardableResult func setRefreshControl(top: CGFloat = .zero) -> UIRefreshControl {
-        setRefreshControl(top: top) { [self] in
+        setRefreshControl(top: top) { [weak self] in
             delay(.half) {
-                set(refreshing: false)
+                self?.set(refreshing: false)
             }
         }
     }

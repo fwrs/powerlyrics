@@ -7,7 +7,6 @@
 //
 
 import Haptica
-import UIKit
 
 // MARK: - Constants
 
@@ -79,42 +78,48 @@ class ImageContextMenuInteractionHandler: NSObject, UIContextMenuInteractionDele
         configurationForMenuAtLocation location: CGPoint
     ) -> UIContextMenuConfiguration? {
         guard imageView?.loaded == true else { return nil }
-        UIView.animate(withDuration: Constants.defaultAnimationDuration, delay: .half) { [self] in
-            shadowFadeView?.layer.shadowOpacity = .zero
+        UIView.animate(withDuration: Constants.defaultAnimationDuration, delay: .half) { [weak self] in
+            self?.shadowFadeView?.layer.shadowOpacity = .zero
         }
         let controller = ImagePreviewController(fullImage, placeholder: imageView?.image)
         return UIContextMenuConfiguration(
             identifier: nil,
             previewProvider: { controller },
             actionProvider: { _ in
-                UIMenu(children: [UIAction(
-                    title: Constants.copy.title,
-                    image: Constants.copy.icon,
-                    identifier: nil,
-                    attributes: []) { _ in
-                    if let image = controller?.imageView.image {
-                        UIPasteboard.general.image = image
+                UIMenu(children: [
+                    UIAction(
+                        title: Constants.copy.title,
+                        image: Constants.copy.icon,
+                        identifier: nil,
+                        attributes: []
+                    ) { _ in
+                        if let image = controller?.imageView.image {
+                            UIPasteboard.general.image = image
+                        }
+                    },
+                    UIAction(
+                        title: Constants.download.title,
+                        image: Constants.download.icon,
+                        identifier: nil,
+                        attributes: []) { [weak self] _ in
+                        guard let self = self else { return }
+                        if let image = controller?.imageView.image {
+                            UIImageWriteToSavedPhotosAlbum(image, self, #selector(self.image(image:didFinishSavingWithError:contextInfo:)), nil)
+                        }
+                    },
+                    UIAction(
+                        title: Constants.share.title,
+                        image: Constants.share.icon,
+                        identifier: nil,
+                        attributes: []) { [weak self] _ in
+                        if let image = controller?.imageView.image {
+                            self?.window.topViewController?.present(UIActivityViewController(
+                                activityItems: [image],
+                                applicationActivities: nil
+                            ), animated: true, completion: nil)
+                        }
                     }
-                }, UIAction(
-                    title: Constants.download.title,
-                    image: Constants.download.icon,
-                    identifier: nil,
-                    attributes: []) { [self] _ in
-                    if let image = controller?.imageView.image {
-                        UIImageWriteToSavedPhotosAlbum(image, self, #selector(image(image:didFinishSavingWithError:contextInfo:)), nil)
-                    }
-                }, UIAction(
-                    title: Constants.share.title,
-                    image: Constants.share.icon,
-                    identifier: nil,
-                    attributes: []) { [self] _ in
-                    if let image = controller?.imageView.image {
-                        window.topViewController?.present(UIActivityViewController(
-                            activityItems: [image],
-                            applicationActivities: nil
-                        ), animated: true, completion: nil)
-                    }
-                }])
+                ])
             }
         )
     }
@@ -129,8 +134,11 @@ class ImageContextMenuInteractionHandler: NSObject, UIContextMenuInteractionDele
     }
     
     func contextMenuInteraction(_ interaction: UIContextMenuInteraction, willEndFor configuration: UIContextMenuConfiguration, animator: UIContextMenuInteractionAnimating?) {
-        UIView.animate(withDuration: Constants.defaultAnimationDuration, delay: Constants.defaultAnimationDelay) { [self] in
-            shadowFadeView?.layer.shadowOpacity = Constants.defaultShadowOpacity
+        UIView.animate(
+            withDuration: Constants.defaultAnimationDuration,
+            delay: Constants.defaultAnimationDelay
+        ) { [weak self] in
+            self?.shadowFadeView?.layer.shadowOpacity = Constants.defaultShadowOpacity
         }
     }
     

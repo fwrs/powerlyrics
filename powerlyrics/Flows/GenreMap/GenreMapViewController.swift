@@ -8,9 +8,6 @@
 
 import Haptica
 import ReactiveKit
-import RealmSwift
-import Then
-import UIKit
 
 // MARK: - Constants
 
@@ -42,6 +39,9 @@ fileprivate extension Constants {
     static let descriptionParagraphStyle = NSMutableParagraphStyle().with {
         $0.lineSpacing = .two
     }
+    
+    static let delayFunction = { (i: Int) in
+        (.pointOne + Constants.tinyDelay * Double(i) + pow(0.95, Double(i)) / 20) }
     
 }
 
@@ -86,7 +86,6 @@ class GenreMapViewController: ViewController, GenreMapScene {
 
         setupView()
         setupInput()
-        reset()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -110,33 +109,33 @@ class GenreMapViewController: ViewController, GenreMapScene {
         let noData = viewModel.noData.value
         
         if shouldAnimate {
-            UIView.animate(withDuration: .half, delay: .pointOne, options: .curveEaseOut) { [self] in
-                genreMapBackgroundView.alpha = .one
+            UIView.animate(withDuration: .half, delay: .pointOne, options: .curveEaseOut) { [weak self] in
+                self?.genreMapBackgroundView.alpha = .one
             }
             
-            UIView.animate(withDuration: Constants.backgroundAppearanceDuration, delay: Constants.fastAnimationDuration, options: .curveEaseOut) { [self] in
-                genreMapView.alpha = .one
+            UIView.animate(withDuration: Constants.backgroundAppearanceDuration, delay: Constants.fastAnimationDuration, options: .curveEaseOut) { [weak self] in
+                self?.genreMapView.alpha = .one
             }
             
-            delay(Constants.fastAnimationDuration) { [self] in
-                genreMapView.animatePathChange()
+            delay(Constants.fastAnimationDuration) { [weak self] in
+                self?.genreMapView.animatePathChange()
             }
             
             for i in .zero..<RealmLikedSongGenre.total {
-                UIView.animate(withDuration: Constants.buttonAppearanceBaseDuration + (Double(i) / 10), delay: .pointOne + Constants.tinyDelay * Double(i) + pow(0.95, Double(i)) / 20, options: .curveEaseOut) { [self] in
-                    genreMapButtons[i].alpha = .one
+                UIView.animate(withDuration: Constants.buttonAppearanceBaseDuration + (Double(i) * .pointOne), delay: Constants.delayFunction(i), options: .curveEaseOut) { [weak self] in
+                    self?.genreMapButtons[i].alpha = .one
                 }
             }
             
-            UIView.animate(withDuration: Constants.descriptionAppearanceDuration, delay: Constants.descriptionAppearanceDelay, options: .curveEaseIn) { [self] in
-                descriptionLabel.alpha = .one
+            UIView.animate(withDuration: Constants.descriptionAppearanceDuration, delay: Constants.descriptionAppearanceDelay, options: .curveEaseIn) { [weak self] in
+                self?.descriptionLabel.alpha = .one
             }
             
             if noData {
                 notEnoughDataView.isHidden = false
                 notEnoughDataView.alpha = .zero
-                UIView.animate(withDuration: Constants.noDataAppearanceDuration, delay: Constants.tinyDelay, options: .curveEaseOut) { [self] in
-                    notEnoughDataView.alpha = .one
+                UIView.animate(withDuration: Constants.noDataAppearanceDuration, delay: Constants.tinyDelay, options: .curveEaseOut) { [weak self] in
+                    self?.notEnoughDataView.alpha = .one
                 }
             } else {
                 notEnoughDataView.isHidden = true
@@ -152,11 +151,11 @@ class GenreMapViewController: ViewController, GenreMapScene {
                     notEnoughDataView.alpha = .one
                 }
                 
-                UIView.animate(withDuration: .half) { [self] in
-                    notEnoughDataView.alpha = noData ? .one : .zero
-                } completion: { [self] _ in
+                UIView.animate(withDuration: .half) { [weak self] in
+                    self?.notEnoughDataView.alpha = noData ? .one : .zero
+                } completion: { [weak self] _ in
                     if !noData {
-                        notEnoughDataView.isHidden = true
+                        self?.notEnoughDataView.isHidden = true
                     }
                 }
             }
@@ -166,36 +165,13 @@ class GenreMapViewController: ViewController, GenreMapScene {
         goingBackFromPush = false
         
     }
-    
-    func reset() {
-        
-        if genreMapBackgroundView == nil {
-            return
-        }
-        genreMapBackgroundView.alpha = .zero
-        genreMapView.alpha = .zero
-        descriptionLabel.alpha = .zero
-        
-        for i in .zero..<RealmLikedSongGenre.total {
-            genreMapButtons[i].alpha = .zero
-        }
-        
-        viewModel.values.value = Constants.baseLikedSongCounts
-        viewModel.noData.value = false
-        notEnoughDataView.alpha = .zero
-        shouldAnimate = true
-        genreMapView.oldValues = Constants.baseLikedSongCounts
-        genreMapView.values = Constants.baseLikedSongCounts
-        genreMapView.setupView()
-        
-    }
-    
+
     func restore() {
         
         if goingBackFromPush {
-            UIView.animate { [self] in
-                genreMapBackgroundView.alpha = .one
-                genreMapBackgroundView.layer.transform = CATransform3DIdentity
+            UIView.animate { [weak self] in
+                self?.genreMapBackgroundView.alpha = .one
+                self?.genreMapBackgroundView.layer.transform = CATransform3DIdentity
             }
         }
         
@@ -242,50 +218,53 @@ extension GenreMapViewController {
     func setupInput() {
         
         genreMapButtons.enumerated().forEach { index, button in
-            button.reactive.tap.observeNext { [self] in
+            button.reactive.tap.observeNext { [weak self] in
+                guard let self = self else { return }
+                
                 var rotationWithPerspective = CATransform3DIdentity
                 rotationWithPerspective.m34 = Constants.flipPerspective
                 let angle = Constants.inverseAngles.contains(index).sign * -Constants.largeAngleMultiplier * CGFloat.pi
                 
-                UIView.animate(withDuration: Constants.flipDuration, delay: .zero, usingSpringWithDamping: Constants.springDamping, initialSpringVelocity: .two) {
-                    genreMapBackgroundView.layer.transform =
+                UIView.animate(withDuration: Constants.flipDuration, delay: .zero, usingSpringWithDamping: Constants.springDamping, initialSpringVelocity: .two) { [weak self] in
+                    self?.genreMapBackgroundView.layer.transform =
                         CATransform3DRotate(rotationWithPerspective, angle, Constants.transforms[index].0, Constants.transforms[index].1, .zero)
-                    genreMapBackgroundView.alpha = Constants.concealedGenreMapAlpha
+                    self?.genreMapBackgroundView.alpha = Constants.concealedGenreMapAlpha
                 }
-                flowGenre?(RealmLikedSongGenre(rawValue: index) ?? .unknown)
-                goingBackFromPush = true
+                self.flowGenre?(RealmLikedSongGenre(rawValue: index) ?? .unknown)
+                self.goingBackFromPush = true
             }.dispose(in: disposeBag)
             
-            button.reactive.controlEvents([.touchDown, .touchDragEnter]).observeNext { [self] in
+            button.reactive.controlEvents([.touchDown, .touchDragEnter]).observeNext { [weak self] in
                 UIView.animate(withDuration: Constants.flipDuration, delay: .zero, usingSpringWithDamping: Constants.springDamping, initialSpringVelocity: .one) {
                     var rotationWithPerspective = CATransform3DIdentity
                     rotationWithPerspective.m34 = Constants.flipPerspective
                     let angle = Constants.inverseAngles.contains(index).sign * Constants.smallAngleMultiplier * CGFloat.pi
-                    genreMapBackgroundView.layer.transform = CATransform3DRotate(rotationWithPerspective, angle, Constants.transforms[index].0, Constants.transforms[index].1, .zero)
+                    self?.genreMapBackgroundView.layer.transform = CATransform3DRotate(rotationWithPerspective, angle, Constants.transforms[index].0, Constants.transforms[index].1, .zero)
                 }
             }.dispose(in: disposeBag)
             
-            button.reactive.controlEvents(.touchDragExit).observeNext { [self] in
+            button.reactive.controlEvents(.touchDragExit).observeNext { [weak self] in
                 UIView.animate(withDuration: Constants.flipDuration, delay: .zero, usingSpringWithDamping: .pointOne, initialSpringVelocity: .zero) {
-                    genreMapBackgroundView.layer.transform = CATransform3DIdentity
+                    self?.genreMapBackgroundView.layer.transform = CATransform3DIdentity
                 }
             }.dispose(in: disposeBag)
         }
         
-        descriptionLabel.reactive.longPressGesture(minimumPressDuration: .zero).observeNext { [self] recognizer in
+        descriptionLabel.reactive.longPressGesture(minimumPressDuration: .zero).observeNext { [weak self] recognizer in
+            guard let self = self else { return }
             if recognizer.state == .ended || recognizer.state == .cancelled {
-                UIView.fadeUpdate(descriptionLabel, duration: Constants.buttonTapDuration) {
-                    descriptionLabel.attributedText = generateAttributedDescriptionText()
+                UIView.fadeUpdate(self.descriptionLabel, duration: Constants.buttonTapDuration) { [weak self] in
+                    self?.descriptionLabel.attributedText = self?.generateAttributedDescriptionText()
                 }
             }
             
             switch recognizer.state {
             case .began:
-                UIView.fadeUpdate(descriptionLabel, duration: Constants.buttonTapDuration) {
-                    descriptionLabel.attributedText = generateAttributedDescriptionText(highlight: true)
+                UIView.fadeUpdate(self.descriptionLabel, duration: Constants.buttonTapDuration) { [weak self] in
+                    self?.descriptionLabel.attributedText = self?.generateAttributedDescriptionText(highlight: true)
                 }
             case .ended:
-                flowLikedSongs?()
+                self.flowLikedSongs?()
             default:
                 break
             }

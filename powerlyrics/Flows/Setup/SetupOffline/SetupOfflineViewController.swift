@@ -82,6 +82,7 @@ class SetupOfflineViewController: ViewController, SetupOfflineScene {
         
         setupView()
         setupInput()
+        setupOutput()
         
         addKeyboardWillShowNotification()
         addKeyboardWillHideNotification()
@@ -96,10 +97,10 @@ class SetupOfflineViewController: ViewController, SetupOfflineScene {
     override func keyboardWillShow(notification: Notification) {
         super.keyboardWillShow(notification: notification)
         
-        UIView.animate { [self] in
-            brandingStackView.transform = .init(translationX: .zero, y: -(UIScreen.main.bounds.height / Constants.keyboardOffsets.2))
-            formStackView.transform = .init(translationX: .zero, y: -(UIScreen.main.bounds.height / Constants.keyboardOffsets.1))
-            buttonsStackView.transform = .init(translationX: .zero, y: UIScreen.main.bounds.height / Constants.keyboardOffsets.0)
+        UIView.animate { [weak self] in
+            self?.brandingStackView.transform = .init(translationX: .zero, y: -(UIScreen.main.bounds.height / Constants.keyboardOffsets.2))
+            self?.formStackView.transform = .init(translationX: .zero, y: -(UIScreen.main.bounds.height / Constants.keyboardOffsets.1))
+            self?.buttonsStackView.transform = .init(translationX: .zero, y: UIScreen.main.bounds.height / Constants.keyboardOffsets.0)
         }
         translationInteractor?.gesture?.isEnabled = false
     }
@@ -107,10 +108,10 @@ class SetupOfflineViewController: ViewController, SetupOfflineScene {
     override func keyboardWillHide(notification: Notification) {
         super.keyboardWillHide(notification: notification)
         
-        UIView.animate { [self] in
-            brandingStackView.transform = .identity
-            formStackView.transform = .identity
-            buttonsStackView.transform = .identity
+        UIView.animate { [weak self] in
+            self?.brandingStackView.transform = .identity
+            self?.formStackView.transform = .identity
+            self?.buttonsStackView.transform = .identity
         }
     }
 
@@ -118,6 +119,29 @@ class SetupOfflineViewController: ViewController, SetupOfflineScene {
         super.keyboardDidHide(notification: notification)
         
         translationInteractor?.gesture?.isEnabled = true
+    }
+    
+    // MARK: - Helper methods
+    
+    func show(error: SetupOfflineError) {
+        
+        switch error {
+        case .network(.networkFailed):
+            present(Constants.failedToSignInAlert.with {
+                $0.addAction(UIAlertAction(title: Constants.ok, style: .default, handler: nil))
+            }, animated: true, completion: nil)
+            
+        case .validation(.nameEmpty):
+            present(Constants.enterNameAlert.with {
+                $0.addAction(UIAlertAction(title: Constants.ok, style: .default, handler: nil))
+            }, animated: true, completion: nil)
+            
+        case .validation(.under18):
+            present(Constants.unsuitableForMinorsAlert.with {
+                $0.addAction(UIAlertAction(title: Constants.ok, style: .default, handler: nil))
+            }, animated: true, completion: nil)
+        }
+        
     }
     
 }
@@ -141,43 +165,33 @@ extension SetupOfflineViewController {
     // MARK: - Input
 
     func setupInput() {
-        mainButton.reactive.tap.observeNext { [self] _ in
-            if nameTextField.text.safe.isEmpty {
-                present(Constants.enterNameAlert.with {
-                    $0.addAction(UIAlertAction(title: Constants.ok, style: .default, handler: nil))
-                }, animated: true, completion: nil)
-                return
-            }
-            if !over18Switch.isOn {
-                present(Constants.unsuitableForMinorsAlert.with {
-                    $0.addAction(UIAlertAction(title: Constants.ok, style: .default, handler: nil))
-                }, animated: true, completion: nil)
-                return
-            }
-            viewModel.saveLocalUserData(name: nameTextField.text.safe, over18: over18Switch.isOn)
-            mainButton.isLoading = true
-            viewModel.spotifyProvider.loginWithoutUser { success in
-                delay(.two) {
-                    mainButton.isLoading = false
+        mainButton.reactive.tap.observeNext { [weak self] _ in
+            guard let self = self else { return }
+            self.viewModel.login(
+                name: self.nameTextField.text.safe.typographized,
+                over18: self.over18Switch.isOn
+            )
+        }.dispose(in: disposeBag)
+    }
+    
+    // MARK: - Output
+    
+    func setupOutput() {
+        
+        viewModel.loginState.observe { [weak self] event in
+            switch event {
+            case .next(let isLoading):
+                self?.mainButton.isLoading = isLoading
+                if !isLoading {
+                    self?.flowDismiss?()
                 }
-                if success {
-                    flowSpotifyLoginOffline?()
-                    if let homeViewController = ((window.rootViewController as? UITabBarController)?.viewControllers?.first as? Router)?.viewControllers.first as? HomeViewController {
-                        homeViewController.viewModel.loadData()
-                        homeViewController.viewModel.checkSpotifyAccount()
-                    }
-                    if let profileViewController = ((window.rootViewController as? UITabBarController)?.viewControllers?.last as? Router)?.viewControllers.first as? ProfileViewController {
-                        profileViewController.viewModel.loadData()
-                    }
-                } else {
-                    mainButton.isLoading = false
-                    present(Constants.failedToSignInAlert.with {
-                        $0.addAction(UIAlertAction(title: Constants.ok, style: .default, handler: nil))
-                    }, animated: true, completion: nil)
-                    viewModel.fail()
-                }
+            case .failed(let error):
+                self?.show(error: error)
+            default:
+                break
             }
         }.dispose(in: disposeBag)
+        
     }
     
 }

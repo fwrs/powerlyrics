@@ -7,7 +7,6 @@
 //
 
 import ReactiveKit
-import UIKit
 
 class TableViewCell: UITableViewCell {
     

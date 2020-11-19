@@ -132,7 +132,7 @@ class TranslationAnimation: NSObject, UIViewControllerAnimatedTransitioning {
                 y: .zero)
         }
         
-        let animationsClosure = { [self] in
+        let animationsClosure = { [weak self] in
             zip(toSnapshots, frames).forEach { snapshot, frame in
                 snapshot.frame = frame.1
                 snapshot.alpha = .one
@@ -140,17 +140,17 @@ class TranslationAnimation: NSObject, UIViewControllerAnimatedTransitioning {
 
             zip(fromSnapshots, frames).forEach { snapshot, frame in
                 snapshot.frame = frame.1
-                snapshot.alpha = inNavigationController ? .one : .zero
+                snapshot.alpha = (self?.inNavigationController == true) ? .one : .zero
             }
 
-            if type == .present {
+            if self?.type == .present {
                 toVCCorrectedView.transform = .identity
                 fromVCCorrectedView.alpha = fromVC.completelyMoveAway ? .one : .half
                 fromVCCorrectedView.transform = .init(translationX: -(fromVCCorrectedView.bounds.width / (fromVC.completelyMoveAway ? .one : .three)), y: .zero)
                 if fromVC.completelyMoveAway {
                     toVCCorrectedView.alpha = .one
                 }
-            } else {
+            } else if self?.type == .dismiss {
                 fromVCCorrectedView.transform = .init(translationX: fromVCCorrectedView.frame.width, y: .zero)
                 toVCCorrectedView.alpha = .one
                 if toVC.completelyMoveAway {

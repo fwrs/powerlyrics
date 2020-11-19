@@ -8,7 +8,6 @@
 
 import Bond
 import ReactiveKit
-import UIKit
 
 extension ReactiveExtensions where Base: LoadingButton {
 
@@ -74,8 +73,8 @@ class LoadingButton: UIButton {
     private func changeLoadingState(isLoading: Bool) {
         isEnabled = !isLoading
         
-        UIView.transition(with: self, duration: 0.1, options: .transitionCrossDissolve) { [self] in
-            setTitleColor(isLoading ? .clear : (storedTitleColor ?? .label), for: .normal)
+        UIView.transition(with: self, duration: 0.1, options: .transitionCrossDissolve) { [weak self] in
+            self?.setTitleColor(isLoading ? .clear : (self?.storedTitleColor ?? .label), for: .normal)
         }
         
         if isLoading {

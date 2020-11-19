@@ -9,8 +9,6 @@
 import Haptica
 import PanModal
 import ReactiveKit
-import Then
-import UIKit
 
 // MARK: - Constants
 
@@ -124,12 +122,12 @@ extension GenreStatsViewController {
     
     func setupInput() {
     
-        tableView.reactive.selectedRowIndexPath.observeNext { [self] indexPath in
-            tableView.deselectRow(at: indexPath, animated: true)
-            lastSelectedIndexPath = indexPath
+        tableView.reactive.selectedRowIndexPath.observeNext { [weak self] indexPath in
+            self?.tableView.deselectRow(at: indexPath, animated: true)
+            self?.lastSelectedIndexPath = indexPath
             Haptic.play(Constants.tinyTap)
-            if case .song(let songCellViewModel, _) = viewModel.items[indexPath.row] {
-                flowLyrics?(songCellViewModel.song, nil)
+            if case .song(let songCellViewModel, _) = self?.viewModel.items[indexPath.row] {
+                self?.flowLyrics?(songCellViewModel.song, nil)
             }
         }.dispose(in: disposeBag)
         
@@ -139,10 +137,10 @@ extension GenreStatsViewController {
     
     func setupOutput() {
         
-        viewModel.items.observeNext { [self] _ in
+        viewModel.items.observeNext { [weak self] _ in
             delay(Constants.tinyDelay) {
-                panModalSetNeedsLayoutUpdate()
-                panModalTransition(to: .shortForm)
+                self?.panModalSetNeedsLayoutUpdate()
+                self?.panModalTransition(to: .shortForm)
             }
         }.dispose(in: disposeBag)
         

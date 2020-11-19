@@ -8,7 +8,6 @@
 
 import SafariServices
 import Swinject
-import UIKit
 
 class HomeCoordinator: Coordinator {
     
@@ -45,21 +44,12 @@ class HomeCoordinator: Coordinator {
         router.push(scene, animated: false)
     }
     
-    override var rootViewController: UIViewController {
-        router
-    }
-    
     // MARK: - Scenes
     
     func showLyrics(for song: SharedSong, placeholder: UIImage?) {
         let lyricsCoordinator = resolver.resolve(
             LyricsCoordinator.self,
-            arguments:
-                Router(),
-                rootViewController,
-                { [self] in childCoordinators.removeAll { $0.isKind(of: LyricsCoordinator.self) } },
-                song,
-                placeholder
+            arguments: router, self as PresenterCoordinator, song, placeholder
         )!
         childCoordinators.append(lyricsCoordinator)
         lyricsCoordinator.start()
@@ -68,11 +58,7 @@ class HomeCoordinator: Coordinator {
     func showSetup(mode: SetupMode) {
         let setupCoordinator = resolver.resolve(
             SetupCoordinator.self,
-            arguments:
-                Router(),
-                rootViewController,
-                { [self] in childCoordinators.removeAll { $0.isKind(of: SetupCoordinator.self) } },
-                mode
+            arguments: router, self as PresenterCoordinator, mode
         )!
         childCoordinators.append(setupCoordinator)
         setupCoordinator.start()

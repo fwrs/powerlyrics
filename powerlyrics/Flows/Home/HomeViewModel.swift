@@ -8,7 +8,6 @@
 
 import Bond
 import ReactiveKit
-import RealmSwift
 
 // MARK: - HomeSection
 
@@ -90,25 +89,26 @@ class HomeViewModel: ViewModel {
     // MARK: - Load data
 
     func loadData(refresh: Bool = false) {
+        isSpotifyAccount.value = keychainService.getDecodable(for: .spotifyAuthorizedWithAccount) == true
+        
         startLoading(refresh)
         isFailed.value = false
         
         let group = DispatchGroup()
-        
         isAtLeastOneRequestFailed = true
         
         group.enter()
         spotifyProvider.reactive
             .request(.playerStatus)
             .map(SpotifyPlayingContextResponse.self)
-            .start { [self] event in
+            .start { [weak self] event in
                 switch event {
                 case .value(let response):
-                    currentlyPlayingSong = [response.item.asSharedSong]
+                    self?.currentlyPlayingSong = [response.item.asSharedSong]
                     group.leave()
-                    isAtLeastOneRequestFailed = false
+                    self?.isAtLeastOneRequestFailed = false
                 case .failed:
-                    currentlyPlayingSong = .init()
+                    self?.currentlyPlayingSong = .init()
                     group.leave()
                 default:
                     break
@@ -119,12 +119,12 @@ class HomeViewModel: ViewModel {
         spotifyProvider.reactive
             .request(.trendingSongs)
             .map(SpotifyPlaylistSongsResponse.self)
-            .start { [self] event in
+            .start { [weak self] event in
                 switch event {
                 case .value(let response):
-                    trendingSongs = response.items.map(\.asSharedSong)
+                    self?.trendingSongs = response.items.map(\.asSharedSong)
                     group.leave()
-                    isAtLeastOneRequestFailed = false
+                    self?.isAtLeastOneRequestFailed = false
                 case .failed:
                     group.leave()
                 default:
@@ -136,12 +136,12 @@ class HomeViewModel: ViewModel {
         spotifyProvider.reactive
             .request(.viralSongs)
             .map(SpotifyPlaylistSongsResponse.self)
-            .start { [self] event in
+            .start { [weak self] event in
                 switch event {
                 case .value(let response):
-                    viralSongs = response.items.map(\.asSharedSong)
+                    self?.viralSongs = response.items.map(\.asSharedSong)
                     group.leave()
-                    isAtLeastOneRequestFailed = false
+                    self?.isAtLeastOneRequestFailed = false
                 case .failed:
                     group.leave()
                 default:
@@ -149,20 +149,13 @@ class HomeViewModel: ViewModel {
                 }
             }
         
-        group.notify(queue: .main) { [self] in
-            endLoading(refresh)
-            
-            updateState()
+        group.notify(queue: .main) { [weak self] in
+            self?.endLoading(refresh)
+            self?.updateState()
         }
     }
     
     // MARK: - Helper methods
-    
-    func checkSpotifyAccount() {
-        let isSpotifyAccount: Bool? = keychainService.getDecodable(for: .spotifyAuthorizedWithAccount)
-        
-        self.isSpotifyAccount.value = isSpotifyAccount == true
-    }
     
     func updateState() {
         if isAtLeastOneRequestFailed {

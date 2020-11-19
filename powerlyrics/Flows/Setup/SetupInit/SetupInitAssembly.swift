@@ -7,7 +7,6 @@
 //
 
 import Swinject
-import UIKit
 
 // MARK: - SetupInitScene
 
@@ -25,8 +24,9 @@ class SetupInitAssembly: Assembly {
 
     override func assemble(container: Container) {
         
-        container.register(SetupInitScene.self) { _ in
+        container.register(SetupInitScene.self) { resolver in
             let viewController = UIStoryboard.createController(SetupInitViewController.self)
+            viewController.viewModel = resolver.resolve(SetupSharedSpotifyViewModel.self)
             return viewController
         }
         

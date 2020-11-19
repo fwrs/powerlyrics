@@ -7,7 +7,6 @@
 //
 
 import Swinject
-import UIKit
 
 class CoordinatorsAssembly: Assembly {
     
@@ -17,7 +16,7 @@ class CoordinatorsAssembly: Assembly {
         
         container.register(TabBarCoordinator.self) { resolver in
             TabBarCoordinator(window: resolver.resolve(UIWindow.self)!, resolver: resolver)
-        }
+        }.inObjectScope(.transient)
         
         // MARK: - Tab Bar items
         
@@ -39,18 +38,43 @@ class CoordinatorsAssembly: Assembly {
         
         // MARK: - Supplementary screens
         
-        container.register(LyricsCoordinator.self) { (resolver, router: Router, base: UIViewController, dismissCompletion: @escaping DefaultAction, song: SharedSong, placeholder: UIImage?) in
-            LyricsCoordinator(router: router, resolver: resolver, base: base, dismissCompletion: dismissCompletion, song: song, placeholder: placeholder)
+        container.register(LyricsCoordinator.self) { (resolver, source: UIViewController, presenter: PresenterCoordinator, song: SharedSong, placeholder: UIImage?) in
+            LyricsCoordinator(
+                source: source,
+                resolver: resolver,
+                presenter: presenter,
+                song: song,
+                placeholder: placeholder
+            )
         }
         
-        container.register(SetupCoordinator.self) { (resolver, router: Router, base: UIViewController, dismissCompletion: @escaping DefaultAction, mode: SetupMode) in
+        container.register(SetupCoordinator.self) { (resolver, source: UIViewController, presenter: PresenterCoordinator, mode: SetupMode) in
             SetupCoordinator(
-                mode: mode,
-                router: router,
+                source: source,
                 resolver: resolver,
-                base: base,
+                presenter: presenter,
                 spotifyProvider: resolver.resolve(SpotifyProvider.self)!,
-                dismissCompletion: dismissCompletion
+                mode: mode
+            )
+        }
+        
+        container.register(LyricsCoordinator.self) { (resolver, source: Router, presenter: PresenterCoordinator, song: SharedSong, placeholder: UIImage?) in
+            LyricsCoordinator(
+                source: source,
+                resolver: resolver,
+                presenter: presenter,
+                song: song,
+                placeholder: placeholder
+            )
+        }
+        
+        container.register(SetupCoordinator.self) { (resolver, source: Router, presenter: PresenterCoordinator, mode: SetupMode) in
+            SetupCoordinator(
+                source: source,
+                resolver: resolver,
+                presenter: presenter,
+                spotifyProvider: resolver.resolve(SpotifyProvider.self)!,
+                mode: mode
             )
         }
         

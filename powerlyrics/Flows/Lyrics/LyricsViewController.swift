@@ -7,13 +7,16 @@
 //
 
 import Haptica
-import UIKit
 
 // MARK: - Constants
 
 fileprivate extension Constants {
     
+    // MARK: - Haptic
+    
     static let heartbeatTap = ".-o--.-O"
+    
+    // MARK: - Numeric
     
     static let cutoffs: (CGFloat, CGFloat, CGFloat, CGFloat) = (27, 38, 36, 40)
     static let largeCutoffs: (CGFloat, CGFloat) = (100, 205)
@@ -36,6 +39,8 @@ fileprivate extension Constants {
     static let fromAlbumText = "From album"
     static let unknownDescriptionText = "No information"
     
+    // MARK: - Alerts
+    
     static var notFoundSpotifyAlert: UIAlertController {
         UIAlertController(
             title: "Not found",
@@ -52,11 +57,15 @@ fileprivate extension Constants {
         )
     }
     
+    // MARK: - Icons
+    
     static let filledHeartImage = UIImage(systemName: "heart.fill")!
     static let heartImage = UIImage(systemName: "heart")!
     
     static let storyTitleFont = UIFont.systemFont(ofSize: 16.0, weight: .medium)
     static let storyContentFont = UIFont.systemFont(ofSize: 14.0)
+    
+    // MARK: - Curves
     
     static let songViewTransformYFunction = { (songViewAdjustment: CGFloat) -> CGFloat in
         (-pow((1 - min((songViewAdjustment) + 0.3, 1)) * (3.68), 3) * 1.3) }
@@ -166,17 +175,19 @@ extension LyricsViewController {
         navigationItem.compactAppearance = appearance
         navigationItem.scrollEdgeAppearance = appearance
         
-        navigationItem.leftBarButtonItem?.reactive.tap.observeNext { [self] _ in
+        navigationItem.leftBarButtonItem?.reactive.tap.observeNext { [weak self] _ in
             Haptic.play(Constants.tinyTap)
-            flowDismiss?()
+            self?.flowDismiss?()
         }.dispose(in: disposeBag)
         
-        navigationItem.rightBarButtonItem?.reactive.tap.observeNext { [self] _ in
-            if let url = viewModel.spotifyURL.value ?? viewModel.song.spotifyURL {
+        navigationItem.rightBarButtonItem?.reactive.tap.observeNext { [weak self] _ in
+            guard let self = self else { return }
+            
+            if let url = self.viewModel.spotifyURL.value ?? self.viewModel.song.spotifyURL {
                 Haptic.play(Constants.tinyTap)
                 UIApplication.shared.open(url, options: [:], completionHandler: nil)
             } else {
-                present(Constants.notFoundSpotifyAlert.with {
+                self.present(Constants.notFoundSpotifyAlert.with {
                     $0.addAction(UIAlertAction(title: Constants.ok, style: .default, handler: nil))
                 }, animated: true, completion: nil)
             }
@@ -230,44 +241,45 @@ extension LyricsViewController {
         }
         
         [likeButton, shareButton, safariButton, notesButton].forEach { button in
-            button.reactive.controlEvents([.touchDragExit, .touchUpInside]).observeNext { [self] _ in
-                likeButton.layer.removeAllAnimations()
+            button.reactive.controlEvents([.touchDragExit, .touchUpInside]).observeNext { [weak self] _ in
+                self?.likeButton.layer.removeAllAnimations()
                 UIView.animate(withDuration: Constants.fastAnimationDuration) {
                     button.alpha = 0.8
                 }
             }.dispose(in: disposeBag)
         }
         
-        likeButton.reactive.tap.throttle(for: Constants.buttonThrottleTime).observeNext { [self] _ in
-            guard viewModel.genre.value != nil else { return }
-            if viewModel.isLiked.value {
-                viewModel.unlikeSong()
+        likeButton.reactive.tap.throttle(for: Constants.buttonThrottleTime).observeNext { [weak self] _ in
+            guard let self = self, self.viewModel.genre.value != nil else { return }
+            if self.viewModel.isLiked.value {
+                self.viewModel.unlikeSong()
                 Haptic.play(Constants.tinyTap)
             } else {
-                viewModel.likeSong()
+                self.viewModel.likeSong()
                 Haptic.play(Constants.heartbeatTap, delay: .pointTwo)
             }
         }.dispose(in: disposeBag)
         
-        shareButton.reactive.tap.throttle(for: Constants.buttonThrottleTime).observeNext { [self] _ in
-            guard let url = viewModel.geniusURL else { return }
+        shareButton.reactive.tap.throttle(for: Constants.buttonThrottleTime).observeNext { [weak self] _ in
+            guard let self = self, let url = self.viewModel.geniusURL else { return }
             Haptic.play(Constants.tinyTap)
             let items = ["\(Constants.shareText) \(url.absoluteURL)"]
             let activityViewController = UIActivityViewController(
                 activityItems: items,
                 applicationActivities: nil
             )
-            present(activityViewController, animated: true)
+            self.present(activityViewController, animated: true)
         }.dispose(in: disposeBag)
         
-        safariButton.reactive.tap.throttle(for: Constants.buttonThrottleTime).observeNext { [self] _ in
-            guard let url = viewModel.geniusURL else { return }
+        safariButton.reactive.tap.throttle(for: Constants.buttonThrottleTime).observeNext { [weak self] _ in
+            guard let self = self, let url = self.viewModel.geniusURL else { return }
             Haptic.play(Constants.tinyTap)
-            flowSafari?(url)
+            self.flowSafari?(url)
         }.dispose(in: disposeBag)
         
-        notesButton.reactive.tap.throttle(for: Constants.buttonThrottleTime).observeNext { [self] _ in
-            guard var description = viewModel.description.value?.clean.typographized else { return }
+        notesButton.reactive.tap.throttle(for: Constants.buttonThrottleTime).observeNext { [weak self] _ in
+            guard let self = self,
+                  var description = self.viewModel.description.value?.clean.typographized else { return }
             if description == Constants.question {
                 description = Constants.unknownDescriptionText
             }
@@ -296,7 +308,7 @@ extension LyricsViewController {
                 ]
             )
             
-            present(UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet).with {
+            self.present(UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet).with {
                 $0.addAction(UIAlertAction(title: Constants.close, style: .default, handler: nil))
                 $0.setValue(attributedMessageText, forKey: "attributedMessage")
                 $0.setValue(attributedTitleText, forKey: "attributedTitle")
@@ -308,30 +320,33 @@ extension LyricsViewController {
     
     func setupOutput() {
         
-        viewModel.lyricsNotFound.observeNext { [self] isNotFound in
+        viewModel.lyricsNotFound.observeNext { [weak self] isNotFound in
+            guard let self = self else { return }
             if isNotFound {
-                present(Constants.notAvailableAlert.with {
+                self.present(Constants.notAvailableAlert.with {
                     $0.addAction(UIAlertAction(title: Constants.ok, style: .default, handler: { _ in
-                        flowDismiss?()
+                        self.flowDismiss?()
                     }))
                 }, animated: true, completion: nil)
             }
         }.dispose(in: disposeBag)
         
-        viewModel.album.dropFirst(.one).observeNext { [self] album in
+        viewModel.album.dropFirst(.one).observeNext { [weak self] album in
+            guard let self = self else { return }
+            
             let text = "\(Constants.fromAlbumText) “\(album)”"
             let attrString = NSMutableAttributedString(string: text, attributes: [.foregroundColor: UIColor.label])
             
             attrString.addAttribute(.foregroundColor, value: UIColor.secondaryLabel, range: NSRange(location: .zero, length: "\(Constants.fromAlbumText) “".count))
             attrString.addAttribute(.foregroundColor, value: UIColor.secondaryLabel, range: NSRange(location: text.count - .one, length: .one))
             
-            UIView.fadeUpdate(firstInfoLabel) {
-                firstInfoLabel.attributedText = attrString
+            UIView.fadeUpdate(self.firstInfoLabel) {
+                self.firstInfoLabel.attributedText = attrString
             }
         }.dispose(in: disposeBag)
         
-        viewModel.producers.dropFirst(.one).observeNext { [self] producers in
-            guard producers.nonEmpty else { return }
+        viewModel.producers.dropFirst(.one).observeNext { [weak self] producers in
+            guard let self = self, producers.nonEmpty else { return }
             let text = "\(Constants.producedByText) \(producers.joined(separator: " \(Constants.ampersand) "))"
             let attrString = NSMutableAttributedString(string: text, attributes: [.foregroundColor: UIColor.label])
             
@@ -340,8 +355,8 @@ extension LyricsViewController {
                 attrString.addAttribute(.foregroundColor, value: UIColor.secondaryLabel, range: NSRange(location: "\(Constants.producedByText) ".count + producers.first.safe.count, length: .three))
             }
             
-            UIView.fadeUpdate(secondInfoLabel) {
-                secondInfoLabel.attributedText = attrString
+            UIView.fadeUpdate(self.secondInfoLabel) {
+                self.secondInfoLabel.attributedText = attrString
             }
         }.dispose(in: disposeBag)
         
@@ -349,29 +364,31 @@ extension LyricsViewController {
             cell.configure(with: LyricsSectionCellViewModel(section: item))
         }.dispose(in: disposeBag)
         
-        viewModel.isLoading.observeNext { [self] loading in
-            UIView.fadeDisplay(activityIndicator, visible: loading)
+        viewModel.isLoading.observeNext { [weak self] loading in
+            guard let self = self else { return }
+            UIView.fadeDisplay(self.activityIndicator, visible: loading)
         }.dispose(in: disposeBag)
         
-        viewModel.isFailed.observeNext { [self] failed in
-            setNoInternetView(isVisible: failed) {
-                viewModel.loadData()
+        viewModel.isFailed.observeNext { [weak self] failed in
+            self?.setNoInternetView(isVisible: failed) {
+                self?.viewModel.loadData()
             }
         }.dispose(in: disposeBag)
         
-        viewModel.isLiked.dropFirst(.one).observeNext { [self] _ in
-            likeButton.isUserInteractionEnabled = true
+        viewModel.isLiked.dropFirst(.one).observeNext { [weak self] _ in
+            self?.likeButton.isUserInteractionEnabled = true
         }.dispose(in: disposeBag)
         
-        viewModel.isLiked.observeNext { [self] isLiked in
-            UIView.fadeUpdate(buttonsStackView) {
-                likeButton.setImage(
+        viewModel.isLiked.observeNext { [weak self] isLiked in
+            guard let self = self else { return }
+            UIView.fadeUpdate(self.buttonsStackView) {
+                self.likeButton.setImage(
                     isLiked ?
                         Constants.filledHeartImage.withTintColor(.label, renderingMode: .alwaysOriginal) :
                         Constants.heartImage.withTintColor(.label, renderingMode: .alwaysOriginal),
                     for: .normal
                 )
-                likeButton.setTitle(isLiked ? Constants.likedText : Constants.likeText, for: .normal)
+                self.likeButton.setTitle(isLiked ? Constants.likedText : Constants.likeText, for: .normal)
             }
         }.dispose(in: disposeBag)
         

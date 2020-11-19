@@ -8,7 +8,6 @@
 
 import Bond
 import ReactiveKit
-import RealmSwift
 
 // MARK: - Constants
 
@@ -116,27 +115,6 @@ class ProfileViewModel: ViewModel {
                   items[sectionAt: .one].items[.zero] !=
                     ProfileCell.action(ActionCellViewModel(action: .connectToSpotify)) {
             items[sectionAt: .one].items[.zero] = ProfileCell.action(ActionCellViewModel(action: .connectToSpotify))
-        }
-        
-    }
-    
-    // MARK: - Helper methods
-    
-    func resetAllViewControllers(window: UIWindow) {
-        if let homeViewController = ((window.rootViewController as? UITabBarController)?.viewControllers?.first as? Router)?.viewControllers.first as? HomeViewController {
-            homeViewController.viewModel.checkSpotifyAccount()
-        }
-        
-        if let searchViewController = ((window.rootViewController as? UITabBarController)?.viewControllers?[safe: .one] as? Router)?.viewControllers.first as? SearchViewController {
-            searchViewController.viewModel.reset()
-        }
-        
-        if let genreMapViewController = ((window.rootViewController as? UITabBarController)?.viewControllers?[safe: .two] as? Router)?.viewControllers.first as? GenreMapViewController {
-            genreMapViewController.reset()
-        }
-        
-        for router in ((window.rootViewController as? UITabBarController)?.viewControllers) ?? [] {
-            (router as? Router)?.popToRootViewController(animated: true)
         }
         
     }

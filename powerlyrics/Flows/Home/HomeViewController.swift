@@ -9,7 +9,6 @@
 import Bond
 import Haptica
 import ReactiveKit
-import UIKit
 
 // MARK: - Constants
 
@@ -70,15 +69,14 @@ class HomeViewController: ViewController, HomeScene {
             flowSetup?(.initial)
         } else {
             viewModel.loadData()
-            viewModel.checkSpotifyAccount()
         }
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
         
-        if !initialLoad {
-            viewModel.checkSpotifyAccount()
+        _ = NotificationCenter.default.addObserver(
+            forName: .appDidLogin,
+            object: nil,
+            queue: nil
+        ) { [weak self] _ in
+            self?.viewModel.loadData()
         }
     }
     
@@ -111,28 +109,30 @@ extension HomeViewController {
     
     func setupInput() {
         
-        tableView.reactive.selectedRowIndexPath.observeNext { [self] indexPath in
-            lastSelectedIndexPath = indexPath
-            tableView.deselectRow(at: indexPath, animated: true)
+        tableView.reactive.selectedRowIndexPath.observeNext { [weak self] indexPath in
+            guard let self = self else { return }
+            self.lastSelectedIndexPath = indexPath
+            self.tableView.deselectRow(at: indexPath, animated: true)
             Haptic.play(Constants.tinyTap)
-            let cell = viewModel.items[itemAt: indexPath]
+            let cell = self.viewModel.items[itemAt: indexPath]
             if case .song(let viewModel) = cell {
-                flowLyrics?(viewModel.song, (tableView.cellForRow(at: indexPath) as? SongCell)?.currentImage)
+                self.flowLyrics?(viewModel.song, (self.tableView.cellForRow(at: indexPath) as? SongCell)?.currentImage)
             } else if case .action(let actionCellViewModel) = cell {
                 if actionCellViewModel.action == .seeTrendingSongs {
-                    flowTrends?(Array(viewModel.trendingSongs.prefix(Constants.maxPlaylistPreviewCount)))
+                    self.flowTrends?(Array(self.viewModel.trendingSongs.prefix(Constants.maxPlaylistPreviewCount)))
                 } else if actionCellViewModel.action == .seeViralSongs {
-                    flowVirals?(Array(viewModel.viralSongs.prefix(Constants.maxPlaylistPreviewCount)))
+                    self.flowVirals?(Array(self.viewModel.viralSongs.prefix(Constants.maxPlaylistPreviewCount)))
                 }
             }
         }.dispose(in: disposeBag)
         
-        navigationItem.rightBarButtonItem?.reactive.tap.throttle(for: Constants.buttonThrottleTime).observeNext { [self] _ in
+        navigationItem.rightBarButtonItem?.reactive.tap.throttle(for: Constants.buttonThrottleTime).observeNext { [weak self] _ in
+            guard let self = self else { return }
             Haptic.play(Constants.tinyTap)
-            if viewModel.isSpotifyAccount.value {
-                flowSafari?(Constants.accountManagementURL)
+            if self.viewModel.isSpotifyAccount.value {
+                self.flowSafari?(Constants.accountManagementURL)
             } else {
-                flowSetup?(.manual)
+                self.flowSetup?(.manual)
             }
         }.dispose(in: disposeBag)
         
@@ -144,32 +144,33 @@ extension HomeViewController {
         
         viewModel.items.bind(to: tableView, using: HomeBinder())
         
-        viewModel.isSpotifyAccount.observeNext { [self] isSpotifyAccount in
-            navigationItem.rightBarButtonItem?.image = isSpotifyAccount ?
+        viewModel.isSpotifyAccount.observeNext { [weak self] isSpotifyAccount in
+            self?.navigationItem.rightBarButtonItem?.image = isSpotifyAccount ?
                 Constants.personCheckIcon :
                 Constants.personPlusIcon
         }.dispose(in: disposeBag)
         
-        viewModel.isFailed.observeNext { [self] isFailed in
-            setNoInternetView(isVisible: isFailed) {
-                viewModel.loadData()
+        viewModel.isFailed.observeNext { [weak self] isFailed in
+            self?.setNoInternetView(isVisible: isFailed) {
+                self?.viewModel.loadData()
             }
         }.dispose(in: disposeBag)
         
-        viewModel.isRefreshing.observeNext { [self] isRefreshing in
-            tableView.isRefreshing = isRefreshing
+        viewModel.isRefreshing.observeNext { [weak self] isRefreshing in
+            self?.tableView.isRefreshing = isRefreshing
         }.dispose(in: disposeBag)
         
-        viewModel.isLoading.observeNext { [self] loading in
-            UIView.fadeDisplay(activityIndicator, visible: loading)
+        viewModel.isLoading.observeNext { [weak self] loading in
+            guard let self = self else { return }
+            UIView.fadeDisplay(self.activityIndicator, visible: loading)
             
             if loading {
-                tableView.unsetRefreshControl()
+                self.tableView.unsetRefreshControl()
             } else {
-                tableView.setRefreshControl { [self] in
-                    viewModel.loadData(refresh: true)
+                self.tableView.setRefreshControl { [weak self] in
+                    self?.viewModel.loadData(refresh: true)
                 }
-                scrollToTop()
+                self.scrollToTop()
             }
         }.dispose(in: disposeBag)
         
