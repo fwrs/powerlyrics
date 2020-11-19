@@ -20,7 +20,7 @@ fileprivate extension Constants {
         $0.dateFormat = "yyyy"
     }.string(from: Date())
     
-    static let footerText = "Build \(buildNumber) - Powered by RapGenius \(year)"
+    static let footerText = "Build \(buildNumber) — Powered by RapGenius \(year)"
     
     static let userPlaceholder = "Unknown user"
     
