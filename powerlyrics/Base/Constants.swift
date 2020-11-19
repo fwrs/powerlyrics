@@ -14,6 +14,8 @@ enum Constants {
     
     // MARK: - Fonts
     
+    static let titleFont = FontFamily.RobotoMono.semiBold.font(size: 17)
+    
     // MARK: - Text
     
     static let ellipsisText = "..."

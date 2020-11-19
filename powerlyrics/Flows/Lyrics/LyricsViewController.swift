@@ -162,7 +162,7 @@ extension LyricsViewController {
         let appearance = UINavigationBarAppearance()
         appearance.configureWithTransparentBackground()
         appearance.titleTextAttributes = [
-            .font: FontFamily.RobotoMono.semiBold.font(size: 17)
+            .font: Constants.titleFont
         ]
         navigationItem.standardAppearance = appearance
         navigationItem.compactAppearance = appearance

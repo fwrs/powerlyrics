@@ -25,7 +25,7 @@ class Router: UINavigationController {
     func configureNavigationbar() {
         let appearance = UINavigationBarAppearance()
         appearance.titleTextAttributes = [
-            .font: FontFamily.RobotoMono.semiBold.font(size: 17)
+            .font: Constants.titleFont
         ]
         appearance.largeTitleTextAttributes = appearance.titleTextAttributes
         navigationBar.standardAppearance = appearance
