@@ -387,7 +387,7 @@ extension UIView {
     private enum ExtensionConstants {
         
         static let alphaChangeKeyPath = "alphaChange"
-        static let opacityKeyPath = "alphaChange"
+        static let opacityKeyPath = "opacity"
         
     }
     
