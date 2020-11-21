@@ -9,21 +9,11 @@
 import Bond
 import ReactiveKit
 
-// MARK: - Constants
-
-extension Constants {
-    
-    static let trendingTitle = "trending"
-    static let viralTitle = "viral"
-    static let likedSongsTitle = "liked songs"
-    
-}
-
 // MARK: - SongListCell
 
 enum SongListCell: Equatable {
-    case song(SongCellViewModel)
     case loading
+    case song(SongCellViewModel)
 }
 
 // MARK: - SongListViewModel
@@ -35,12 +25,6 @@ class SongListViewModel: ViewModel {
     let spotifyProvider: SpotifyProvider
     
     let realmService: RealmServiceProtocol
-    
-    // MARK: - Instance properties
-    
-    var title: String {
-        fatalError("Must be overriden")
-    }
     
     // MARK: - Observables
     

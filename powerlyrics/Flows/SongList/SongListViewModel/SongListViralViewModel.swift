@@ -15,10 +15,6 @@ class SongListViralViewModel: SongListViewModel {
 
     // MARK: - Instance properties
     
-    override var title: String {
-        Constants.viralTitle
-    }
-    
     let preview: [SharedSong]
     
     // MARK: - Init
@@ -71,6 +67,7 @@ class SongListViralViewModel: SongListViewModel {
                         self.endLoading(false)
                     }
                     self.isLoadingWithPreview.value = false
+                    
                 case .failed:
                     self.items.replace(with: [], performDiff: true)
                     delay(Constants.defaultAnimationDuration) {
@@ -83,6 +80,7 @@ class SongListViralViewModel: SongListViewModel {
                     if !retry {
                         self.endLoading(refresh)
                     }
+                    
                 default:
                     break
                 }

@@ -15,10 +15,6 @@ class SongListAlbumViewModel: SongListViewModel {
 
     // MARK: - Instance properties
     
-    override var title: String {
-        album.name
-    }
-    
     let album: SpotifyAlbum
     
     // MARK: - Init
@@ -48,12 +44,14 @@ class SongListAlbumViewModel: SongListViewModel {
                     )
                     self.endLoading(refresh)
                     self.isFailed.value = false
+                    
                 case .failed:
                     self.items.replace(with: [], performDiff: true)
                     delay(Constants.defaultAnimationDuration) {
                         self.isFailed.value = true
                         self.endLoading(refresh)
                     }
+                    
                 default:
                     break
                 }

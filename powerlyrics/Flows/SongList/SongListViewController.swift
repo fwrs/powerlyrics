@@ -65,11 +65,9 @@ extension SongListViewController {
     // MARK: - View
 
     func setupView() {
-        tableView.register(SongCell.self)
         tableView.register(LoadingCell.self)
+        tableView.register(SongCell.self)
         tableView.cellLayoutMarginsFollowReadableWidth = false
-        
-        navigationItem.title = viewModel.title.lowercased()
     }
     
     // MARK: - Input
@@ -96,16 +94,16 @@ extension SongListViewController {
             let tableView = uiTableView as! TableView
             let item = items[indexPath.row]
             switch item {
-            case .song(let songCellViewModel):
-                let cell = tableView.dequeue(SongCell.self, indexPath: indexPath)
-                cell.configure(with: songCellViewModel)
-                return cell
-                
             case .loading:
                 let cell = tableView.dequeue(LoadingCell.self, indexPath: indexPath)
                 cell.isUserInteractionEnabled = false
                 cell.selectionStyle = .none
                 cell.separatorInset = UIEdgeInsets.zero.with { $0.left = .greatestFiniteMagnitude }
+                return cell
+                
+            case .song(let songCellViewModel):
+                let cell = tableView.dequeue(SongCell.self, indexPath: indexPath)
+                cell.configure(with: songCellViewModel)
                 return cell
             }
         }

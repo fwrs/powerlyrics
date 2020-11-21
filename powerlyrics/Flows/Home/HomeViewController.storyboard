@@ -85,11 +85,7 @@
                                 </constraints>
                             </view>
                         </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" title="Connect with Spotify" image="person.crop.circle.badge.plus" catalog="system" id="Z1o-8E-t7t">
-                            <userDefinedRuntimeAttributes>
-                                <userDefinedRuntimeAttribute type="string" keyPath="localizedTitleKey" value="home.navBar.connectToSpotify"/>
-                            </userDefinedRuntimeAttributes>
-                        </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" image="person.crop.circle.badge.plus" catalog="system" id="Z1o-8E-t7t"/>
                     </navigationItem>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
                     <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>

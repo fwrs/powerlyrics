@@ -14,8 +14,7 @@ import ReactiveKit
 fileprivate extension Constants {
     
     static let buildNumber = Bundle.main.object(forInfoDictionaryKey: "CFBundleVersion") as! String
-    static let footerText = "Build \(buildNumber) — Powered by RapGenius \(year)"
-    static let userPlaceholder = "Unknown user"
+    static let footerText = Strings.Profile.build(buildNumber, year)
 
     static let year = DateFormatter().with {
         $0.dateFormat = "yyyy"
@@ -26,9 +25,9 @@ fileprivate extension Constants {
 // MARK: - ProfileCell
 
 enum ProfileCell: Equatable {
-    case stats(StatsCellViewModel)
+    case stats(ProfileStatsCellViewModel)
     case action(ActionCellViewModel)
-    case build(BuildCellViewModel)
+    case build(ProfileBuildCellViewModel)
 }
 
 // MARK: - ProfileViewModel
@@ -46,15 +45,15 @@ class ProfileViewModel: ViewModel {
     // MARK: - Observables
     
     let items = MutableObservableArray2D(Array2D<(), ProfileCell>(sectionsWithItems: [
-        ((), [ProfileCell.stats(StatsCellViewModel())]),
+        ((), [ProfileCell.stats(ProfileStatsCellViewModel())]),
         ((), [ProfileCell.action(ActionCellViewModel(action: .connectToSpotify)),
               ProfileCell.action(ActionCellViewModel(action: .likedSongs)),
               ProfileCell.action(ActionCellViewModel(action: .appSourceCode)),
               ProfileCell.action(ActionCellViewModel(action: .signOut))]),
-        ((), [ProfileCell.build(BuildCellViewModel(text: Constants.footerText))])
+        ((), [ProfileCell.build(ProfileBuildCellViewModel(text: Constants.footerText))])
     ]))
     
-    let name = Observable(Constants.userPlaceholder)
+    let name: Observable<String?> = Observable(nil)
     
     let premium = Observable(false)
     
@@ -64,7 +63,7 @@ class ProfileViewModel: ViewModel {
     
     let registerDate: Observable<Date?> = Observable(nil)
     
-    let stats = Observable(StatsCellViewModel())
+    let stats = Observable(ProfileStatsCellViewModel())
     
     // MARK: - Init
     
@@ -86,7 +85,7 @@ class ProfileViewModel: ViewModel {
     
     func loadData() {
         let userData = realmService.userData
-        name.value = userData?.name ?? Constants.userPlaceholder
+        name.value = userData?.name
         premium.value = userData?.premium ?? false
         registerDate.value = userData?.registerDate
         
@@ -99,7 +98,12 @@ class ProfileViewModel: ViewModel {
         }
         
         if let stats = realmService.stats {
-            self.stats.value = StatsCellViewModel(likedSongs: realmService.likedSongsCount, searches: stats.searches, discoveries: stats.discoveries.count, viewedArtists: stats.viewedArtists.count)
+            self.stats.value = ProfileStatsCellViewModel(
+                likedSongs: realmService.likedSongsCount,
+                searches: stats.searches,
+                discoveries: stats.discoveries.count,
+                viewedArtists: stats.viewedArtists.count
+            )
         }
         
         if items[sectionAt: .zero].items[.zero] != ProfileCell.stats(stats.value) {

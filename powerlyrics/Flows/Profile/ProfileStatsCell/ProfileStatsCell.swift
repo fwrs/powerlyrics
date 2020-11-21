@@ -1,5 +1,5 @@
 //
-//  StatsCell.swift
+//  ProfileStatsCell.swift
 //  powerlyrics
 //
 //  Created by Ilya Kulinkovich on 10/31/20.
@@ -12,16 +12,31 @@ import UIKit
 
 fileprivate extension Constants {
     
-    static let likedSongsText = (singular: "liked song", plural: "liked songs")
-    static let searchesText = (singular: "search", plural: "searches")
-    static let discoveriesText = (singular: "new discovery", plural: "new discoveries")
-    static let viewedArtistsText = (singular: "viewed artist", plural: "viewed artists")
+    static let likedSongsText = (
+        plural: Strings.Profile.Stats.LikedSongs.plural,
+        singular: Strings.Profile.Stats.LikedSongs.singular
+    )
+    
+    static let searchesText = (
+        plural: Strings.Profile.Stats.Searches.plural,
+        singular: Strings.Profile.Stats.Searches.singular
+    )
+    
+    static let discoveriesText = (
+        plural: Strings.Profile.Stats.Discoveries.plural,
+        singular: Strings.Profile.Stats.Discoveries.singular
+    )
+    
+    static let viewedArtistsText = (
+        plural: Strings.Profile.Stats.ViewedArtists.plural,
+        singular: Strings.Profile.Stats.ViewedArtists.singular
+    )
     
 }
 
-// MARK: - StatsCell
+// MARK: - ProfileStatsCell
 
-class StatsCell: TableViewCell {
+class ProfileStatsCell: TableViewCell {
     
     // MARK: - Outlets
     
@@ -69,7 +84,7 @@ class StatsCell: TableViewCell {
     
     // MARK: - Configure
     
-    func configure(with viewModel: StatsCellViewModel) {
+    func configure(with viewModel: ProfileStatsCellViewModel) {
         
         likedSongsCountLabel.text = String(viewModel.likedSongs)
         likedSongsDescriptionLabel.text = viewModel.likedSongs == .one ?

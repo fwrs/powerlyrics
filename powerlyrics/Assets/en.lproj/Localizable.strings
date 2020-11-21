@@ -19,12 +19,59 @@
 
 "shared.ok" = "OK";
 "shared.cancel" = "Cancel";
+"shared.back" = "Back";
+
+/* MARK: - Base */
+
+"base.noInternet.title" = "Failed to load";
+"base.noInternet.message" = "Check your connection\nand try again";
+"base.noInternet.tryAgain" = "try again";
+"base.empty.title" = "Nothing here";
+"base.empty.message" = "There’s no data to display";
+
+/* MARK: - Context menu */
+
+"contextMenu.copy" = "Copy";
+"contextMenu.download" = "Download";
+"contextMenu.share" = "Share";
+"contextMenu.failedToSave.title" = "Failed to save image";
+"contextMenu.failedToSave.message" = "Please check application permissions and try again.";
+"contextMenu.saveSucceeded.title" = "Image saved successfuly";
+"contextMenu.saveSucceeded.message" = "Check your gallery to find it.";
+
+/* MARK: - Genres */
+
+"genre.rock" = "rock";
+"genre.classic" = "classic";
+"genre.rap" = "rap";
+"genre.country" = "country";
+"genre.acoustic" = "acoustic";
+"genre.pop" = "pop";
+"genre.jazz" = "jazz";
+"genre.edm" = "edm";
+"genre.unknown" = "unknown";
+
+/* MARK: - Genre analysis */
+
+"genreAnalysis.low.songsLikedPlural" = "%d songs liked";
+"genreAnalysis.low.songsLikedSingular" = "%d song liked";
+"genreAnalysis.low" = "You appear to enjoy %@ less than others, since you have just %@ from it.";
+
+"genreAnalysis.ok.songsLikedPlural" = "%d songs liked";
+"genreAnalysis.ok.songsLikedSingular" = "%d song liked";
+"genreAnalysis.ok" = "Looks like you have some interest in %@, with total of %@.";
+
+"genreAnalysis.good.likedSongsPlural" = "liked %d songs";
+"genreAnalysis.good.likedSongsSingular" = "liked %d song";
+"genreAnalysis.good" = "Having %@ from %@, looks like you’re a fan of it!";
+
+"genreAnalysis.overwhelming" = "Looks like you’re a huge fan of %@, maybe try exploring some other genres.";
 
 /* MARK: - Setup */
 
 "setup.welcomeTo" = "Welcome to";
 "setup.signInAndConnect" = "Sign in and connect to Spotify";
-"setup.signInAndConnect" = "Connect to Spotify later";
+"setup.connectLater" = "Connect to Spotify later";
 "setup.extraDataRequired" = "Some extra data is required\nfor logging in without Spotify.";
 "setup.name" = "Name";
 "setup.over18" = "Over 18";
@@ -36,10 +83,11 @@
 "setup.networkAlert.title" = "Failed to sign in";
 "setup.networkAlert.message" = "Please try again.";
 "setup.pleaseWait" = "Please wait…";
+"setup.spotifyAccountPromotion.title" = "Add Spotify account";
+"setup.spotifyAccountPromotion.message" = "This will introduce you to\na greater set of features within\npowerlyrics.";
 
 /* MARK: - Home */
 
-"home.navBar.connectToSpotify" = "Connect to Spotify";
 "home.section.nowPlaying" = "Now playing";
 "home.section.trending" = "Trending";
 "home.section.viral" = "Viral";
@@ -48,20 +96,81 @@
 /* MARK: - Search */
 
 "search.title" = "search";
+"search.nothingWasFound" = "Nothing was found\nfor your query";
+"search.startTyping" = "Start typing to\nreceive suggestions";
+"search.noResults" = "No results";
+"search.trending.title" = "Trending today";
+"search.trending.failed" = "Failed to load trends.";
+"search.trending.tryAgain" = "Try again?";
+"search.section.topResult" = "Top result";
+"search.section.songs" = "Songs";
+"search.section.albums" = "Albums";
 
 /* MARK: - GenreMap */
 
-"genremap.title" = "genremap";
+"genreMap.title" = "genremap";
+"genreMap.description" = "Your genremap shows how diverse your music taste is. This graph is populated based on your liked music. Tap on a genre to learn more. 🎵";
+"genreMap.description.likedMusic" = "liked music";
+"genreMap.noData.title" = "Not enough data 😴";
+"genreMap.noData.subtitle" = "Like songs to populate GenreMap";
+
+/* MARK: - Genre stats */
+
+"genreStats.empty.title" = "Nothing here";
+"genreStats.empty.message" = "This genre is feeling\npretty neglected";
+"genreStats.info.hereSongsPlural" = "Here’s the songs:";
+"genreStats.info.hereSongsSingular" = "Here’s the song:";
 
 /* MARK: - Profile */
 
 "profile.title" = "profile";
+"profile.unknownRegisterDate" = "Unknown register date";
+"profile.unknownUser" = "Unknown user";
+"profile.registered" = "Registered %@";
+"profile.logOut.title" = "Are you sure you want to sign out?";
+"profile.logOut.message" = "This will delete all local data, including liked songs, but not Spotify data. There’s no undoing this.";
+"profile.logOut.accept" = "Reset and sign out";
+"profile.stats.likedSongs.plural" = "liked songs";
+"profile.stats.likedSongs.singular" = "liked song";
+"profile.stats.searches.plural" = "searches";
+"profile.stats.searches.singular" = "search";
+"profile.stats.discoveries.plural" = "new discoveries";
+"profile.stats.discoveries.singular" = "new discovery";
+"profile.stats.viewedArtists.plural" = "viewed artists";
+"profile.stats.viewedArtists.singular" = "viewed artist";
+"profile.build" = "Build %@ — Powered by RapGenius %@";
 
 /* MARK: - Lyrics */
 
 "lyrics.title" = "lyrics";
+"lyrics.instrumentalContent" = "[Instrumental]";
+"lyrics.shareText" = "Just discovered this awesome song using the powerlyrics app: %@";
+"lyrics.button.like" = "like";
+"lyrics.button.liked" = "liked";
+"lyrics.button.share" = "share";
+"lyrics.button.safari" = "safari";
+"lyrics.button.story" = "story";
+"lyrics.info.fromAlbum" = "From album";
+"lyrics.info.notInAnAlbum" = "Not in an album";
+"lyrics.info.producedBy" = "Produced by";
+"lyrics.info.unknownAlbum" = "Unknown album";
+"lyrics.info.unknownProducer" = "Unknown producer";
+"lyrics.notFoundSpotify.title" = "Not found";
+"lyrics.notFoundSpotify.message" = "We couldn’t find this item on Spotify.";
+"lyrics.notFoundLyrics.title" = "Lyrics not available";
+"lyrics.notFoundLyrics.message" = "This song isn’t stored in the Genius database.";
+
+/* MARK: - Lyrics story */
+
+"lyricsStory.title" = "story";
+"lyricsStory.empty.title" = "Nothing here";
+"lyricsStory.empty.message" = "We couldn’t find the\nstory for this song";
 
 /* MARK: - Song list */
+
+"songList.title.trending" = "trending";
+"songList.title.viral" = "viral";
+"songList.title.likedSongs" = "liked songs";
 
 /* MARK: - Action cell */
 
@@ -72,3 +181,7 @@
 "actionCell.seeTrendingSongs" = "Discover all trending songs";
 "actionCell.seeViralSongs" = "Discover all viral songs";
 "actionCell.appSourceCode" = "Source code";
+
+/* MARK: - Song cell */
+
+"songCell.unknownArtist" = "Unknown artist";

@@ -15,10 +15,6 @@ class SongListLikedViewModel: SongListViewModel {
 
     // MARK: - Instance properties
     
-    override var title: String {
-        Constants.likedSongsTitle
-    }
-    
     var firstLoad: Bool = true
     
     // MARK: - Load data

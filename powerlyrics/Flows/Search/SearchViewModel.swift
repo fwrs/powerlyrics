@@ -29,13 +29,13 @@ enum SearchSection {
     var localizedTitle: String {
         switch self {
         case .topResult:
-            return "Top Result"
+            return Strings.Search.Section.topResult
             
         case .songs:
-            return "Songs"
+            return Strings.Search.Section.songs
             
         case .albums:
-            return "Albums"
+            return Strings.Search.Section.albums
         }
     }
     
@@ -45,7 +45,7 @@ enum SearchSection {
 
 enum SearchCell: Equatable {
     case song(SongCellViewModel)
-    case albums(AlbumsCellViewModel)
+    case albums(SearchAlbumsCellViewModel)
 }
 
 // MARK: - SearchViewModel
@@ -74,7 +74,7 @@ class SearchViewModel: ViewModel {
     
     let items = MutableObservableArray2D(Array2D<SearchSection, SearchCell>())
     
-    let trends = MutableObservableArray<TrendCellViewModel>()
+    let trends = MutableObservableArray<SearchTrendCellViewModel>()
     
     let trendsLoading = Observable(false)
     
@@ -107,16 +107,18 @@ class SearchViewModel: ViewModel {
                             .map { $0.asSharedSong.strippedFeatures }
                             .sorted { $0.name.count < $1.name.count }
                             .map { song in
-                                TrendCellViewModel(song: song)
+                                SearchTrendCellViewModel(song: song)
                             },
                         performDiff: true
                     )
                     self?.trendsLoading.value = false
+                    
                 case .failed:
                     delay(Constants.defaultAnimationDuration) { [weak self] in
                         self?.trendsFailed.value = true
                         self?.trendsLoading.value = false
                     }
+                    
                 default:
                     break
                 }
@@ -149,9 +151,11 @@ class SearchViewModel: ViewModel {
                 case .value(let response):
                     self?.searchSongsResult = response.response.hits.map { $0.result.asSharedSong }
                     group.leave()
+                    
                 case .failed:
                     failedGenius = true
                     group.leave()
+                    
                 default:
                     break
                 }
@@ -174,10 +178,12 @@ class SearchViewModel: ViewModel {
                         self?.searchAlbumsResult = []
                     }
                     group.leave()
+                    
                 case .failed:
                     self?.searchAlbumsResult = []
                     failedSpotify = true
                     group.leave()
+                    
                 default:
                     break
                 }
@@ -190,7 +196,7 @@ class SearchViewModel: ViewModel {
             
             let songsSection = Array(self.searchSongsResult.dropFirst().prefix(Constants.maxPlaylistPreviewCount).map { SearchCell.song(SongCellViewModel(song: $0)) })
             
-            let albumsSection = self.searchAlbumsResult.isEmpty ? [] : [SearchCell.albums(AlbumsCellViewModel(albums: self.searchAlbumsResult))]
+            let albumsSection = self.searchAlbumsResult.isEmpty ? [] : [SearchCell.albums(SearchAlbumsCellViewModel(albums: self.searchAlbumsResult))]
                         
             if failedGenius && failedSpotify {
                 delay(Constants.defaultAnimationDuration) { [weak self] in

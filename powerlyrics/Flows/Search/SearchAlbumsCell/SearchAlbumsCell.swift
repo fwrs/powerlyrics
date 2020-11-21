@@ -1,5 +1,5 @@
 //
-//  AlbumsCell.swift
+//  SearchAlbumsCell.swift
 //  powerlyrics
 //
 //  Created by Ilya Kulinkovich on 11/4/20.
@@ -17,9 +17,9 @@ fileprivate extension Constants {
     
 }
 
-// MARK: - AlbumsCell
+// MARK: - SearchAlbumsCell
 
-class AlbumsCell: TableViewCell {
+class SearchAlbumsCell: TableViewCell {
     
     // MARK: - Outlets
     
@@ -54,12 +54,15 @@ class AlbumsCell: TableViewCell {
                 viewSquircle: true
             )
         }
+        
         contextMenuHandlers.removeAll()
+        
         for (index, view) in albumArtImageViews.enumerated() {
             let contextMenuHandler = ImageContextMenuInteractionHandler(
                 shadowFadeView: albumArtContainerViews[safe: index],
                 imageView: view
             )
+            
             contextMenuHandlers.append(contextMenuHandler)
             let interaction = UIContextMenuInteraction(delegate: contextMenuHandler)
             view.addInteraction(interaction)
@@ -69,9 +72,9 @@ class AlbumsCell: TableViewCell {
     
     // MARK: - Configure
     
-    func configure(with viewModel: AlbumsCellViewModel) {
+    func configure(with viewModel: SearchAlbumsCellViewModel) {
         for (index, album) in (.zero..<Int.three).map({ viewModel.albums[safe: $0] }).enumerated() {
-            if let album = album {
+            if let album = album, album.name.nonEmpty {
                 albumArtImageViews[safe: index]?.populate(with: album.thumbnailAlbumArt)
                 albumNameLabels[safe: index]?.text = album.name
                 contextMenuHandlers[safe: index]?.updateFullImage(with: album.albumArt)

@@ -12,19 +12,19 @@ import Haptica
 
 extension Constants {
     
-    static let copy = (title: "Copy", icon: UIImage(systemName: "doc.on.doc"))
+    static let copy = (title: Strings.ContextMenu.copy, icon: UIImage(systemName: "doc.on.doc"))
     
 }
 
 fileprivate extension Constants {
     
-    static let download = (title: "Download", icon: UIImage(systemName: "square.and.arrow.down"))
-    static let share = (title: "Share", icon: UIImage(systemName: "square.and.arrow.up"))
+    static let download = (title: Strings.ContextMenu.download, icon: UIImage(systemName: "square.and.arrow.down"))
+    static let share = (title: Strings.ContextMenu.share, icon: UIImage(systemName: "square.and.arrow.up"))
     
     static var failedToShareAlert: UIAlertController {
         UIAlertController(
-            title: "Failed to save image",
-            message: "Please check application permissions and try again.",
+            title: Strings.ContextMenu.FailedToSave.title,
+            message: Strings.ContextMenu.FailedToSave.message,
             preferredStyle: .alert
         ).with {
             $0.addAction(UIAlertAction(title: Constants.ok, style: .default, handler: nil))
@@ -33,8 +33,8 @@ fileprivate extension Constants {
     
     static var shareSucceededAlert: UIAlertController {
         UIAlertController(
-            title: "Image saved successfuly",
-            message: "Check your gallery to find it.",
+            title: Strings.ContextMenu.SaveSucceeded.title,
+            message: Strings.ContextMenu.SaveSucceeded.message,
             preferredStyle: .alert
         ).with {
             $0.addAction(UIAlertAction(title: Constants.ok, style: .default, handler: nil))

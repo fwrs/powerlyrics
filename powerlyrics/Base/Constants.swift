@@ -31,9 +31,8 @@ enum Constants {
     static let exclamation = "!"
     static let spotifySystemName = "spotify"
     static let geniusSystemName = "genius"
-    static let ok = "OK"
-    static let close = "Close"
-    static let cancel = "Cancel"
+    static let ok = Strings.Shared.ok
+    static let cancel = Strings.Shared.cancel
     static let englishPlural = "s"
     
     // MARK: - Spacing

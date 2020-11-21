@@ -83,8 +83,6 @@ extension UIImage {
     
 }
 
-// swiftlint:disable all
-
 struct UIImageColors {
     var background: UIColor!
     var primary: UIColor!
@@ -117,110 +115,116 @@ fileprivate struct UIImageColorsCounter {
 
 fileprivate extension Double {
     
-    private var r: Double {
-        return fmod(floor(self/1000000),1000000)
+    private var redValue: Double {
+        fmod(floor(self / 1000000), 1000000)
     }
     
-    private var g: Double {
-        return fmod(floor(self/1000),1000)
+    private var greenValue: Double {
+        fmod(floor(self / 1000), 1000)
     }
     
-    private var b: Double {
-        return fmod(self,1000)
+    private var blueValue: Double {
+        fmod(self, 1000)
     }
     
     var isDarkColor: Bool {
-        return (r*0.2126) + (g*0.7152) + (b*0.0722) < 127.5
+        (redValue * 0.2126) + (greenValue * 0.7152) + (blueValue * 0.0722) < 127.5
     }
     
     var isBlackOrWhite: Bool {
-        return (r > 232 && g > 232 && b > 232) || (r < 23 && g < 23 && b < 23)
+        (redValue > 232 && greenValue > 232 && blueValue > 232) || (redValue < 23 && greenValue < 23 && blueValue < 23)
     }
     
     func isDistinct(_ other: Double) -> Bool {
-        let _r = self.r
-        let _g = self.g
-        let _b = self.b
-        let o_r = other.r
-        let o_g = other.g
-        let o_b = other.b
+        let rFix = redValue
+        let gFix = greenValue
+        let bFix = blueValue
+        let orFix = other.redValue
+        let ogFix = other.greenValue
+        let obFix = other.blueValue
         
-        return (fabs(_r-o_r) > 63.75 || fabs(_g-o_g) > 63.75 || fabs(_b-o_b) > 63.75)
-            && !(fabs(_r-_g) < 7.65 && fabs(_r-_b) < 7.65 && fabs(o_r-o_g) < 7.65 && fabs(o_r-o_b) < 7.65)
+        return (fabs(rFix-orFix) > 63.75 || fabs(gFix-ogFix) > 63.75 || fabs(bFix-obFix) > 63.75)
+            && !(fabs(rFix-gFix) < 7.65 && fabs(rFix-bFix) < 7.65 && fabs(orFix-ogFix) < 7.65 && fabs(orFix-obFix) < 7.65)
     }
     
     func with(minSaturation: Double) -> Double {
-        let _r = r/255
-        let _g = g/255
-        let _b = b/255
-        var H, S, V: Double
-        let M = fmax(_r,fmax(_g, _b))
-        var C = M-fmin(_r,fmin(_g, _b))
+        let rFix = redValue / 255
+        let gFix = greenValue / 255
+        let bFix = blueValue / 255
+        var hue, saturation, value: Double
+        let mValue = fmax(rFix, fmax(gFix, bFix))
+        var cValue = mValue - fmin(rFix, fmin(gFix, bFix))
         
-        V = M
-        S = V == .zero ? .zero : C/V
+        value = mValue
+        saturation = value == .zero ? .zero : cValue / value
         
-        if minSaturation <= S {
+        if minSaturation <= saturation {
             return self
         }
         
-        if C == .zero {
-            H = .zero
-        } else if _r == M {
-            H = fmod((_g-_b)/C, 6)
-        } else if _g == M {
-            H = 2+((_b-_r)/C)
+        if cValue == .zero {
+            hue = .zero
+        } else if rFix == mValue {
+            hue = fmod((gFix - bFix) / cValue, 6)
+        } else if gFix == mValue {
+            hue = 2 + ((bFix - rFix) / cValue)
         } else {
-            H = 4+((_r-_g)/C)
+            hue = 4 + ((rFix - gFix) / cValue)
         }
         
-        if H < .zero {
-            H += 6
+        if hue < .zero {
+            hue += 6
         }
-
-        C = V*minSaturation
-        let X = C*(1-fabs(fmod(H,2)-1))
-        var R, G, B: Double
         
-        switch H {
+        cValue = value * minSaturation
+        let xValue = cValue * (1 - fabs(fmod(hue, 2) - 1))
+        var red, green, blue: Double
+        
+        switch hue {
         case 0...1:
-            R = C
-            G = X
-            B = Double.zero
+            red = cValue
+            green = xValue
+            blue = Double.zero
+            
         case 1...2:
-            R = X
-            G = C
-            B = Double.zero
+            red = xValue
+            green = cValue
+            blue = Double.zero
+            
         case 2...3:
-            R = Double.zero
-            G = C
-            B = X
+            red = Double.zero
+            green = cValue
+            blue = xValue
+            
         case 3...4:
-            R = Double.zero
-            G = X
-            B = C
+            red = Double.zero
+            green = xValue
+            blue = cValue
+            
         case 4...5:
-            R = X
-            G = Double.zero
-            B = C
+            red = xValue
+            green = Double.zero
+            blue = cValue
+            
         case 5..<6:
-            R = C
-            G = Double.zero
-            B = X
+            red = cValue
+            green = Double.zero
+            blue = xValue
+            
         default:
-            R = Double.zero
-            G = Double.zero
-            B = Double.zero
+            red = Double.zero
+            green = Double.zero
+            blue = Double.zero
         }
         
-        let m = V-C
+        let mNewValue = value - cValue
         
-        return (floor((R + m)*255)*1000000)+(floor((G + m)*255)*1000)+floor((B + m)*255)
+        return (floor((red + mNewValue)*255)*1000000)+(floor((green + mNewValue)*255)*1000)+floor((blue + mNewValue)*255)
     }
     
     func isContrasting(_ color: Double) -> Bool {
-        let bgLum = (0.2126*r)+(0.7152*g)+(0.0722*b)+12.75
-        let fgLum = (0.2126*color.r)+(0.7152*color.g)+(0.0722*color.b)+12.75
+        let bgLum = (0.2126*redValue)+(0.7152*greenValue)+(0.0722*blueValue)+12.75
+        let fgLum = (0.2126*color.redValue)+(0.7152*color.greenValue)+(0.0722*color.blueValue)+12.75
         if bgLum > fgLum {
             return 1.6 < bgLum/fgLum
         } else {
@@ -229,11 +233,11 @@ fileprivate extension Double {
     }
     
     var uicolor: UIColor {
-        return UIColor(red: CGFloat(r)/255, green: CGFloat(g)/255, blue: CGFloat(b)/255, alpha: 1)
+        UIColor(red: CGFloat(redValue)/255, green: CGFloat(greenValue)/255, blue: CGFloat(blueValue)/255, alpha: 1)
     }
     
     var pretty: String {
-        return "\(Int(self.r)), \(Int(self.g)), \(Int(self.b))"
+        "\(Int(self.redValue)), \(Int(self.greenValue)), \(Int(self.blueValue))"
     }
 }
 
@@ -260,6 +264,17 @@ extension UIImage {
         }
     }
     
+    static let sortedColorComparator: Comparator = { (main, other) -> ComparisonResult in
+        let mainColors = main as! UIImageColorsCounter, otherColors = other as! UIImageColorsCounter
+        if mainColors.count < otherColors.count {
+            return .orderedDescending
+        } else if mainColors.count == otherColors.count {
+            return .orderedSame
+        } else {
+            return .orderedAscending
+        }
+    }
+    
     func getColors(quality: UIImageColorsQuality = .high) -> UIImageColors? {
         var scaleDownSize: CGSize = self.size
         if quality != .highest {
@@ -274,14 +289,13 @@ extension UIImage {
         
         guard let resizedImage = self.resizeForUIImageColors(newSize: scaleDownSize) else { return nil }
         
-        
         guard let cgImage = resizedImage.cgImage else { return nil }
         
         let width: Int = cgImage.width
         let height: Int = cgImage.height
         
-        let threshold = Int(CGFloat(height)*0.01)
-        var proposed: [Double] = [-1,-1,-1,-1]
+        let threshold = Int(CGFloat(height) * 0.01)
+        var proposed: [Double] = [-1, -1, -1, -1]
         
         guard let data = CFDataGetBytePtr(cgImage.dataProvider!.data) else {
             fatalError("UIImageColors.getColors failed: could not get cgImage data.")
@@ -291,35 +305,25 @@ extension UIImage {
         for x in 0..<width {
             for y in 0..<height {
                 let pixel: Int = ((width * y) + x) * 4
-                if 127 <= data[pixel+3] {
+                if data[pixel + 3] >= 127 {
                     imageColors.add((Double(data[pixel+2])*1000000)+(Double(data[pixel+1])*1000)+(Double(data[pixel])))
                 }
             }
         }
         
-        let sortedColorComparator: Comparator = { (main, other) -> ComparisonResult in
-            let m = main as! UIImageColorsCounter, o = other as! UIImageColorsCounter
-            if m.count < o.count {
-                return .orderedDescending
-            } else if m.count == o.count {
-                return .orderedSame
-            } else {
-                return .orderedAscending
-            }
-        }
-        
         var enumerator = imageColors.objectEnumerator()
         var sortedColors = NSMutableArray(capacity: imageColors.count)
-        while let K = enumerator.nextObject() as? Double {
-            let C = imageColors.count(for: K)
-            if threshold < C {
-                sortedColors.add(UIImageColorsCounter(color: K, count: C))
+        while let next = enumerator.nextObject() as? Double {
+            let count = imageColors.count(for: next)
+            if threshold < count {
+                sortedColors.add(UIImageColorsCounter(color: next, count: count))
             }
         }
-        sortedColors.sort(comparator: sortedColorComparator)
+        sortedColors.sort(comparator: UIImage.sortedColorComparator)
         
         var proposedEdgeColor: UIImageColorsCounter
-        if 0 < sortedColors.count {
+        let numberOfItems = sortedColors.count
+        if numberOfItems > 0 {
             proposedEdgeColor = sortedColors.object(at: .zero) as! UIImageColorsCounter
         } else {
             proposedEdgeColor = UIImageColorsCounter(color: .zero, count: .one)
@@ -352,7 +356,7 @@ extension UIImage {
                 sortedColors.add(UIImageColorsCounter(color: next, count: count))
             }
         }
-        sortedColors.sort(comparator: sortedColorComparator)
+        sortedColors.sort(comparator: UIImage.sortedColorComparator)
         
         for color in sortedColors {
             let color = (color as! UIImageColorsCounter).color
@@ -377,7 +381,7 @@ extension UIImage {
         
         let isDarkBackground = proposed[0].isDarkColor
         for i in 1...3 where proposed[i] == -1 {
-            proposed[i] = isDarkBackground ? 255255255:0
+            proposed[i] = isDarkBackground ? 255255255 : 0
         }
         
         return UIImageColors(

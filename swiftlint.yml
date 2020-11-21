@@ -1,4 +1,4 @@
-disabled_rules: # rule identifiers to exclude from running
+disabled_rules:
   - trailing_whitespace
   - vertical_parameter_alignment
   - function_body_length
@@ -18,8 +18,9 @@ disabled_rules: # rule identifiers to exclude from running
   - force_try
   - line_length
   - opening_brace
+  - cyclomatic_complexity
 
-opt_in_rules: # some rules are only opt-in
+opt_in_rules:
   - empty_count
   - explicit_init
   - first_where
@@ -32,7 +33,7 @@ opt_in_rules: # some rules are only opt-in
   - switch_case_on_newline
   - yoda_condition
 
-excluded: # paths to ignore during linting. Takes precedence over included.
+excluded:
   - Carthage
   - Pods
 
@@ -72,7 +73,7 @@ type_name:
   min_length: 2
   max_length: 50
 
-reporter: "xcode" # reporter type (xcode, json, csv, checkstyle, junit, html, emoji)
+reporter: "xcode"
 
 custom_rules:
   custom_rules:

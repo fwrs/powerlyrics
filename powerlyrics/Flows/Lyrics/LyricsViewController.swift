@@ -30,33 +30,32 @@ fileprivate extension Constants {
     static let baseNavigationBarHeight: CGFloat = 270
     static let contentInsetNotchAdjustment: CGFloat = 30
     
-    static let tappedButtonAlpha = 0.8
+    static let tappedButtonAlpha: CGFloat = 0.8
     
     // MARK: - Strings
     
-    static let lyricsTitle = "lyrics"
-    static let storyTitle = "Story"
-    static let shareText = "Just discovered this awesome song using powerlyrics app:"
-    static let producedByText = "Produced by"
-    static let likeText = "like"
-    static let likedText = "liked"
-    static let fromAlbumText = "From album"
-    static let notInAnAlbumText = "Not in an album"
+    static let lyricsTitle = Strings.Lyrics.title
+    static let shareText = { (url: String) in Strings.Lyrics.shareText(url) }
+    static let likeText = Strings.Lyrics.Button.like
+    static let likedText = Strings.Lyrics.Button.liked
+    static let fromAlbumText = Strings.Lyrics.Info.fromAlbum
+    static let notInAnAlbumText = Strings.Lyrics.Info.notInAnAlbum
+    static let producedByText = Strings.Lyrics.Info.producedBy
     
     // MARK: - Alerts
     
     static var notFoundSpotifyAlert: UIAlertController {
         UIAlertController(
-            title: "Not found",
-            message: "We couldn’t find this item on Spotify.",
+            title: Strings.Lyrics.NotFoundSpotify.title,
+            message: Strings.Lyrics.NotFoundSpotify.message,
             preferredStyle: .alert
         )
     }
     
     static var notAvailableAlert: UIAlertController {
         UIAlertController(
-            title: "Lyrics not available",
-            message: "This song isn’t stored in the Genius database.",
+            title: Strings.Lyrics.NotFoundLyrics.title,
+            message: Strings.Lyrics.NotFoundLyrics.message,
             preferredStyle: .alert
         )
     }
@@ -266,7 +265,7 @@ extension LyricsViewController {
         shareButton.reactive.tap.throttle(for: Constants.buttonThrottleTime).observeNext { [weak self] _ in
             guard let self = self, let url = self.viewModel.geniusURL else { return }
             Haptic.play(Constants.tinyTap)
-            let items = ["\(Constants.shareText) \(url.absoluteURL)"]
+            let items = [Constants.shareText(url.absoluteString)]
             let activityViewController = UIActivityViewController(
                 activityItems: items,
                 applicationActivities: nil

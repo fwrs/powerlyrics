@@ -14,7 +14,7 @@ fileprivate extension Constants {
     
     static let featPrefix = "(feat."
     static let withPrefix = "(with"
-    static let unknownArtistText = "Unknown artist"
+    static let unknownArtistText = Strings.SongCell.unknownArtist
     
     static let maxArtists = 3
     

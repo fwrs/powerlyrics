@@ -19,19 +19,25 @@ enum ActionCellAction: Equatable {
     var localizedTitle: String {
         switch self {
         case .likedSongs:
-            return "Liked songs"
+            return Strings.ActionCell.likedSongs
+            
         case .connectToSpotify:
-            return "Connect to Spotify"
+            return Strings.ActionCell.connectToSpotify
+            
         case .manageAccount:
-            return "Manage account"
+            return Strings.ActionCell.manageAccount
+            
         case .signOut:
-            return "Sign out"
+            return Strings.ActionCell.signOut
+            
         case .seeTrendingSongs:
-            return "Discover all trending songs"
+            return Strings.ActionCell.seeTrendingSongs
+            
         case .seeViralSongs:
-            return "Discover all viral songs"
+            return Strings.ActionCell.seeViralSongs
+            
         case .appSourceCode:
-            return "Source code"
+            return Strings.ActionCell.appSourceCode
         }
     }
     

@@ -64,6 +64,7 @@ class SetupManualViewController: ViewController, SetupManualScene {
                     self?.presentedViewController?.dismiss(animated: true, completion: nil)
                 }))
             }, animated: true, completion: nil)
+            
         case .underage:
             selfOrSafari.present(Constants.unsuitableForMinorsAlert.with {
                 $0.addAction(UIAlertAction(title: Constants.ok, style: .default, handler: { [weak self] _ in
@@ -127,6 +128,7 @@ extension SetupManualViewController {
                 if !isLoading {
                     self?.flowDismiss?()
                 }
+                
             case .fail(let error):
                 self?.setLoading(visible: false) {
                     self?.show(error: error)

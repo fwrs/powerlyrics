@@ -340,6 +340,17 @@ public extension DispatchQueue {
 }
 
 extension UIAlertController {
+    
+    private enum ExtensionConstants {
+        
+        static let activityIndicatorDimension: CGFloat = 20
+        static let viewHeight: CGFloat = 70
+        
+        static let loadingFont = UIFont.systemFont(ofSize: 17, weight: .semibold)
+        
+        static let contentViewControllerKeyPath = "contentViewController"
+        
+    }
 
     func addLoadingUI(title: String) {
         let vc = UIViewController()
@@ -348,30 +359,37 @@ extension UIAlertController {
         activityIndicator.color = .white
         activityIndicator.startAnimating()
         NSLayoutConstraint.activate([
-            activityIndicator.widthAnchor.constraint(equalToConstant: 20)
+            activityIndicator.widthAnchor.constraint(equalToConstant: ExtensionConstants.activityIndicatorDimension)
         ])
         let label = UILabel()
         label.text = title
-        label.font = .systemFont(ofSize: 17, weight: .semibold)
+        label.font = ExtensionConstants.loadingFont
         let stackView = UIStackView(arrangedSubviews: [activityIndicator, label])
-        stackView.spacing = 8
+        stackView.spacing = Constants.space8
         stackView.axis = .horizontal
         stackView.alignment = .center
-        vc.preferredContentSize = CGSize(width: label.intrinsicContentSize.width + 28, height: 70)
-        stackView.frame = CGRect(x: .zero, y: .zero, width: label.intrinsicContentSize.width + 28, height: 70)
+        vc.preferredContentSize = CGSize(width: label.intrinsicContentSize.width + ExtensionConstants.activityIndicatorDimension + Constants.space8, height: ExtensionConstants.viewHeight)
+        stackView.frame = CGRect(x: .zero, y: .zero, width: label.intrinsicContentSize.width + ExtensionConstants.activityIndicatorDimension + Constants.space8, height: ExtensionConstants.viewHeight)
         vc.view.addSubview(stackView)
         label.sizeToFit()
-        self.setValue(vc, forKey: "contentViewController")
+        self.setValue(vc, forKey: ExtensionConstants.contentViewControllerKeyPath)
     }
 
     func dismissActivityIndicator() {
-        self.setValue(nil, forKey: "contentViewController")
+        self.setValue(nil, forKey: ExtensionConstants.contentViewControllerKeyPath)
         self.dismiss(animated: false)
     }
     
 }
 
 extension UIView {
+    
+    private enum ExtensionConstants {
+        
+        static let alphaChangeKeyPath = "alphaChange"
+        static let opacityKeyPath = "alphaChange"
+        
+    }
     
     class func fadeShow(_ view: UIView, duration: TimeInterval = Constants.defaultAnimationDuration, completion: DefaultAction? = nil) {
         fadeDisplay(view, visible: true, duration: duration, completion: completion)
@@ -384,9 +402,9 @@ extension UIView {
     class func fadeDisplay(_ view: UIView, visible: Bool, duration: TimeInterval = Constants.defaultAnimationDuration, completion: DefaultAction? = nil) {
         let currentAlpha = view.alpha
         CATransaction.begin()
-        view.layer.removeAnimation(forKey: "alphaChange")
+        view.layer.removeAnimation(forKey: ExtensionConstants.alphaChangeKeyPath)
         view.isUserInteractionEnabled = false
-        let animation = CABasicAnimation(keyPath: "opacity")
+        let animation = CABasicAnimation(keyPath: ExtensionConstants.opacityKeyPath)
         animation.fromValue = view.isHidden ? .zero : currentAlpha
         if visible {
             view.isHidden = false
@@ -399,8 +417,8 @@ extension UIView {
             view.isUserInteractionEnabled = true
             completion?()
         }
-        view.alpha = visible ? 1 : 0
-        view.layer.add(animation, forKey: "alphaChange")
+        view.alpha = visible ? .one : .zero
+        view.layer.add(animation, forKey: ExtensionConstants.alphaChangeKeyPath)
         CATransaction.commit()
     }
     

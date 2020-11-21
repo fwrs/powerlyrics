@@ -150,25 +150,24 @@ class SongCell: TableViewCell {
         contextMenuHandler?.updateFullImage(with: viewModel.song.albumArt)
         
         accessoryStackView.isHidden = viewModel.accessory == nil
-        
+    
+        spotifyLogoAccessoryView.isHidden = true
+        heartIconAccessoryView.isHidden = true
+        nthPlaceAccessoryView.isHidden = true
+    
         switch viewModel.accessory {
         case .spotifyLogo:
             spotifyLogoAccessoryView.isHidden = false
-            heartIconAccessoryView.isHidden = true
-            nthPlaceAccessoryView.isHidden = true
+            
         case .likeLogo:
-            spotifyLogoAccessoryView.isHidden = true
             heartIconAccessoryView.isHidden = false
-            nthPlaceAccessoryView.isHidden = true
+            
         case .ranking(let nth):
-            spotifyLogoAccessoryView.isHidden = true
-            heartIconAccessoryView.isHidden = true
             nthPlaceAccessoryView.isHidden = false
             nthPlaceAccessoryLabel.text = String(nth)
+            
         default:
-            spotifyLogoAccessoryView.isHidden = true
-            heartIconAccessoryView.isHidden = true
-            nthPlaceAccessoryView.isHidden = true
+            break
         }
     }
     

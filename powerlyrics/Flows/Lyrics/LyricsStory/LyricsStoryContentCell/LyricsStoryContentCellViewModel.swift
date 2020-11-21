@@ -10,6 +10,6 @@ import UIKit
 
 struct LyricsStoryContentCellViewModel: Equatable {
     
-    let story: String
+    let text: String
     
 }

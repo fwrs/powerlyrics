@@ -14,6 +14,7 @@ extension Optional where Wrapped == String {
         switch self {
         case .none:
             return ""
+            
         case .some(let value):
             return value
         }
@@ -27,6 +28,7 @@ extension Optional where Wrapped == Int {
         switch self {
         case .none:
             return 0
+            
         case .some(let value):
             return value
         }
@@ -40,6 +42,7 @@ extension Optional where Wrapped == Float {
         switch self {
         case .none:
             return 0
+            
         case .some(let value):
             return value
         }
@@ -53,6 +56,7 @@ extension Optional where Wrapped == Double {
         switch self {
         case .none:
             return 0
+            
         case .some(let value):
             return value
         }
@@ -66,6 +70,7 @@ extension Optional where Wrapped == Bool {
         switch self {
         case .none:
             return false
+            
         case .some(let value):
             return value
         }
@@ -79,6 +84,7 @@ extension Optional where Wrapped == CGFloat {
         switch self {
         case .none:
             return 0
+            
         case .some(let value):
             return value
         }
@@ -92,6 +98,7 @@ extension Optional where Wrapped == UIColor {
         switch self {
         case .none:
             return .clear
+            
         case .some(let value):
             return value
         }

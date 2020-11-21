@@ -1,5 +1,5 @@
 //
-//  TrendCell.swift
+//  SearchTrendCell.swift
 //  powerlyrics
 //
 //  Created by Ilya Kulinkovich on 10/30/20.
@@ -9,7 +9,7 @@
 import Bond
 import ReactiveKit
 
-class TrendCell: CollectionViewCell {
+class SearchTrendCell: CollectionViewCell {
     
     // MARK: - Outlets
     
@@ -27,7 +27,7 @@ class TrendCell: CollectionViewCell {
     
     // MARK: - Configure
     
-    func configure(with viewModel: TrendCellViewModel) {
+    func configure(with viewModel: SearchTrendCellViewModel) {
         mainButton.setTitle(viewModel.song.name, for: .normal)
         mainButton.reactive.tap.observeNext { [weak self] _ in
             self?.didTap?()

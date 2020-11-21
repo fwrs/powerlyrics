@@ -14,8 +14,8 @@ import ReactiveKit
 
 fileprivate extension Constants {
     
-    static let nothingWasFoundText = "Nothing was found\nfor your query"
-    static let startTypingText = "Start typing to\nreceive suggestions"
+    static let nothingWasFoundText = Strings.Search.nothingWasFound
+    static let startTypingText = Strings.Search.startTyping
     
 }
 
@@ -107,7 +107,7 @@ extension SearchViewController {
 
     func setupView() {
         tableView.register(SongCell.self)
-        tableView.register(AlbumsCell.self)
+        tableView.register(SearchAlbumsCell.self)
         
         let appearance = UINavigationBarAppearance()
         appearance.configureWithDefaultBackground()
@@ -235,7 +235,7 @@ extension SearchViewController {
             self?.flowAlbum?(album)
         }))
         
-        viewModel.trends.bind(to: trendsCollectionView, cellType: TrendCell.self) { cell, cellViewModel in
+        viewModel.trends.bind(to: trendsCollectionView, cellType: SearchTrendCell.self) { cell, cellViewModel in
             cell.configure(with: cellViewModel)
             cell.didTap = { [weak self] in
                 guard let self = self else { return }
@@ -303,11 +303,13 @@ class SearchBinder<Changeset: SectionedDataSourceChangeset>: TableViewBinderData
                 let cell = tableView.dequeue(SongCell.self, indexPath: indexPath)
                 cell.configure(with: songCellViewModel)
                 return cell
-            case .albums(let albumsCellViewModel):
-                let cell = tableView.dequeue(AlbumsCell.self, indexPath: indexPath)
-                cell.configure(with: albumsCellViewModel)
+                
+            case .albums(let searchAlbumsCellViewModel):
+                let cell = tableView.dequeue(SearchAlbumsCell.self, indexPath: indexPath)
+                cell.configure(with: searchAlbumsCellViewModel)
                 cell.didTapAlbum = albumTapAction
                 return cell
+                
             default:
                 fatalError("Invalid cell")
             }

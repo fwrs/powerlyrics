@@ -84,9 +84,9 @@ extension LyricsStoryViewController {
 
     func setupView() {
         
+        tableView.register(LyricsStoryEmptyCell.self)
         tableView.register(LyricsStoryTopPaddingCell.self)
         tableView.register(LyricsStoryContentCell.self)
-        tableView.register(LyricsStoryEmptyCell.self)
         
         tableView.delegate = self
         tableView.automaticallyAdjustsScrollIndicatorInsets = false
@@ -106,6 +106,13 @@ extension LyricsStoryViewController {
             let tableView = uiTableView as! TableView
             let item = items[indexPath.row]
             switch item {
+            case .empty:
+                let cell = tableView.dequeue(LyricsStoryEmptyCell.self, indexPath: indexPath)
+                cell.separatorInset = UIEdgeInsets().with { $0.left = tableView.bounds.width }
+                cell.isUserInteractionEnabled = false
+                cell.selectionStyle = .none
+                return cell
+                
             case .topPadding:
                 let cell = tableView.dequeue(LyricsStoryTopPaddingCell.self, indexPath: indexPath)
                 cell.separatorInset = UIEdgeInsets().with { $0.left = tableView.bounds.width }
@@ -113,17 +120,10 @@ extension LyricsStoryViewController {
                 cell.selectionStyle = .none
                 return cell
                 
-            case .story(let lyricsStoryContentCellViewMoedl):
+            case .content(let lyricsStoryContentCellViewMoedl):
                 let cell = tableView.dequeue(LyricsStoryContentCell.self, indexPath: indexPath)
                 cell.configure(with: lyricsStoryContentCellViewMoedl)
                 cell.separatorInset = UIEdgeInsets().with { $0.left = tableView.bounds.width }
-                cell.selectionStyle = .none
-                return cell
-                
-            case .empty:
-                let cell = tableView.dequeue(LyricsStoryEmptyCell.self, indexPath: indexPath)
-                cell.separatorInset = UIEdgeInsets().with { $0.left = tableView.bounds.width }
-                cell.isUserInteractionEnabled = false
                 cell.selectionStyle = .none
                 return cell
             }

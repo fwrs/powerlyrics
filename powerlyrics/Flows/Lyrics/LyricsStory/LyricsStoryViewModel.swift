@@ -14,7 +14,7 @@ import ReactiveKit
 enum LyricsStoryCell: Equatable {
     
     case topPadding
-    case story(LyricsStoryContentCellViewModel)
+    case content(LyricsStoryContentCellViewModel)
     case empty
     
 }
@@ -43,7 +43,7 @@ struct LyricsStoryViewModel {
                             .split(separator: Constants.newline)
                             .map(\.clean)
                             .dedupNearby(equals: String(Constants.newline)).map {
-                                .story(LyricsStoryContentCellViewModel(story: $0))
+                                .content(LyricsStoryContentCellViewModel(text: $0))
                             }, performDiff: false)
         }
     }

@@ -18,20 +18,20 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="SpotifyLogoLarge" translatesAutoresizingMaskIntoConstraints="NO" id="iSh-pB-TKo">
-                                <rect key="frame" x="140" y="200.5" width="134" height="134"/>
+                                <rect key="frame" x="149.5" y="213" width="115" height="115"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="134" id="FK8-JQ-PfM"/>
+                                    <constraint firstAttribute="width" constant="115" id="FK8-JQ-PfM"/>
                                     <constraint firstAttribute="width" secondItem="iSh-pB-TKo" secondAttribute="height" multiplier="1:1" id="MGi-Tu-3u8"/>
                                 </constraints>
                             </imageView>
-                            <label opaque="NO" userInteractionEnabled="NO" alpha="0.90000000000000002" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cNO-5X-k1x">
-                                <rect key="frame" x="67" y="366.5" width="280.5" height="75.5"/>
-                                <string key="text">Would you like to add a Spotify
-account to get access to
-extra features?</string>
-                                <fontDescription key="fontDescription" type="system" pointSize="21"/>
+                            <label opaque="NO" userInteractionEnabled="NO" alpha="0.90000000000000002" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Add Spotify account" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cNO-5X-k1x">
+                                <rect key="frame" x="78" y="360" width="258" height="31.5"/>
+                                <fontDescription key="fontDescription" type="system" weight="heavy" pointSize="26"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="localizedTextKey" value="setup.spotifyAccountPromotion.title"/>
+                                </userDefinedRuntimeAttributes>
                             </label>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="6.5" translatesAutoresizingMaskIntoConstraints="NO" id="J09-yS-CR0">
                                 <rect key="frame" x="44" y="661.5" width="326" height="98.5"/>
@@ -50,6 +50,7 @@ extra features?</string>
                                             <userDefinedRuntimeAttribute type="number" keyPath="squircleCorners">
                                                 <real key="value" value="13"/>
                                             </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="string" keyPath="localizedNormalTitleKey" value="setup.signInAndConnect"/>
                                         </userDefinedRuntimeAttributes>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3ZD-uC-fb4">
@@ -61,9 +62,24 @@ extra features?</string>
                                         <state key="normal" title="Connect to Spotify later">
                                             <color key="titleColor" name="TintColor"/>
                                         </state>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="string" keyPath="localizedNormalTitleKey" value="setup.connectLater"/>
+                                        </userDefinedRuntimeAttributes>
                                     </button>
                                 </subviews>
                             </stackView>
+                            <label opaque="NO" userInteractionEnabled="NO" alpha="0.89999997615814209" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qH3-YW-dj5">
+                                <rect key="frame" x="86" y="411.5" width="242.5" height="68.5"/>
+                                <string key="text">This will introduce you to a
+greater set of features within
+powerlyrics. </string>
+                                <fontDescription key="fontDescription" type="system" pointSize="19"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="localizedTextKey" value="setup.spotifyAccountPromotion.message"/>
+                                </userDefinedRuntimeAttributes>
+                            </label>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="mqb-D3-UcX"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
@@ -73,9 +89,11 @@ extra features?</string>
                             <constraint firstItem="cNO-5X-k1x" firstAttribute="top" secondItem="iSh-pB-TKo" secondAttribute="bottom" constant="32" id="GOw-9i-DiH"/>
                             <constraint firstItem="mqb-D3-UcX" firstAttribute="trailing" secondItem="J09-yS-CR0" secondAttribute="trailing" constant="44" id="K1h-fR-aF6"/>
                             <constraint firstItem="iSh-pB-TKo" firstAttribute="centerX" secondItem="mqb-D3-UcX" secondAttribute="centerX" id="aBe-2C-FxC"/>
+                            <constraint firstItem="qH3-YW-dj5" firstAttribute="top" secondItem="cNO-5X-k1x" secondAttribute="bottom" constant="20" id="c3r-1b-BRG"/>
                             <constraint firstItem="J09-yS-CR0" firstAttribute="leading" secondItem="mqb-D3-UcX" secondAttribute="leading" constant="44" id="hxJ-zK-6PD"/>
-                            <constraint firstItem="cNO-5X-k1x" firstAttribute="centerY" secondItem="mqb-D3-UcX" secondAttribute="centerY" id="n0f-BM-sAT"/>
+                            <constraint firstItem="cNO-5X-k1x" firstAttribute="centerY" secondItem="mqb-D3-UcX" secondAttribute="centerY" multiplier="0.93" id="n0f-BM-sAT"/>
                             <constraint firstItem="cNO-5X-k1x" firstAttribute="centerX" secondItem="mqb-D3-UcX" secondAttribute="centerX" id="npA-ZH-a8R"/>
+                            <constraint firstItem="qH3-YW-dj5" firstAttribute="centerX" secondItem="mqb-D3-UcX" secondAttribute="centerX" id="pXg-er-rgs"/>
                         </constraints>
                     </view>
                     <modalPageSheetSimulatedSizeMetrics key="simulatedDestinationMetrics"/>

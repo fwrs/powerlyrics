@@ -17,9 +17,10 @@ fileprivate extension Constants {
     // MARK: - Text
     
     static let registerDateFormat = "d MMM yyyy"
-    static let unknownRegisterDateText = "Unknown register date"
-    static let registeredText = "Registered"
-    static let confirmLogOutActionTitle = "Reset and sign out"
+    static let unknownRegisterDateText = Strings.Profile.unknownRegisterDate
+    static let unknownUserText = Strings.Profile.unknownUser
+    static let registeredText = { (date: String) in Strings.Profile.registered(date) }
+    static let confirmLogOutActionTitle = Strings.Profile.LogOut.accept
     static let githubURL = URL(string: "https://www.github.com/fwrs/powerlyrics")!
     
     // MARK: - Numeric
@@ -33,8 +34,8 @@ fileprivate extension Constants {
 
     static var logOutAlert: UIAlertController {
         UIAlertController(
-            title: "Are you sure you want to sign out?",
-            message: "This will delete all local data, including liked songs, but not Spotify data. There’s no undoing this.",
+            title: Strings.Profile.LogOut.title,
+            message: Strings.Profile.LogOut.message,
             preferredStyle: .alert
         )
     }
@@ -81,8 +82,6 @@ class ProfileViewController: ViewController, ProfileScene {
     @IBOutlet private weak var avatarImageView: UIImageView!
     
     @IBOutlet private weak var userInfoStackView: UIStackView!
-    
-    @IBOutlet private weak var activityIndicator: UIActivityIndicatorView!
     
     @IBOutlet private weak var navigationBarHeightConstraint: NSLayoutConstraint!
     
@@ -170,9 +169,9 @@ extension ProfileViewController {
     
     func setupView() {
         
-        tableView.register(StatsCell.self)
+        tableView.register(ProfileStatsCell.self)
         tableView.register(ActionCell.self)
-        tableView.register(BuildCell.self)
+        tableView.register(ProfileBuildCell.self)
         
         tableView.contentInset.top = Constants.defaultTopPadding - safeAreaInsets.top +
             Constants.space20 + .two - (UIDevice.current.hasNotch ? .zero : Constants.space24)
@@ -214,14 +213,19 @@ extension ProfileViewController {
                 switch actionCellViewModel.action {
                 case .likedSongs:
                     self.flowLikedSongs?()
+                    
                 case .manageAccount:
                     self.flowSafari?(Constants.accountManagementURL)
+                    
                 case .appSourceCode:
                     self.flowSafari?(Constants.githubURL)
+                    
                 case .connectToSpotify:
                     self.flowSetup?(.manual)
+                    
                 case .signOut:
                     self.presentSignOutAlert()
+                    
                 default:
                     break
                 }
@@ -237,7 +241,7 @@ extension ProfileViewController {
     func setupOutput() {
         viewModel.items.bind(to: tableView, using: ProfileBinder())
         
-        viewModel.name.bind(to: userNameLabel.reactive.text).dispose(in: disposeBag)
+        viewModel.name.map { $0 ?? Constants.unknownUserText }.bind(to: userNameLabel.reactive.text).dispose(in: disposeBag)
         viewModel.premium.map(\.negated).bind(to: premiumIconImageView.reactive.isHidden).dispose(in: disposeBag)
         viewModel.avatar.observeNext { [weak self] image in
             self?.avatarImageView.populate(with: image)
@@ -246,7 +250,7 @@ extension ProfileViewController {
         viewModel.registerDate
             .compactMap { $0 }
             .map { DateFormatter().with { $0.dateFormat = Constants.registerDateFormat }.string(for: $0) }
-            .map { "\(Constants.registeredText) \($0.safe)" }
+            .map { Constants.registeredText($0.safe) }
             .bind(to: registerDateLabel.reactive.text)
             .dispose(in: disposeBag)
         
@@ -324,19 +328,21 @@ class ProfileBinder<Changeset: SectionedDataSourceChangeset>: TableViewBinderDat
             let element = items[childAt: indexPath]
             let tableView = uiTableView as! TableView
             switch element.item {
-            case .stats(let statsCellViewModel):
-                let cell = tableView.dequeue(StatsCell.self, indexPath: indexPath)
-                cell.configure(with: statsCellViewModel)
+            case .stats(let profileStatsCellViewModel):
+                let cell = tableView.dequeue(ProfileStatsCell.self, indexPath: indexPath)
+                cell.configure(with: profileStatsCellViewModel)
                 cell.selectionStyle = .none
                 cell.isUserInteractionEnabled = false
                 return cell
+                
             case .action(let actionCellViewModel):
                 let cell = tableView.dequeue(ActionCell.self, indexPath: indexPath)
                 cell.configure(with: actionCellViewModel)
                 return cell
-            case .build(let buildCellViewModel):
-                let cell = tableView.dequeue(BuildCell.self, indexPath: indexPath)
-                cell.configure(with: buildCellViewModel)
+                
+            case .build(let profileBuildCellViewModel):
+                let cell = tableView.dequeue(ProfileBuildCell.self, indexPath: indexPath)
+                cell.configure(with: profileBuildCellViewModel)
                 cell.selectionStyle = .none
                 cell.isUserInteractionEnabled = false
                 return cell

@@ -58,23 +58,31 @@ fileprivate extension Constants {
     var localizedName: String {
         switch self {
         case .rock:
-            return "rock"
+            return Strings.Genre.rock
+            
         case .classic:
-            return "classic"
+            return Strings.Genre.classic
+            
         case .rap:
-            return "rap"
+            return Strings.Genre.rap
+            
         case .country:
-            return "country"
+            return Strings.Genre.country
+            
         case .acoustic:
-            return "acoustic"
+            return Strings.Genre.acoustic
+            
         case .pop:
-            return "pop"
+            return Strings.Genre.pop
+            
         case .jazz:
-            return "jazz"
+            return Strings.Genre.jazz
+            
         case .edm:
-            return "edm"
+            return Strings.Genre.edm
+            
         case .unknown:
-            return "unknown"
+            return Strings.Genre.unknown
         }
         
     }

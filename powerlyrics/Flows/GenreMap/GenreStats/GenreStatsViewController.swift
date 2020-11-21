@@ -107,9 +107,9 @@ extension GenreStatsViewController {
 
     func setupView() {
         
-        tableView.register(SongCell.self)
-        tableView.register(GenreStatsInfoCell.self)
         tableView.register(GenreStatsEmptyCell.self)
+        tableView.register(GenreStatsInfoCell.self)
+        tableView.register(SongCell.self)
         
         tableView.delegate = self
         tableView.automaticallyAdjustsScrollIndicatorInsets = false
@@ -153,6 +153,13 @@ extension GenreStatsViewController {
             let tableView = uiTableView as! TableView
             let item = items[indexPath.row]
             switch item {
+            case .empty:
+                let cell = tableView.dequeue(GenreStatsEmptyCell.self, indexPath: indexPath)
+                cell.separatorInset = UIEdgeInsets().with { $0.left = tableView.bounds.width }
+                cell.isUserInteractionEnabled = false
+                cell.selectionStyle = .none
+                return cell
+                
             case .genreInfo(let genreStatsInfoCellViewModel):
                 let cell = tableView.dequeue(GenreStatsInfoCell.self, indexPath: indexPath)
                 cell.configure(with: genreStatsInfoCellViewModel)
@@ -169,13 +176,6 @@ extension GenreStatsViewController {
                 } else {
                     cell.separatorInset = UIEdgeInsets().with { $0.left = Constants.space16 }
                 }
-                return cell
-                
-            case .empty:
-                let cell = tableView.dequeue(GenreStatsEmptyCell.self, indexPath: indexPath)
-                cell.separatorInset = UIEdgeInsets().with { $0.left = tableView.bounds.width }
-                cell.isUserInteractionEnabled = false
-                cell.selectionStyle = .none
                 return cell
             }
         }

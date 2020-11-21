@@ -14,16 +14,16 @@ extension Constants {
     
     static var unsuitableForMinorsAlert: UIAlertController {
         UIAlertController(
-            title: "Unsuitable for minors",
-            message: "You have to be over 18 years old in order to use this app.",
+            title: Strings.Setup.Under18Alert.title,
+            message: Strings.Setup.Under18Alert.message,
             preferredStyle: .alert
         )
     }
     
     static var failedToSignInAlert: UIAlertController {
         UIAlertController(
-            title: "Failed to sign in",
-            message: "Please try again.",
+            title: Strings.Setup.NetworkAlert.title,
+            message: Strings.Setup.NetworkAlert.message,
             preferredStyle: .alert
         )
     }
@@ -36,8 +36,8 @@ fileprivate extension Constants {
     
     static var enterNameAlert: UIAlertController {
         UIAlertController(
-            title: "Please enter your name",
-            message: "In order to register we need to know your name and whether you’re older than 18 years old.",
+            title: Strings.Setup.NameEmptyAlert.title,
+            message: Strings.Setup.NameEmptyAlert.message,
             preferredStyle: .alert
         )
     }
@@ -185,6 +185,7 @@ extension SetupOfflineViewController {
                 if !isLoading {
                     self?.flowDismiss?()
                 }
+                
             case .fail(let error):
                 self?.show(error: error)
             }

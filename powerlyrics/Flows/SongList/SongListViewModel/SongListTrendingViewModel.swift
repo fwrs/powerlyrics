@@ -15,10 +15,6 @@ class SongListTrendingViewModel: SongListViewModel {
 
     // MARK: - Instance properties
     
-    override var title: String {
-        Constants.trendingTitle
-    }
-    
     let preview: [SharedSong]
     
     // MARK: - Init
@@ -71,6 +67,7 @@ class SongListTrendingViewModel: SongListViewModel {
                         self.endLoading(false)
                     }
                     self.isLoadingWithPreview.value = false
+                    
                 case .failed:
                     self.items.replace(with: [], performDiff: true)
                     delay(Constants.defaultAnimationDuration) {
@@ -83,6 +80,7 @@ class SongListTrendingViewModel: SongListViewModel {
                     if !retry {
                         self.endLoading(refresh)
                     }
+                    
                 default:
                     break
                 }

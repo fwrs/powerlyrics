@@ -22,10 +22,4 @@ enum Tokens {
         static let accessToken = "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
     }
     
-    // MARK: - Last.fm
-    
-    enum Lastfm {
-        static let apiKey = "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
-    }
-    
 }

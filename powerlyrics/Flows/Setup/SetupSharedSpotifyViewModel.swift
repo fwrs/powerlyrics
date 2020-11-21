@@ -94,8 +94,10 @@ class SetupSharedSpotifyViewModel: ViewModel {
                     self.realmService.saveUserData(spotifyUserInfo: response)
                     self.keychainService.setEncodable(true, for: .spotifyAuthorizedWithAccount)
                     success()
+                    
                 case .failed:
                     failure(.networkError)
+                    
                 default:
                     break
                 }

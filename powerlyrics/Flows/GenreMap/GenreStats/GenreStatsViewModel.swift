@@ -13,9 +13,9 @@ import ReactiveKit
 
 enum GenreStatsCell: Equatable {
     
-    case song(SongCellViewModel, last: Bool = false)
-    case genreInfo(GenreStatsInfoCellViewModel)
     case empty
+    case genreInfo(GenreStatsInfoCellViewModel)
+    case song(SongCellViewModel, last: Bool = false)
     
 }
 

@@ -14,8 +14,8 @@ fileprivate extension Constants {
     
     static let lineSpacing: CGFloat = 2
     static let boldFont = UIFont.systemFont(ofSize: 18, weight: .bold)
-    static let hereSongTextPlural = "Here’s the songs:"
-    static let hereSongTextSingular = "Here’s the song:"
+    static let hereSongsTextPlural = Strings.GenreStats.Info.hereSongsPlural
+    static let hereSongsTextSingular = Strings.GenreStats.Info.hereSongsSingular
     
 }
 
@@ -48,7 +48,7 @@ class GenreStatsInfoCell: TableViewCell {
 
         emojiLabel.text = viewModel.level.emoji
         descriptionLabel.attributedText = attrString
-        songsLabel.text = viewModel.count == .one ? Constants.hereSongTextSingular : Constants.hereSongTextPlural
+        songsLabel.text = viewModel.count == .one ? Constants.hereSongsTextSingular : Constants.hereSongsTextPlural
     }
     
 }

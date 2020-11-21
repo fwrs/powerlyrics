@@ -21,13 +21,16 @@ enum HomeSection: Equatable {
     var localizedTitle: String {
         switch self {
         case .nowPlaying:
-            return "Now Playing"
+            return Strings.Home.Section.nowPlaying
+            
         case .trending:
-            return "Trending"
+            return Strings.Home.Section.trending
+            
         case .viral:
-            return "Viral"
+            return Strings.Home.Section.viral
+            
         case .likedToday:
-            return "Liked Today"
+            return Strings.Home.Section.likedToday
         }
     }
     
@@ -107,9 +110,11 @@ class HomeViewModel: ViewModel {
                     self?.currentlyPlayingSong = [response.item.asSharedSong]
                     group.leave()
                     self?.isAtLeastOneRequestFailed = false
+                    
                 case .failed:
                     self?.currentlyPlayingSong = .init()
                     group.leave()
+                    
                 default:
                     break
                 }
@@ -123,10 +128,12 @@ class HomeViewModel: ViewModel {
                 switch event {
                 case .value(let response):
                     self?.trendingSongs = response.items.map(\.asSharedSong)
-                    group.leave()
                     self?.isAtLeastOneRequestFailed = false
+                    group.leave()
+                    
                 case .failed:
                     group.leave()
+                    
                 default:
                     break
                 }
@@ -140,10 +147,12 @@ class HomeViewModel: ViewModel {
                 switch event {
                 case .value(let response):
                     self?.viralSongs = response.items.map(\.asSharedSong)
-                    group.leave()
                     self?.isAtLeastOneRequestFailed = false
+                    group.leave()
+                    
                 case .failed:
                     group.leave()
+                    
                 default:
                     break
                 }

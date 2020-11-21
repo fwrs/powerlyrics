@@ -12,7 +12,7 @@ import UIKit
 
 extension Constants {
     
-    static let pleaseWaitText = "Please wait…"
+    static let pleaseWaitText = Strings.Setup.pleaseWait
     
 }
 
@@ -78,6 +78,7 @@ class SetupInitialViewController: ViewController, SetupInitialScene {
                     self?.presentedViewController?.dismiss(animated: true, completion: nil)
                 }))
             }, animated: true, completion: nil)
+            
         case .underage:
             selfOrSafari.present(Constants.unsuitableForMinorsAlert.with {
                 $0.addAction(UIAlertAction(title: Constants.ok, style: .default, handler: { [weak self] _ in
@@ -142,6 +143,7 @@ extension SetupInitialViewController {
                 if !isLoading {
                     self?.flowDismiss?()
                 }
+                
             case .fail(let error):
                 self?.setLoading(visible: false) {
                     self?.show(error: error)

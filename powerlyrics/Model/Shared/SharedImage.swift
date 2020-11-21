@@ -57,6 +57,7 @@ extension UIImageView {
         case .local(let localImage):
             image = localImage
             tag = Constants.loadedTag
+            
         case .external(let imageURL):
             kf.setImage(
                 with: imageURL,
@@ -66,6 +67,7 @@ extension UIImageView {
                     result?(res)
                 }
             )
+            
         case .none:
             image = UIImageView.placeholder
         }

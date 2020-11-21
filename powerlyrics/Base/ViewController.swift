@@ -13,7 +13,7 @@ import ReactiveKit
 
 fileprivate extension Constants {
     
-    static let backButtonTitle = "Back"
+    static let backButtonTitle = Strings.Shared.back
     
 }
 

@@ -110,6 +110,7 @@ class LyricsViewModel: ViewModel {
                         self.realmService.incrementViewedArtistsStat(with: artistId)
                         self.spotifyURL.value = response.response.song.media?.first { $0.provider == Constants.spotifySystemName }?.url
                         self.description.value = response.response.song.description?.plain
+                        
                     default:
                         break
                     }
@@ -150,8 +151,10 @@ class LyricsViewModel: ViewModel {
                     self.song.geniusURL = url
                     self.isLiked.value = self.realmService.findLikedSong(geniusID: filteredData[.zero].result.id) != nil
                     onSongFetch(url, id)
+                    
                 case .failed:
                     onFailure()
+                    
                 default:
                     break
                 }

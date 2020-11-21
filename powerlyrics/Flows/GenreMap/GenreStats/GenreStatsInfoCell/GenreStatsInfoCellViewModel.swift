@@ -37,10 +37,13 @@ enum GenreStatsInfoLevel {
         switch Float(count) / average {
         case Constants.okRange:
             self = .ok
+            
         case Constants.goodRange:
             self = .good
+            
         case Constants.overwhelmingRange:
             self = .overwhelming
+            
         default:
             self = .low
         }
@@ -50,10 +53,13 @@ enum GenreStatsInfoLevel {
         switch self {
         case .low:
             return "🐣"
+            
         case .ok:
             return "🙂"
+            
         case .good:
             return "👍"
+            
         case .overwhelming:
             return "💛"
         }
@@ -62,13 +68,28 @@ enum GenreStatsInfoLevel {
     func localizedDescription(count: Int, genre: RealmLikedSongGenre) -> String {
         switch self {
         case .low:
-            return "You appear to enjoy \(genre.localizedName) less than others, since you have just \(count) song\(count.sIfNotOne) liked from it."
+            let songLikedText = count == 1 ?
+                Strings.GenreAnalysis.Low.songsLikedSingular(count) :
+                Strings.GenreAnalysis.Low.songsLikedPlural(count)
+            
+            return Strings.GenreAnalysis.low(genre.localizedName, songLikedText)
+            
         case .ok:
-            return "Looks like you have some interest in \(genre.localizedName), with total of \(count) song\(count.sIfNotOne) liked."
+            let songLikedText = count == 1 ?
+                Strings.GenreAnalysis.Ok.songsLikedSingular(count) :
+                Strings.GenreAnalysis.Ok.songsLikedPlural(count)
+            
+            return Strings.GenreAnalysis.ok(genre.localizedName, songLikedText)
+            
         case .good:
-            return "Having liked \(count) song\(count.sIfNotOne)s from \(genre.localizedName), looks like you’re a fan of it!"
+            let likedSongText = count == 1 ?
+                Strings.GenreAnalysis.Good.likedSongsSingular(count) :
+                Strings.GenreAnalysis.Good.likedSongsPlural(count)
+            
+            return Strings.GenreAnalysis.good(likedSongText, genre.localizedName)
+            
         case .overwhelming:
-            return "Looks like you’re a huge fan of \(genre.localizedName), maybe try exploring some other genres."
+            return Strings.GenreAnalysis.overwhelming(genre.localizedName)
         }
     }
     

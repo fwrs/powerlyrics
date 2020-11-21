@@ -35,6 +35,7 @@ enum Genius: TargetType {
         switch self {
         case .searchSongs:
             return "/search"
+            
         case .getSong(let id):
             return "/songs/\(id)"
         }
@@ -54,6 +55,7 @@ enum Genius: TargetType {
             return .requestParameters(parameters: [
                 "q": query
             ], encoding: URLEncoding.queryString)
+            
         case .getSong:
             return .requestParameters(parameters: [
                 "text_format": Constants.plainTextFormat

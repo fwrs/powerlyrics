@@ -18,7 +18,7 @@ extension Constants {
     static let sectionBegin: Character = "["
     static let sectionEnd: Character = "]"
     static let instrumentalSystemMessage = "This song is an instrumental"
-    static let instrumentalResponse = "[Instrumental]"
+    static let instrumentalResponse = Strings.Lyrics.instrumentalContent
     
 }
 

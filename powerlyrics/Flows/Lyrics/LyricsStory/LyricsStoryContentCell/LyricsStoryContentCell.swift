@@ -37,7 +37,7 @@ class LyricsStoryContentCell: TableViewCell {
     func configure(with viewModel: LyricsStoryContentCellViewModel) {
         
         let attrString = NSMutableAttributedString(
-            string: viewModel.story,
+            string: viewModel.text,
             attributes: [
                 .paragraphStyle: Constants.paragraphStyle
             ]

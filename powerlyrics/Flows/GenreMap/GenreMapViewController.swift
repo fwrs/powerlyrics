@@ -14,12 +14,14 @@ import ReactiveKit
 extension Constants {
     
     static let baseLikedSongCounts = Array(repeating: CGFloat.zero, count: RealmLikedSongGenre.total)
-    static let likedMusicButtonText = "liked music"
     
 }
 
 fileprivate extension Constants {
     
+    static let descriptionText = Strings.GenreMap.description
+    static let likedMusicButtonText = Strings.GenreMap.Description.likedMusic
+
     static let transforms: [(CGFloat, CGFloat)] = [(1, 0), (1, 1), (0, 1), (-1, 1), (1, 0), (1, 1), (0, 1), (-1, 1)]
     static let inverseAngles = 4...7
     
@@ -179,9 +181,7 @@ class GenreMapViewController: ViewController, GenreMapScene {
     
     func generateAttributedDescriptionText(highlight: Bool = false) -> NSMutableAttributedString {
         
-        let text = descriptionLabel.text.safe.typographized
-
-        let attrString = NSMutableAttributedString(string: text)
+        let attrString = NSMutableAttributedString(string: Constants.descriptionText)
         
         attrString.addAttribute(
             .paragraphStyle,
@@ -192,7 +192,7 @@ class GenreMapViewController: ViewController, GenreMapScene {
         attrString.addAttribute(
             .foregroundColor,
             value: highlight ? UIColor.highlightTintColor : UIColor.tintColor,
-            range: NSString(string: text).range(of: Constants.likedMusicButtonText)
+            range: NSString(string: Constants.descriptionText).range(of: Constants.likedMusicButtonText)
         )
         
         return attrString
@@ -212,7 +212,7 @@ extension GenreMapViewController {
 
         descriptionLabel.attributedText = generateAttributedDescriptionText()
         
-        ([genreMapBackgroundView, genreMapView, descriptionLabel] + genreMapButtons).forEach { view in
+        ([genreMapBackgroundView, genreMapView, descriptionLabel, notEnoughDataView] + genreMapButtons).forEach { view in
             view?.alpha = .zero
         }
     }
@@ -267,9 +267,11 @@ extension GenreMapViewController {
                 UIView.fadeUpdate(self.descriptionLabel, duration: Constants.buttonTapDuration) { [weak self] in
                     self?.descriptionLabel.attributedText = self?.generateAttributedDescriptionText(highlight: true)
                 }
+                
             case .ended:
                 Haptic.play(Constants.tinyTap)
                 self.flowLikedSongs?()
+                
             default:
                 break
             }

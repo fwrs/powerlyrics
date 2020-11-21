@@ -1,5 +1,5 @@
 //
-//  BuildCell.swift
+//  ProfileBuildCell.swift
 //  powerlyrics
 //
 //  Created by Ilya Kulinkovich on 10/31/20.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-class BuildCell: TableViewCell {
+class ProfileBuildCell: TableViewCell {
     
     // MARK: - Outlets
 
@@ -16,7 +16,7 @@ class BuildCell: TableViewCell {
     
     // MARK: - Configure
 
-    func configure(with viewModel: BuildCellViewModel) {
+    func configure(with viewModel: ProfileBuildCellViewModel) {
         label.text = viewModel.text
     }
     

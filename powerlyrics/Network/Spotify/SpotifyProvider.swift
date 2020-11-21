@@ -82,6 +82,7 @@ extension SpotifyProvider {
                     token = SpotifyToken(data: response.data, refreshToken: token?.refreshToken) ?? token
                     request.setValue("\(Constants.authorizationBearer) \((token?.accessToken).safe)", forHTTPHeaderField: Constants.authorizationHeader)
                     closure(.success(request))
+                    
                 case .failure(let error):
                     closure(.failure(error))
                 }

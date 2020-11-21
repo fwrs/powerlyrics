@@ -204,10 +204,12 @@ class HomeBinder<Changeset: SectionedDataSourceChangeset>: TableViewBinderDataSo
                 let cell = tableView.dequeue(SongCell.self, indexPath: indexPath)
                 cell.configure(with: songCellViewModel)
                 return cell
+                
             case .action(let actionCellViewModel):
                 let cell = tableView.dequeue(ActionCell.self, indexPath: indexPath)
                 cell.configure(with: actionCellViewModel)
                 return cell
+                
             default:
                 fatalError("Invalid cell")
             }

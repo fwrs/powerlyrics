@@ -28,6 +28,9 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="19.5"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="localizedTextKey" value="genreMap.description"/>
+                                </userDefinedRuntimeAttributes>
                             </label>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="chX-eS-asc" customClass="GenreMapBackgroundView" customModule="powerlyrics" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="288.5" width="414" height="414"/>
@@ -43,6 +46,9 @@
                                         <state key="normal" title="rock">
                                             <color key="titleColor" systemColor="labelColor"/>
                                         </state>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="string" keyPath="localizedNormalTitleKey" value="genre.rock"/>
+                                        </userDefinedRuntimeAttributes>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VSD-uF-qOY">
                                         <rect key="frame" x="301.5" y="56.5" width="72" height="40"/>
@@ -55,10 +61,11 @@
                                             <userDefinedRuntimeAttribute type="number" keyPath="rotate">
                                                 <real key="value" value="45"/>
                                             </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="string" keyPath="localizedNormalTitleKey" value="genre.classic"/>
                                         </userDefinedRuntimeAttributes>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="m0e-wq-6BZ">
-                                        <rect key="frame" x="373" y="187" width="45" height="40"/>
+                                        <rect key="frame" x="366.5" y="187" width="45" height="40"/>
                                         <fontDescription key="fontDescription" name="RobotoMono-Regular" family="Roboto Mono" pointSize="17"/>
                                         <inset key="contentEdgeInsets" minX="10" minY="10" maxX="10" maxY="10"/>
                                         <state key="normal" title="rap">
@@ -68,6 +75,7 @@
                                             <userDefinedRuntimeAttribute type="number" keyPath="rotate">
                                                 <real key="value" value="90"/>
                                             </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="string" keyPath="localizedNormalTitleKey" value="genre.rap"/>
                                         </userDefinedRuntimeAttributes>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CTl-Hz-ioH">
@@ -81,6 +89,7 @@
                                             <userDefinedRuntimeAttribute type="number" keyPath="rotate">
                                                 <real key="value" value="135"/>
                                             </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="string" keyPath="localizedNormalTitleKey" value="genre.country"/>
                                         </userDefinedRuntimeAttributes>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nqf-5k-ozg">
@@ -94,6 +103,7 @@
                                             <userDefinedRuntimeAttribute type="number" keyPath="rotate">
                                                 <real key="value" value="180"/>
                                             </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="string" keyPath="localizedNormalTitleKey" value="genre.acoustic"/>
                                         </userDefinedRuntimeAttributes>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9El-Tt-6hH">
@@ -107,10 +117,11 @@
                                             <userDefinedRuntimeAttribute type="number" keyPath="rotate">
                                                 <real key="value" value="225"/>
                                             </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="string" keyPath="localizedNormalTitleKey" value="genre.pop"/>
                                         </userDefinedRuntimeAttributes>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Zgp-tY-j8F">
-                                        <rect key="frame" x="-4" y="187" width="50" height="40"/>
+                                        <rect key="frame" x="0.0" y="187" width="50" height="40"/>
                                         <fontDescription key="fontDescription" name="RobotoMono-Regular" family="Roboto Mono" pointSize="17"/>
                                         <inset key="contentEdgeInsets" minX="10" minY="10" maxX="10" maxY="10"/>
                                         <state key="normal" title="jazz">
@@ -120,6 +131,7 @@
                                             <userDefinedRuntimeAttribute type="number" keyPath="rotate">
                                                 <real key="value" value="270"/>
                                             </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="string" keyPath="localizedNormalTitleKey" value="genre.jazz"/>
                                         </userDefinedRuntimeAttributes>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SaK-q5-nMF">
@@ -133,6 +145,7 @@
                                             <userDefinedRuntimeAttribute type="number" keyPath="rotate">
                                                 <real key="value" value="315"/>
                                             </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="string" keyPath="localizedNormalTitleKey" value="genre.edm"/>
                                         </userDefinedRuntimeAttributes>
                                     </button>
                                 </subviews>
@@ -144,15 +157,15 @@
                                     <constraint firstItem="m0e-wq-6BZ" firstAttribute="centerY" secondItem="chX-eS-asc" secondAttribute="centerY" id="Fuf-Er-Kd9"/>
                                     <constraint firstItem="st3-wX-gh2" firstAttribute="top" secondItem="chX-eS-asc" secondAttribute="top" id="GHs-qr-P9V"/>
                                     <constraint firstItem="st3-wX-gh2" firstAttribute="leading" secondItem="chX-eS-asc" secondAttribute="leading" id="RtL-9a-vim"/>
+                                    <constraint firstItem="m0e-wq-6BZ" firstAttribute="centerX" secondItem="chX-eS-asc" secondAttribute="centerX" multiplier="1.88" id="Rtn-OQ-xo2"/>
                                     <constraint firstItem="SaK-q5-nMF" firstAttribute="centerY" secondItem="chX-eS-asc" secondAttribute="centerY" multiplier="0.37" id="S7a-ue-NQj"/>
-                                    <constraint firstAttribute="trailing" secondItem="m0e-wq-6BZ" secondAttribute="trailing" constant="-4" id="VvH-r4-CsS"/>
                                     <constraint firstItem="CTl-Hz-ioH" firstAttribute="centerX" secondItem="chX-eS-asc" secondAttribute="centerX" multiplier="1.63" id="Ysv-Z5-II0"/>
                                     <constraint firstItem="fOa-RY-QAE" firstAttribute="top" secondItem="chX-eS-asc" secondAttribute="top" constant="4" id="bvl-U1-vnz"/>
                                     <constraint firstItem="fOa-RY-QAE" firstAttribute="centerX" secondItem="chX-eS-asc" secondAttribute="centerX" id="cTu-Os-982"/>
-                                    <constraint firstItem="Zgp-tY-j8F" firstAttribute="leading" secondItem="chX-eS-asc" secondAttribute="leading" constant="-4" id="dO5-Vg-Rvi"/>
                                     <constraint firstAttribute="bottom" secondItem="nqf-5k-ozg" secondAttribute="bottom" constant="4" id="dmG-dP-ncT"/>
                                     <constraint firstItem="9El-Tt-6hH" firstAttribute="centerY" secondItem="chX-eS-asc" secondAttribute="centerY" multiplier="1.63" id="eD1-uF-TuV"/>
                                     <constraint firstItem="VSD-uF-qOY" firstAttribute="centerX" secondItem="chX-eS-asc" secondAttribute="centerX" multiplier="1.63" id="fUV-KN-a4z"/>
+                                    <constraint firstItem="Zgp-tY-j8F" firstAttribute="centerX" secondItem="chX-eS-asc" secondAttribute="centerX" multiplier="0.12" id="g7N-ZA-uEm"/>
                                     <constraint firstItem="nqf-5k-ozg" firstAttribute="centerX" secondItem="chX-eS-asc" secondAttribute="centerX" id="iGu-Zg-rWB"/>
                                     <constraint firstAttribute="trailing" secondItem="st3-wX-gh2" secondAttribute="trailing" id="lfR-Xc-LjA"/>
                                     <constraint firstItem="9El-Tt-6hH" firstAttribute="centerX" secondItem="chX-eS-asc" secondAttribute="centerX" multiplier="0.37" id="mU3-BE-gJs"/>
@@ -161,23 +174,29 @@
                                     <constraint firstAttribute="bottom" secondItem="st3-wX-gh2" secondAttribute="bottom" id="tdy-sP-HQ8"/>
                                 </constraints>
                             </view>
-                            <view alpha="0.0" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="lfV-kv-Ed9">
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="lfV-kv-Ed9">
                                 <rect key="frame" x="0.0" y="288.5" width="414" height="414"/>
                                 <subviews>
-                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="ljv-qL-oI1">
-                                        <rect key="frame" x="79.5" y="179.5" width="255.5" height="55.5"/>
+                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="7" translatesAutoresizingMaskIntoConstraints="NO" id="ljv-qL-oI1">
+                                        <rect key="frame" x="79.5" y="178.5" width="255.5" height="57.5"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Not enough data 😴" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cc2-2w-1ws">
                                                 <rect key="frame" x="14.5" y="0.0" width="226.5" height="30"/>
                                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="25"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
+                                                <userDefinedRuntimeAttributes>
+                                                    <userDefinedRuntimeAttribute type="string" keyPath="localizedTextKey" value="genreMap.noData.title"/>
+                                                </userDefinedRuntimeAttributes>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Like songs to populate GenreMap" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0Ah-mF-fHz">
-                                                <rect key="frame" x="0.0" y="35" width="255.5" height="20.5"/>
+                                                <rect key="frame" x="0.0" y="37" width="255.5" height="20.5"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <color key="textColor" systemColor="secondaryLabelColor"/>
                                                 <nil key="highlightedColor"/>
+                                                <userDefinedRuntimeAttributes>
+                                                    <userDefinedRuntimeAttribute type="string" keyPath="localizedTextKey" value="genreMap.noData.subtitle"/>
+                                                </userDefinedRuntimeAttributes>
                                             </label>
                                         </subviews>
                                     </stackView>
@@ -218,7 +237,7 @@
                     </tabBarItem>
                     <navigationItem key="navigationItem" title="Title" id="7xP-6R-53u">
                         <userDefinedRuntimeAttributes>
-                            <userDefinedRuntimeAttribute type="string" keyPath="localizedTitleKey" value="genremap.title"/>
+                            <userDefinedRuntimeAttribute type="string" keyPath="localizedTitleKey" value="genreMap.title"/>
                         </userDefinedRuntimeAttributes>
                     </navigationItem>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
@@ -247,6 +266,9 @@
     <color key="tintColor" name="TintColor"/>
     <resources>
         <image name="staroflife" catalog="system" width="124" height="128"/>
+        <namedColor name="TintColor">
+            <color red="0.9179999828338623" green="0.68199998140335083" blue="0.49799999594688416" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
         <namedColor name="TintColor">
             <color red="0.9179999828338623" green="0.68199998140335083" blue="0.49799999594688416" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>

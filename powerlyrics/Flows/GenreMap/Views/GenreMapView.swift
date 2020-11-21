@@ -15,7 +15,7 @@ fileprivate extension Constants {
     static let baseInset: CGFloat = 95
     static let chartAnimationTimingFunction = CAMediaTimingFunction(controlPoints: 0.075, 0.82, 0.165, 1)
     static let chartAnimationDelayGrowth: Double = 20
-    static let path = "path"
+    static let pathKeyPath = "path"
     
 }
 
@@ -113,7 +113,7 @@ class GenreMapView: UIView {
                     values: self.values.enumerated().map { $0 > i ? self.oldValues[$0] : CGFloat($1) }
                 ).cgPath
                 
-                let animation = CABasicAnimation(keyPath: Constants.path)
+                let animation = CABasicAnimation(keyPath: Constants.pathKeyPath)
                 
                 animation.duration = .half
                 animation.fromValue = self.shapeLayer.presentation()?.path
@@ -123,7 +123,7 @@ class GenreMapView: UIView {
                 animation.isRemovedOnCompletion = false
                 self.shapeLayer.path = self.shapeLayer.presentation()?.path
                 self.shapeLayer.removeAllAnimations()
-                self.shapeLayer.add(animation, forKey: Constants.path)
+                self.shapeLayer.add(animation, forKey: Constants.pathKeyPath)
                 
                 delay(.half) {
                     group.leave()

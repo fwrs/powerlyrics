@@ -124,8 +124,10 @@ extension SetupCoordinator: UINavigationControllerDelegate {
         switch operation {
         case .push:
             return TranslationAnimation(type: .present, duration: 0.5, inNavigationController: true)
+        
         case .pop:
             return TranslationAnimation(type: .dismiss, duration: 0.5, interactionController: (fromVC as? TranslationAnimationView)?.translationInteractor, inNavigationController: true)
+        
         default:
             return nil
         }

@@ -15,7 +15,7 @@ import ReactiveKit
 extension Constants {
     
     static let buttonTapDuration: TimeInterval = 0.08
-    static let tryAgainText = "try again"
+    static let tryAgainText = Strings.Base.NoInternet.tryAgain
     
 }
 
@@ -74,6 +74,7 @@ class NoInternetView: View {
                 UIView.fadeUpdate(subtitleLabel, duration: Constants.buttonTapDuration) {
                     subtitleLabel.attributedText = attrString
                 }
+                
             case .ended:
                 if self?.tappedRetryButton == true {
                     return
@@ -81,6 +82,7 @@ class NoInternetView: View {
                 Haptic.play(Constants.tinyTap)
                 self?.onRefresh?()
                 self?.tappedRetryButton = true
+                
             default:
                 break
             }

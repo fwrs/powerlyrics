@@ -277,7 +277,6 @@ class TranslationAnimationInteractor: UIPercentDrivenInteractiveTransition {
         progress = CGFloat(fminf(fmaxf(Float(progress), .zero), .one))
         
         switch gestureRecognizer.state {
-        
         case .began:
             interactionInProgress = true
             if pop {
@@ -301,6 +300,7 @@ class TranslationAnimationInteractor: UIPercentDrivenInteractiveTransition {
             } else {
                 cancel()
             }
+            
         default:
             break
         }
