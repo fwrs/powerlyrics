@@ -11,6 +11,9 @@ PODS:
     - FirebaseAnalytics (= 7.1.0)
   - Firebase/CoreOnly (7.1.0):
     - FirebaseCore (= 7.1.0)
+  - Firebase/Crashlytics (7.1.0):
+    - Firebase/CoreOnly
+    - FirebaseCrashlytics (~> 7.1.0)
   - FirebaseAnalytics (7.1.0):
     - FirebaseCore (~> 7.0)
     - FirebaseInstallations (~> 7.0)
@@ -29,6 +32,12 @@ PODS:
     - GoogleUtilities/Environment (~> 7.0)
     - GoogleUtilities/Logger (~> 7.0)
     - nanopb (~> 2.30906.0)
+  - FirebaseCrashlytics (7.1.0):
+    - FirebaseCore (~> 7.0)
+    - FirebaseInstallations (~> 7.0)
+    - GoogleDataTransport (~> 8.0)
+    - nanopb (~> 2.30906.0)
+    - PromisesObjC (~> 1.2)
   - FirebaseInstallations (7.1.0):
     - FirebaseCore (~> 7.0)
     - GoogleUtilities/Environment (~> 7.0)
@@ -97,6 +106,7 @@ DEPENDENCIES:
   - Alamofire
   - Bond
   - Firebase/Analytics
+  - Firebase/Crashlytics
   - Haptica
   - IQKeyboardManager
   - KeychainAccess
@@ -121,6 +131,7 @@ SPEC REPOS:
     - FirebaseAnalytics
     - FirebaseCore
     - FirebaseCoreDiagnostics
+    - FirebaseCrashlytics
     - FirebaseInstallations
     - GoogleAppMeasurement
     - GoogleDataTransport
@@ -160,6 +171,7 @@ SPEC CHECKSUMS:
   FirebaseAnalytics: 7f165a56dea86ddd5b8ce02af3bee982c683405c
   FirebaseCore: 20046127eef0fcb8fa25df7fc12f7b97d4e48611
   FirebaseCoreDiagnostics: 872cdb9b749b23346dddd5c1014d1babd2257de3
+  FirebaseCrashlytics: c722e4ca283272eb90eb5bc245fdc6588e2f22c2
   FirebaseInstallations: 3de38553e86171b5f81d83cdeef63473d37bfdb0
   GoogleAppMeasurement: 89e1a64593f968713b0506ba1b53b38a154bf9a5
   GoogleDataTransport: e4085e6762f36a6141738f46b0153473ce57fb18
@@ -183,6 +195,6 @@ SPEC CHECKSUMS:
   Then: acfe0be7e98221c6204e12f8161459606d5d822d
   Typographizer: 1e1cf1abf8ed4e06427f3f130ecb91f95165123b
 
-PODFILE CHECKSUM: faeaefc6d14ae46ce5d73a6c2bf41005eadb25c9
+PODFILE CHECKSUM: 319eb720c4e8068b3e65e8986561207c6d9adb8f
 
 COCOAPODS: 1.10.0

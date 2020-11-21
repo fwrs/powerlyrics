@@ -3,6 +3,7 @@ ios_version = '13.0'
 platform :ios, ios_version
 
 target 'powerlyrics' do
+  
   # Use dynamic frameworks
   use_frameworks!
   
@@ -51,8 +52,8 @@ target 'powerlyrics' do
   # Token storage
   pod 'KeychainAccess'
   
-  # Firebase Analytics
-  
+  # Firebase
+  pod 'Firebase/Crashlytics'
   pod 'Firebase/Analytics'
   
   # Fix for Realm
@@ -66,4 +67,5 @@ target 'powerlyrics' do
       end
     end
   end
+  
 end
