@@ -58,7 +58,7 @@ class GenreMapView: UIView {
         shapeLayer.strokeColor = UIColor.tintColor.cg
         shapeLayer.fillColor = UIColor.tintColor.withAlphaComponent(.pointThree).cg
         
-        shapeLayer.lineWidth = .two
+        shapeLayer.lineWidth = .two + .half
         shapeLayer.position = .zero
 
         self.layer.addSublayer(shapeLayer)

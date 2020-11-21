@@ -118,6 +118,7 @@
 		B875DE2A254C112C005D0C51 /* SearchTrendCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B875DE28254C112C005D0C51 /* SearchTrendCell.xib */; };
 		B875DE2E254C1137005D0C51 /* SearchTrendCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B875DE2D254C1137005D0C51 /* SearchTrendCellViewModel.swift */; };
 		B8806BCC25483F50009524BC /* SpotifyPlaylistSong.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8806BCB25483F50009524BC /* SpotifyPlaylistSong.swift */; };
+		B88366AE2569D07E0051349A /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = B88366AD2569D07E0051349A /* README.md */; };
 		B888BA542529310C00189CFF /* SpotifySong.swift in Sources */ = {isa = PBXBuildFile; fileRef = B888BA532529310C00189CFF /* SpotifySong.swift */; };
 		B889EBB025489554003B51D1 /* MutableObservableArray2D.swift in Sources */ = {isa = PBXBuildFile; fileRef = B889EBAF25489554003B51D1 /* MutableObservableArray2D.swift */; };
 		B891F867255734DB00AE2810 /* GenreStatsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B891F866255734DB00AE2810 /* GenreStatsViewController.swift */; };
@@ -303,6 +304,7 @@
 		B875DE28254C112C005D0C51 /* SearchTrendCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SearchTrendCell.xib; sourceTree = "<group>"; };
 		B875DE2D254C1137005D0C51 /* SearchTrendCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchTrendCellViewModel.swift; sourceTree = "<group>"; };
 		B8806BCB25483F50009524BC /* SpotifyPlaylistSong.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpotifyPlaylistSong.swift; sourceTree = "<group>"; };
+		B88366AD2569D07E0051349A /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = SOURCE_ROOT; };
 		B888BA532529310C00189CFF /* SpotifySong.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpotifySong.swift; sourceTree = "<group>"; };
 		B889EBAF25489554003B51D1 /* MutableObservableArray2D.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MutableObservableArray2D.swift; sourceTree = "<group>"; };
 		B891F866255734DB00AE2810 /* GenreStatsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenreStatsViewController.swift; sourceTree = "<group>"; };
@@ -885,6 +887,7 @@
 				B86A46492526873E00394D3B /* Shared */,
 				B8C8BCF12525EE6E00E55708 /* Flows */,
 				B86F6E94252623A7003296B0 /* .gitignore */,
+				B88366AD2569D07E0051349A /* README.md */,
 				B86F6E95252623AE003296B0 /* swiftlint.yml */,
 				B86F6E96252623B7003296B0 /* swiftgen.yml */,
 			);
@@ -894,12 +897,12 @@
 		B8C8BCF12525EE6E00E55708 /* Flows */ = {
 			isa = PBXGroup;
 			children = (
+				B86D5BF62529F48D0026B764 /* Setup */,
 				B86F6E1625260BFB003296B0 /* Home */,
 				B8E20CE125272BB200D0E04C /* Search */,
 				B8E20CE225272BBA00D0E04C /* GenreMap */,
 				B8E20CE325272BC500D0E04C /* Profile */,
 				B861E7AA2528A97900A7C864 /* Lyrics */,
-				B86D5BF62529F48D0026B764 /* Setup */,
 				B8B84E3A25604016007BC2B1 /* SongList */,
 			);
 			path = Flows;
@@ -1101,6 +1104,7 @@
 				B82A6F2025267DA100A567B1 /* RobotoMono-Medium.ttf in Resources */,
 				B86F6EAA252624F0003296B0 /* Colors.xcassets in Resources */,
 				B82A6F2625267DA100A567B1 /* RobotoMono-Bold.ttf in Resources */,
+				B88366AE2569D07E0051349A /* README.md in Resources */,
 				B85116C225607AE600BA1C69 /* GenreStatsEmptyCell.xib in Resources */,
 				B82A6F2125267DA100A567B1 /* RobotoMono-SemiBoldItalic.ttf in Resources */,
 				B82A6F2925267DA100A567B1 /* RobotoMono-SemiBold.ttf in Resources */,
