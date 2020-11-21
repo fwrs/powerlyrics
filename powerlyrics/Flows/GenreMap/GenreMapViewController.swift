@@ -127,7 +127,7 @@ class GenreMapViewController: ViewController, GenreMapScene {
                 }
             }
             
-            UIView.animate(withDuration: Constants.descriptionAppearanceDuration, delay: Constants.descriptionAppearanceDelay, options: .curveEaseIn) { [weak self] in
+            UIView.animate(withDuration: Constants.descriptionAppearanceDuration, delay: noData ? Constants.tinyDelay : Constants.descriptionAppearanceDelay, options: .curveEaseIn) { [weak self] in
                 self?.descriptionLabel.alpha = .one
             }
             
@@ -211,6 +211,10 @@ extension GenreMapViewController {
         }
 
         descriptionLabel.attributedText = generateAttributedDescriptionText()
+        
+        ([genreMapBackgroundView, genreMapView, descriptionLabel] + genreMapButtons).forEach { view in
+            view?.alpha = .zero
+        }
     }
     
     // MARK: - Input

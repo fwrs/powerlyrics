@@ -21,6 +21,7 @@ class ImagePreviewController: UIViewController {
         preferredContentSize = newSize
         imageView.contentMode = .scaleAspectFill
         imageView.clipsToBounds = true
+        imageView.image = placeholder
         
         if image != nil || placeholder == nil {
             imageView.populate(with: image, placeholder: placeholder)

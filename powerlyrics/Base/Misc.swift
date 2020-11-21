@@ -266,7 +266,7 @@ extension Int {
 
 extension UIColor {
     
-    func adjust(hueBy hue: CGFloat = .one, saturationBy saturation: CGFloat = .one, brightnessBy brightness: CGFloat = .one) -> UIColor {
+    func adjust(hueBy hue: CGFloat = .one, saturationBy saturation: CGFloat = .one, brightnessBy brightness: CGFloat = .one, minBrightness: CGFloat = .zero) -> UIColor {
         var currentHue = CGFloat.zero
         var currentSaturation = CGFloat.zero
         var currentBrigthness = CGFloat.zero
@@ -275,7 +275,7 @@ extension UIColor {
         if getHue(&currentHue, saturation: &currentSaturation, brightness: &currentBrigthness, alpha: &currentAlpha) {
             return UIColor(hue: currentHue * hue,
                            saturation: currentSaturation * saturation,
-                           brightness: currentBrigthness * brightness,
+                           brightness: max(currentBrigthness * brightness, minBrightness),
                            alpha: currentAlpha)
         } else {
             return self

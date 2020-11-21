@@ -30,6 +30,10 @@ fileprivate extension Constants {
     static let baseNavigationBarHeight: CGFloat = 270
     static let contentInsetNotchAdjustment: CGFloat = 30
     
+    static let tappedButtonAlpha = 0.8
+    
+    // MARK: - Strings
+    
     static let lyricsTitle = "lyrics"
     static let storyTitle = "Story"
     static let shareText = "Just discovered this awesome song using powerlyrics app:"
@@ -37,6 +41,7 @@ fileprivate extension Constants {
     static let likeText = "like"
     static let likedText = "liked"
     static let fromAlbumText = "From album"
+    static let notInAnAlbumText = "Not in an album"
     
     // MARK: - Alerts
     
@@ -242,7 +247,7 @@ extension LyricsViewController {
             button.reactive.controlEvents([.touchDragExit, .touchUpInside]).observeNext { [weak self] _ in
                 self?.likeButton.layer.removeAllAnimations()
                 UIView.animate(withDuration: Constants.fastAnimationDuration) {
-                    button.alpha = 0.8
+                    button.alpha = Constants.tappedButtonAlpha
                 }
             }.dispose(in: disposeBag)
         }
@@ -300,11 +305,17 @@ extension LyricsViewController {
         viewModel.album.dropFirst(.one).observeNext { [weak self] album in
             guard let self = self else { return }
             
-            let text = "\(Constants.fromAlbumText) “\(album)”"
-            let attrString = NSMutableAttributedString(string: text, attributes: [.foregroundColor: UIColor.label])
+            let attrString: NSMutableAttributedString
             
-            attrString.addAttribute(.foregroundColor, value: UIColor.secondaryLabel, range: NSRange(location: .zero, length: "\(Constants.fromAlbumText) “".count))
-            attrString.addAttribute(.foregroundColor, value: UIColor.secondaryLabel, range: NSRange(location: text.count - .one, length: .one))
+            if let album = album {
+                let text = "\(Constants.fromAlbumText) “\(album)”"
+                attrString = NSMutableAttributedString(string: text, attributes: [.foregroundColor: UIColor.label])
+                
+                attrString.addAttribute(.foregroundColor, value: UIColor.secondaryLabel, range: NSRange(location: .zero, length: "\(Constants.fromAlbumText) “".count))
+                attrString.addAttribute(.foregroundColor, value: UIColor.secondaryLabel, range: NSRange(location: text.count - .one, length: .one))
+            } else {
+                attrString = NSMutableAttributedString(string: Constants.notInAnAlbumText, attributes: [.foregroundColor: UIColor.secondaryLabel])
+            }
             
             UIView.fadeUpdate(self.firstInfoLabel) {
                 self.firstInfoLabel.attributedText = attrString

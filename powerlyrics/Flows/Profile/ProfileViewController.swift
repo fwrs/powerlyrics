@@ -236,7 +236,6 @@ extension ProfileViewController {
     
     func setupOutput() {
         viewModel.items.bind(to: tableView, using: ProfileBinder())
-        viewModel.isLoading.map(\.negated).bind(to: activityIndicator.reactive.isHidden)
         
         viewModel.name.bind(to: userNameLabel.reactive.text).dispose(in: disposeBag)
         viewModel.premium.map(\.negated).bind(to: premiumIconImageView.reactive.isHidden).dispose(in: disposeBag)

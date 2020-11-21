@@ -47,7 +47,7 @@ class LyricsViewModel: ViewModel {
     
     let producers = Observable([String]())
     
-    let album = Observable(String())
+    let album: Observable<String?> = Observable(nil)
     
     let spotifyURL: Observable<URL?> = .init(nil)
     
@@ -103,6 +103,8 @@ class LyricsViewModel: ViewModel {
                         if let album = response.response.song.album {
                             self.album.value = album.name.clean.typographized
                             self.realmService.incrementDiscoveriesStat(with: album.id)
+                        } else {
+                            self.album.value = nil
                         }
                         let artistId = response.response.song.primaryArtist.id
                         self.realmService.incrementViewedArtistsStat(with: artistId)

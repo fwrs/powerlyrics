@@ -105,23 +105,14 @@
                                     <constraint firstAttribute="height" constant="0.40000000000000002" id="BMq-v0-zCt"/>
                                 </constraints>
                             </view>
-                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="large" translatesAutoresizingMaskIntoConstraints="NO" id="01W-08-cKF">
-                                <rect key="frame" x="0.0" y="250.5" width="414" height="120"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="120" id="jJW-Eu-9aZ"/>
-                                </constraints>
-                            </activityIndicatorView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="aOb-qH-KNs"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <color key="tintColor" name="TintColor"/>
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="j4n-CT-Dpy" secondAttribute="trailing" id="3Gs-vV-VpL"/>
-                            <constraint firstItem="01W-08-cKF" firstAttribute="leading" secondItem="bPg-9Q-9sd" secondAttribute="leading" id="9yC-He-i9L"/>
                             <constraint firstAttribute="top" secondItem="j4n-CT-Dpy" secondAttribute="top" id="CyO-1c-gbr"/>
-                            <constraint firstAttribute="trailing" secondItem="01W-08-cKF" secondAttribute="trailing" id="HOJ-jY-MeU"/>
                             <constraint firstItem="Bqr-mN-iBi" firstAttribute="trailing" secondItem="bPg-9Q-9sd" secondAttribute="trailing" id="ZAf-vQ-01B"/>
-                            <constraint firstItem="01W-08-cKF" firstAttribute="top" secondItem="Bqr-mN-iBi" secondAttribute="bottom" id="aiB-QV-Gx2"/>
                             <constraint firstItem="j4n-CT-Dpy" firstAttribute="leading" secondItem="bPg-9Q-9sd" secondAttribute="leading" id="bcd-0Y-BmF"/>
                             <constraint firstItem="Bqr-mN-iBi" firstAttribute="leading" secondItem="bPg-9Q-9sd" secondAttribute="leading" id="cev-iw-Uih"/>
                             <constraint firstItem="Bqr-mN-iBi" firstAttribute="top" secondItem="j4n-CT-Dpy" secondAttribute="bottom" id="egJ-vk-erB"/>
@@ -139,7 +130,6 @@
                     <nil key="simulatedTopBarMetrics"/>
                     <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
-                        <outlet property="activityIndicator" destination="01W-08-cKF" id="8jB-Vu-Bp9"/>
                         <outlet property="avatarContainerView" destination="y5l-12-iX5" id="UCz-F7-Khf"/>
                         <outlet property="avatarDimensionConstraint" destination="pRP-Na-eAJ" id="nja-uc-peP"/>
                         <outlet property="avatarImageView" destination="kbM-Vy-9U2" id="ZHO-M8-oHc"/>

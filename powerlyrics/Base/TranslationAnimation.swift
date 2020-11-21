@@ -162,18 +162,25 @@ class TranslationAnimation: NSObject, UIViewControllerAnimatedTransitioning {
         }
         
         let completionClosure = { (_: Bool) in
-            fromSnapshots.forEach { $0.removeFromSuperview() }
-            toSnapshots.forEach { $0.removeFromSuperview() }
-            fromVC.translationViews.forEach { $0.alpha = .one }
-            toVC.translationViews.forEach { $0.alpha = .one }
+            (Array(zip(fromSnapshots, toVC.translationViews)) +
+                Array(zip(toSnapshots, fromVC.translationViews))).forEach { (snapshot, view) in
+                    snapshot.alpha = .one
+                    view.alpha = .one
+                    view.isHidden = true
+                    UIView.transition(from: snapshot, to: view, duration: .pointOne, options: [.showHideTransitionViews, .transitionCrossDissolve]) { _ in
+                        snapshot.removeFromSuperview()
+                    }
+                }
             
-            fromVCCorrectedView.alpha = .one
-            fromVCCorrectedView.transform = .identity
-            
-            toVCCorrectedView.alpha = .one
-            toVCCorrectedView.transform = .identity
+            delay(.pointOne) {
+                fromVCCorrectedView.alpha = .one
+                fromVCCorrectedView.transform = .identity
+                
+                toVCCorrectedView.alpha = .one
+                toVCCorrectedView.transform = .identity
 
-            transitionContext.completeTransition(!transitionContext.transitionWasCancelled)
+                transitionContext.completeTransition(!transitionContext.transitionWasCancelled)
+            }
         }
         
         if transitionContext.isInteractive {

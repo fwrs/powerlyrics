@@ -17,6 +17,8 @@ extension Constants {
     
     static let sectionBegin: Character = "["
     static let sectionEnd: Character = "]"
+    static let instrumentalSystemMessage = "This song is an instrumental"
+    static let instrumentalResponse = "[Instrumental]"
     
 }
 
@@ -66,7 +68,7 @@ extension GeniusProvider {
             
             // MARK: - Lyrics parsing
             
-            let result1 = text.contains("This song is an instrumental") ? ["[Instrumental]"] : text
+            let result1 = text.contains(Constants.instrumentalSystemMessage) ? [Constants.instrumentalResponse] : text
                 .split(separator: Constants.newline)
                 .map(\.clean)
                 .joined(separator: String(Constants.newline))
@@ -80,7 +82,7 @@ extension GeniusProvider {
             let result3 = result2.last?.isEmpty == true ? Array(result2.dropLast()) : result2
             
             let lyrics = result3
-                .dedupNearby(equals: String())
+                .dedupNearby(equals: String(Constants.newline))
                 .reduce([SharedLyricsSection(contents: .init())]) { result, element in
                     if element.starts(with: String(Constants.sectionBegin)) || element.isEmpty {
                         return result + [SharedLyricsSection(name: element.isEmpty ? nil : element, contents: .init())]

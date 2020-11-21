@@ -19,6 +19,8 @@ class SongListLikedViewModel: SongListViewModel {
         Constants.likedSongsTitle
     }
     
+    var firstLoad: Bool = true
+    
     // MARK: - Load data
     
     override func loadData(refresh: Bool = false, retry: Bool = false) {
@@ -33,7 +35,9 @@ class SongListLikedViewModel: SongListViewModel {
         items.replace(with: likedSongs.map { .song(SongCellViewModel(
             song: $0.asSharedSong,
             accessory: .likeLogo
-        )) }, performDiff: true)
+        )) }, performDiff: !firstLoad)
+        
+        firstLoad = false
         
         endLoading(refresh)
     }

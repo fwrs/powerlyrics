@@ -82,7 +82,7 @@ class SongCell: TableViewCell {
     }
     
     override func setHighlighted(_ highlighted: Bool, animated: Bool) {
-        let highlightColor = dominantColor?.adjust(brightnessBy: .oneHalfth) ?? Asset.Colors.highlightCellColor.color
+        let highlightColor = dominantColor?.adjust(brightnessBy: .oneHalfth, minBrightness: .pointOne) ?? Asset.Colors.highlightCellColor.color
         let baseColor = dominantColor ?? Asset.Colors.normalCellColor.color
         UIView.animate(withDuration: (highlighted || !animated) ? (Constants.defaultAnimationDuration * .pointOne) : Constants.defaultAnimationDuration) { [weak self] in
             self?.backgroundColorView.backgroundColor = highlighted ? highlightColor : (self?.dominantColor).safe
@@ -96,7 +96,7 @@ class SongCell: TableViewCell {
     }
     
     override func setSelected(_ selected: Bool, animated: Bool) {
-        let highlightColor = dominantColor?.adjust(brightnessBy: .oneHalfth) ?? Asset.Colors.highlightCellColor.color
+        let highlightColor = dominantColor?.adjust(brightnessBy: .oneHalfth, minBrightness: .pointOne) ?? Asset.Colors.highlightCellColor.color
         let baseColor = dominantColor ?? Asset.Colors.normalCellColor.color
         UIView.animate(withDuration: (selected || !animated) ? (Constants.defaultAnimationDuration * .pointOne) : Constants.defaultAnimationDuration) { [weak self] in
             self?.backgroundColorView.backgroundColor = selected ? highlightColor : (self?.dominantColor).safe

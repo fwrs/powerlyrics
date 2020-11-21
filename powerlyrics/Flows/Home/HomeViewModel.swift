@@ -161,6 +161,10 @@ class HomeViewModel: ViewModel {
             delay(Constants.defaultAnimationDuration) { [weak self] in
                 self?.isFailed.value = true
                 self?.items.set([])
+                
+                if shouldEndLoading {
+                    self?.endLoading(endLoadingRefresh)
+                }
             }
             return
         }

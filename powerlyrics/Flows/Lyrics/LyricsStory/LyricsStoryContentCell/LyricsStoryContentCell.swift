@@ -24,10 +24,8 @@ class LyricsStoryContentCell: TableViewCell {
     
     // MARK: - Outlets
     
-    @IBOutlet private weak var contentsTextView: UnpaddedTextView!
-    
-    @IBOutlet private weak var contentsTextViewHeightConstraint: NSLayoutConstraint!
-    
+    @IBOutlet private weak var contentsLabel: CopyableLabel!
+
     // MARK: - Lifecycle
     
     override func awakeFromNib() {
@@ -41,19 +39,11 @@ class LyricsStoryContentCell: TableViewCell {
         let attrString = NSMutableAttributedString(
             string: viewModel.story,
             attributes: [
-                .paragraphStyle: Constants.paragraphStyle,
-                .font: Constants.storyFont,
-                .foregroundColor: UIColor.label
+                .paragraphStyle: Constants.paragraphStyle
             ]
         )
 
-        contentsTextView.attributedText = attrString
-        
-        contentsTextViewHeightConstraint.constant = attrString.boundingRect(
-            with: CGSize(width: UIScreen.main.bounds.width - 32, height: .infinity),
-            options: .usesLineFragmentOrigin,
-            context: nil
-        ).height
+        contentsLabel.attributedText = attrString
         
     }
     

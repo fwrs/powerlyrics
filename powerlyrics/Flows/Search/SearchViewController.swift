@@ -185,7 +185,7 @@ extension SearchViewController {
         combineLatest(viewModel.items, viewModel.isLoading, viewModel.isRefreshing, viewModel.isFailed).map { songs, isLoading, isRefreshing, isFailed in
             (!isLoading && !isRefreshing &&
                 (songs.collection.numberOfSections == .zero ||
-                    songs.collection.numberOfItems(inSection: .zero) == .zero)) || isFailed
+                    songs.collection.numberOfItems(inSection: .zero) == .zero)) && !isFailed
         }.removeDuplicates().observeNext { [weak self] isVisible in
             guard let self = self else { return }
             UIView.fadeDisplay(self.noResultsView, visible: isVisible)
@@ -231,6 +231,7 @@ extension SearchViewController {
         }.dispose(in: disposeBag)
         
         viewModel.items.bind(to: tableView, using: SearchBinder(albumTapAction: { [weak self] album in
+            Haptic.play(Constants.tinyTap)
             self?.flowAlbum?(album)
         }))
         

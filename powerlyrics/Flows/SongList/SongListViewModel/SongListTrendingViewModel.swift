@@ -32,13 +32,13 @@ class SongListTrendingViewModel: SongListViewModel {
     
     override func loadData(refresh: Bool = false, retry: Bool = false) {
         isLoadingWithPreview.value = true
-        isFailed.value = false
         if refresh {
             startLoading(refresh)
         }
         if retry {
             startLoading(false)
         }
+        isFailed.value = false
         if !refresh && !retry {
             items.replace(
                 with: preview.enumerated().map {
@@ -47,7 +47,7 @@ class SongListTrendingViewModel: SongListViewModel {
                         accessory: .ranking(nth: $0 + 1)
                     ))
                 } + [.loading],
-                performDiff: true
+                performDiff: false
             )
         }
         spotifyProvider.reactive
@@ -74,13 +74,15 @@ class SongListTrendingViewModel: SongListViewModel {
                 case .failed:
                     self.items.replace(with: [], performDiff: true)
                     delay(Constants.defaultAnimationDuration) {
-                        self.isFailed.value = true
-                        self.isLoadingWithPreview.value = false
                         if retry {
                             self.endLoading(false)
                         }
+                        self.isFailed.value = true
+                        self.isLoadingWithPreview.value = false
                     }
-                    self.endLoading(refresh)
+                    if !retry {
+                        self.endLoading(refresh)
+                    }
                 default:
                     break
                 }

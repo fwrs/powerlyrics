@@ -131,7 +131,9 @@ class SearchViewModel: ViewModel {
             endLoading(refresh)
             return
         }
+        
         startLoading(refresh)
+        isFailed.value = false
         
         let group = DispatchGroup()
         var failedGenius = false
@@ -189,12 +191,16 @@ class SearchViewModel: ViewModel {
             let songsSection = Array(self.searchSongsResult.dropFirst().prefix(Constants.maxPlaylistPreviewCount).map { SearchCell.song(SongCellViewModel(song: $0)) })
             
             let albumsSection = self.searchAlbumsResult.isEmpty ? [] : [SearchCell.albums(AlbumsCellViewModel(albums: self.searchAlbumsResult))]
-            
-            self.isFailed.value = failedGenius && failedSpotify
-            
+                        
             if failedGenius && failedSpotify {
-                self.items.set([])
+                delay(Constants.defaultAnimationDuration) { [weak self] in
+                    self?.isFailed.value = true
+                    self?.endLoading(refresh)
+                    self?.items.set([])
+                }
                 return
+            } else {
+                self.isFailed.value = false
             }
             
             self.nothingWasFound.value = topResultSection.isEmpty && songsSection.isEmpty && albumsSection.isEmpty

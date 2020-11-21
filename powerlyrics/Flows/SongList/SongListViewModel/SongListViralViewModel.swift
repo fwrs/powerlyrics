@@ -47,7 +47,7 @@ class SongListViralViewModel: SongListViewModel {
                         accessory: .ranking(nth: $0 + 1)
                     ))
                 } + [.loading],
-                performDiff: true
+                performDiff: false
             )
         }
         spotifyProvider.reactive
@@ -74,13 +74,15 @@ class SongListViralViewModel: SongListViewModel {
                 case .failed:
                     self.items.replace(with: [], performDiff: true)
                     delay(Constants.defaultAnimationDuration) {
-                        self.isFailed.value = true
-                        self.isLoadingWithPreview.value = false
                         if retry {
                             self.endLoading(false)
                         }
+                        self.isFailed.value = true
+                        self.isLoadingWithPreview.value = false
                     }
-                    self.endLoading(refresh)
+                    if !retry {
+                        self.endLoading(refresh)
+                    }
                 default:
                     break
                 }

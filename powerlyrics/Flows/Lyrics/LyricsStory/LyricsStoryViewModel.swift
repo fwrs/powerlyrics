@@ -39,9 +39,12 @@ struct LyricsStoryViewModel {
         if fixed.count <= .two {
             items.replace(with: [.empty], performDiff: false)
         } else {
-            items.replace(with: [.topPadding] + fixed.split(separator: Constants.newline).map {
-                .story(LyricsStoryContentCellViewModel(story: $0.string))
-            }, performDiff: false)
+            items.replace(with: [.topPadding] + fixed
+                            .split(separator: Constants.newline)
+                            .map(\.clean)
+                            .dedupNearby(equals: String(Constants.newline)).map {
+                                .story(LyricsStoryContentCellViewModel(story: $0))
+                            }, performDiff: false)
         }
     }
     
