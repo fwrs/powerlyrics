@@ -135,11 +135,15 @@ extension SearchViewController {
         tap.cancelsTouchesInView = false
         view.addGestureRecognizer(tap)
         
-        searchController.searchBar.reactive.text.compactMap { $0 }.dropFirst(.one).debounce(for: Constants.buttonThrottleTime, queue: .main).observeNext { [weak self] query in
-            guard let self = self else { return }
-            self.viewModel.search(for: query)
-            UIView.fadeDisplay(self.noResultsView, visible: query.isEmpty)
-        }.dispose(in: disposeBag)
+        searchController.searchBar
+            .reactive.text
+            .compactMap { $0 }
+            .dropFirst(.one)
+            .debounce(for: Constants.buttonThrottleTime, queue: .main)
+            .observeNext { [weak self] query in
+                guard let self = self else { return }
+                self.viewModel.search(for: query)
+            }.dispose(in: disposeBag)
         
         tableView.reactive.selectedRowIndexPath.observeNext { [weak self] indexPath in
             guard let self = self else { return }
@@ -176,19 +180,18 @@ extension SearchViewController {
                 let text = self.searchController.searchBar.text.safe
                 self.viewModel.search(for: text)
             }
-            UIView.fadeDisplay(self.noResultsView, visible: !isFailed &&
-                self.searchController.searchBar.text.safe.isEmpty)
         }.dispose(in: disposeBag)
         
-        combineLatest(viewModel.items, viewModel.isLoading, viewModel.isRefreshing, viewModel.isFailed).observeNext { [weak self] songs, isLoading, isRefreshing, isFailed in
-            guard let self = self else { return }
-            if isFailed { return }
-            UIView.fadeDisplay(self.noResultsView, visible: !isLoading && !isRefreshing &&
+        combineLatest(viewModel.items, viewModel.isLoading, viewModel.isRefreshing, viewModel.isFailed).map { songs, isLoading, isRefreshing, isFailed in
+            (!isLoading && !isRefreshing &&
                 (songs.collection.numberOfSections == .zero ||
-                    songs.collection.numberOfItems(inSection: .zero) == .zero))
+                    songs.collection.numberOfItems(inSection: .zero) == .zero)) || isFailed
+        }.removeDuplicates().observeNext { [weak self] isVisible in
+            guard let self = self else { return }
+            UIView.fadeDisplay(self.noResultsView, visible: isVisible)
         }.dispose(in: disposeBag)
         
-        viewModel.trendsLoading.observeNext(with: { [weak self] isLoading in
+        viewModel.trendsLoading.dropFirst(.one).observeNext(with: { [weak self] isLoading in
             guard let self = self else { return }
             UIView.fadeDisplay(self.trendsActivityIndicator, visible: isLoading)
         }).dispose(in: disposeBag)
@@ -199,11 +202,14 @@ extension SearchViewController {
         
         viewModel.isLoading.removeDuplicates().observeNext { [weak self] loading in
             guard let self = self else { return }
+            
             if loading {
                 self.tableView.isUserInteractionEnabled = false
                 self.tableView.isScrollEnabled = false
             }
+            
             UIView.fadeDisplay(self.activityIndicator, visible: loading, duration: .pointOne)
+            
             UIView.animate(withDuration: .pointOne, delay: .zero, options: .curveEaseOut) {
                 self.tableView.alpha = loading ? .pointThree : .one
             } completion: { _ in
@@ -212,6 +218,7 @@ extension SearchViewController {
                     self.tableView.isScrollEnabled = true
                 }
             }
+            
             if loading {
                 self.tableView.unsetRefreshControl()
             } else {
@@ -232,7 +239,6 @@ extension SearchViewController {
             cell.didTap = { [weak self] in
                 guard let self = self else { return }
                 Haptic.play(Constants.tinyTap)
-                UIView.fadeHide(self.noResultsView)
                 let query = "\(cellViewModel.song.name) \(Constants.dash) \(cellViewModel.song.artists.first.safe)"
                 self.searchController.searchBar.text = query
                 self.searchController.isActive = true
@@ -242,10 +248,14 @@ extension SearchViewController {
         }
         
         viewModel.nothingWasFound.map {
-            $0 ?
-                Constants.nothingWasFoundText :
+            $0 ? Constants.nothingWasFoundText :
                 Constants.startTypingText
-        }.bind(to: nothingWasFoundSubtitleLabel.reactive.text).dispose(in: disposeBag)
+        }.observeNext { [weak self] text in
+            guard let self = self else { return }
+            UIView.fadeUpdate(self.nothingWasFoundSubtitleLabel) { [weak self] in
+                self?.nothingWasFoundSubtitleLabel.text = text
+            }
+        }.dispose(in: disposeBag)
     
     }
     
@@ -256,9 +266,8 @@ extension SearchViewController {
 extension SearchViewController: UISearchBarDelegate {
     
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-        guard !viewModel.isLoading.value && !viewModel.isRefreshing.value else { return }
+        viewModel.cancelLoading()
         viewModel.reset()
-        UIView.fadeShow(noResultsView)
         searchBar.setShowsCancelButton(false, animated: true)
     }
     

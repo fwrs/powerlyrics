@@ -14,7 +14,7 @@ import ReactiveKit
 enum GenreStatsCell: Equatable {
     
     case song(SongCellViewModel, last: Bool = false)
-    case genreInfo(GenreInfoCellViewModel)
+    case genreInfo(GenreStatsInfoCellViewModel)
     case empty
     
 }
@@ -43,12 +43,12 @@ class GenreStatsViewModel: ViewModel {
         
         super.init()
         
-        loadData()
+        loadData(initial: true)
     }
     
     // MARK: - Load data
     
-    func loadData() {
+    func loadData(initial: Bool = false) {
         let likedSongs = realmService.likedSongs(with: genre)
         let songs = likedSongs
             .enumerated()
@@ -65,15 +65,15 @@ class GenreStatsViewModel: ViewModel {
         if songs.isEmpty {
             items.replace(with: [
                 .empty
-            ], performDiff: true)
+            ], performDiff: !initial)
         } else {
             items.replace(with: [
-                .genreInfo(GenreInfoCellViewModel(
+                .genreInfo(GenreStatsInfoCellViewModel(
                     level: .init(count: songs.count, average: average),
                     count: songs.count,
                     genre: genre
                 ))
-            ] + songs, performDiff: true)
+            ] + songs, performDiff: !initial)
         }
         isEmpty.value = songs.isEmpty
     }

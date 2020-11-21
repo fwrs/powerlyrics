@@ -30,19 +30,19 @@ typealias SpotifyProvider = MoyaProvider<Spotify>
 
 extension SpotifyProvider {
     
-    private static let keychainService: KeychainServiceProtocol = Config.getResolver().resolve(KeychainServiceProtocol.self)!
+    static let keychainService: KeychainServiceProtocol = Config.getResolver().resolve(KeychainServiceProtocol.self)!
     
-    private var keychainService: KeychainServiceProtocol {
+    var keychainService: KeychainServiceProtocol {
         SpotifyProvider.keychainService
     }
     
-    private static let realmService: RealmServiceProtocol = Config.getResolver().resolve(RealmServiceProtocol.self)!
+    static let realmService: RealmServiceProtocol = Config.getResolver().resolve(RealmServiceProtocol.self)!
     
-    private var realmService: RealmServiceProtocol {
+    var realmService: RealmServiceProtocol {
         SpotifyProvider.realmService
     }
     
-    private static var token: SpotifyToken? {
+    static var token: SpotifyToken? {
         get {
             keychainService.getDecodable(for: .spotifyToken)
         }

@@ -153,9 +153,7 @@ class ProfileViewController: ViewController, ProfileScene {
         
         present(Constants.logOutAlert.with {
             $0.addAction(UIAlertAction(title: Constants.confirmLogOutActionTitle, style: .destructive) { [weak self] _ in
-                guard let self = self else { return }
-                self.viewModel.spotifyProvider.logout()
-                NotificationCenter.default.post(name: .appDidLogout, object: nil, userInfo: nil)
+                self?.viewModel.logout()
             })
             $0.addAction(Constants.cancelLogOutAction)
         }, animated: true, completion: nil)

@@ -113,8 +113,10 @@ class SearchViewModel: ViewModel {
                     )
                     self?.trendsLoading.value = false
                 case .failed:
-                    self?.trendsFailed.value = true
-                    self?.trendsLoading.value = false
+                    delay(Constants.defaultAnimationDuration) { [weak self] in
+                        self?.trendsFailed.value = true
+                        self?.trendsLoading.value = false
+                    }
                 default:
                     break
                 }
@@ -182,8 +184,6 @@ class SearchViewModel: ViewModel {
         group.notify(queue: .main) { [weak self] in
             guard let self = self else { return }
             
-            self.endLoading(refresh)
-            
             let topResultSection = [self.searchSongsResult.first].compactMap { $0 }.map { SearchCell.song(SongCellViewModel(song: $0)) }
             
             let songsSection = Array(self.searchSongsResult.dropFirst().prefix(Constants.maxPlaylistPreviewCount).map { SearchCell.song(SongCellViewModel(song: $0)) })
@@ -206,6 +206,8 @@ class SearchViewModel: ViewModel {
                 (.songs, songsSection),
                 (.albums, albumsSection)
             ])
+            
+            self.endLoading(refresh)
         }
     }
     
@@ -215,6 +217,13 @@ class SearchViewModel: ViewModel {
         items.removeAllItemsAndSections()
         nothingWasFound.value = false
         isFailed.value = false
+        isLoading.value = false
+        isRefreshing.value = false
+    }
+    
+    func cancelLoading() {
+        latestSearchSongsRequest?.dispose()
+        latestSearchAlbumsRequest?.dispose()
     }
     
 }

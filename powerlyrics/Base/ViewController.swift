@@ -57,9 +57,9 @@ class ViewController: UIViewController, UITabBarControllerDelegate {
                 }
                 return
             }
-            noInternetView?.layer.removeAllAnimations()
             let newNoInternetView = NoInternetView.fromNib
             newNoInternetView.onRefresh = onTapRefresh
+            newNoInternetView.isHidden = true
             view.addSubview(newNoInternetView)
             view.bringSubviewToFront(newNoInternetView)
             NSLayoutConstraint.activate([
@@ -92,6 +92,7 @@ class ViewController: UIViewController, UITabBarControllerDelegate {
                 return
             }
             let newEmptyView = EmptyView.fromNib
+            newEmptyView.isHidden = true
             view.addSubview(newEmptyView)
             view.bringSubviewToFront(newEmptyView)
             NSLayoutConstraint.activate([
@@ -105,7 +106,6 @@ class ViewController: UIViewController, UITabBarControllerDelegate {
         } else {
             if !isEmptyViewVisible { return }
             isEmptyViewVisible = false
-            emptyView?.alpha = 1
             guard let emptyView = emptyView else { return }
             UIView.fadeHide(emptyView) { [weak self] in
                 if self?.isEmptyViewVisible == false {

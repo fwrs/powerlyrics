@@ -34,6 +34,7 @@ enum Constants {
     static let ok = "OK"
     static let close = "Close"
     static let cancel = "Cancel"
+    static let englishPlural = "s"
     
     // MARK: - Spacing
     
@@ -44,6 +45,7 @@ enum Constants {
     static let space20: CGFloat = 20
     static let space24: CGFloat = 24
     static let space44: CGFloat = 44
+    static let navigationBarHeight: CGFloat = 44
     
     // MARK: - Animations
     

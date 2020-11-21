@@ -21,6 +21,8 @@ class LyricsCoordinator: Coordinator {
     
     let placeholder: UIImage?
     
+    var router: Router?
+    
     weak var presenter: PresenterCoordinator?
     
     // MARK: - Init
@@ -47,23 +49,56 @@ class LyricsCoordinator: Coordinator {
         
         router.modalPresentationStyle = .custom
         router.transitioningDelegate = self
+        scene.flowSafari = { [weak self] url in
+            self?.showSafari(url: url)
+        }
+        scene.flowStory = { [weak self] story in
+            self?.showStory(story: story)
+        }
         scene.flowDismiss = { [weak self] in
             scene.dismiss(animated: true, completion: {
                 self?.presenter?.clearChildren(Self.self)
             })
         }
-        scene.flowSafari = { [weak self] url in
-            self?.showSafari(url: url, from: router)
-        }
         source.present(router, animated: true)
+        self.router = router
     }
     
     // MARK: - Scenes
     
-    func showSafari(url: URL, from viewController: UIViewController) {
+    func showSafari(url: URL) {
+        guard let router = self.router else { return }
+        
         let safariViewController = SFSafariViewController(url: url, configuration: SFSafariViewController.Configuration())
         safariViewController.preferredControlTintColor = .tintColor
-        viewController.present(safariViewController, animated: true)
+        router.present(safariViewController, animated: true)
+    }
+    
+    func showStory(story: String) {
+        guard let router = self.router else { return }
+        
+        let scene = resolver.resolve(LyricsStoryScene.self, argument: story)!
+        
+        let blurView = UIVisualEffectView(effect: nil)
+        
+        UIView.animate(withDuration: Constants.defaultAnimationDuration, options: .curveEaseOut) {
+            blurView.effect = UIBlurEffect(style: Constants.globalBlurStyle)
+        }
+        
+        router.view.addSubview(blurView)
+        blurView.isUserInteractionEnabled = false
+        blurView.frame = UIScreen.main.bounds
+        router.view.bringSubviewToFront(blurView)
+        
+        scene.flowDismiss = {
+            UIView.animate(withDuration: Constants.defaultAnimationDuration, options: .curveEaseOut) {
+                blurView.effect = nil
+            } completion: { _ in
+                blurView.removeFromSuperview()
+            }
+        }
+        
+        router.presentPanModal(scene)
     }
 
 }

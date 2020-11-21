@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17506" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17505"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="RobotoMono-SemiBold.ttf">
+            <string>RobotoMono-SemiBold</string>
+        </array>
+    </customFonts>
+    <scenes>
+        <!--Lyrics Story View Controller-->
+        <scene sceneID="7e8-pX-dil">
+            <objects>
+                <viewController storyboardIdentifier="LyricsStoryViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" interfaceStyle="dark" id="a95-Ib-0Gv" customClass="LyricsStoryViewController" customModule="powerlyrics" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="9ZI-PT-RQW">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="842"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="CqE-j7-edB" customClass="TableView" customModule="powerlyrics" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="842"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <inset key="separatorInset" minX="16" minY="0.0" maxX="0.0" maxY="0.0"/>
+                            </tableView>
+                            <visualEffectView hidden="YES" opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="GNu-lv-r8t">
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="44"/>
+                                <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="gDe-Q9-bFb">
+                                    <rect key="frame" x="0.0" y="0.0" width="414" height="44"/>
+                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                </view>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="44" id="gw2-lA-Nuv"/>
+                                </constraints>
+                                <blurEffect style="systemChromeMaterial"/>
+                            </visualEffectView>
+                            <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="WVu-ZE-OYd">
+                                <rect key="frame" x="0.0" y="44" width="414" height="0.5"/>
+                                <color key="backgroundColor" red="0.1058823529" green="0.1058823529" blue="0.1058823529" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="0.40000000000000002" id="Emj-4Q-qNN"/>
+                                </constraints>
+                            </view>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="story" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="z7u-tW-5RS">
+                                <rect key="frame" x="188" y="12" width="38" height="20"/>
+                                <fontDescription key="fontDescription" name="RobotoMono-SemiBold" family="Roboto Mono" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="jkL-WV-XM1"/>
+                        <color key="backgroundColor" systemColor="secondarySystemBackgroundColor"/>
+                        <color key="tintColor" name="TintColor"/>
+                        <constraints>
+                            <constraint firstItem="z7u-tW-5RS" firstAttribute="centerY" secondItem="GNu-lv-r8t" secondAttribute="centerY" id="4o1-kq-nLh"/>
+                            <constraint firstItem="WVu-ZE-OYd" firstAttribute="trailing" secondItem="jkL-WV-XM1" secondAttribute="trailing" id="5dg-3A-zlg"/>
+                            <constraint firstItem="GNu-lv-r8t" firstAttribute="top" secondItem="jkL-WV-XM1" secondAttribute="top" id="7h9-gG-Gzn"/>
+                            <constraint firstAttribute="trailing" secondItem="CqE-j7-edB" secondAttribute="trailing" id="9iA-17-tjx"/>
+                            <constraint firstItem="WVu-ZE-OYd" firstAttribute="top" secondItem="GNu-lv-r8t" secondAttribute="bottom" id="AJM-cn-ANc"/>
+                            <constraint firstItem="jkL-WV-XM1" firstAttribute="trailing" secondItem="GNu-lv-r8t" secondAttribute="trailing" id="GEH-SU-zXw"/>
+                            <constraint firstItem="CqE-j7-edB" firstAttribute="top" secondItem="9ZI-PT-RQW" secondAttribute="top" id="Pv4-Yh-BQz"/>
+                            <constraint firstAttribute="bottom" secondItem="CqE-j7-edB" secondAttribute="bottom" id="X43-pr-OTz"/>
+                            <constraint firstItem="z7u-tW-5RS" firstAttribute="centerX" secondItem="GNu-lv-r8t" secondAttribute="centerX" id="gee-wJ-ZNd"/>
+                            <constraint firstItem="CqE-j7-edB" firstAttribute="leading" secondItem="9ZI-PT-RQW" secondAttribute="leading" id="nu0-cD-pwX"/>
+                            <constraint firstItem="WVu-ZE-OYd" firstAttribute="leading" secondItem="jkL-WV-XM1" secondAttribute="leading" id="pEF-yL-y2e"/>
+                            <constraint firstItem="GNu-lv-r8t" firstAttribute="leading" secondItem="jkL-WV-XM1" secondAttribute="leading" id="yzs-r5-bRD"/>
+                        </constraints>
+                    </view>
+                    <nil key="simulatedTopBarMetrics"/>
+                    <nil key="simulatedBottomBarMetrics"/>
+                    <modalPageSheetSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+                    <connections>
+                        <outlet property="tableView" destination="CqE-j7-edB" id="k6A-he-pGM"/>
+                        <outlet property="titleBackgroundView" destination="GNu-lv-r8t" id="imq-a5-Zzt"/>
+                        <outlet property="titleLabel" destination="z7u-tW-5RS" id="1lc-3l-9Wn"/>
+                        <outlet property="titleShadowView" destination="WVu-ZE-OYd" id="I5b-kD-JLF"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="waM-Bh-56b" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-214" y="46"/>
+        </scene>
+    </scenes>
+    <resources>
+        <namedColor name="TintColor">
+            <color red="0.9179999828338623" green="0.68199998140335083" blue="0.49799999594688416" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <systemColor name="secondarySystemBackgroundColor">
+            <color red="0.94901960784313721" green="0.94901960784313721" blue="0.96862745098039216" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+    </resources>
+</document>

@@ -66,7 +66,7 @@ extension GeniusProvider {
             
             // MARK: - Lyrics parsing
             
-            let result1 = text
+            let result1 = text.contains("This song is an instrumental") ? ["[Instrumental]"] : text
                 .split(separator: Constants.newline)
                 .map(\.clean)
                 .joined(separator: String(Constants.newline))

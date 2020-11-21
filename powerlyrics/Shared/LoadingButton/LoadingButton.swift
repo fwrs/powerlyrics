@@ -35,7 +35,7 @@ class LoadingButton: UIButton {
         }
     }
     
-    private var storedTitleColor: UIColor?
+    var storedTitleColor: UIColor?
     
     private(set) var activityView: UIActivityIndicatorView = .init(style: .medium)
     
@@ -55,7 +55,7 @@ class LoadingButton: UIButton {
     
     // MARK: - Setup
     
-    private func configure() {
+    func configure() {
         activityView.hidesWhenStopped = true
         self.addSubview(activityView)
         activityView.translatesAutoresizingMaskIntoConstraints = false
@@ -70,7 +70,7 @@ class LoadingButton: UIButton {
     
     // MARK: - Helper functions
     
-    private func changeLoadingState(isLoading: Bool) {
+    func changeLoadingState(isLoading: Bool) {
         isEnabled = !isLoading
         
         UIView.transition(with: self, duration: 0.1, options: .transitionCrossDissolve) { [weak self] in

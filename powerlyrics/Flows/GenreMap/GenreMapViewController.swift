@@ -264,6 +264,7 @@ extension GenreMapViewController {
                     self?.descriptionLabel.attributedText = self?.generateAttributedDescriptionText(highlight: true)
                 }
             case .ended:
+                Haptic.play(Constants.tinyTap)
                 self.flowLikedSongs?()
             default:
                 break

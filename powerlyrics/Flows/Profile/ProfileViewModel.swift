@@ -119,4 +119,19 @@ class ProfileViewModel: ViewModel {
         
     }
     
+    // MARK: - Helper methods
+    
+    func logout() {
+        URLCache.shared.removeAllCachedResponses()
+
+        if let cookies = HTTPCookieStorage.shared.cookies {
+            for cookie in cookies {
+                HTTPCookieStorage.shared.deleteCookie(cookie)
+            }
+        }
+        
+        spotifyProvider.logout()
+        NotificationCenter.default.post(name: .appDidLogout, object: nil, userInfo: nil)
+    }
+    
 }

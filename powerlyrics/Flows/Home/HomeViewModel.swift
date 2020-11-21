@@ -150,17 +150,18 @@ class HomeViewModel: ViewModel {
             }
         
         group.notify(queue: .main) { [weak self] in
-            self?.endLoading(refresh)
-            self?.updateState()
+            self?.updateState(shouldEndLoading: true, endLoadingRefresh: refresh)
         }
     }
     
     // MARK: - Helper methods
     
-    func updateState() {
+    func updateState(shouldEndLoading: Bool = false, endLoadingRefresh: Bool = false) {
         if isAtLeastOneRequestFailed {
-            isFailed.value = true
-            items.set([])
+            delay(Constants.defaultAnimationDuration) { [weak self] in
+                self?.isFailed.value = true
+                self?.items.set([])
+            }
             return
         }
         
@@ -197,6 +198,10 @@ class HomeViewModel: ViewModel {
             (.viral, viralSongsSection),
             (.likedToday, likedTodaySection)
         ])
+        
+        if shouldEndLoading {
+            endLoading(endLoadingRefresh)
+        }
     }
     
 }

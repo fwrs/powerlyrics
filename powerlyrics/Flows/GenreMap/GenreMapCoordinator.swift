@@ -9,7 +9,9 @@
 import PanModal
 import Swinject
 
-fileprivate extension Constants {
+// MARK: - Constants
+
+extension Constants {
     
     static let globalBlurStyle = UIBlurEffect.Style.systemUltraThinMaterial
     

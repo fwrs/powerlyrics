@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="17506" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17505"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="147" id="Szl-ay-jWb" customClass="LyricsStoryContentCell" customModule="powerlyrics" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="357" height="147"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" ambiguous="YES" tableViewCell="Szl-ay-jWb" id="qyq-Og-Z5U">
+                <rect key="frame" x="0.0" y="0.0" width="357" height="147"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" bounces="NO" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" bouncesZoom="NO" editable="NO" text="Text view" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="hGs-5b-lt8" customClass="UnpaddedTextView" customModule="powerlyrics" customModuleProvider="target">
+                        <rect key="frame" x="20" y="6" width="325" height="100"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="100" id="b6Z-qt-9Yv"/>
+                        </constraints>
+                        <color key="textColor" systemColor="labelColor"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                        <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                        <dataDetectorType key="dataDetectorTypes" link="YES" calendarEvent="YES" lookupSuggestion="YES"/>
+                    </textView>
+                </subviews>
+                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                <constraints>
+                    <constraint firstAttribute="trailing" secondItem="hGs-5b-lt8" secondAttribute="trailing" constant="12" id="9tB-tE-gsb"/>
+                    <constraint firstItem="hGs-5b-lt8" firstAttribute="top" secondItem="qyq-Og-Z5U" secondAttribute="top" constant="6" id="GgO-a2-Bwm"/>
+                    <constraint firstAttribute="bottom" secondItem="hGs-5b-lt8" secondAttribute="bottom" constant="9" id="Ypf-S0-YIz"/>
+                    <constraint firstItem="hGs-5b-lt8" firstAttribute="leading" secondItem="qyq-Og-Z5U" secondAttribute="leading" constant="20" id="m9M-Pw-EVG"/>
+                </constraints>
+            </tableViewCellContentView>
+            <viewLayoutGuide key="safeArea" id="rCC-Tw-ZZd"/>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <connections>
+                <outlet property="contentsTextView" destination="hGs-5b-lt8" id="iDv-Zd-y9R"/>
+                <outlet property="contentsTextViewHeightConstraint" destination="b6Z-qt-9Yv" id="5Bi-Rj-0wc"/>
+            </connections>
+            <point key="canvasLocation" x="64.492753623188406" y="112.83482142857142"/>
+        </tableViewCell>
+    </objects>
+    <resources>
+        <systemColor name="labelColor">
+            <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
+</document>

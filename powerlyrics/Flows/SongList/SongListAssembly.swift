@@ -34,11 +34,32 @@ class SongListAssembly: Assembly {
     override func assemble(container: Container) {
         
         container.register(SongListViewModel.self) { (resolver, flow: SongListFlow) in
-            SongListViewModel(
-                flow: flow,
-                spotifyProvider: resolver.resolve(SpotifyProvider.self)!,
-                realmService: resolver.resolve(RealmServiceProtocol.self)!
-            )
+            switch flow {
+            
+            case .albumTracks(let album):
+                return SongListAlbumViewModel(
+                    album: album,
+                    spotifyProvider: resolver.resolve(SpotifyProvider.self)!,
+                    realmService: resolver.resolve(RealmServiceProtocol.self)!
+                )
+            case .trendingSongs(let preview):
+                return SongListTrendingViewModel(
+                    preview: preview,
+                    spotifyProvider: resolver.resolve(SpotifyProvider.self)!,
+                    realmService: resolver.resolve(RealmServiceProtocol.self)!
+                )
+            case .viralSongs(let preview):
+                return SongListViralViewModel(
+                    preview: preview,
+                    spotifyProvider: resolver.resolve(SpotifyProvider.self)!,
+                    realmService: resolver.resolve(RealmServiceProtocol.self)!
+                )
+            case .likedSongs:
+                return SongListLikedViewModel(
+                    spotifyProvider: resolver.resolve(SpotifyProvider.self)!,
+                    realmService: resolver.resolve(RealmServiceProtocol.self)!
+                )
+            }
         }
         
         container.register(SongListScene.self) { (resolver, flow: SongListFlow) in

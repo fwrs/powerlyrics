@@ -21,7 +21,7 @@ protocol KeychainServiceProtocol: class {
 
 // MARK: - KeychainService
 
-final class KeychainService: KeychainServiceProtocol {
+class KeychainService: KeychainServiceProtocol {
 
     var decoder: JSONDecoder!
     
@@ -36,7 +36,7 @@ final class KeychainService: KeychainServiceProtocol {
             .accessibility(.always)
     }()
     
-    private var keychain: Keychain {
+    var keychain: Keychain {
         KeychainService.keychain
     }
     

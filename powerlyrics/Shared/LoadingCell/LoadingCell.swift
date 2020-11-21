@@ -8,7 +8,7 @@
 
 import UIKit
 
-class LoadingCell: UITableViewCell {
+class LoadingCell: TableViewCell {
     
     override func layoutSubviews() {
         super.layoutSubviews()

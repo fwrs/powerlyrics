@@ -13,6 +13,7 @@ import Swinject
 protocol LyricsScene: ViewController {
     
     var flowSafari: DefaultURLAction? { get set }
+    var flowStory: DefaultStringAction? { get set }
     var flowDismiss: DefaultAction? { get set }
     
 }

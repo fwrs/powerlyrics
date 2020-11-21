@@ -1,15 +1,15 @@
 //
-//  GenreEmptyCell.swift
+//  LyricsStoryEmptyCell.swift
 //  powerlyrics
 //
-//  Created by Ilya Kulinkovich on 11/14/20.
+//  Created by Ilya Kulinkovich on 11/21/20.
 //  Copyright © 2020 Ilya Kulinkovich. All rights reserved.
 //
 
 import UIKit
 
-class GenreEmptyCell: TableViewCell {
-
+class LyricsStoryEmptyCell: TableViewCell {
+    
     // MARK: - Outlets
     
     @IBOutlet private weak var moonImageView: UIImageView!

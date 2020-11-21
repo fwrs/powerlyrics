@@ -1,0 +1,90 @@
+//
+//  SongListTrendingViewModel.swift
+//  powerlyrics
+//
+//  Created by Ilya Kulinkovich on 11/20/20.
+//  Copyright © 2020 Ilya Kulinkovich. All rights reserved.
+//
+
+import Bond
+import ReactiveKit
+
+// MARK: - SongListTrendingViewModel
+
+class SongListTrendingViewModel: SongListViewModel {
+
+    // MARK: - Instance properties
+    
+    override var title: String {
+        Constants.trendingTitle
+    }
+    
+    let preview: [SharedSong]
+    
+    // MARK: - Init
+    
+    init(preview: [SharedSong], spotifyProvider: SpotifyProvider, realmService: RealmServiceProtocol) {
+        self.preview = preview
+        super.init(spotifyProvider: spotifyProvider, realmService: realmService)
+    }
+    
+    // MARK: - Load data
+    
+    override func loadData(refresh: Bool = false, retry: Bool = false) {
+        isLoadingWithPreview.value = true
+        isFailed.value = false
+        if refresh {
+            startLoading(refresh)
+        }
+        if retry {
+            startLoading(false)
+        }
+        if !refresh && !retry {
+            items.replace(
+                with: preview.enumerated().map {
+                    .song(SongCellViewModel(
+                        song: $1,
+                        accessory: .ranking(nth: $0 + 1)
+                    ))
+                } + [.loading],
+                performDiff: true
+            )
+        }
+        spotifyProvider.reactive
+            .request(.trendingSongs)
+            .map(SpotifyPlaylistSongsResponse.self)
+            .start { [weak self] event in
+                guard let self = self else { return }
+                switch event {
+                case .value(let response):
+                    let trendingSongs = response.items
+                    self.items.replace(
+                        with: trendingSongs.enumerated()
+                            .map { .song(SongCellViewModel(
+                                song: $1.asSharedSong,
+                                accessory: .ranking(nth: $0 + .one)
+                            )) },
+                        performDiff: true
+                    )
+                    self.endLoading(refresh)
+                    if retry {
+                        self.endLoading(false)
+                    }
+                    self.isLoadingWithPreview.value = false
+                case .failed:
+                    self.items.replace(with: [], performDiff: true)
+                    delay(Constants.defaultAnimationDuration) {
+                        self.isFailed.value = true
+                        self.isLoadingWithPreview.value = false
+                        if retry {
+                            self.endLoading(false)
+                        }
+                    }
+                    self.endLoading(refresh)
+                default:
+                    break
+                }
+            }
+    }
+    
+}

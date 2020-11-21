@@ -68,15 +68,15 @@
                                                     </constraints>
                                                 </view>
                                                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="fga-YF-Uqr">
-                                                    <rect key="frame" x="89" y="23.5" width="294" height="43.5"/>
+                                                    <rect key="frame" x="89" y="23.5" width="290" height="43.5"/>
                                                     <subviews>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Song name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsLetterSpacingToFitWidth="YES" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nAN-jD-PoW">
-                                                            <rect key="frame" x="0.0" y="0.0" width="294" height="20.5"/>
+                                                            <rect key="frame" x="0.0" y="0.0" width="290" height="20.5"/>
                                                             <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Artist name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsLetterSpacingToFitWidth="YES" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Lth-xb-hLF">
-                                                            <rect key="frame" x="0.0" y="25.5" width="294" height="18"/>
+                                                            <rect key="frame" x="0.0" y="25.5" width="290" height="18"/>
                                                             <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
                                                             <color key="textColor" systemColor="secondaryLabelColor"/>
                                                             <nil key="highlightedColor"/>
@@ -92,7 +92,7 @@
                                                 <constraint firstItem="fga-YF-Uqr" firstAttribute="leading" secondItem="96y-dm-XQN" secondAttribute="trailing" constant="15" id="IwF-05-VSB"/>
                                                 <constraint firstItem="fga-YF-Uqr" firstAttribute="centerY" secondItem="96y-dm-XQN" secondAttribute="centerY" id="Nan-bi-qnx"/>
                                                 <constraint firstItem="96y-dm-XQN" firstAttribute="leading" secondItem="fLV-pl-iEb" secondAttribute="leading" constant="16" id="aYV-A9-ZDq"/>
-                                                <constraint firstAttribute="trailing" secondItem="fga-YF-Uqr" secondAttribute="trailing" id="cbM-aP-bB9"/>
+                                                <constraint firstAttribute="trailing" secondItem="fga-YF-Uqr" secondAttribute="trailing" constant="4" id="cbM-aP-bB9"/>
                                                 <constraint firstAttribute="bottom" secondItem="96y-dm-XQN" secondAttribute="bottom" constant="16" id="n7Y-qg-0jW"/>
                                             </constraints>
                                         </view>
@@ -265,12 +265,12 @@
                         <outlet property="firstInfoLabel" destination="Zjp-MZ-qGq" id="d3s-uN-lBx"/>
                         <outlet property="likeButton" destination="Bka-VT-Y7D" id="fHb-kd-ngd"/>
                         <outlet property="navigationBarHeightConstraint" destination="YtW-9E-Uln" id="sOA-aj-xvd"/>
-                        <outlet property="notesButton" destination="zVs-UO-dOM" id="p3B-IE-mpX"/>
                         <outlet property="safariButton" destination="v2k-lm-wsR" id="DuM-FV-jZm"/>
                         <outlet property="secondInfoLabel" destination="nMD-Dq-gdn" id="Rl9-iZ-dBS"/>
                         <outlet property="shareButton" destination="LYV-dA-JhP" id="bsn-Ym-yIJ"/>
                         <outlet property="songLabel" destination="nAN-jD-PoW" id="O9E-xn-DHI"/>
                         <outlet property="songView" destination="fLV-pl-iEb" id="lB4-rr-a3b"/>
+                        <outlet property="storyButton" destination="zVs-UO-dOM" id="I2c-yd-61h"/>
                         <outlet property="tableView" destination="YcT-f2-syl" id="AYf-ow-1eM"/>
                     </connections>
                 </viewController>

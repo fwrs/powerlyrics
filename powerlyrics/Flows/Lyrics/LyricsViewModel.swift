@@ -67,20 +67,22 @@ class LyricsViewModel: ViewModel {
     
     func loadData() {
         let onFailure = { [weak self] in
-            self?.endLoading()
-            self?.isFailed.value = true
+            delay(Constants.defaultAnimationDuration) { [weak self] in
+                self?.endLoading()
+                self?.isFailed.value = true
+            }
         }
         
         let onLyricsFetch: DefaultSharedLyricsResultAction = { [weak self] result in
             let newLyrics = result.lyrics
             self?.genre.value = result.genre
-            self?.endLoading()
-            self?.isFailed.value = false
             self?.lyrics.batchUpdate { array in
                 for item in newLyrics {
                     array.append(item)
                 }
             }
+            self?.endLoading()
+            self?.isFailed.value = false
         }
         
         let onSongFetch: (URL, Int) -> Void = { [weak self] url, id in
@@ -112,6 +114,7 @@ class LyricsViewModel: ViewModel {
                 }
         }
         startLoading()
+        isFailed.value = false
         if let geniusURL = song.geniusURL, let geniusID = song.geniusID {
             self.geniusURL = geniusURL
             self.geniusID = geniusID

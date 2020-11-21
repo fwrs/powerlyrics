@@ -12,12 +12,12 @@ import UIKit
 
 fileprivate extension Constants {
     
-    static let colorComponentsCount = 4
+    static let colorComponentsCount = Int.four
     static let maxColorValue: CGFloat = 255
-    static let red = 0
-    static let green = 1
-    static let blue = 2
-    static let alpha = 3
+    static let red = Int.zero
+    static let green = Int.one
+    static let blue = Int.two
+    static let alpha = Int.three
     
 }
 
@@ -238,7 +238,7 @@ fileprivate extension Double {
 }
 
 extension UIImage {
-    private func resizeForUIImageColors(newSize: CGSize) -> UIImage? {
+    func resizeForUIImageColors(newSize: CGSize) -> UIImage? {
         UIGraphicsBeginImageContextWithOptions(newSize, false, 0)
         defer {
             UIGraphicsEndImageContext()

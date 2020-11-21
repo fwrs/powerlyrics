@@ -10,7 +10,7 @@ import UIKit
 
 // MARK: - Constants
 
-extension Constants {
+fileprivate extension Constants {
     
     static let contextMenuFadeOutDelay: TimeInterval = 0.8
     static let paragraphStyle = NSMutableParagraphStyle().with { $0.lineSpacing = 4 }
@@ -48,13 +48,10 @@ class LyricsSectionCell: TableViewCell {
         nameLabel.isHidden = viewModel.section.name == nil
 
         let attrString = NSMutableAttributedString(
-            string: viewModel.section.contents.joined(separator: String(Constants.newline)).typographized
-        )
-        
-        attrString.addAttribute(
-            .paragraphStyle,
-            value: Constants.paragraphStyle,
-            range: NSRange(location: .zero, length: attrString.length)
+            string: viewModel.section.contents.joined(separator: String(Constants.newline)).typographized,
+            attributes: [
+                .paragraphStyle: Constants.paragraphStyle
+            ]
         )
 
         contentsLabel.attributedText = attrString
@@ -86,8 +83,8 @@ extension LyricsSectionCell: UIContextMenuInteractionDelegate {
         return UIContextMenuConfiguration(
             identifier: nil,
             previewProvider: nil,
-            actionProvider: { suggestedActions in
-                UIMenu(children: suggestedActions + [copyElement])
+            actionProvider: { _ in
+                UIMenu(children: self.contentsLabel.text.safe.isEmpty ? [] : [copyElement])
             }
         )
     }

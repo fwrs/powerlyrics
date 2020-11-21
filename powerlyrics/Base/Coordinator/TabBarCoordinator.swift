@@ -12,7 +12,7 @@ import Swinject
 
 fileprivate extension Constants {
     
-    static let numberOfTabs = 4
+    static let numberOfTabs = Int.four
     
 }
 

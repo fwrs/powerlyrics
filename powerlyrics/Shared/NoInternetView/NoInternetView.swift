@@ -7,6 +7,7 @@
 //
 
 import Bond
+import Haptica
 import ReactiveKit
 
 // MARK: - Constants
@@ -77,6 +78,7 @@ class NoInternetView: View {
                 if self?.tappedRetryButton == true {
                     return
                 }
+                Haptic.play(Constants.tinyTap)
                 self?.onRefresh?()
                 self?.tappedRetryButton = true
             default:

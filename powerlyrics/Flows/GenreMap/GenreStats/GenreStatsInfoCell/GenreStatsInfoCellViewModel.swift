@@ -1,5 +1,5 @@
 //
-//  GenreInfoCellViewModel.swift
+//  GenreStatsInfoCellViewModel.swift
 //  powerlyrics
 //
 //  Created by Ilya Kulinkovich on 11/8/20.
@@ -16,9 +16,9 @@ fileprivate extension Constants {
     
 }
 
-// MARK: - GenreInfoLevel
+// MARK: - GenreStatsInfoLevel
 
-enum GenreInfoLevel {
+enum GenreStatsInfoLevel {
     
     case low
     case ok
@@ -74,11 +74,11 @@ enum GenreInfoLevel {
     
 }
 
-// MARK: - GenreInfoCellViewModel
+// MARK: - GenreStatsInfoCellViewModel
 
-struct GenreInfoCellViewModel: Equatable {
+struct GenreStatsInfoCellViewModel: Equatable {
     
-    let level: GenreInfoLevel
+    let level: GenreStatsInfoLevel
     let count: Int
     let genre: RealmLikedSongGenre
     

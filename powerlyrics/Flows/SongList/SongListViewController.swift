@@ -48,7 +48,7 @@ class SongListViewController: ViewController, SongListScene {
         super.viewDidAppear(animated)
         
         if !initialLoad {
-            if viewModel.flow == .likedSongs {
+            if viewModel is SongListLikedViewModel {
                 viewModel.loadData()
             }
         }
@@ -68,6 +68,8 @@ extension SongListViewController {
         tableView.register(SongCell.self)
         tableView.register(LoadingCell.self)
         tableView.cellLayoutMarginsFollowReadableWidth = false
+        
+        navigationItem.title = viewModel.title.lowercased()
     }
     
     // MARK: - Input
@@ -89,9 +91,7 @@ extension SongListViewController {
     // MARK: - Output
     
     func setupOutput() {
-        
-        viewModel.title.map { $0.lowercased() }.bind(to: navigationItem.reactive.title).dispose(in: disposeBag)
-        
+
         viewModel.items.bind(to: tableView) { items, indexPath, uiTableView in
             let tableView = uiTableView as! TableView
             let item = items[indexPath.row]
@@ -100,6 +100,7 @@ extension SongListViewController {
                 let cell = tableView.dequeue(SongCell.self, indexPath: indexPath)
                 cell.configure(with: songCellViewModel)
                 return cell
+                
             case .loading:
                 let cell = tableView.dequeue(LoadingCell.self, indexPath: indexPath)
                 cell.isUserInteractionEnabled = false
@@ -134,13 +135,16 @@ extension SongListViewController {
             viewModel.isRefreshing,
             viewModel.isFailed,
             viewModel.isLoadingWithPreview
-        ).dropFirst(.two).observeNext { [weak self] isEmpty, isLoading, isRefreshing, isFailed, isLoadingWithPreview in
-            self?.setEmptyView(isVisible: isEmpty && !isLoading && !isRefreshing && !isFailed && !isLoadingWithPreview)
+        ).dropFirst(.two).map { isEmpty, isLoading, isRefreshing, isFailed, isLoadingWithPreview in
+            isEmpty && !isLoading && !isRefreshing && !isFailed && !isLoadingWithPreview
+        }.removeDuplicates().observeNext { [weak self] isVisible in
+            self?.setEmptyView(isVisible: isVisible)
         }.dispose(in: disposeBag)
         
-        viewModel.isFailed.observeNext { [weak self] isFailed in
+        viewModel.isFailed.removeDuplicates().dropFirst(.one).observeNext { [weak self] isFailed in
+            print("isFailed = \(isFailed)")
             self?.setNoInternetView(isVisible: isFailed) {
-                self?.viewModel.loadData()
+                self?.viewModel.loadData(retry: true)
             }
         }.dispose(in: disposeBag)
         

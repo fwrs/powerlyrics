@@ -15,13 +15,13 @@ import ReactiveKit
 extension Constants {
     
     static let panModalCornerRadius: CGFloat = 30
+    static let navigationBarBlurThreshold: CGFloat = 10
     
 }
 
 fileprivate extension Constants {
     
     static let tinyDelay = 0.01
-    static let navigationBarBlurThreshold: CGFloat = 10
     
 }
 
@@ -46,8 +46,6 @@ class GenreStatsViewController: ViewController, GenreStatsScene {
     var lastSelectedIndexPath: IndexPath?
     
     var initialLoad: Bool = true
-    
-    var navigationBarBackgroundHidden = true
     
     // MARK: - Flows
     
@@ -85,13 +83,18 @@ class GenreStatsViewController: ViewController, GenreStatsScene {
     // MARK: - Helper methods
     
     func updateNavigationBarAppearance() {
-        if (navigationBarBackgroundHidden && tableView.contentOffset.y < Constants.navigationBarBlurThreshold) ||
-            (!navigationBarBackgroundHidden && tableView.contentOffset.y >= Constants.navigationBarBlurThreshold) {
+        if (titleBackgroundView.isHidden && tableView.contentOffset.y < Constants.navigationBarBlurThreshold) ||
+            (!titleBackgroundView.isHidden && tableView.contentOffset.y >= Constants.navigationBarBlurThreshold) {
             return
         }
-        navigationBarBackgroundHidden = tableView.contentOffset.y < Constants.navigationBarBlurThreshold
-        UIView.fadeDisplay(titleBackgroundView, visible: tableView.contentOffset.y > Constants.navigationBarBlurThreshold)
-        UIView.fadeDisplay(titleShadowView, visible: tableView.contentOffset.y > Constants.navigationBarBlurThreshold)
+        UIView.fadeUpdate(titleBackgroundView, duration: Constants.fastAnimationDuration) { [weak self] in
+            guard let self = self else { return }
+            self.titleBackgroundView.isHidden = self.tableView.contentOffset.y <= Constants.navigationBarBlurThreshold
+        }
+        UIView.fadeUpdate(titleShadowView, duration: Constants.fastAnimationDuration) { [weak self] in
+            guard let self = self else { return }
+            self.titleShadowView.isHidden = self.tableView.contentOffset.y <= Constants.navigationBarBlurThreshold
+        }
     }
     
 }
@@ -105,8 +108,8 @@ extension GenreStatsViewController {
     func setupView() {
         
         tableView.register(SongCell.self)
-        tableView.register(GenreInfoCell.self)
-        tableView.register(GenreEmptyCell.self)
+        tableView.register(GenreStatsInfoCell.self)
+        tableView.register(GenreStatsEmptyCell.self)
         
         tableView.delegate = self
         tableView.automaticallyAdjustsScrollIndicatorInsets = false
@@ -140,21 +143,24 @@ extension GenreStatsViewController {
         viewModel.items.observeNext { [weak self] _ in
             delay(Constants.tinyDelay) {
                 self?.panModalSetNeedsLayoutUpdate()
-                self?.panModalTransition(to: .shortForm)
+                if self?.viewModel.items.collection.filter({ $0 != .empty }).isEmpty == true || self?.initialLoad == true {
+                    self?.panModalTransition(to: .shortForm)
+                }
             }
         }.dispose(in: disposeBag)
         
-        viewModel.items.bind(to: tableView, rowAnimation: .fade) { items, indexPath, uiTableView in
+        viewModel.items.bind(to: tableView) { items, indexPath, uiTableView in
             let tableView = uiTableView as! TableView
             let item = items[indexPath.row]
             switch item {
-            case .genreInfo(let genreInfoCellViewModel):
-                let cell = tableView.dequeue(GenreInfoCell.self, indexPath: indexPath)
-                cell.configure(with: genreInfoCellViewModel)
+            case .genreInfo(let genreStatsInfoCellViewModel):
+                let cell = tableView.dequeue(GenreStatsInfoCell.self, indexPath: indexPath)
+                cell.configure(with: genreStatsInfoCellViewModel)
                 cell.isUserInteractionEnabled = false
                 cell.selectionStyle = .none
                 cell.separatorInset = .zero
                 return cell
+                
             case .song(let songCellViewModel, let last):
                 let cell = tableView.dequeue(SongCell.self, indexPath: indexPath)
                 cell.configure(with: songCellViewModel)
@@ -164,8 +170,9 @@ extension GenreStatsViewController {
                     cell.separatorInset = UIEdgeInsets().with { $0.left = Constants.space16 }
                 }
                 return cell
+                
             case .empty:
-                let cell = tableView.dequeue(GenreEmptyCell.self, indexPath: indexPath)
+                let cell = tableView.dequeue(GenreStatsEmptyCell.self, indexPath: indexPath)
                 cell.separatorInset = UIEdgeInsets().with { $0.left = tableView.bounds.width }
                 cell.isUserInteractionEnabled = false
                 cell.selectionStyle = .none

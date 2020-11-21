@@ -259,7 +259,7 @@ extension Bool {
 extension Int {
     
     var sIfNotOne: String {
-        self == 1 ? .init() : "s"
+        self == 1 ? .init() : Constants.englishPlural
     }
     
 }
@@ -382,16 +382,26 @@ extension UIView {
     }
     
     class func fadeDisplay(_ view: UIView, visible: Bool, duration: TimeInterval = Constants.defaultAnimationDuration, completion: DefaultAction? = nil) {
-        if view.isHidden && visible {
+        let currentAlpha = view.alpha
+        CATransaction.begin()
+        view.layer.removeAnimation(forKey: "alphaChange")
+        view.isUserInteractionEnabled = false
+        let animation = CABasicAnimation(keyPath: "opacity")
+        animation.fromValue = view.isHidden ? .zero : currentAlpha
+        if visible {
             view.isHidden = false
         }
-        view.alpha = (visible && view.isHidden) ? 0 : 1
-        UIView.animate(withDuration: duration) {
-            view.alpha = visible ? 1 : 0
-        } completion: { _ in
-            view.isHidden = view.alpha == 0
+        animation.toValue = visible ? CGFloat.one : CGFloat.zero
+        animation.duration = duration
+        animation.fillMode = .forwards
+        CATransaction.setCompletionBlock {
+            view.isHidden = !visible
+            view.isUserInteractionEnabled = true
             completion?()
         }
+        view.alpha = visible ? 1 : 0
+        view.layer.add(animation, forKey: "alphaChange")
+        CATransaction.commit()
     }
     
     class func fadeUpdate(_ view: UIView, duration: TimeInterval = Constants.defaultAnimationDelay, changes: DefaultAction?, completion: DefaultAction? = nil) {
@@ -424,6 +434,14 @@ extension Int {
     
     static var three: Int {
         3
+    }
+    
+    static var four: Int {
+        4
+    }
+    
+    static var five: Int {
+        5
     }
     
 }

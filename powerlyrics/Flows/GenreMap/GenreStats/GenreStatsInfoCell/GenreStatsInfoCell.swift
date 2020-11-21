@@ -1,5 +1,5 @@
 //
-//  GenreInfoCell.swift
+//  GenreStatsInfoCell.swift
 //  powerlyrics
 //
 //  Created by Ilya Kulinkovich on 11/8/20.
@@ -19,9 +19,9 @@ fileprivate extension Constants {
     
 }
 
-// MARK: - GenreInfoCell
+// MARK: - GenreStatsInfoCell
 
-class GenreInfoCell: TableViewCell {
+class GenreStatsInfoCell: TableViewCell {
     
     // MARK: - Outlets
     
@@ -33,7 +33,7 @@ class GenreInfoCell: TableViewCell {
     
     // MARK: - Configure
     
-    func configure(with viewModel: GenreInfoCellViewModel) {
+    func configure(with viewModel: GenreStatsInfoCellViewModel) {
         let text = viewModel.level.localizedDescription(count: viewModel.count, genre: viewModel.genre)
         
         let paragraphStyle = NSMutableParagraphStyle()

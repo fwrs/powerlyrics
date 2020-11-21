@@ -160,11 +160,11 @@ extension HomeViewController {
             self?.tableView.isRefreshing = isRefreshing
         }.dispose(in: disposeBag)
         
-        viewModel.isLoading.observeNext { [weak self] loading in
+        combineLatest(viewModel.isLoading, viewModel.isFailed).observeNext { [weak self] isLoading, isFailed in
             guard let self = self else { return }
-            UIView.fadeDisplay(self.activityIndicator, visible: loading)
+            UIView.fadeDisplay(self.activityIndicator, visible: isLoading && !isFailed)
             
-            if loading {
+            if isLoading {
                 self.tableView.unsetRefreshControl()
             } else {
                 self.tableView.setRefreshControl { [weak self] in

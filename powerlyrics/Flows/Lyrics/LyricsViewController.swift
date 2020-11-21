@@ -37,7 +37,6 @@ fileprivate extension Constants {
     static let likeText = "like"
     static let likedText = "liked"
     static let fromAlbumText = "From album"
-    static let unknownDescriptionText = "No information"
     
     // MARK: - Alerts
     
@@ -62,15 +61,14 @@ fileprivate extension Constants {
     static let filledHeartImage = UIImage(systemName: "heart.fill")!
     static let heartImage = UIImage(systemName: "heart")!
     
-    static let storyTitleFont = UIFont.systemFont(ofSize: 16.0, weight: .medium)
-    static let storyContentFont = UIFont.systemFont(ofSize: 14.0)
-    
     // MARK: - Curves
     
     static let songViewTransformYFunction = { (songViewAdjustment: CGFloat) -> CGFloat in
         (-pow((1 - min((songViewAdjustment) + 0.3, 1)) * (3.68), 3) * 1.3) }
     
 }
+
+// MARK: - LyricsViewController
 
 class LyricsViewController: ViewController, LyricsScene {
     
@@ -102,14 +100,12 @@ class LyricsViewController: ViewController, LyricsScene {
     
     @IBOutlet private weak var safariButton: UIButton!
     
-    @IBOutlet private weak var notesButton: UIButton!
+    @IBOutlet private weak var storyButton: UIButton!
     
     @IBOutlet private weak var activityIndicator: UIActivityIndicatorView!
     
     @IBOutlet private weak var navigationBarHeightConstraint: NSLayoutConstraint!
-    
-    private var titleLabel: UILabel?
-    
+
     // MARK: - Instance properties
 
     var viewModel: LyricsViewModel!
@@ -125,6 +121,8 @@ class LyricsViewController: ViewController, LyricsScene {
     // MARK: - Flows
     
     var flowSafari: DefaultURLAction?
+    
+    var flowStory: DefaultStringAction?
     
     var flowDismiss: DefaultAction?
     
@@ -220,7 +218,7 @@ extension LyricsViewController {
         
         translationInteractor = TranslationAnimationInteractor(viewController: self)
         
-        [likeButton, shareButton, safariButton, notesButton].forEach {
+        [likeButton, shareButton, safariButton, storyButton].forEach {
             $0?.setImage($0?.image(for: .normal)?.withTintColor(.label, renderingMode: .alwaysOriginal), for: .normal)
         }
         
@@ -232,7 +230,7 @@ extension LyricsViewController {
     
     func setupInput() {
         
-        [likeButton, shareButton, safariButton, notesButton].forEach { button in
+        [likeButton, shareButton, safariButton, storyButton].forEach { button in
             button.reactive.controlEvents([.touchDown, .touchDragEnter]).observeNext { _ in
                 UIView.animate(withDuration: Constants.fastAnimationDuration) {
                     button.alpha = .half
@@ -240,7 +238,7 @@ extension LyricsViewController {
             }.dispose(in: disposeBag)
         }
         
-        [likeButton, shareButton, safariButton, notesButton].forEach { button in
+        [likeButton, shareButton, safariButton, storyButton].forEach { button in
             button.reactive.controlEvents([.touchDragExit, .touchUpInside]).observeNext { [weak self] _ in
                 self?.likeButton.layer.removeAllAnimations()
                 UIView.animate(withDuration: Constants.fastAnimationDuration) {
@@ -277,42 +275,10 @@ extension LyricsViewController {
             self.flowSafari?(url)
         }.dispose(in: disposeBag)
         
-        notesButton.reactive.tap.throttle(for: Constants.buttonThrottleTime).observeNext { [weak self] _ in
+        storyButton.reactive.tap.throttle(for: Constants.buttonThrottleTime).observeNext { [weak self] _ in
             guard let self = self,
-                  var description = self.viewModel.description.value?.clean.typographized else { return }
-            if description == Constants.question {
-                description = Constants.unknownDescriptionText
-            }
-            
-            Haptic.play(Constants.tinyTap)
-            let paragraphStyle = NSMutableParagraphStyle()
-            paragraphStyle.alignment = NSTextAlignment.left
-            paragraphStyle.lineSpacing = .half
-            
-            let attributedMessageText = NSMutableAttributedString(
-                string: description,
-                attributes: [
-                    NSAttributedString.Key.paragraphStyle: paragraphStyle,
-                    NSAttributedString.Key.font: Constants.storyContentFont
-                ]
-            )
-            
-            let titleParagraphStyle = NSMutableParagraphStyle()
-            titleParagraphStyle.alignment = NSTextAlignment.center
-            
-            let attributedTitleText = NSMutableAttributedString(
-                string: Constants.storyTitle,
-                attributes: [
-                    NSAttributedString.Key.paragraphStyle: titleParagraphStyle,
-                    NSAttributedString.Key.font: Constants.storyTitleFont
-                ]
-            )
-            
-            self.present(UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet).with {
-                $0.addAction(UIAlertAction(title: Constants.close, style: .default, handler: nil))
-                $0.setValue(attributedMessageText, forKey: "attributedMessage")
-                $0.setValue(attributedTitleText, forKey: "attributedTitle")
-            }, animated: true, completion: nil)
+                  let story = self.viewModel.description.value else { return }
+            self.flowStory?(story)
         }.dispose(in: disposeBag)
     }
     
@@ -364,13 +330,13 @@ extension LyricsViewController {
             cell.configure(with: LyricsSectionCellViewModel(section: item))
         }.dispose(in: disposeBag)
         
-        viewModel.isLoading.observeNext { [weak self] loading in
+        viewModel.isLoading.dropFirst(.one).observeNext { [weak self] isLoading in
             guard let self = self else { return }
-            UIView.fadeDisplay(self.activityIndicator, visible: loading)
+            UIView.fadeDisplay(self.activityIndicator, visible: isLoading)
         }.dispose(in: disposeBag)
         
-        viewModel.isFailed.observeNext { [weak self] failed in
-            self?.setNoInternetView(isVisible: failed) {
+        viewModel.isFailed.observeNext { [weak self] isFailed in
+            self?.setNoInternetView(isVisible: isFailed) {
                 self?.viewModel.loadData()
             }
         }.dispose(in: disposeBag)
@@ -412,9 +378,9 @@ extension LyricsViewController: UITableViewDelegate {
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         let total: CGFloat = Constants.baseNavigationBarHeight - (UIDevice.current.hasNotch ? .zero : Constants.contentInsetNotchAdjustment)
-        let topPadding = min(total, max(Constants.space44 + safeAreaInsets.top - Constants.space14, -scrollView.contentOffset.y + Constants.space12) + Constants.space14)
+        let topPadding = min(total, max(Constants.navigationBarHeight + safeAreaInsets.top - Constants.space14, -scrollView.contentOffset.y + Constants.space12) + Constants.space14)
         navigationBarHeightConstraint.constant = topPadding
-        tableView.verticalScrollIndicatorInsets.top = topPadding - safeAreaInsets.top - Constants.space44
+        tableView.verticalScrollIndicatorInsets.top = topPadding - safeAreaInsets.top - Constants.navigationBarHeight
         
         if scrollView.contentOffset.y >= -Constants.largeCutoffs.0 {
             navigationItem.title = songLabel.text.safe.lowercased()

@@ -50,15 +50,15 @@
                                 </constraints>
                             </view>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="FBI-Cp-cFe">
-                                <rect key="frame" x="89" y="25" width="255" height="43.5"/>
+                                <rect key="frame" x="89" y="25" width="251" height="43.5"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Song name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsLetterSpacingToFitWidth="YES" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6fp-qj-We3">
-                                        <rect key="frame" x="0.0" y="0.0" width="255" height="20.5"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="251" height="20.5"/>
                                         <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Artist name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsLetterSpacingToFitWidth="YES" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Y7Q-rd-r5X">
-                                        <rect key="frame" x="0.0" y="25.5" width="255" height="18"/>
+                                        <rect key="frame" x="0.0" y="25.5" width="251" height="18"/>
                                         <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
                                         <color key="textColor" systemColor="secondaryLabelColor"/>
                                         <nil key="highlightedColor"/>
@@ -129,7 +129,7 @@
                     <constraint firstAttribute="trailing" secondItem="aT5-mE-W2y" secondAttribute="trailing" id="PoU-ok-DSr"/>
                     <constraint firstItem="MVO-Pr-Qe7" firstAttribute="centerY" secondItem="umQ-8N-Y7f" secondAttribute="centerY" id="SMN-sN-C7l"/>
                     <constraint firstAttribute="bottom" secondItem="aT5-mE-W2y" secondAttribute="bottom" id="Y96-vO-EFx"/>
-                    <constraint firstAttribute="trailing" secondItem="FBI-Cp-cFe" secondAttribute="trailing" id="cbB-kZ-Xz9"/>
+                    <constraint firstAttribute="trailing" secondItem="FBI-Cp-cFe" secondAttribute="trailing" constant="4" id="cbB-kZ-Xz9"/>
                     <constraint firstItem="aT5-mE-W2y" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="dwP-FQ-QMX"/>
                     <constraint firstItem="aT5-mE-W2y" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="eBg-k6-6hN"/>
                     <constraint firstAttribute="trailing" secondItem="Ltr-m6-YQw" secondAttribute="trailing" constant="10" id="gV4-go-PII"/>
