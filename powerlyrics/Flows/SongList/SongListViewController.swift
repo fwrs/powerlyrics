@@ -142,7 +142,6 @@ extension SongListViewController {
         }.dispose(in: disposeBag)
         
         viewModel.isFailed.removeDuplicates().dropFirst(.one).observeNext { [weak self] isFailed in
-            print("isFailed = \(isFailed)")
             self?.setNoInternetView(isVisible: isFailed) {
                 self?.viewModel.loadData(retry: true)
             }
