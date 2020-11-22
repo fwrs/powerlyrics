@@ -69,16 +69,16 @@ class ImageContextMenuInteractionHandler: NSObject, UIContextMenuInteractionDele
     
     var fullImage: SharedImage?
 
-    let window = (UIApplication.shared.connectedScenes.first!.delegate as! SceneDelegate).window!
+    var window: UIWindow? { (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.window }
     
     // MARK: - Actions
     
     @objc private func image(image: UIImage!, didFinishSavingWithError error: NSError!, contextInfo: AnyObject!) {
         if error != nil {
-            window.topViewController?.present(Constants.failedToShareAlert, animated: true, completion: nil)
+            window?.topViewController?.present(Constants.failedToShareAlert, animated: true, completion: nil)
         } else {
             Haptic.play(Constants.successTaps)
-            window.topViewController?.present(Constants.shareSucceededAlert, animated: true, completion: nil)
+            window?.topViewController?.present(Constants.shareSucceededAlert, animated: true, completion: nil)
         }
     }
 
@@ -124,7 +124,7 @@ class ImageContextMenuInteractionHandler: NSObject, UIContextMenuInteractionDele
                         identifier: nil,
                         attributes: []) { [weak self] _ in
                         if let image = controller?.imageView.image {
-                            self?.window.topViewController?.present(UIActivityViewController(
+                            self?.window?.topViewController?.present(UIActivityViewController(
                                 activityItems: [image],
                                 applicationActivities: nil
                             ), animated: true, completion: nil)
