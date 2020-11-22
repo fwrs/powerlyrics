@@ -171,7 +171,7 @@ extension SetupOfflineViewController {
         mainButton.reactive.tap.observeNext { [weak self] _ in
             guard let self = self else { return }
             self.viewModel.login(
-                name: self.nameTextField.text.safe.typographized,
+                name: self.nameTextField.text.safe.clean.typographized,
                 over18: self.over18Switch.isOn
             )
         }.dispose(in: disposeBag)
