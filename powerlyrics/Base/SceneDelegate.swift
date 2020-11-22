@@ -24,13 +24,13 @@ fileprivate extension Constants {
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     
-    // MARK: - Instance methods
+    // MARK: - Instance properties
     
     var window: UIWindow?
     
     var resolver: Resolver = Config.getResolver()
     
-    var loadingAlert: UIAlertController?
+    var tabBarCoordinator: TabBarCoordinator!
     
     // MARK: - DI
     
@@ -45,8 +45,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     lazy var realmService: RealmServiceProtocol = {
         resolver.resolve(RealmServiceProtocol.self)!
     }()
-    
-    var tabBarCoordinator: TabBarCoordinator!
     
     // MARK: - Scene lifecycle
     

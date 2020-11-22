@@ -149,6 +149,10 @@ extension LyricsStoryViewController: PanModalPresentable {
         Constants.panModalCornerRadius
     }
     
+    var isHapticFeedbackEnabled: Bool {
+        false
+    }
+    
 }
 
 // MARK: - UITableViewDelegate

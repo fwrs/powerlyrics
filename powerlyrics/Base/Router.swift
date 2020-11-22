@@ -38,31 +38,3 @@ class Router: UINavigationController {
     }
     
 }
-
-extension Router: PanModalPresentable {
-    
-    var panScrollable: UIScrollView? {
-        (topViewController as! PanModalPresentable).panScrollable
-    }
-    
-    var panModalBackgroundColor: UIColor {
-        (topViewController as! PanModalPresentable).panModalBackgroundColor
-    }
-    
-    var cornerRadius: CGFloat {
-        (topViewController as! PanModalPresentable).cornerRadius
-    }
-    
-    var shortFormHeight: PanModalHeight {
-        (topViewController as! PanModalPresentable).shortFormHeight
-    }
-    
-    var longFormHeight: PanModalHeight {
-        (topViewController as! PanModalPresentable).longFormHeight
-    }
-    
-    var anchorModalToLongForm: Bool {
-        (topViewController as! PanModalPresentable).anchorModalToLongForm
-    }
-    
-}

@@ -238,6 +238,8 @@ extension GenreMapViewController {
                         CATransform3DRotate(rotationWithPerspective, angle, Constants.transforms[index].0, Constants.transforms[index].1, .zero)
                     self?.genreMapBackgroundView.alpha = Constants.concealedGenreMapAlpha
                 }
+                
+                Haptic.play(Constants.tinyTap)
                 self.flowGenre?(RealmLikedSongGenre(rawValue: index) ?? .unknown)
                 self.goingBackFromPush = true
             }.dispose(in: disposeBag)

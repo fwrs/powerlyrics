@@ -282,6 +282,7 @@ extension LyricsViewController {
         storyButton.reactive.tap.throttle(for: Constants.buttonThrottleTime).observeNext { [weak self] _ in
             guard let self = self,
                   let story = self.viewModel.description.value else { return }
+            Haptic.play(Constants.tinyTap)
             self.flowStory?(story)
         }.dispose(in: disposeBag)
     }

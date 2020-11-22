@@ -14,7 +14,6 @@ import ReactiveKit
 fileprivate extension Constants {
     
     static let minimumTotalValue: CGFloat = 0.0001
-    static let minimumChartValue: CGFloat = 0.012
     
 }
 
@@ -51,12 +50,7 @@ class GenreMapViewModel: ViewModel {
         } else {
             noData.value = false
             values.value = RealmLikedSongGenre.all
-                .map {
-                    max(
-                        Constants.minimumChartValue,
-                        CGFloat(realmService.likedSongs(with: $0).count) / total
-                    )
-                }
+                .map { CGFloat(realmService.likedSongs(with: $0).count) / total }
         }
     }
     
