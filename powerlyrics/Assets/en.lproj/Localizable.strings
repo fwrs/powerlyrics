@@ -24,10 +24,10 @@
 /* MARK: - Base */
 
 "base.noInternet.title" = "Failed to load";
-"base.noInternet.message" = "Check your connection\nand try again";
+"base.noInternet.message" = "Check your connection\nand try again.";
 "base.noInternet.tryAgain" = "try again";
 "base.empty.title" = "Nothing here";
-"base.empty.message" = "There’s no data to display";
+"base.empty.message" = "There’s no data to display.";
 
 /* MARK: - Context menu */
 
@@ -96,8 +96,8 @@
 /* MARK: - Search */
 
 "search.title" = "search";
-"search.nothingWasFound" = "Nothing was found\nfor your query";
-"search.startTyping" = "Start typing to\nreceive suggestions";
+"search.nothingWasFound" = "Nothing was found\nfor your query.";
+"search.startTyping" = "Start typing to\nreceive suggestions.";
 "search.noResults" = "No results";
 "search.trending.title" = "Trending today";
 "search.trending.failed" = "Failed to load trends.";
@@ -109,15 +109,15 @@
 /* MARK: - GenreMap */
 
 "genreMap.title" = "genremap";
-"genreMap.description" = "Your genremap shows how diverse your music taste is. This graph is populated based on your liked music. Tap on a genre to learn more. 🎵";
-"genreMap.description.likedMusic" = "liked music";
+"genreMap.description" = "Your genremap shows how diverse your music taste is. This graph is populated based on your liked songs. Tap on a genre to learn more. 🎵";
+"genreMap.description.likedMusic" = "liked songs";
 "genreMap.noData.title" = "Not enough data 😴";
-"genreMap.noData.subtitle" = "Like songs to populate GenreMap";
+"genreMap.noData.subtitle" = "Like songs to populate GenreMap.";
 
 /* MARK: - Genre stats */
 
 "genreStats.empty.title" = "Nothing here";
-"genreStats.empty.message" = "This genre is feeling\npretty neglected";
+"genreStats.empty.message" = "This genre is feeling\npretty neglected.";
 "genreStats.info.hereSongsPlural" = "Here’s the songs:";
 "genreStats.info.hereSongsSingular" = "Here’s the song:";
 
@@ -164,7 +164,7 @@
 
 "lyricsStory.title" = "story";
 "lyricsStory.empty.title" = "Nothing here";
-"lyricsStory.empty.message" = "We couldn’t find the\nstory for this song";
+"lyricsStory.empty.message" = "We couldn’t find the\nstory for this song.";
 
 /* MARK: - Song list */
 
