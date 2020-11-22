@@ -12,15 +12,19 @@ import UIKit
 
 protocol PresenterCoordinator: AnyObject {
     
-    func clearChildren<T: Coordinator>(_: T.Type)
+    func clearChild<T: Coordinator>(_: T.Type)
     
 }
 
 extension Coordinator: PresenterCoordinator {
     
-    func clearChildren<T>(_: T.Type) where T: Coordinator {
+    func clearChild<T>(_: T.Type) where T: Coordinator {
         
-        childCoordinators.removeAll { $0.isKind(of: T.self) }
+        let lastIndex = childCoordinators.lastIndex { $0.isKind(of: T.self) }
+
+        if let index = lastIndex {
+            childCoordinators.remove(at: index)
+        }
         
     }
     

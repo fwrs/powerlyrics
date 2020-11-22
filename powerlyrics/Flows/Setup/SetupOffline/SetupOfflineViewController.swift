@@ -14,16 +14,16 @@ extension Constants {
     
     static var unsuitableForMinorsAlert: UIAlertController {
         UIAlertController(
-            title: Strings.Setup.Under18Alert.title,
-            message: Strings.Setup.Under18Alert.message,
+            title: Strings.Setup.Under18.title,
+            message: Strings.Setup.Under18.message,
             preferredStyle: .alert
         )
     }
     
     static var failedToSignInAlert: UIAlertController {
         UIAlertController(
-            title: Strings.Setup.NetworkAlert.title,
-            message: Strings.Setup.NetworkAlert.message,
+            title: Strings.Setup.NetworkFailed.title,
+            message: Strings.Setup.NetworkFailed.message,
             preferredStyle: .alert
         )
     }
@@ -36,8 +36,8 @@ fileprivate extension Constants {
     
     static var enterNameAlert: UIAlertController {
         UIAlertController(
-            title: Strings.Setup.NameEmptyAlert.title,
-            message: Strings.Setup.NameEmptyAlert.message,
+            title: Strings.Setup.NameEmpty.title,
+            message: Strings.Setup.NameEmpty.message,
             preferredStyle: .alert
         )
     }

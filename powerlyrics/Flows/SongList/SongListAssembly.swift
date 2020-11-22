@@ -12,6 +12,7 @@ import Swinject
 
 enum SongListFlow: Equatable {
     
+    case findAlbumTracks(album: String, artist: String)
     case albumTracks(SpotifyAlbum)
     case trendingSongs(preview: [SharedSong])
     case viralSongs(preview: [SharedSong])
@@ -20,8 +21,11 @@ enum SongListFlow: Equatable {
     var localizedTitle: String {
         
         switch self {
+        case .findAlbumTracks(let album, _):
+            return album.lowercased()
+            
         case .albumTracks(let album):
-            return album.name
+            return album.name.lowercased()
             
         case .trendingSongs:
             return Strings.SongList.Title.trending
@@ -54,6 +58,14 @@ class SongListAssembly: Assembly {
         container.register(SongListViewModel.self) { (resolver, flow: SongListFlow) in
             switch flow {
             
+            case .findAlbumTracks(let album, let artist):
+                return SongListFindAlbumViewModel(
+                    album: album,
+                    artist: artist,
+                    spotifyProvider: resolver.resolve(SpotifyProvider.self)!,
+                    realmService: resolver.resolve(RealmServiceProtocol.self)!
+                )
+                
             case .albumTracks(let album):
                 return SongListAlbumViewModel(
                     album: album,

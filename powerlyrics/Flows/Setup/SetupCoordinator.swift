@@ -77,7 +77,7 @@ class SetupCoordinator: Coordinator {
         let scene = resolver.resolve(SetupInitialScene.self)!
         scene.flowDismiss = { [weak self] in
             self?.source.dismiss(animated: true, completion: {
-                self?.presenter?.clearChildren(Self.self)
+                self?.presenter?.clearChild(Self.self)
             })
         }
         scene.flowOfflineSetup = { [weak self] in
@@ -94,7 +94,7 @@ class SetupCoordinator: Coordinator {
         let scene = resolver.resolve(SetupManualScene.self)!
         scene.flowDismiss = { [weak self] in
             self?.source.dismiss(animated: true, completion: {
-                self?.presenter?.clearChildren(Self.self)
+                self?.presenter?.clearChild(Self.self)
             })
         }
         scene.flowSpotifyLogin = { [weak self] in
@@ -108,7 +108,7 @@ class SetupCoordinator: Coordinator {
         let scene = resolver.resolve(SetupOfflineScene.self)!
         scene.flowDismiss = { [weak self] in
             self?.source.dismiss(animated: true, completion: {
-                self?.presenter?.clearChildren(Self.self)
+                self?.presenter?.clearChild(Self.self)
             })
         }
         router.push(scene)

@@ -30,6 +30,7 @@ fileprivate extension Constants {
     static let contentInsetNotchAdjustment: CGFloat = 30
     
     static let tappedButtonAlpha: CGFloat = 0.8
+    static let tappedAlbumAlpha: CGFloat = 0.2
     
     // MARK: - Strings
     
@@ -119,6 +120,8 @@ class LyricsViewController: ViewController, LyricsScene {
     
     var hasAppeared: Bool = false
     
+    var isMainScene: Bool = true
+    
     var contextMenuHandler: ImageContextMenuInteractionHandler?
     
     // MARK: - Flows
@@ -126,7 +129,9 @@ class LyricsViewController: ViewController, LyricsScene {
     var flowSafari: DefaultURLAction?
     
     var flowStory: DefaultStringAction?
-    
+
+    var flowFindAlbum: DefaultAlbumStringsAction?
+
     var flowDismiss: DefaultAction?
     
     // MARK: - Lifecycle
@@ -151,6 +156,30 @@ class LyricsViewController: ViewController, LyricsScene {
         super.viewDidDisappear(animated)
         
         hasAppeared = false
+    }
+    
+    // MARK: - Helper methods
+    
+    func generateAttributedAlbumText(highlight: Bool = false) -> NSMutableAttributedString {
+        
+        let album = viewModel.album.value
+        
+        let attrString: NSMutableAttributedString
+        
+        if let album = album?.0 {
+            let text = "\(Constants.fromAlbumText) “\(album)”"
+            attrString = NSMutableAttributedString(string: text, attributes: [
+                .foregroundColor: highlight ? UIColor.label.withAlphaComponent(Constants.tappedAlbumAlpha) : UIColor.label
+            ])
+            
+            attrString.addAttribute(.foregroundColor, value: UIColor.secondaryLabel, range: NSRange(location: .zero, length: "\(Constants.fromAlbumText) “".count))
+            attrString.addAttribute(.foregroundColor, value: UIColor.secondaryLabel, range: NSRange(location: text.count - .one, length: .one))
+        } else {
+            attrString = NSMutableAttributedString(string: Constants.notPartOfAnAlbumText, attributes: [.foregroundColor: UIColor.secondaryLabel])
+        }
+        
+        return attrString
+        
     }
     
 }
@@ -178,7 +207,6 @@ extension LyricsViewController {
         navigationItem.scrollEdgeAppearance = appearance
         
         navigationItem.leftBarButtonItem?.reactive.tap.observeNext { [weak self] _ in
-            Haptic.play(Constants.tinyTap)
             self?.flowDismiss?()
         }.dispose(in: disposeBag)
         
@@ -227,6 +255,12 @@ extension LyricsViewController {
         }
         
         likeButton.isUserInteractionEnabled = false
+        
+        if !isMainScene {
+
+            translationInteractor?.pop = true
+            
+        }
     
     }
     
@@ -285,6 +319,43 @@ extension LyricsViewController {
             Haptic.play(Constants.tinyTap)
             self.flowStory?(story)
         }.dispose(in: disposeBag)
+        
+        firstInfoLabel.reactive.longPressGesture(minimumPressDuration: .zero).observeNext { [weak self] recognizer in
+            guard let self = self,
+                  let album = self.viewModel.album.value?.0
+                    .split(separator: Constants.startingParenthesisCharacter)
+                    .first?
+                    .string,
+                  let artist = self.viewModel.album.value?.1
+                    .split(separator: Constants.commaCharacter)
+                    .first?
+                    .split(separator: Constants.startingParenthesisCharacter)
+                    .first?
+                    .split(separator: Constants.ampersandCharacter)
+                    .first?
+                    .string else { return }
+            
+            if recognizer.state == .ended || recognizer.state == .cancelled {
+                UIView.fadeUpdate(self.firstInfoLabel, duration: Constants.buttonTapDuration) { [weak self] in
+                    self?.firstInfoLabel.attributedText = self?.generateAttributedAlbumText()
+                }
+            }
+            
+            switch recognizer.state {
+            case .began:
+                UIView.fadeUpdate(self.firstInfoLabel, duration: Constants.buttonTapDuration) { [weak self] in
+                    self?.firstInfoLabel.attributedText = self?.generateAttributedAlbumText(highlight: true)
+                }
+                
+            case .ended:
+                Haptic.play(Constants.tinyTap)
+                self.flowFindAlbum?(album, artist)
+                
+            default:
+                break
+            }
+        }.dispose(in: disposeBag)
+        
     }
     
     // MARK: - Output
@@ -306,23 +377,11 @@ extension LyricsViewController {
             }
         }.dispose(in: disposeBag)
         
-        viewModel.album.dropFirst(.one).observeNext { [weak self] album in
+        viewModel.album.dropFirst(.one).observeNext { [weak self] _ in
             guard let self = self else { return }
             
-            let attrString: NSMutableAttributedString
-            
-            if let album = album {
-                let text = "\(Constants.fromAlbumText) “\(album)”"
-                attrString = NSMutableAttributedString(string: text, attributes: [.foregroundColor: UIColor.label])
-                
-                attrString.addAttribute(.foregroundColor, value: UIColor.secondaryLabel, range: NSRange(location: .zero, length: "\(Constants.fromAlbumText) “".count))
-                attrString.addAttribute(.foregroundColor, value: UIColor.secondaryLabel, range: NSRange(location: text.count - .one, length: .one))
-            } else {
-                attrString = NSMutableAttributedString(string: Constants.notPartOfAnAlbumText, attributes: [.foregroundColor: UIColor.secondaryLabel])
-            }
-            
             UIView.fadeUpdate(self.firstInfoLabel) {
-                self.firstInfoLabel.attributedText = attrString
+                self.firstInfoLabel.attributedText = self.generateAttributedAlbumText()
             }
         }.dispose(in: disposeBag)
         

@@ -40,9 +40,9 @@ struct LyricsStoryViewModel {
             items.replace(with: [.empty], performDiff: false)
         } else {
             items.replace(with: [.topPadding] + fixed
-                            .split(separator: Constants.newline)
+                            .split(separator: Constants.newlineCharacter)
                             .map(\.clean)
-                            .dedupNearby(equals: String(Constants.newline)).map {
+                            .dedupNearby(equals: Constants.newline).map {
                                 .content(LyricsStoryContentCellViewModel(text: $0))
                             }, performDiff: false)
         }

@@ -52,29 +52,21 @@ class KeychainService: KeychainServiceProtocol {
             delete(for: key)
             return
         }
-        do {
-            let data = try encoder.encode(value)
-            try keychain.set(data, key: key.rawValue)
-        } catch let error {
-            print(error.localizedDescription)
+        if let data = try? encoder.encode(value) {
+            try? keychain.set(data, key: key.rawValue)
         }
     }
     
     func getDecodable<T: Decodable>(for key: Key) -> T? {
-        do {
-            guard let data = try keychain.getData(key.rawValue) else { return nil }
-            return try decoder.decode(T.self, from: data)
-        } catch {
+        if let data = try? keychain.getData(key.rawValue) {
+            return try? decoder.decode(T.self, from: data)
+        } else {
             return nil
         }
     }
     
     func getString(for key: Key) -> String? {
-        do {
-            return try keychain.getString(key.rawValue)
-        } catch {
-            return nil
-        }
+        try? keychain.getString(key.rawValue)
     }
 
     func setString(_ value: String?, for key: Key) {
@@ -82,19 +74,12 @@ class KeychainService: KeychainServiceProtocol {
             delete(for: key)
             return
         }
-        do {
-            try keychain.set(value, key: key.rawValue)
-        } catch let error {
-            print(error.localizedDescription)
-        }
+        
+        _ = try? keychain.set(value, key: key.rawValue)
     }
     
     func delete(for key: Key) {
-        do {
-            try keychain.remove(key.rawValue)
-        } catch let error {
-            print(error.localizedDescription)
-        }
+        _ = try? keychain.remove(key.rawValue)
     }
     
     func reset() {

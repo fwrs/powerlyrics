@@ -172,11 +172,13 @@ class SearchViewModel: ViewModel {
                     let deduplicated = response.albums.items.dedup {
                         $0.name == $1.name && $0.artists == $1.artists
                     }
+                    
                     if deduplicated.nonEmpty {
                         self?.searchAlbumsResult = Array(deduplicated.prefix(Constants.maxPlaylistPreviewCount))
                     } else {
                         self?.searchAlbumsResult = []
                     }
+                    
                     group.leave()
                     
                 case .failed:

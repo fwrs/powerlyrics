@@ -12,11 +12,16 @@ import Swinject
 
 protocol LyricsScene: ViewController {
     
+    var isMainScene: Bool { get set }
+    
     var flowSafari: DefaultURLAction? { get set }
     var flowStory: DefaultStringAction? { get set }
+    var flowFindAlbum: DefaultAlbumStringsAction? { get set }
     var flowDismiss: DefaultAction? { get set }
     
 }
+
+typealias DefaultAlbumStringsAction = (_ album: String, _ artist: String) -> Void
 
 // MARK: - LyricsAssembly
 

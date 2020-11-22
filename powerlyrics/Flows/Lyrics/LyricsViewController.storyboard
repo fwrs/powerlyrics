@@ -96,7 +96,7 @@
                                                 <constraint firstAttribute="bottom" secondItem="96y-dm-XQN" secondAttribute="bottom" constant="16" id="n7Y-qg-0jW"/>
                                             </constraints>
                                         </view>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Zjp-MZ-qGq">
+                                        <label opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Zjp-MZ-qGq">
                                             <rect key="frame" x="16" y="178" width="384" height="18"/>
                                             <attributedString key="attributedText">
                                                 <fragment content="Unknown album">

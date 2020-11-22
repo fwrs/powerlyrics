@@ -83,6 +83,8 @@ class HomeViewController: ViewController, HomeScene {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
+        lastSelectedIndexPath = nil
+        
         if !initialLoad {
             viewModel.updateState()
         }

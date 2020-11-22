@@ -64,12 +64,12 @@ extension GeniusProvider {
                   let lyricsContainer = try? doc.select(Constants.lyricsWrapperSelector),
                   let _ = try? lyricsContainer.select(Constants.brSelector).prepend(Constants.escapedNewline),
                   let text = try? lyricsContainer.text()
-                    .replacingOccurrences(of: Constants.escapedNewline, with: String(Constants.newline)) else { return }
+                    .replacingOccurrences(of: Constants.escapedNewline, with: Constants.newline) else { return }
             
             // MARK: - Lyrics parsing
             
             let result1 = text.contains(Constants.instrumentalSystemMessage) ? [Constants.instrumentalResponse] : text
-                .split(separator: Constants.newline)
+                .split(separator: Constants.newlineCharacter)
                 .map(\.clean)
                 .joined(separator: String(Constants.newline))
                 .split(separator: Constants.sectionEnd)

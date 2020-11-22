@@ -74,9 +74,12 @@ class GenreStatsViewController: ViewController, GenreStatsScene {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
+        lastSelectedIndexPath = nil
+        
         if !initialLoad {
             viewModel.loadData()
         }
+        
         initialLoad = false
     }
     

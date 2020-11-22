@@ -32,6 +32,8 @@ class SongListViewModel: ViewModel {
     
     let isLoadingWithPreview = Observable(false)
     
+    let couldntFindAlbumError = Observable(false)
+    
     // MARK: - Init
     
     init(spotifyProvider: SpotifyProvider, realmService: RealmServiceProtocol) {

@@ -186,6 +186,7 @@
 		B8FB921D25683F65005EAB6E /* SongListTrendingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8FB921C25683F65005EAB6E /* SongListTrendingViewModel.swift */; };
 		B8FB922025683F6E005EAB6E /* SongListViralViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8FB921F25683F6E005EAB6E /* SongListViralViewModel.swift */; };
 		B8FB922325683F82005EAB6E /* SongListLikedViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8FB922225683F82005EAB6E /* SongListLikedViewModel.swift */; };
+		B8FF9FBF256A8645002E07D8 /* SongListFindAlbumViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8FF9FBE256A8645002E07D8 /* SongListFindAlbumViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -375,6 +376,7 @@
 		B8FB921F25683F6E005EAB6E /* SongListViralViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SongListViralViewModel.swift; sourceTree = "<group>"; };
 		B8FB922225683F82005EAB6E /* SongListLikedViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SongListLikedViewModel.swift; sourceTree = "<group>"; };
 		B8FE33BB25263091000CC6E4 /* Design.sketch */ = {isa = PBXFileReference; lastKnownFileType = file; name = Design.sketch; path = powerlyrics/Assets/Design.sketch; sourceTree = SOURCE_ROOT; };
+		B8FF9FBE256A8645002E07D8 /* SongListFindAlbumViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SongListFindAlbumViewModel.swift; sourceTree = "<group>"; };
 		C318C92C0457E622005E5D8E /* Pods_powerlyrics.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_powerlyrics.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D443AB741651671A699A815E /* Pods-powerlyrics.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-powerlyrics.debug.xcconfig"; path = "Target Support Files/Pods-powerlyrics/Pods-powerlyrics.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -1007,6 +1009,7 @@
 			isa = PBXGroup;
 			children = (
 				B8B84E4725604085007BC2B1 /* SongListViewModel.swift */,
+				B8FF9FBE256A8645002E07D8 /* SongListFindAlbumViewModel.swift */,
 				B8FB921325683F26005EAB6E /* SongListAlbumViewModel.swift */,
 				B8FB921C25683F65005EAB6E /* SongListTrendingViewModel.swift */,
 				B8FB921F25683F6E005EAB6E /* SongListViralViewModel.swift */,
@@ -1378,6 +1381,7 @@
 				B8227BA825687B62009E76B5 /* LyricsStoryContentCellViewModel.swift in Sources */,
 				B8B84E422560406E007BC2B1 /* SongListViewController.swift in Sources */,
 				B8E20CF925272C4E00D0E04C /* GenreMapViewModel.swift in Sources */,
+				B8FF9FBF256A8645002E07D8 /* SongListFindAlbumViewModel.swift in Sources */,
 				B86F6E56252618C5003296B0 /* CoordinatorsAssembly.swift in Sources */,
 				B81831AF2555B2F50035F320 /* RealmAccount.swift in Sources */,
 				B8C5EB97254461C600E7FBA1 /* SharedLyrics.swift in Sources */,

@@ -10,6 +10,20 @@ import Bond
 import Haptica
 import ReactiveKit
 
+// MARK: - Constants
+
+fileprivate extension Constants {
+    
+    static var albumNotFoundAlert: UIAlertController {
+        UIAlertController(
+            title: Strings.SongList.AlbumNotFound.title,
+            message: Strings.SongList.AlbumNotFound.message,
+            preferredStyle: .alert
+        )
+    }
+    
+}
+
 // MARK: - SongListViewController
 
 class SongListViewController: ViewController, SongListScene {
@@ -27,6 +41,8 @@ class SongListViewController: ViewController, SongListScene {
     var lastSelectedIndexPath: IndexPath?
     
     var initialLoad = true
+    
+    var translationInteractor: TranslationAnimationInteractor?
     
     // MARK: - Flows
     
@@ -46,6 +62,8 @@ class SongListViewController: ViewController, SongListScene {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        
+        lastSelectedIndexPath = nil
         
         if !initialLoad {
             if viewModel is SongListLikedViewModel {
@@ -68,6 +86,8 @@ extension SongListViewController {
         
         tableView.register(LoadingCell.self)
         tableView.register(SongCell.self)
+        
+        translationInteractor = TranslationAnimationInteractor(viewController: self, pop: true)
         
     }
     
@@ -116,7 +136,7 @@ extension SongListViewController {
             self?.tableView.isRefreshing = isRefreshing
         }.dispose(in: disposeBag)
         
-        viewModel.isLoading.observeNext { [weak self] loading in
+        viewModel.isLoading.dropFirst(.one).observeNext { [weak self] loading in
             guard let self = self else { return }
             
             UIView.fadeDisplay(self.activityIndicator, visible: loading)
@@ -136,9 +156,10 @@ extension SongListViewController {
             viewModel.isLoading,
             viewModel.isRefreshing,
             viewModel.isFailed,
-            viewModel.isLoadingWithPreview
-        ).dropFirst(.two).map { isEmpty, isLoading, isRefreshing, isFailed, isLoadingWithPreview in
-            isEmpty && !isLoading && !isRefreshing && !isFailed && !isLoadingWithPreview
+            viewModel.isLoadingWithPreview,
+            viewModel.couldntFindAlbumError
+        ).dropFirst(.two).map { isEmpty, isLoading, isRefreshing, isFailed, isLoadingWithPreview, couldntFindAlbum in
+            isEmpty && !isLoading && !isRefreshing && !isFailed && !isLoadingWithPreview && !couldntFindAlbum
         }.removeDuplicates().observeNext { [weak self] isVisible in
             self?.setEmptyView(isVisible: isVisible)
         }.dispose(in: disposeBag)
@@ -147,6 +168,15 @@ extension SongListViewController {
             self?.setNoInternetView(isVisible: isFailed) {
                 self?.viewModel.loadData(retry: true)
             }
+        }.dispose(in: disposeBag)
+        
+        viewModel.couldntFindAlbumError.observeNext { [weak self] couldntFindAlbum in
+            guard couldntFindAlbum else { return }
+            self?.present(Constants.albumNotFoundAlert.with {
+                $0.addAction(UIAlertAction(title: Constants.ok, style: .default, handler: { [weak self] _ in
+                    _ = self?.navigationController?.popViewController(animated: true)
+                }))
+            }, animated: true, completion: nil)
         }.dispose(in: disposeBag)
         
     }

@@ -12,11 +12,14 @@ struct GeniusAlbum: Codable, Equatable {
     let name: String
     let id: Int
     
+    let artist: GeniusArtist?
+    
     enum CodingKeys: String, CodingKey {
         case fullTitle = "full_title"
         
         case name
         case id
+        case artist
     }
     
 }

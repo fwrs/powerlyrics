@@ -69,6 +69,12 @@ class SearchViewController: ViewController, SearchScene {
         viewModel.loadTrends()
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        lastSelectedIndexPath = nil
+    }
+    
     // MARK: - Actions
     
     @objc private func dismissKeyboard() {

@@ -47,6 +47,8 @@ class LyricsCoordinator: Coordinator {
         let scene = resolver.resolve(LyricsScene.self, arguments: song, placeholder)!
         let router = Router(rootViewController: scene)
         
+        router.delegate = self
+        
         router.modalPresentationStyle = .custom
         router.transitioningDelegate = self
         scene.flowSafari = { [weak self] url in
@@ -55,9 +57,12 @@ class LyricsCoordinator: Coordinator {
         scene.flowStory = { [weak self] story in
             self?.showStory(story: story)
         }
+        scene.flowFindAlbum = { [weak self] album, artist in
+            self?.showFoundAlbum(album: album, artist: artist)
+        }
         scene.flowDismiss = { [weak self] in
-            scene.dismiss(animated: true, completion: {
-                self?.presenter?.clearChildren(Self.self)
+            router.dismiss(animated: true, completion: {
+                self?.presenter?.clearChild(Self.self)
             })
         }
         source.present(router, animated: true)
@@ -67,7 +72,7 @@ class LyricsCoordinator: Coordinator {
     // MARK: - Scenes
     
     func showSafari(url: URL) {
-        guard let router = self.router else { return }
+        guard let router = router else { return }
         
         let safariViewController = SFSafariViewController(url: url, configuration: SFSafariViewController.Configuration())
         safariViewController.preferredControlTintColor = .tintColor
@@ -75,7 +80,7 @@ class LyricsCoordinator: Coordinator {
     }
     
     func showStory(story: String) {
-        guard let router = self.router else { return }
+        guard let router = router else { return }
         
         let scene = resolver.resolve(LyricsStoryScene.self, argument: story)!
         
@@ -100,6 +105,34 @@ class LyricsCoordinator: Coordinator {
         
         router.presentPanModal(scene)
     }
+    
+    func showFoundAlbum(album: String, artist: String) {
+        guard let router = router else { return }
+        
+        let scene = resolver.resolve(SongListScene.self, argument: SongListFlow.findAlbumTracks(album: album, artist: artist))
+        scene?.flowLyrics = { [weak self] (song, placeholder) in
+            self?.showLyrics(for: song, placeholder: placeholder)
+        }
+        router.push(scene)
+    }
+    
+    func showLyrics(for song: SharedSong, placeholder: UIImage?) {
+        let scene = resolver.resolve(LyricsScene.self, arguments: song, placeholder)!
+        scene.isMainScene = false
+        scene.flowSafari = { [weak self] url in
+            self?.showSafari(url: url)
+        }
+        scene.flowStory = { [weak self] story in
+            self?.showStory(story: story)
+        }
+        scene.flowFindAlbum = { [weak self] album, artist in
+            self?.showFoundAlbum(album: album, artist: artist)
+        }
+        scene.flowDismiss = { [weak self] in
+            self?.router?.popViewController(animated: true)
+        }
+        router?.push(scene, animated: true)
+    }
 
 }
 
@@ -122,6 +155,36 @@ extension LyricsCoordinator: UIViewControllerTransitioningDelegate {
     func interactionControllerForDismissal(using animator: UIViewControllerAnimatedTransitioning)
       -> UIViewControllerInteractiveTransitioning? {
         guard let animator = animator as? TranslationAnimation,
+              let interactionController = animator.interactionController,
+              interactionController.interactionInProgress
+        else {
+            return nil
+        }
+        
+        return interactionController
+    }
+    
+}
+
+// MARK: - UINavigationControllerDelegate
+
+extension LyricsCoordinator: UINavigationControllerDelegate {
+
+    func navigationController(_ navigationController: UINavigationController, animationControllerFor operation: UINavigationController.Operation, from fromVC: UIViewController, to toVC: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+        switch operation {
+        case .push:
+            return TranslationAnimation(type: .present, duration: 0.5, inNavigationController: true)
+        
+        case .pop:
+            return TranslationAnimation(type: .dismiss, duration: 0.5, interactionController: (fromVC as? TranslationAnimationView)?.translationInteractor, inNavigationController: true)
+        
+        default:
+            return nil
+        }
+    }
+    
+    func navigationController(_ navigationController: UINavigationController, interactionControllerFor animationController: UIViewControllerAnimatedTransitioning) -> UIViewControllerInteractiveTransitioning? {
+        guard let animator = animationController as? TranslationAnimation,
               let interactionController = animator.interactionController,
               interactionController.interactionInProgress
         else {
