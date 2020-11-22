@@ -135,6 +135,14 @@ extension SpotifyProvider {
     }
     
     func logout(reset: Bool = true) {
+        URLCache.shared.removeAllCachedResponses()
+
+        if let cookies = HTTPCookieStorage.shared.cookies {
+            for cookie in cookies {
+                HTTPCookieStorage.shared.deleteCookie(cookie)
+            }
+        }
+        
         SpotifyProvider.token = nil
         keychainService.delete(for: .spotifyToken)
         keychainService.delete(for: .spotifyAuthorizedWithAccount)

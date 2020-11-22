@@ -79,6 +79,10 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             self?.start()
         }
         
+        if realmService.userData == nil && spotifyProvider.loggedIn {
+            spotifyProvider.logout()
+        }
+        
         start()
     }
     
