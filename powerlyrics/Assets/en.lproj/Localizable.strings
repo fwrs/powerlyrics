@@ -151,7 +151,7 @@
 "lyrics.button.safari" = "safari";
 "lyrics.button.story" = "story";
 "lyrics.info.fromAlbum" = "From album";
-"lyrics.info.notInAnAlbum" = "Not in an album";
+"lyrics.info.notPartOfAnAlbum" = "Not part of an album";
 "lyrics.info.producedBy" = "Produced by";
 "lyrics.info.unknownAlbum" = "Unknown album";
 "lyrics.info.unknownProducer" = "Unknown producer";

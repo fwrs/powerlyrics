@@ -80,7 +80,7 @@
 	<key>UIUserInterfaceStyle</key>
 	<string>Dark</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
-	<string>This application saves selected photos to gallery.</string>
+	<string>This application saves requested photos to gallery.</string>
 	<key>FirebaseAutomaticScreenReportingEnabled</key>
 	<false/>
 </dict>

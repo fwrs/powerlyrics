@@ -38,7 +38,7 @@ fileprivate extension Constants {
     static let likeText = Strings.Lyrics.Button.like
     static let likedText = Strings.Lyrics.Button.liked
     static let fromAlbumText = Strings.Lyrics.Info.fromAlbum
-    static let notInAnAlbumText = Strings.Lyrics.Info.notInAnAlbum
+    static let notPartOfAnAlbumText = Strings.Lyrics.Info.notPartOfAnAlbum
     static let producedByText = Strings.Lyrics.Info.producedBy
     
     // MARK: - Alerts
@@ -318,7 +318,7 @@ extension LyricsViewController {
                 attrString.addAttribute(.foregroundColor, value: UIColor.secondaryLabel, range: NSRange(location: .zero, length: "\(Constants.fromAlbumText) “".count))
                 attrString.addAttribute(.foregroundColor, value: UIColor.secondaryLabel, range: NSRange(location: text.count - .one, length: .one))
             } else {
-                attrString = NSMutableAttributedString(string: Constants.notInAnAlbumText, attributes: [.foregroundColor: UIColor.secondaryLabel])
+                attrString = NSMutableAttributedString(string: Constants.notPartOfAnAlbumText, attributes: [.foregroundColor: UIColor.secondaryLabel])
             }
             
             UIView.fadeUpdate(self.firstInfoLabel) {
