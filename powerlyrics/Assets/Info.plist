@@ -81,5 +81,7 @@
 	<string>Dark</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
 	<string>Enabling this will allow you to save photos</string>
+	<key>FirebaseAutomaticScreenReportingEnabled</key>
+	<false/>
 </dict>
 </plist>

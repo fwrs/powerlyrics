@@ -65,8 +65,11 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         IQKeyboardManager.shared().isEnableAutoToolbar = false
         
         let filePath = Constants.googleServicePlist!
-        let options = FirebaseOptions(contentsOfFile: filePath)
-        FirebaseApp.configure(options: options!)
+        
+        if FirebaseApp.app() == nil {
+            let options = FirebaseOptions(contentsOfFile: filePath)
+            FirebaseApp.configure(options: options!)
+        }
         
         _ = NotificationCenter.default.addObserver(
             forName: .appDidLogout,
