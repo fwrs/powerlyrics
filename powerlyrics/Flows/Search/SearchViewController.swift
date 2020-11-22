@@ -149,7 +149,7 @@ extension SearchViewController {
             .dropFirst(.one)
             .debounce(for: Constants.buttonThrottleTime, queue: .main)
             .observeNext { [weak self] query in
-                guard let self = self else { return }
+                guard let self = self, !self.viewModel.isCancelled.value else { return }
                 self.viewModel.search(for: query)
             }.dispose(in: disposeBag)
         
@@ -277,6 +277,12 @@ extension SearchViewController: UISearchBarDelegate {
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         viewModel.cancelLoading()
         viewModel.reset()
+        viewModel.isCancelled.value = true
+        
+        delay(Constants.buttonThrottleTime) { [weak self] in
+            self?.viewModel.isCancelled.value = false
+        }
+        
         searchBar.setShowsCancelButton(false, animated: true)
     }
     

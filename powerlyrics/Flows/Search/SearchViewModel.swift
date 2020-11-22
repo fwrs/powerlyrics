@@ -82,6 +82,8 @@ class SearchViewModel: ViewModel {
     
     let trendsFailed = Observable(false)
     
+    let isCancelled = Observable(false)
+    
     // MARK: - Init
     
     init(spotifyProvider: SpotifyProvider, geniusProvider: GeniusProvider, realmService: RealmServiceProtocol) {
