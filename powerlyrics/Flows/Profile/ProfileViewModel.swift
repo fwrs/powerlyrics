@@ -46,11 +46,8 @@ class ProfileViewModel: ViewModel {
     
     let items = MutableObservableArray2D(Array2D<(), ProfileCell>(sectionsWithItems: [
         ((), [ProfileCell.stats(ProfileStatsCellViewModel())]),
-        ((), [ProfileCell.action(ActionCellViewModel(action: .connectToSpotify)),
-              ProfileCell.action(ActionCellViewModel(action: .likedSongs)),
-              ProfileCell.action(ActionCellViewModel(action: .appSourceCode)),
-              ProfileCell.action(ActionCellViewModel(action: .signOut))]),
-        ((), [ProfileCell.build(ProfileBuildCellViewModel(text: Constants.footerText))])
+        ((), []),
+        ((), [])
     ]))
     
     let name: Observable<String?> = Observable(nil)
@@ -79,13 +76,12 @@ class ProfileViewModel: ViewModel {
         self.keychainService = keychainService
         
         super.init()
-        
-        loadData()
     }
     
     // MARK: - Load data
     
-    func loadData() {
+    func loadUserData() {
+        
         let userData = realmService.userData
         name.value = userData?.name
         premium.value = (userData?.premium).safe
@@ -102,6 +98,10 @@ class ProfileViewModel: ViewModel {
             avatarPreviewable.value = false
         }
         
+    }
+        
+    func loadData() {
+        
         if let stats = realmService.stats {
             self.stats.value = ProfileStatsCellViewModel(
                 likedSongs: realmService.likedSongsCount,
@@ -117,13 +117,21 @@ class ProfileViewModel: ViewModel {
         
         let isSpotifyAccount: Bool? = keychainService.getDecodable(for: .spotifyAuthorizedWithAccount)
         
-        if isSpotifyAccount == true, items[sectionAt: .one].items[.zero] !=
-            ProfileCell.action(ActionCellViewModel(action: .manageAccount)) {
-            items[sectionAt: .one].items[.zero] = ProfileCell.action(ActionCellViewModel(action: .manageAccount))
-        } else if isSpotifyAccount != true,
-                  items[sectionAt: .one].items[.zero] !=
-                    ProfileCell.action(ActionCellViewModel(action: .connectToSpotify)) {
-            items[sectionAt: .one].items[.zero] = ProfileCell.action(ActionCellViewModel(action: .connectToSpotify))
+        items.batchUpdate { property in
+            
+            property.replaceItems(ofSectionAt: .one, with: [
+                isSpotifyAccount == true ?
+                    ProfileCell.action(ActionCellViewModel(action: .manageAccount)) :
+                    ProfileCell.action(ActionCellViewModel(action: .connectToSpotify)),
+                ProfileCell.action(ActionCellViewModel(action: .likedSongs)),
+                ProfileCell.action(ActionCellViewModel(action: .appSourceCode)),
+                ProfileCell.action(ActionCellViewModel(action: .signOut))
+            ], performDiff: true)
+            
+            property.replaceItems(ofSectionAt: .two, with: [
+                ProfileCell.build(ProfileBuildCellViewModel(text: Constants.footerText))
+            ], performDiff: true)
+            
         }
         
     }

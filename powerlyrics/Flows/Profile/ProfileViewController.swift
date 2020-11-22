@@ -58,8 +58,9 @@ fileprivate extension Constants {
     }
     
     static let translationYAvatarFunction = { (x: CGFloat) -> CGFloat in
-        ((-312.831 * pow(x, 4) + 840.079 * pow(x, 3) - 793.935 * pow(x, 2) + 287.687 * x) *
-            (UIDevice.current.hasNotch ? 1 : 0.55)) + (UIDevice.current.hasNotch ? .zero : (7 * x - 7)) }
+        let extraAdjustment: CGFloat = UIDevice.current.hasNotch ? x : (7.0 * x - 7.0)
+        return ((-312.831 * pow(x, 4) + 840.079 * pow(x, 3) - 793.935 * pow(x, 2) + 287.687 * x) *
+            (UIDevice.current.hasNotch ? 1 : 0.55)) + extraAdjustment }
     static let translationYUserInfoFunction = { (x: CGFloat) -> CGFloat in
         (215.556 * x - 155.556 * pow(x, 2)) - (UIDevice.current.hasNotch ? .zero : 9) }
     static let avatarHeightFunction = { (x: CGFloat) -> CGFloat in
@@ -127,13 +128,17 @@ class ProfileViewController: ViewController, ProfileScene {
             object: nil,
             queue: nil
         ) { [weak self] _ in
+            self?.viewModel.loadUserData()
             self?.viewModel.loadData()
         }
+        
+        viewModel.loadUserData()
     }
     
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         
+        viewModel.loadUserData()
         viewModel.loadData()
     }
     
@@ -347,8 +352,8 @@ class ProfileBinder<Changeset: SectionedDataSourceChangeset>: TableViewBinderDat
         }
         
         rowReloadAnimation = .fade
-        rowInsertionAnimation = .none
-        rowDeletionAnimation = .none
+        rowInsertionAnimation = .fade
+        rowDeletionAnimation = .fade
     }
 
 }
