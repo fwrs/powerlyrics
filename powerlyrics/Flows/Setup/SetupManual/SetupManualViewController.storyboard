@@ -18,19 +18,31 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="SpotifyLogoLarge" translatesAutoresizingMaskIntoConstraints="NO" id="iSh-pB-TKo">
-                                <rect key="frame" x="149.5" y="213" width="115" height="115"/>
+                                <rect key="frame" x="149.5" y="172.5" width="115" height="115"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="115" id="FK8-JQ-PfM"/>
                                     <constraint firstAttribute="width" secondItem="iSh-pB-TKo" secondAttribute="height" multiplier="1:1" id="MGi-Tu-3u8"/>
                                 </constraints>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" alpha="0.90000000000000002" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Add Spotify account" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cNO-5X-k1x">
-                                <rect key="frame" x="78" y="360" width="258" height="31.5"/>
+                                <rect key="frame" x="78" y="319.5" width="258" height="31.5"/>
                                 <fontDescription key="fontDescription" type="system" weight="heavy" pointSize="26"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="string" keyPath="localizedTextKey" value="setup.spotifyAccountPromotion.title"/>
+                                </userDefinedRuntimeAttributes>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" alpha="0.89999997615814209" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qH3-YW-dj5">
+                                <rect key="frame" x="86" y="371" width="242.5" height="68.5"/>
+                                <string key="text">This will introduce you to a
+greater set of features within
+powerlyrics. </string>
+                                <fontDescription key="fontDescription" type="system" pointSize="19"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="localizedTextKey" value="setup.spotifyAccountPromotion.message"/>
                                 </userDefinedRuntimeAttributes>
                             </label>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="6.5" translatesAutoresizingMaskIntoConstraints="NO" id="J09-yS-CR0">
@@ -68,18 +80,6 @@
                                     </button>
                                 </subviews>
                             </stackView>
-                            <label opaque="NO" userInteractionEnabled="NO" alpha="0.89999997615814209" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qH3-YW-dj5">
-                                <rect key="frame" x="86" y="411.5" width="242.5" height="68.5"/>
-                                <string key="text">This will introduce you to a
-greater set of features within
-powerlyrics. </string>
-                                <fontDescription key="fontDescription" type="system" pointSize="19"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                                <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="string" keyPath="localizedTextKey" value="setup.spotifyAccountPromotion.message"/>
-                                </userDefinedRuntimeAttributes>
-                            </label>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="mqb-D3-UcX"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
@@ -91,7 +91,7 @@ powerlyrics. </string>
                             <constraint firstItem="iSh-pB-TKo" firstAttribute="centerX" secondItem="mqb-D3-UcX" secondAttribute="centerX" id="aBe-2C-FxC"/>
                             <constraint firstItem="qH3-YW-dj5" firstAttribute="top" secondItem="cNO-5X-k1x" secondAttribute="bottom" constant="20" id="c3r-1b-BRG"/>
                             <constraint firstItem="J09-yS-CR0" firstAttribute="leading" secondItem="mqb-D3-UcX" secondAttribute="leading" constant="44" id="hxJ-zK-6PD"/>
-                            <constraint firstItem="cNO-5X-k1x" firstAttribute="centerY" secondItem="mqb-D3-UcX" secondAttribute="centerY" multiplier="0.93" id="n0f-BM-sAT"/>
+                            <constraint firstItem="cNO-5X-k1x" firstAttribute="centerY" secondItem="mqb-D3-UcX" secondAttribute="centerY" multiplier="0.83" id="n0f-BM-sAT"/>
                             <constraint firstItem="cNO-5X-k1x" firstAttribute="centerX" secondItem="mqb-D3-UcX" secondAttribute="centerX" id="npA-ZH-a8R"/>
                             <constraint firstItem="qH3-YW-dj5" firstAttribute="centerX" secondItem="mqb-D3-UcX" secondAttribute="centerX" id="pXg-er-rgs"/>
                         </constraints>
