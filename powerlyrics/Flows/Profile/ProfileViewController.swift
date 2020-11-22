@@ -105,8 +105,6 @@ class ProfileViewController: ViewController, ProfileScene {
 
     var shouldDrawShadow = true
     
-    var initialLoad = true
-    
     // MARK: - Flows
     
     var flowSafari: DefaultURLAction?
@@ -124,8 +122,6 @@ class ProfileViewController: ViewController, ProfileScene {
         setupInput()
         setupOutput()
         
-        viewModel.loadData()
-        
         _ = NotificationCenter.default.addObserver(
             forName: .appDidLogin,
             object: nil,
@@ -137,11 +133,6 @@ class ProfileViewController: ViewController, ProfileScene {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        
-        if initialLoad {
-            initialLoad = false
-            return
-        }
         
         viewModel.loadData()
     }
