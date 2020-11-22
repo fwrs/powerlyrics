@@ -263,7 +263,7 @@ extension ProfileViewController {
             .bind(to: registerDateLabel.reactive.text)
             .dispose(in: disposeBag)
         
-        viewModel.avatar.observeNext { [weak self] image in
+        viewModel.fullAvatar.observeNext { [weak self] image in
             self?.contextMenuHandler?.updateFullImage(with: image)
         }.dispose(in: disposeBag)
         

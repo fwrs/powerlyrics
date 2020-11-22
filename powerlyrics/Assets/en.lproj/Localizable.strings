@@ -176,7 +176,7 @@
 
 /* MARK: - Action cell */
 
-"actionCell.likedSongs" = "Liked songs";
+"actionCell.likedSongs" = "All liked songs";
 "actionCell.connectToSpotify" = "Connect to Spotify";
 "actionCell.manageAccount" = "Manage account";
 "actionCell.signOut" = "Sign out";
