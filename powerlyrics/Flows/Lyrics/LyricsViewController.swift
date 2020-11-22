@@ -322,18 +322,14 @@ extension LyricsViewController {
         
         firstInfoLabel.reactive.longPressGesture(minimumPressDuration: .zero).observeNext { [weak self] recognizer in
             guard let self = self,
-                  let album = self.viewModel.album.value?.0
-                    .split(separator: Constants.startingParenthesisCharacter)
-                    .first?
-                    .string,
-                  let artist = self.viewModel.album.value?.1
-                    .split(separator: Constants.commaCharacter)
-                    .first?
-                    .split(separator: Constants.startingParenthesisCharacter)
-                    .first?
-                    .split(separator: Constants.ampersandCharacter)
-                    .first?
-                    .string else { return }
+                  let album = self.viewModel.album.value?.0,
+                  let artist = self.viewModel.album.value?.1 else { return }
+            
+            let fixedAlbum = album.components(separatedBy: Constants.startingParenthesis).first.mapEmptyToNil ?? album
+            
+            let fixedArtist = artist.components(separatedBy: Constants.comma).first.mapEmptyToNil?
+                .components(separatedBy: Constants.startingParenthesis).first.mapEmptyToNil?
+                .components(separatedBy: Constants.ampersand).first.mapEmptyToNil ?? artist
             
             if recognizer.state == .ended || recognizer.state == .cancelled {
                 UIView.fadeUpdate(self.firstInfoLabel, duration: Constants.buttonTapDuration) { [weak self] in
@@ -349,7 +345,7 @@ extension LyricsViewController {
                 
             case .ended:
                 Haptic.play(Constants.tinyTap)
-                self.flowFindAlbum?(album, artist)
+                self.flowFindAlbum?(fixedAlbum.clean, fixedArtist.clean)
                 
             default:
                 break

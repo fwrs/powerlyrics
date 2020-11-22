@@ -33,7 +33,9 @@ enum Constants {
     static let exclamation = "!"
     static let spotifySystemName = "spotify"
     static let geniusSystemName = "genius"
+    static let startingParenthesis = "("
     static let startingParenthesisCharacter: Character = "("
+    static let comma = ","
     static let commaCharacter: Character = ","
     static let ok = Strings.Shared.ok
     static let cancel = Strings.Shared.cancel

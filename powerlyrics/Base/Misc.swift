@@ -595,3 +595,17 @@ extension CGFloat {
     }
     
 }
+
+extension Optional where Wrapped == String {
+    
+    var mapEmptyToNil: Self {
+        
+        if self?.isEmpty == true {
+            return nil
+        } else {
+            return self
+        }
+        
+    }
+    
+}
