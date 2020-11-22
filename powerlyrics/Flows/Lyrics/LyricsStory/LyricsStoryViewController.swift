@@ -127,7 +127,7 @@ extension LyricsStoryViewController {
                 cell.selectionStyle = .none
                 return cell
             }
-        }
+        }.dispose(in: disposeBag)
         
     }
     

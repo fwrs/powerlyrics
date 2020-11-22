@@ -23,7 +23,6 @@ fileprivate extension Constants {
     
     static let space7: CGFloat = 7
     static let space5: CGFloat = 5
-    static let space12: CGFloat = 12
     static let space14: CGFloat = 14
     
     static let baseContentInset: CGFloat = 200
@@ -163,6 +162,7 @@ extension LyricsViewController {
     // MARK: - View
     
     func setupView() {
+        
         songLabel.text = viewModel.song.name
         artistLabel.text = viewModel.song.artistsString
         albumArtImageView.populate(with: viewModel.song.thumbnailAlbumArt, placeholder: albumArtThumbnail)
@@ -290,6 +290,10 @@ extension LyricsViewController {
     
     func setupOutput() {
         
+        viewModel.lyrics.bind(to: tableView, cellType: LyricsSectionCell.self, rowAnimation: .fade) { (cell, item) in
+            cell.configure(with: LyricsSectionCellViewModel(section: item))
+        }.dispose(in: disposeBag)
+        
         viewModel.lyricsNotFound.observeNext { [weak self] isNotFound in
             guard let self = self else { return }
             if isNotFound {
@@ -334,10 +338,6 @@ extension LyricsViewController {
             UIView.fadeUpdate(self.secondInfoLabel) {
                 self.secondInfoLabel.attributedText = attrString
             }
-        }.dispose(in: disposeBag)
-        
-        viewModel.lyrics.bind(to: tableView, cellType: LyricsSectionCell.self, rowAnimation: .fade) { (cell, item) in
-            cell.configure(with: LyricsSectionCellViewModel(section: item))
         }.dispose(in: disposeBag)
         
         viewModel.isLoading.dropFirst(.one).observeNext { [weak self] isLoading in

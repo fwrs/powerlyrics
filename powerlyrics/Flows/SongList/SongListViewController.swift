@@ -65,14 +65,16 @@ extension SongListViewController {
     // MARK: - View
 
     func setupView() {
+        
         tableView.register(LoadingCell.self)
         tableView.register(SongCell.self)
-        tableView.cellLayoutMarginsFollowReadableWidth = false
+        
     }
     
     // MARK: - Input
     
     func setupInput() {
+        
         tableView.reactive.selectedRowIndexPath.observeNext { [weak self] indexPath in
             guard let self = self else { return }
             
@@ -80,10 +82,12 @@ extension SongListViewController {
             self.tableView.deselectRow(at: indexPath, animated: true)
             Haptic.play(Constants.tinyTap)
             let item = self.viewModel.items[indexPath.row]
+            
             if case .song(let songCellViewModel) = item {
                 self.flowLyrics?(songCellViewModel.song, (self.tableView.cellForRow(at: indexPath) as? SongCell)?.currentImage)
             }
         }.dispose(in: disposeBag)
+        
     }
     
     // MARK: - Output
@@ -106,7 +110,7 @@ extension SongListViewController {
                 cell.configure(with: songCellViewModel)
                 return cell
             }
-        }
+        }.dispose(in: disposeBag)
         
         viewModel.isRefreshing.observeNext { [weak self] isRefreshing in
             self?.tableView.isRefreshing = isRefreshing

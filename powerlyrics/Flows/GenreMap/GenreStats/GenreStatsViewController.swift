@@ -140,15 +140,6 @@ extension GenreStatsViewController {
     
     func setupOutput() {
         
-        viewModel.items.observeNext { [weak self] _ in
-            delay(Constants.tinyDelay) {
-                self?.panModalSetNeedsLayoutUpdate()
-                if self?.viewModel.items.collection.filter({ $0 != .empty }).isEmpty == true || self?.initialLoad == true {
-                    self?.panModalTransition(to: .shortForm)
-                }
-            }
-        }.dispose(in: disposeBag)
-        
         viewModel.items.bind(to: tableView) { items, indexPath, uiTableView in
             let tableView = uiTableView as! TableView
             let item = items[indexPath.row]
@@ -178,7 +169,16 @@ extension GenreStatsViewController {
                 }
                 return cell
             }
-        }
+        }.dispose(in: disposeBag)
+        
+        viewModel.items.observeNext { [weak self] _ in
+            delay(Constants.tinyDelay) {
+                self?.panModalSetNeedsLayoutUpdate()
+                if self?.viewModel.items.collection.filter({ $0 != .empty }).isEmpty == true || self?.initialLoad == true {
+                    self?.panModalTransition(to: .shortForm)
+                }
+            }
+        }.dispose(in: disposeBag)
         
     }
     

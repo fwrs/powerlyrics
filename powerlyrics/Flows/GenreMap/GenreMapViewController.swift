@@ -204,8 +204,11 @@ class GenreMapViewController: ViewController, GenreMapScene {
 // MARK: - Setup
 
 extension GenreMapViewController {
+    
+    // MARK: - View
 
     func setupView() {
+        
         if !UIDevice.current.hasNotch {
             secondaryMapAlignmentConstraint.isActive = true
         }
@@ -215,6 +218,7 @@ extension GenreMapViewController {
         ([genreMapBackgroundView, genreMapView, descriptionLabel, notEnoughDataView] + genreMapButtons).forEach { view in
             view?.alpha = .zero
         }
+        
     }
     
     // MARK: - Input

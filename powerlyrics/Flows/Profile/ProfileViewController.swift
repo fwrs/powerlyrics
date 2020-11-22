@@ -239,7 +239,10 @@ extension ProfileViewController {
     // MARK: - Output
     
     func setupOutput() {
-        viewModel.items.bind(to: tableView, using: ProfileBinder())
+        
+        viewModel.items.bind(to: tableView, using: ProfileBinder()).dispose(in: disposeBag)
+        
+        viewModel.avatarPreviewable.bind(to: avatarImageView.reactive.isUserInteractionEnabled).dispose(in: disposeBag)
         
         viewModel.name.map { $0 ?? Constants.unknownUserText }.bind(to: userNameLabel.reactive.text).dispose(in: disposeBag)
         viewModel.premium.map(\.negated).bind(to: premiumIconImageView.reactive.isHidden).dispose(in: disposeBag)
@@ -263,6 +266,7 @@ extension ProfileViewController {
         viewModel.avatar.observeNext { [weak self] image in
             self?.contextMenuHandler?.updateFullImage(with: image)
         }.dispose(in: disposeBag)
+        
     }
     
 }
@@ -277,7 +281,7 @@ extension ProfileViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
         section == tableView.numberOfSections - .two ?
-            Constants.space10 :
+            Constants.space12 :
             (UIDevice.current.hasNotch ? Constants.space20 : Constants.space16)
     }
     

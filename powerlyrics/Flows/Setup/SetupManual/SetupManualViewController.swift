@@ -98,16 +98,19 @@ extension SetupManualViewController {
     // MARK: - View
 
     func setupView() {
+        
         let appearance = UINavigationBarAppearance()
         appearance.configureWithTransparentBackground()
         navigationItem.scrollEdgeAppearance = appearance
         navigationItem.compactAppearance = appearance
         navigationItem.standardAppearance = appearance
+        
     }
     
     // MARK: - Input
 
     func setupInput() {
+        
         mainButton.reactive.tap.throttle(for: Constants.buttonThrottleTime).observeNext { [weak self] _ in
             self?.flowSpotifyLogin?()
         }.dispose(in: disposeBag)
@@ -115,6 +118,7 @@ extension SetupManualViewController {
         secondaryButton.reactive.tap.throttle(for: Constants.buttonThrottleTime).observeNext { [weak self] _ in
             self?.flowDismiss?()
         }.dispose(in: disposeBag)
+        
     }
     
     // MARK: - Output

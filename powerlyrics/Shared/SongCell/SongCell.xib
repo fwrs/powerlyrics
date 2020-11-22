@@ -145,6 +145,7 @@
                 <constraint firstItem="njF-e1-oar" firstAttribute="trailing" secondItem="bsh-JQ-ElH" secondAttribute="trailing" id="g92-1n-jbG"/>
                 <constraint firstItem="bsh-JQ-ElH" firstAttribute="bottom" secondItem="njF-e1-oar" secondAttribute="bottom" id="msK-g7-FnY"/>
             </constraints>
+            <inset key="separatorInset" minX="16" minY="0.0" maxX="0.0" maxY="0.0"/>
             <connections>
                 <outlet property="accessoryBackgroundView" destination="NI0-W0-WhX" id="M3G-V8-VcB"/>
                 <outlet property="accessoryFadeOutView" destination="vAL-Xl-7BF" id="C7W-0Z-vBQ"/>

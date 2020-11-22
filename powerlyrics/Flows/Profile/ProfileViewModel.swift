@@ -59,6 +59,8 @@ class ProfileViewModel: ViewModel {
     
     let avatar: Observable<SharedImage?> = Observable(nil)
     
+    let avatarPreviewable: Observable<Bool> = Observable(false)
+    
     let fullAvatar: Observable<SharedImage?> = Observable(nil)
     
     let registerDate: Observable<Date?> = Observable(nil)
@@ -86,15 +88,18 @@ class ProfileViewModel: ViewModel {
     func loadData() {
         let userData = realmService.userData
         name.value = userData?.name
-        premium.value = userData?.premium ?? false
+        premium.value = (userData?.premium).safe
         registerDate.value = userData?.registerDate
         
-        if keychainService.getDecodable(for: .spotifyAuthorizedWithAccount) == true {
-            avatar.value = userData?.thumbnailAvatarURL?.url.map { .external($0) }
-            fullAvatar.value = userData?.avatarURL?.url.map { .external($0) }
+        if let thumbnailAvatarImage = userData?.thumbnailAvatarURL?.url.map({ SharedImage.external($0) }),
+           let avatarImage = userData?.avatarURL?.url.map({ SharedImage.external($0) }) {
+            avatar.value = thumbnailAvatarImage
+            fullAvatar.value = avatarImage
+            avatarPreviewable.value = true
         } else {
-            avatar.value = .local(Asset.Assets.nonSpotifyProfilePic.image)
-            fullAvatar.value = .local(Asset.Assets.nonSpotifyProfilePic.image)
+            avatar.value = .local(Asset.Assets.placeholderAvatar.image)
+            fullAvatar.value = .local(Asset.Assets.placeholderAvatar.image)
+            avatarPreviewable.value = false
         }
         
         if let stats = realmService.stats {

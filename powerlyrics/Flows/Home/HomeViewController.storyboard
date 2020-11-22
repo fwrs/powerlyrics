@@ -59,7 +59,7 @@
                                     <stackView opaque="NO" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="RI6-rk-A7t">
                                         <rect key="frame" x="0.0" y="5.5" width="138.5" height="22"/>
                                         <subviews>
-                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="IconUI" translatesAutoresizingMaskIntoConstraints="NO" id="3om-TN-N4N">
+                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Icon" translatesAutoresizingMaskIntoConstraints="NO" id="3om-TN-N4N">
                                                 <rect key="frame" x="0.0" y="0.0" width="16" height="22"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="16" id="Gpk-Zk-a67"/>
@@ -101,7 +101,7 @@
     </scenes>
     <color key="tintColor" name="TintColor"/>
     <resources>
-        <image name="IconUI" width="132" height="174"/>
+        <image name="Icon" width="132" height="174"/>
         <image name="music.note.house" catalog="system" width="128" height="106"/>
         <image name="person.crop.circle.badge.plus" catalog="system" width="128" height="113"/>
         <namedColor name="TintColor">

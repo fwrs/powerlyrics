@@ -106,6 +106,7 @@ extension SearchViewController {
     // MARK: - View
 
     func setupView() {
+        
         tableView.register(SongCell.self)
         tableView.register(SearchAlbumsCell.self)
         
@@ -125,6 +126,7 @@ extension SearchViewController {
         addKeyboardWillHideNotification()
 
         searchIconImageView.image = searchIconImageView.image?.withTintColor(.label, renderingMode: .alwaysOriginal)
+        
     }
     
     // MARK: - Input
@@ -168,6 +170,24 @@ extension SearchViewController {
     // MARK: - Output
     
     func setupOutput() {
+        
+        viewModel.items.bind(to: tableView, using: SearchBinder(albumTapAction: { [weak self] album in
+            Haptic.play(Constants.tinyTap)
+            self?.flowAlbum?(album)
+        })).dispose(in: disposeBag)
+        
+        viewModel.trends.bind(to: trendsCollectionView, cellType: SearchTrendCell.self) { cell, cellViewModel in
+            cell.configure(with: cellViewModel)
+            cell.didTap = { [weak self] in
+                guard let self = self else { return }
+                Haptic.play(Constants.tinyTap)
+                let query = "\(cellViewModel.song.name) \(Constants.dash) \(cellViewModel.song.artists.first.safe)"
+                self.searchController.searchBar.text = query
+                self.searchController.isActive = true
+                self.searchController.searchBar.setShowsCancelButton(true, animated: true)
+                self.viewModel.search(for: query)
+            }
+        }.dispose(in: disposeBag)
         
         viewModel.trendsFailed.observeNext { [weak self] failed in
             guard let self = self else { return }
@@ -229,24 +249,6 @@ extension SearchViewController {
                 self.scrollToTop()
             }
         }.dispose(in: disposeBag)
-        
-        viewModel.items.bind(to: tableView, using: SearchBinder(albumTapAction: { [weak self] album in
-            Haptic.play(Constants.tinyTap)
-            self?.flowAlbum?(album)
-        }))
-        
-        viewModel.trends.bind(to: trendsCollectionView, cellType: SearchTrendCell.self) { cell, cellViewModel in
-            cell.configure(with: cellViewModel)
-            cell.didTap = { [weak self] in
-                guard let self = self else { return }
-                Haptic.play(Constants.tinyTap)
-                let query = "\(cellViewModel.song.name) \(Constants.dash) \(cellViewModel.song.artists.first.safe)"
-                self.searchController.searchBar.text = query
-                self.searchController.isActive = true
-                self.searchController.searchBar.setShowsCancelButton(true, animated: true)
-                self.viewModel.search(for: query)
-            }
-        }
         
         viewModel.nothingWasFound.map {
             $0 ? Constants.nothingWasFoundText :

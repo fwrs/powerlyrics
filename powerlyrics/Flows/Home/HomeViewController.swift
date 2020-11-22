@@ -142,7 +142,7 @@ extension HomeViewController {
     
     func setupOutput() {
         
-        viewModel.items.bind(to: tableView, using: HomeBinder())
+        viewModel.items.bind(to: tableView, using: HomeBinder()).dispose(in: disposeBag)
         
         viewModel.isSpotifyAccount.observeNext { [weak self] isSpotifyAccount in
             self?.navigationItem.rightBarButtonItem?.image = isSpotifyAccount ?

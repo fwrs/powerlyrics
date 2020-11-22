@@ -112,17 +112,20 @@ extension SetupInitialViewController {
     // MARK: - View
 
     func setupView() {
+        
         let appearance = UINavigationBarAppearance()
         appearance.configureWithTransparentBackground()
         
         navigationItem.scrollEdgeAppearance = appearance
         navigationItem.compactAppearance = appearance
         navigationItem.standardAppearance = appearance
+        
     }
     
     // MARK: - Input
     
     func setupInput() {
+        
         mainButton.reactive.tap.throttle(for: Constants.buttonThrottleTime).observeNext { [weak self] _ in
             self?.flowSpotifyLogin?()
         }.dispose(in: disposeBag)
@@ -130,6 +133,7 @@ extension SetupInitialViewController {
         secondaryButton.reactive.tap.throttle(for: Constants.buttonThrottleTime).observeNext { [weak self] _ in
             self?.flowOfflineSetup?()
         }.dispose(in: disposeBag)
+        
     }
     
     // MARK: - Output

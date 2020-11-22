@@ -153,6 +153,7 @@ extension SetupOfflineViewController {
     // MARK: - View
 
     func setupView() {
+        
         let appearance = UINavigationBarAppearance()
         appearance.configureWithTransparentBackground()
         navigationItem.scrollEdgeAppearance = appearance
@@ -160,11 +161,13 @@ extension SetupOfflineViewController {
         navigationItem.standardAppearance = appearance
         
         translationInteractor = TranslationAnimationInteractor(viewController: self, pop: true)
+        
     }
 
     // MARK: - Input
 
     func setupInput() {
+        
         mainButton.reactive.tap.observeNext { [weak self] _ in
             guard let self = self else { return }
             self.viewModel.login(
@@ -172,6 +175,7 @@ extension SetupOfflineViewController {
                 over18: self.over18Switch.isOn
             )
         }.dispose(in: disposeBag)
+        
     }
     
     // MARK: - Output

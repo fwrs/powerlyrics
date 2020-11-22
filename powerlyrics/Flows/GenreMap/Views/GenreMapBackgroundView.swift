@@ -16,8 +16,8 @@ fileprivate extension Constants {
     static let baseInset: CGFloat = 95
     static let extraInset: CGFloat = 60
     
-    static let edgeColor = Asset.Colors.genreMapEdgeGrey.color.cg
-    static let guidingLineColor = Asset.Colors.genreMapGuidingLineGrey.color.cg
+    static let edgeColor = Asset.Colors.genreMapEdgeColor.color.cg
+    static let guidingLineColor = Asset.Colors.genreMapGuidingLineColor.color.cg
     
 }
 
