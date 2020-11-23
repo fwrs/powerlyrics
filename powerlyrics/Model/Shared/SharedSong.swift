@@ -16,8 +16,6 @@ fileprivate extension Constants {
     static let withPrefix = "(with"
     static let unknownArtistText = Strings.SongCell.unknownArtist
     
-    static let maxArtists = 3
-    
 }
 
 // MARK: - SharedSong
@@ -39,10 +37,7 @@ struct SharedSong: Codable, Equatable, Hashable, Then {
 extension SharedSong {
     
     var artistsString: String {
-        artists.isEmpty ?
-            Constants.unknownArtistText :
-            artists.prefix(Constants.maxArtists).joined(separator: Constants.commaText) +
-            (artists.count > Constants.maxArtists ? Constants.ellipsisText : Constants.emptyText)
+        artists.isEmpty ? Constants.unknownArtistText : artists.joined(separator: Constants.commaText)
     }
     
     var strippedFeatures: SharedSong {
