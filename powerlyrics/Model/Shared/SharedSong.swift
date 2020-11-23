@@ -6,7 +6,7 @@
 //  Copyright © 2020 Ilya Kulinkovich. All rights reserved.
 //
 
-import UIKit
+import Then
 
 // MARK: - Constants
 
@@ -22,7 +22,7 @@ fileprivate extension Constants {
 
 // MARK: - SharedSong
 
-struct SharedSong: Codable, Equatable, Hashable {
+struct SharedSong: Codable, Equatable, Hashable, Then {
     
     var name: String
     let artists: [String]

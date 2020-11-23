@@ -106,7 +106,13 @@ class SearchViewModel: ViewModel {
                     self?.trends.replace(
                         with: response.items
                             .prefix(Constants.maxTrendsCount)
-                            .map { $0.asSharedSong.strippedFeatures }
+                            .map {
+                                $0.asSharedSong.strippedFeatures.with {
+                                    $0.name = $0.name.components(
+                                        separatedBy: Constants.startingParenthesis
+                                    ).first.mapEmptyToNil?.clean ?? $0.name
+                                }
+                            }
                             .sorted { $0.name.count < $1.name.count }
                             .map { song in
                                 SearchTrendCellViewModel(song: song)

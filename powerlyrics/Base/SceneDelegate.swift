@@ -10,7 +10,6 @@ import Firebase
 import IQKeyboardManager
 import RealmSwift
 import Swinject
-import Then
 
 // MARK: - Constants
 
