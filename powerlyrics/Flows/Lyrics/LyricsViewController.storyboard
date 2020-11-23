@@ -97,7 +97,7 @@
                                             </constraints>
                                         </view>
                                         <label opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Zjp-MZ-qGq">
-                                            <rect key="frame" x="16" y="178" width="384" height="18"/>
+                                            <rect key="frame" x="16" y="178" width="382" height="18"/>
                                             <attributedString key="attributedText">
                                                 <fragment content="Unknown album">
                                                     <attributes>
@@ -113,7 +113,7 @@
                                             </userDefinedRuntimeAttributes>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nMD-Dq-gdn">
-                                            <rect key="frame" x="16" y="200" width="384" height="18"/>
+                                            <rect key="frame" x="16" y="200" width="382" height="18"/>
                                             <attributedString key="attributedText">
                                                 <fragment content="Unknown producer">
                                                     <attributes>
@@ -198,11 +198,11 @@
                                         <constraint firstItem="h8c-L7-BUn" firstAttribute="top" secondItem="nMD-Dq-gdn" secondAttribute="bottom" constant="8" symbolic="YES" id="8M7-ch-5mB"/>
                                         <constraint firstItem="nMD-Dq-gdn" firstAttribute="top" secondItem="Zjp-MZ-qGq" secondAttribute="bottom" constant="4" id="DMf-xZ-Bvh"/>
                                         <constraint firstItem="nMD-Dq-gdn" firstAttribute="leading" secondItem="Zjp-MZ-qGq" secondAttribute="leading" id="IG6-fL-aGh"/>
+                                        <constraint firstItem="nMD-Dq-gdn" firstAttribute="trailing" secondItem="Zjp-MZ-qGq" secondAttribute="trailing" id="LKr-T5-xmw"/>
                                         <constraint firstItem="h8c-L7-BUn" firstAttribute="leading" secondItem="pmY-aL-oM1" secondAttribute="leading" constant="16" id="Pfn-yr-qJq"/>
                                         <constraint firstItem="Zjp-MZ-qGq" firstAttribute="top" secondItem="fLV-pl-iEb" secondAttribute="bottom" id="Z81-fj-bNA"/>
-                                        <constraint firstAttribute="trailing" secondItem="nMD-Dq-gdn" secondAttribute="trailing" constant="14" id="jHE-5g-Y8P"/>
                                         <constraint firstAttribute="trailing" secondItem="fLV-pl-iEb" secondAttribute="trailing" constant="31" id="naA-kk-TfM"/>
-                                        <constraint firstAttribute="trailing" secondItem="Zjp-MZ-qGq" secondAttribute="trailing" constant="14" id="sZt-He-p9d"/>
+                                        <constraint firstAttribute="trailing" secondItem="Zjp-MZ-qGq" secondAttribute="trailing" constant="16" id="sZt-He-p9d"/>
                                     </constraints>
                                 </view>
                                 <constraints>

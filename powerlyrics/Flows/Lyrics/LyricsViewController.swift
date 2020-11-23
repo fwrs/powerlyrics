@@ -18,8 +18,8 @@ fileprivate extension Constants {
     
     // MARK: - Numeric
     
-    static let cutoffs: (CGFloat, CGFloat, CGFloat, CGFloat) = (27, 38, 36, 40)
-    static let largeCutoffs: (CGFloat, CGFloat) = (100, 205)
+    static let cutoffs: (CGFloat, CGFloat, CGFloat) = (27, 36, 40)
+    static let largeCutoffs: (CGFloat, CGFloat) = (100, 189.5)
     
     static let space7: CGFloat = 7
     static let space5: CGFloat = 5
@@ -71,6 +71,10 @@ fileprivate extension Constants {
         (-pow((1 - min((songViewAdjustment) + 0.3, 1)) * (3.68), 3) * 1.3) }
     static let songViewAlphaFunction = { (topPadding: CGFloat) -> CGFloat in
         UIDevice.current.hasNotch ? (topPadding / 8.0 - 23.0 / 2) : (topPadding / 16.0 - 4) }
+    static let infoLabelAlphaFunction = { (topPadding: CGFloat) -> CGFloat in
+        (0.028 * topPadding - 4.2) }
+    static let buttonsAlphaFunction = { (topPadding: CGFloat) -> CGFloat in
+        (0.06 * topPadding - 14.4) }
     
 }
 
@@ -456,12 +460,15 @@ extension LyricsViewController: UITableViewDelegate {
             navigationItem.title = Constants.lyricsTitle
         }
         
-        buttonsStackView.alpha = pow(topPadding / total, Constants.space20)
-        secondInfoLabel.alpha = pow((topPadding + Constants.cutoffs.0) / total, Constants.space20)
-        firstInfoLabel.alpha = pow((topPadding + Constants.cutoffs.1) / total, Constants.space20)
-        songView.alpha = pow((topPadding + Constants.cutoffs.3) / total, Constants.space7) *
+        buttonsStackView.alpha = pow(topPadding / total, Constants.space20) *
+            Constants.buttonsAlphaFunction(topPadding)
+        secondInfoLabel.alpha = pow((topPadding + Constants.cutoffs.0) / total, Constants.space16) *
+            Constants.infoLabelAlphaFunction(topPadding)
+        firstInfoLabel.alpha = pow((topPadding + Constants.cutoffs.0) / total, Constants.space16) *
+            Constants.infoLabelAlphaFunction(topPadding)
+        songView.alpha = pow((topPadding + Constants.cutoffs.2) / total, Constants.space7) *
             Constants.songViewAlphaFunction(topPadding)
-        let songViewAdjustment = pow((topPadding + Constants.cutoffs.2) / total, Constants.space5)
+        let songViewAdjustment = pow((topPadding + Constants.cutoffs.1) / total, Constants.space5)
         
         songView.transform = .init(
             translationX: .zero,
