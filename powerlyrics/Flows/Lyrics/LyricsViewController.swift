@@ -70,11 +70,11 @@ fileprivate extension Constants {
     static let songViewTransformYFunction = { (songViewAdjustment: CGFloat) -> CGFloat in
         (-pow((1 - min((songViewAdjustment) + 0.3, 1)) * (3.68), 3) * 1.3) }
     static let songViewAlphaFunction = { (topPadding: CGFloat) -> CGFloat in
-        UIDevice.current.hasNotch ? (topPadding / 8.0 - 23.0 / 2) : (topPadding / 16.0 - 4) }
+        UIDevice.current.hasNotch ? (0.0479452 * topPadding - 4.4589) : (topPadding / 16.0 - 4) }
     static let infoLabelAlphaFunction = { (topPadding: CGFloat) -> CGFloat in
         (0.028 * topPadding - 4.2) }
     static let buttonsAlphaFunction = { (topPadding: CGFloat) -> CGFloat in
-        (0.06 * topPadding - 14.4) }
+        UIDevice.current.hasNotch ? (0.06 * topPadding - 14.4) : (topPadding / 20 - 10) }
     
 }
 
