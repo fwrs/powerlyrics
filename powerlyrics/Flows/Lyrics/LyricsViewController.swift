@@ -69,6 +69,8 @@ fileprivate extension Constants {
     
     static let songViewTransformYFunction = { (songViewAdjustment: CGFloat) -> CGFloat in
         (-pow((1 - min((songViewAdjustment) + 0.3, 1)) * (3.68), 3) * 1.3) }
+    static let songViewAlphaFunction = { (topPadding: CGFloat) -> CGFloat in
+        UIDevice.current.hasNotch ? (topPadding / 8.0 - 23.0 / 2) : (topPadding / 16.0 - 4) }
     
 }
 
@@ -457,8 +459,10 @@ extension LyricsViewController: UITableViewDelegate {
         buttonsStackView.alpha = pow(topPadding / total, Constants.space20)
         secondInfoLabel.alpha = pow((topPadding + Constants.cutoffs.0) / total, Constants.space20)
         firstInfoLabel.alpha = pow((topPadding + Constants.cutoffs.1) / total, Constants.space20)
-        songView.alpha = pow((topPadding + Constants.cutoffs.3) / total, Constants.space7)
+        songView.alpha = pow((topPadding + Constants.cutoffs.3) / total, Constants.space7) *
+            Constants.songViewAlphaFunction(topPadding)
         let songViewAdjustment = pow((topPadding + Constants.cutoffs.2) / total, Constants.space5)
+        
         songView.transform = .init(
             translationX: .zero,
             y: Constants.songViewTransformYFunction(songViewAdjustment)
