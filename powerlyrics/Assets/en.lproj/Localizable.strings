@@ -101,7 +101,7 @@
 "search.noResults" = "No results";
 "search.trending.title" = "Trending today";
 "search.trending.failed" = "Failed to load trends.";
-"search.trending.tryAgain" = "Try again?";
+"search.trending.tryAgain" = "Try again";
 "search.section.topResult" = "Top result";
 "search.section.songs" = "Songs";
 "search.section.albums" = "Albums";
