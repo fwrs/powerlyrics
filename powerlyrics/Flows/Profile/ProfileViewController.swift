@@ -62,7 +62,7 @@ fileprivate extension Constants {
         return ((-312.831 * pow(x, 4) + 840.079 * pow(x, 3) - 793.935 * pow(x, 2) + 287.687 * x) *
             (UIDevice.current.hasNotch ? 1 : 0.55)) + extraAdjustment }
     static let translationYUserInfoFunction = { (x: CGFloat) -> CGFloat in
-        (215.556 * x - 155.556 * pow(x, 2)) - (UIDevice.current.hasNotch ? .zero : 9) }
+        (287.114 * x - 427.069 * pow(x, 2)) - (UIDevice.current.hasNotch ? .zero : 9) }
     static let avatarHeightFunction = { (x: CGFloat) -> CGFloat in
         (105 - 61 * x) * (UIDevice.current.hasNotch ? 1 : 0.9) }
     static let avatarScaleFunction = { (x: CGFloat) -> CGFloat in
