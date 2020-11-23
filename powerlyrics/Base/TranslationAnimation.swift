@@ -12,7 +12,7 @@ import UIKit
 
 fileprivate extension Constants {
     
-    static let presentationControllerMoveAwayMultipler: CGFloat = 3.35
+    static let presentationControllerMoveAwayMultipler: CGFloat = 3.335
     
 }
 
