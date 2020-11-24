@@ -128,6 +128,8 @@ class LyricsViewController: ViewController, LyricsScene {
     
     var isMainScene: Bool = true
     
+    var initialLoad: Bool = true
+    
     var contextMenuHandler: ImageContextMenuInteractionHandler?
     
     // MARK: - Flows
@@ -150,6 +152,16 @@ class LyricsViewController: ViewController, LyricsScene {
         setupOutput()
         
         viewModel.loadData()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        if initialLoad {
+            initialLoad = false
+        } else {
+            viewModel.updateLikeState()
+        }
     }
     
     override func viewDidAppear(_ animated: Bool) {

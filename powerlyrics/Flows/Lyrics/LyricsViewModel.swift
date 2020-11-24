@@ -175,4 +175,11 @@ class LyricsViewModel: ViewModel {
         isLiked.value = false
     }
     
+    func updateLikeState() {
+        isLiked.value = realmService.likedSongs().contains { [weak self] in
+            guard let self = self else { return false }
+            return $0.geniusID == self.geniusID
+        }
+    }
+    
 }
