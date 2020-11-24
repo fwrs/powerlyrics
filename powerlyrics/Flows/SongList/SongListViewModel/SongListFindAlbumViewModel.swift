@@ -46,7 +46,12 @@ class SongListFindAlbumViewModel: SongListViewModel {
                         let albumSongs = response.items
                         self.items.replace(
                             with: albumSongs
-                                .map { .song(SongCellViewModel(song: $0.asSharedSong(with: album))) },
+                                .map {
+                                    .song(SongCellViewModel(
+                                        song: $0.asSharedSong(with: album),
+                                        isInsideModal: true
+                                    ))
+                                },
                             performDiff: true
                         )
                         self.endLoading(refresh)

@@ -26,7 +26,7 @@ class TableView: UITableView {
             if newValue {
                 customRefreshControl?.beginRefreshing()
             } else {
-                delay(0.5) { [weak self] in
+                delay(.half) { [weak self] in
                     self?.customRefreshControl?.endRefreshing()
                 }
             }

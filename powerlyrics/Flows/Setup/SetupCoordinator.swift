@@ -123,10 +123,15 @@ extension SetupCoordinator: UINavigationControllerDelegate {
     func navigationController(_ navigationController: UINavigationController, animationControllerFor operation: UINavigationController.Operation, from fromVC: UIViewController, to toVC: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         switch operation {
         case .push:
-            return TranslationAnimation(type: .present, duration: 0.5, inNavigationController: true)
+            return TranslationAnimation(type: .present, duration: .half, isInNavigationController: true)
         
         case .pop:
-            return TranslationAnimation(type: .dismiss, duration: 0.5, interactionController: (fromVC as? TranslationAnimationView)?.translationInteractor, inNavigationController: true)
+            return TranslationAnimation(
+                type: .dismiss,
+                duration: .half,
+                interactionController: (fromVC as? TranslationAnimationView)?.translationInteractor,
+                isInNavigationController: true
+            )
         
         default:
             return nil

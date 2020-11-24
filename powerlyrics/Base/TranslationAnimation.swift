@@ -50,13 +50,13 @@ class TranslationAnimation: NSObject, UIViewControllerAnimatedTransitioning {
     
     let interactionController: TranslationAnimationInteractor?
     
-    let inNavigationController: Bool
+    let isInNavigationController: Bool
 
-    init(type: TransitionType, duration: TimeInterval, interactionController: TranslationAnimationInteractor? = nil, inNavigationController: Bool = false) {
+    init(type: TransitionType, duration: TimeInterval, interactionController: TranslationAnimationInteractor? = nil, isInNavigationController: Bool = false) {
         self.type = type
         self.duration = duration
         self.interactionController = interactionController
-        self.inNavigationController = inNavigationController
+        self.isInNavigationController = isInNavigationController
         super.init()
     }
     
@@ -89,7 +89,7 @@ class TranslationAnimation: NSObject, UIViewControllerAnimatedTransitioning {
         toVCCorrectedView.layoutIfNeeded()
         
         let fromSnapshots = (toVC.translationViews.isEmpty ? [] : fromVC.translationViews).map { subview -> UIView in
-            let snapshot = subview.snapshotView(afterScreenUpdates: !inNavigationController)!
+            let snapshot = subview.snapshotView(afterScreenUpdates: !isInNavigationController)!
             snapshot.frame = container.convert(subview.frame, from: subview.superview)
             return snapshot
         }
@@ -140,7 +140,7 @@ class TranslationAnimation: NSObject, UIViewControllerAnimatedTransitioning {
 
             zip(fromSnapshots, frames).forEach { snapshot, frame in
                 snapshot.frame = frame.1
-                snapshot.alpha = (self?.inNavigationController == true) ? .one : .zero
+                snapshot.alpha = (self?.isInNavigationController == true) ? .one : .zero
             }
 
             if self?.type == .present {
@@ -161,7 +161,7 @@ class TranslationAnimation: NSObject, UIViewControllerAnimatedTransitioning {
             }
         }
         
-        let completionClosure = { (_: Bool) in
+        let completionClosureDismiss = { (_: Bool) in
             (Array(zip(fromSnapshots, toVC.translationViews)) +
                 Array(zip(toSnapshots, fromVC.translationViews))).forEach { (snapshot, view) in
                     snapshot.alpha = .one
@@ -183,10 +183,40 @@ class TranslationAnimation: NSObject, UIViewControllerAnimatedTransitioning {
             }
         }
         
+        let completionClosureNormal = { (_: Bool) in
+            fromSnapshots.forEach { $0.removeFromSuperview() }
+            toSnapshots.forEach { $0.removeFromSuperview() }
+            fromVC.translationViews.forEach { $0.alpha = .one }
+            toVC.translationViews.forEach { $0.alpha = .one }
+            
+            fromVCCorrectedView.alpha = .one
+            fromVCCorrectedView.transform = .identity
+            
+            toVCCorrectedView.alpha = .one
+            toVCCorrectedView.transform = .identity
+
+            transitionContext.completeTransition(!transitionContext.transitionWasCancelled)
+        }
+        
         if transitionContext.isInteractive {
-            UIView.animate(withDuration: transitionDuration(using: transitionContext), options: .curveLinear, animations: animationsClosure, completion: completionClosure)
+            UIView.animate(
+                withDuration: transitionDuration(using: transitionContext),
+                options: .curveLinear,
+                animations: animationsClosure,
+                completion: type == .present || fromVC.completelyMoveAway || toVC.completelyMoveAway ?
+                    completionClosureNormal : completionClosureDismiss
+            )
         } else {
-            UIView.animate(withDuration: transitionDuration(using: transitionContext), delay: .zero, usingSpringWithDamping: .one, initialSpringVelocity: .zero, options: type == .present ? .curveEaseOut : .curveEaseIn, animations: animationsClosure, completion: completionClosure)
+            UIView.animate(
+                withDuration: transitionDuration(using: transitionContext),
+                delay: .zero,
+                usingSpringWithDamping: .one,
+                initialSpringVelocity: .zero,
+                options: type == .present ? .curveEaseOut : .curveEaseIn,
+                animations: animationsClosure,
+                completion: type == .present || fromVC.completelyMoveAway || toVC.completelyMoveAway ?
+                    completionClosureNormal : completionClosureDismiss
+            )
         }
     }
     

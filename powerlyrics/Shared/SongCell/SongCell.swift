@@ -60,8 +60,6 @@ class SongCell: TableViewCell {
     
     // MARK: - Instance properties
     
-    var dominantColor: UIColor?
-    
     var songContainer: UIView {
         songView
     }
@@ -69,6 +67,10 @@ class SongCell: TableViewCell {
     var currentImage: UIImage? {
         albumArtImageView.image
     }
+    
+    var normalCellColor: UIColor = Asset.Colors.normalCellColor.color
+    
+    var dominantColor: UIColor?
     
     var contextMenuHandler: ImageContextMenuInteractionHandler?
     
@@ -98,7 +100,7 @@ class SongCell: TableViewCell {
     
     override func setHighlighted(_ highlighted: Bool, animated: Bool) {
         let highlightColor = dominantColor?.adjust(brightnessBy: .oneHalfth, minBrightness: .pointOne) ?? Asset.Colors.highlightCellColor.color
-        let baseColor = dominantColor ?? Asset.Colors.normalCellColor.color
+        let baseColor = dominantColor ?? normalCellColor
         UIView.animate(withDuration: (highlighted || !animated) ? (Constants.defaultAnimationDuration * .pointOne) : Constants.defaultAnimationDuration) { [weak self] in
             self?.backgroundColorView.backgroundColor = highlighted ? highlightColor : (self?.dominantColor).safe
             self?.accessoryBackgroundView.backgroundColor = highlighted ? highlightColor : baseColor
@@ -113,7 +115,7 @@ class SongCell: TableViewCell {
     
     override func setSelected(_ selected: Bool, animated: Bool) {
         let highlightColor = dominantColor?.adjust(brightnessBy: .oneHalfth, minBrightness: .pointOne) ?? Asset.Colors.highlightCellColor.color
-        let baseColor = dominantColor ?? Asset.Colors.normalCellColor.color
+        let baseColor = dominantColor ?? normalCellColor
         UIView.animate(withDuration: (selected || !animated) ? (Constants.defaultAnimationDuration * .pointOne) : Constants.defaultAnimationDuration) { [weak self] in
             self?.backgroundColorView.backgroundColor = selected ? highlightColor : (self?.dominantColor).safe
             self?.accessoryBackgroundView.backgroundColor = selected ? highlightColor : baseColor
@@ -129,6 +131,10 @@ class SongCell: TableViewCell {
     // MARK: - Configure
     
     func configure(with viewModel: SongCellViewModel) {
+        normalCellColor = viewModel.isInsideModal ?
+            Asset.Colors.normalModalCellColor.color :
+            Asset.Colors.normalCellColor.color
+        
         songLabel.text = viewModel.cleanSongName
         artistLabel.text = viewModel.cleanArtistName
         backgroundColorView.backgroundColor = .clear
@@ -164,9 +170,9 @@ class SongCell: TableViewCell {
         
         if !viewModel.shouldDisplayDominantColor {
             dominantColor = nil
-            (accessoryFadeOutView.gradientLayer).colors = [Asset.Colors.normalCellColor.color.transparent.cg, Asset.Colors.normalCellColor.color.cg]
-            accessoryBackgroundView.backgroundColor = Asset.Colors.normalCellColor.color
-            accessoryBackgroundExtensionView.backgroundColor = Asset.Colors.normalCellColor.color
+            (accessoryFadeOutView.gradientLayer).colors = [normalCellColor.transparent.cg, normalCellColor.cg]
+            accessoryBackgroundView.backgroundColor = normalCellColor
+            accessoryBackgroundExtensionView.backgroundColor = normalCellColor
             backgroundColorView.backgroundColor = .clear
         }
         
