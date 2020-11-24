@@ -17,6 +17,7 @@ protocol HomeScene: ViewController {
     var flowSetup: DefaultSetupModeAction? { get set }
     var flowTrends: DefaultSharedSongListAction? { get set }
     var flowVirals: DefaultSharedSongListAction? { get set }
+    var flowSongsLikedToday: DefaultAction? { get set }
     
 }
 

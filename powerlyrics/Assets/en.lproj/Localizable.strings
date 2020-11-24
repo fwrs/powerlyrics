@@ -171,6 +171,7 @@
 "songList.title.trending" = "trending";
 "songList.title.viral" = "viral";
 "songList.title.likedSongs" = "liked songs";
+"songList.title.songsLikedToday" = "liked today";
 "songList.albumNotFound.title" = "Couldn’t find this album";
 "songList.albumNotFound.message" = "In order for it to appear here it needs to be on Spotify.";
 
@@ -182,6 +183,7 @@
 "actionCell.signOut" = "Sign out";
 "actionCell.seeTrendingSongs" = "Discover all trending songs";
 "actionCell.seeViralSongs" = "Discover all viral songs";
+"actionCell.seeSongsLikedToday" = "See all songs you’ve liked today";
 "actionCell.appSourceCode" = "Source code";
 
 /* MARK: - Song cell */

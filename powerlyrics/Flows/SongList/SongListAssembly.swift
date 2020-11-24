@@ -16,7 +16,7 @@ enum SongListFlow: Equatable {
     case albumTracks(SpotifyAlbum)
     case trendingSongs(preview: [SharedSong])
     case viralSongs(preview: [SharedSong])
-    case likedSongs
+    case likedSongs(today: Bool)
     
     var localizedTitle: String {
         
@@ -33,8 +33,8 @@ enum SongListFlow: Equatable {
         case .viralSongs:
             return Strings.SongList.Title.viral
             
-        case .likedSongs:
-            return Strings.SongList.Title.likedSongs
+        case .likedSongs(let today):
+            return today ? Strings.SongList.Title.songsLikedToday : Strings.SongList.Title.likedSongs
         }
         
     }
@@ -87,8 +87,9 @@ class SongListAssembly: Assembly {
                     realmService: resolver.resolve(RealmServiceProtocol.self)!
                 )
                 
-            case .likedSongs:
+            case .likedSongs(let today):
                 return SongListLikedViewModel(
+                    today: today,
                     spotifyProvider: resolver.resolve(SpotifyProvider.self)!,
                     realmService: resolver.resolve(RealmServiceProtocol.self)!
                 )

@@ -193,10 +193,17 @@ class HomeViewModel: ViewModel {
             trendingSongsSection.append(.action(ActionCellViewModel(action: .seeTrendingSongs)))
         }
         
-        let likedToday = realmService.likedSongs().filter { Calendar.current.isDateInToday($0.likeDate) }
-        
-        let likedTodaySection = likedToday.map { HomeCell.song(SongCellViewModel(song: $0.asSharedSong, accessory: .likeLogo)) }
-        
+        let likedToday = realmService.likedSongs()
+            .filter { Calendar.current.isDateInToday($0.likeDate) }
+
+        var likedTodaySection = likedToday
+            .prefix(Constants.maxPlaylistPreviewCount)
+            .map { HomeCell.song(SongCellViewModel(song: $0.asSharedSong, accessory: .likeLogo)) }
+
+        if likedToday.count > Constants.maxPlaylistPreviewCount {
+            likedTodaySection.append(.action(ActionCellViewModel(action: .seeSongsLikedToday)))
+        }
+                
         var viralSongsSection = viralSongs.prefix(Constants.maxPlaylistPreviewCount)
             .enumerated()
             .map { HomeCell.song(SongCellViewModel(song: $1, accessory: .ranking(nth: $0 + .one))) }

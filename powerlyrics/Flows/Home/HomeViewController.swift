@@ -56,6 +56,8 @@ class HomeViewController: ViewController, HomeScene {
     
     var flowVirals: DefaultSharedSongListAction?
     
+    var flowSongsLikedToday: DefaultAction?
+    
     // MARK: - Lifecycle
     
     override func viewDidLoad() {
@@ -124,6 +126,8 @@ extension HomeViewController {
                     self.flowTrends?(Array(self.viewModel.trendingSongs.prefix(Constants.maxPlaylistPreviewCount)))
                 } else if actionCellViewModel.action == .seeViralSongs {
                     self.flowVirals?(Array(self.viewModel.viralSongs.prefix(Constants.maxPlaylistPreviewCount)))
+                } else if actionCellViewModel.action == .seeSongsLikedToday {
+                    self.flowSongsLikedToday?()
                 }
             }
         }.dispose(in: disposeBag)

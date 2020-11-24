@@ -89,7 +89,7 @@ class GenreMapCoordinator: Coordinator {
     }
     
     func showLikedSongs() {
-        let scene = resolver.resolve(SongListScene.self, argument: SongListFlow.likedSongs)
+        let scene = resolver.resolve(SongListScene.self, argument: SongListFlow.likedSongs(today: false))
         scene?.flowLyrics = { [weak self] (song, placeholder) in
             guard let self = self else {
                 return

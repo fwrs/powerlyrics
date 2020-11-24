@@ -41,7 +41,7 @@ class ProfileCoordinator: Coordinator {
     // MARK: - Scenes
     
     func showLikedSongs() {
-        let scene = resolver.resolve(SongListScene.self, argument: SongListFlow.likedSongs)
+        let scene = resolver.resolve(SongListScene.self, argument: SongListFlow.likedSongs(today: false))
         scene?.flowLyrics = { [weak self] (song, placeholder) in
             self?.showLyrics(for: song, placeholder: placeholder)
         }
