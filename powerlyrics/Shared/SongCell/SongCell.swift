@@ -72,10 +72,12 @@ class SongCell: TableViewCell {
             viewCornerRadius: Constants.albumArtShadowCornerRadius,
             viewSquircle: true
         )
+        
         let contextMenuHandler = ImageContextMenuInteractionHandler(
             shadowFadeView: albumArtContainerView,
             imageView: albumArtImageView
         )
+        
         self.contextMenuHandler = contextMenuHandler
         let interaction = UIContextMenuInteraction(delegate: contextMenuHandler)
         albumArtImageView.addInteraction(interaction)
@@ -112,9 +114,10 @@ class SongCell: TableViewCell {
     // MARK: - Configure
     
     func configure(with viewModel: SongCellViewModel) {
-        songLabel.text = viewModel.song.name.typographized
-        artistLabel.text = viewModel.song.artistsString.typographized
+        songLabel.text = viewModel.cleanSongName
+        artistLabel.text = viewModel.cleanArtistName
         backgroundColorView.backgroundColor = .clear
+        
         albumArtImageView.populate(with: viewModel.song.thumbnailAlbumArt) { [weak self] result in
             if case .success(let value) = result, viewModel.shouldDisplayDominantColor {
                 if let color = SongCell.storedColors[viewModel.song] {
@@ -123,8 +126,10 @@ class SongCell: TableViewCell {
                     self?.dominantColor = color
                     return
                 }
+                
                 value.image.getColors(quality: .lowest, { [weak self] colors in
                     guard let self = self else { return }
+                    
                     let color = (colors?.primary.adjust(brightnessBy: .half)).safe
                     UIView.animate { [weak self] in
                         self?.backgroundColorView.backgroundColor = color
@@ -150,7 +155,6 @@ class SongCell: TableViewCell {
         contextMenuHandler?.updateFullImage(with: viewModel.song.albumArt)
         
         accessoryStackView.isHidden = viewModel.accessory == nil
-    
         spotifyLogoAccessoryView.isHidden = true
         heartIconAccessoryView.isHidden = true
         nthPlaceAccessoryView.isHidden = true

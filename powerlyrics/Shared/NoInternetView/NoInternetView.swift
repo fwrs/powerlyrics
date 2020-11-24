@@ -43,7 +43,7 @@ class NoInternetView: View {
         super.awakeFromNib()
         
         noInternetImageView.image = noInternetImageView.image?.withTintColor(.label, renderingMode: .alwaysOriginal)
-        let text = subtitleLabel.text.safe.typographized
+        let text = subtitleLabel.text.safe
 
         let attrString = NSMutableAttributedString(string: text)
         

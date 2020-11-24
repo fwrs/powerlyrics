@@ -48,7 +48,7 @@ class LyricsSectionCell: TableViewCell {
         nameLabel.isHidden = viewModel.section.name == nil
 
         let attrString = NSMutableAttributedString(
-            string: viewModel.section.contents.joined(separator: String(Constants.newlineCharacter)).typographized,
+            string: viewModel.cleanContents,
             attributes: [
                 .paragraphStyle: Constants.paragraphStyle
             ]

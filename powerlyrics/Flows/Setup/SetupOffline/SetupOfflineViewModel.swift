@@ -59,7 +59,7 @@ class SetupOfflineViewModel: ViewModel {
     // MARK: - Helper methods
     
     func validate(name: String, over18: Bool) -> SetupOfflineValidationError? {
-        if name.isEmpty {
+        if name.clean.typographized.isEmpty {
             return .nameEmpty
         }
         
@@ -76,7 +76,7 @@ class SetupOfflineViewModel: ViewModel {
             return
         }
         
-        realmService.saveUserData(name: name, over18: over18)
+        realmService.saveUserData(name: name.clean.typographized, over18: over18)
         
         loginState.on(.next(.ok(isLoading: true)))
         

@@ -180,7 +180,7 @@ class LyricsViewController: ViewController, LyricsScene {
     
     func generateAttributedAlbumText(highlight: Bool = false) -> NSMutableAttributedString {
         
-        let album = viewModel.album.value
+        let album = viewModel.albumInfo.value
         
         let attrString: NSMutableAttributedString
         
@@ -339,15 +339,7 @@ extension LyricsViewController {
         }.dispose(in: disposeBag)
         
         firstInfoLabel.reactive.longPressGesture(minimumPressDuration: .zero).observeNext { [weak self] recognizer in
-            guard let self = self,
-                  let album = self.viewModel.album.value?.0,
-                  let artist = self.viewModel.album.value?.1 else { return }
-            
-            let fixedAlbum = album.components(separatedBy: Constants.startingParenthesis).first.mapEmptyToNil ?? album
-            
-            let fixedArtist = artist.components(separatedBy: Constants.comma).first.mapEmptyToNil?
-                .components(separatedBy: Constants.startingParenthesis).first.mapEmptyToNil?
-                .components(separatedBy: Constants.ampersand).first.mapEmptyToNil ?? artist
+            guard let self = self, let fixedAlbumInfo = self.viewModel.fixedAlbumInfo else { return }
             
             if recognizer.state == .ended || recognizer.state == .cancelled {
                 UIView.fadeUpdate(self.firstInfoLabel, duration: Constants.buttonTapDuration) { [weak self] in
@@ -363,7 +355,7 @@ extension LyricsViewController {
                 
             case .ended:
                 Haptic.play(Constants.tinyTap)
-                self.flowFindAlbum?(fixedAlbum.clean, fixedArtist.clean)
+                self.flowFindAlbum?(fixedAlbumInfo.0, fixedAlbumInfo.1)
                 
             default:
                 break
@@ -391,7 +383,7 @@ extension LyricsViewController {
             }
         }.dispose(in: disposeBag)
         
-        viewModel.album.dropFirst(.one).observeNext { [weak self] _ in
+        viewModel.albumInfo.dropFirst(.one).observeNext { [weak self] _ in
             guard let self = self else { return }
             
             UIView.fadeUpdate(self.firstInfoLabel) {

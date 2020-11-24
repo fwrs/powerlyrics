@@ -8,6 +8,8 @@
 
 import UIKit
 
+// MARK: - SongCellAccessory
+
 enum SongCellAccessory: Equatable {
     
     case spotifyLogo
@@ -16,10 +18,19 @@ enum SongCellAccessory: Equatable {
     
 }
 
+// MARK: - SongCellViewModel
+
 struct SongCellViewModel: Equatable {
     
     let song: SharedSong
     var accessory: SongCellAccessory?
     var shouldDisplayDominantColor: Bool = false
+    
+}
+
+extension SongCellViewModel {
+    
+    var cleanSongName: String { song.name.clean.typographized }
+    var cleanArtistName: String { song.artistsString.clean.typographized }
     
 }

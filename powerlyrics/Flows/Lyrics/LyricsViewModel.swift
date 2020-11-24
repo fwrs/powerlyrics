@@ -31,6 +31,18 @@ class LyricsViewModel: ViewModel {
     
     // MARK: - Instance properties
     
+    var fixedAlbumInfo: (String, String)? {
+        guard let albumInfo = albumInfo.value else { return nil }
+        
+        let fixedAlbum = albumInfo.0.components(separatedBy: Constants.startingParenthesis).first.mapEmptyToNil ?? albumInfo.0
+        
+        let fixedArtist = albumInfo.1.components(separatedBy: Constants.comma).first.mapEmptyToNil?
+            .components(separatedBy: Constants.startingParenthesis).first.mapEmptyToNil?
+            .components(separatedBy: Constants.ampersand).first.mapEmptyToNil ?? albumInfo.1
+        
+        return (fixedAlbum.clean, fixedArtist.clean)
+    }
+    
     var song: SharedSong
     
     var geniusID: Int?
@@ -47,7 +59,7 @@ class LyricsViewModel: ViewModel {
     
     let producers = Observable([String]())
     
-    let album: Observable<(String, String)?> = Observable(nil)
+    let albumInfo: Observable<(String, String)?> = Observable(nil)
     
     let spotifyURL: Observable<URL?> = .init(nil)
     
@@ -101,10 +113,10 @@ class LyricsViewModel: ViewModel {
                             self.producers.value = producers.map { $0.name.clean.typographized }
                         }
                         if let album = response.response.song.album, let artist = album.artist {
-                            self.album.value = (album.name.clean.typographized, artist.name)
+                            self.albumInfo.value = (album.name.clean.typographized, artist.name.clean.typographized)
                             self.realmService.incrementDiscoveriesStat(with: album.id)
                         } else {
-                            self.album.value = nil
+                            self.albumInfo.value = nil
                         }
                         let artistId = response.response.song.primaryArtist.id
                         self.realmService.incrementViewedArtistsStat(with: artistId)
