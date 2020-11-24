@@ -23,11 +23,13 @@ class RealmLikedSong: Object {
     @objc private dynamic var genreInt = Constants.unknownGenreID
     
     @objc dynamic var geniusID = Int.zero
-    @objc dynamic var name = String()
-    @objc dynamic var thumbnailAlbumArtURL: String?
-    @objc dynamic var albumArtURL: String?
     @objc dynamic var geniusURL: String?
+    
+    @objc dynamic var name = String()
     @objc dynamic var likeDate = Date()
+    
+    @objc dynamic var albumArtURL: String?
+    @objc dynamic var thumbnailAlbumArtURL: String?
     
     let artists = List<String>()
     

@@ -9,6 +9,17 @@
 import Haptica
 import Kingfisher
 
+// MARK: - Constants
+
+fileprivate extension Constants {
+    
+    static let normalAccessoryBackgroundWidth: CGFloat = 45
+    static let compactAccessoryBackgroundWidth: CGFloat = 5
+    
+}
+
+// MARK: - SongCell
+
 class SongCell: TableViewCell {
     
     // MARK: - Outlets
@@ -25,14 +36,12 @@ class SongCell: TableViewCell {
     
     @IBOutlet private weak var artistLabel: UILabel!
     
+    // MARK: - Accessory outlets
+    
     @IBOutlet private weak var accessoryBackgroundView: UIView!
     
     @IBOutlet private weak var accessoryFadeOutView: GradientView!
-    
-    @IBOutlet private weak var accessoryStackView: UIStackView!
-    
-    // MARK: - Accessory outlets
-    
+        
     @IBOutlet private weak var spotifyLogoAccessoryView: UIImageView!
     
     @IBOutlet private weak var heartIconAccessoryView: UIImageView!
@@ -40,6 +49,8 @@ class SongCell: TableViewCell {
     @IBOutlet private weak var nthPlaceAccessoryView: UIStackView!
     
     @IBOutlet private weak var nthPlaceAccessoryLabel: UILabel!
+    
+    @IBOutlet private weak var accessoryBackgroundViewWidthConstraint: NSLayoutConstraint!
     
     // MARK: - Static properties
     
@@ -154,7 +165,9 @@ class SongCell: TableViewCell {
         
         contextMenuHandler?.updateFullImage(with: viewModel.song.albumArt)
         
-        accessoryStackView.isHidden = viewModel.accessory == nil
+        accessoryBackgroundViewWidthConstraint.constant = viewModel.accessory == nil ?
+            Constants.compactAccessoryBackgroundWidth :
+            Constants.normalAccessoryBackgroundWidth
         spotifyLogoAccessoryView.isHidden = true
         heartIconAccessoryView.isHidden = true
         nthPlaceAccessoryView.isHidden = true

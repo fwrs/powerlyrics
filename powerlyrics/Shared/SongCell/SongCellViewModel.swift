@@ -25,6 +25,7 @@ struct SongCellViewModel: Equatable {
     let song: SharedSong
     var accessory: SongCellAccessory?
     var shouldDisplayDominantColor: Bool = false
+    var isInPanModal = false
     
 }
 

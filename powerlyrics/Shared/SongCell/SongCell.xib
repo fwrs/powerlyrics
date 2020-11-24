@@ -52,12 +52,12 @@
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="FBI-Cp-cFe">
                                 <rect key="frame" x="89" y="25" width="251" height="43.5"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Song name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsLetterSpacingToFitWidth="YES" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6fp-qj-We3">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Song name" textAlignment="natural" lineBreakMode="clip" baselineAdjustment="alignBaselines" adjustsLetterSpacingToFitWidth="YES" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6fp-qj-We3">
                                         <rect key="frame" x="0.0" y="0.0" width="251" height="20.5"/>
                                         <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Artist name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsLetterSpacingToFitWidth="YES" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Y7Q-rd-r5X">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Artist name" textAlignment="natural" lineBreakMode="clip" baselineAdjustment="alignBaselines" adjustsLetterSpacingToFitWidth="YES" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Y7Q-rd-r5X">
                                         <rect key="frame" x="0.0" y="25.5" width="251" height="18"/>
                                         <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
                                         <color key="textColor" systemColor="secondaryLabelColor"/>
@@ -148,8 +148,8 @@
             <inset key="separatorInset" minX="16" minY="0.0" maxX="0.0" maxY="0.0"/>
             <connections>
                 <outlet property="accessoryBackgroundView" destination="NI0-W0-WhX" id="M3G-V8-VcB"/>
+                <outlet property="accessoryBackgroundViewWidthConstraint" destination="3bX-b8-Dwo" id="hcC-1d-1za"/>
                 <outlet property="accessoryFadeOutView" destination="vAL-Xl-7BF" id="C7W-0Z-vBQ"/>
-                <outlet property="accessoryStackView" destination="umQ-8N-Y7f" id="M98-gI-gmC"/>
                 <outlet property="albumArtContainerView" destination="qqv-f1-8WK" id="Wv0-fv-HgE"/>
                 <outlet property="albumArtImageView" destination="9iH-PS-o9F" id="TGW-L5-P7m"/>
                 <outlet property="artistLabel" destination="Y7Q-rd-r5X" id="3iI-Pr-han"/>
