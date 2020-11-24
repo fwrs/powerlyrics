@@ -40,6 +40,8 @@ class SongCell: TableViewCell {
     
     @IBOutlet private weak var accessoryBackgroundView: UIView!
     
+    @IBOutlet private weak var accessoryBackgroundExtensionView: UIView!
+    
     @IBOutlet private weak var accessoryFadeOutView: GradientView!
         
     @IBOutlet private weak var spotifyLogoAccessoryView: UIImageView!
@@ -100,6 +102,7 @@ class SongCell: TableViewCell {
         UIView.animate(withDuration: (highlighted || !animated) ? (Constants.defaultAnimationDuration * .pointOne) : Constants.defaultAnimationDuration) { [weak self] in
             self?.backgroundColorView.backgroundColor = highlighted ? highlightColor : (self?.dominantColor).safe
             self?.accessoryBackgroundView.backgroundColor = highlighted ? highlightColor : baseColor
+            self?.accessoryBackgroundExtensionView.backgroundColor = highlighted ? highlightColor : baseColor
         }
         UIView.fadeUpdate(accessoryFadeOutView, duration: (highlighted || !animated) ? (Constants.defaultAnimationDuration * .pointOne) : Constants.defaultAnimationDuration) { [weak self] in
             self?.accessoryFadeOutView.gradientLayer.colors = highlighted ?
@@ -114,6 +117,7 @@ class SongCell: TableViewCell {
         UIView.animate(withDuration: (selected || !animated) ? (Constants.defaultAnimationDuration * .pointOne) : Constants.defaultAnimationDuration) { [weak self] in
             self?.backgroundColorView.backgroundColor = selected ? highlightColor : (self?.dominantColor).safe
             self?.accessoryBackgroundView.backgroundColor = selected ? highlightColor : baseColor
+            self?.accessoryBackgroundExtensionView.backgroundColor = selected ? highlightColor : baseColor
         }
         UIView.fadeUpdate(accessoryFadeOutView, duration: (selected || !animated) ? (Constants.defaultAnimationDuration * .pointOne) : Constants.defaultAnimationDuration) { [weak self] in
             self?.accessoryFadeOutView.gradientLayer.colors = selected ?
@@ -134,6 +138,7 @@ class SongCell: TableViewCell {
                 if let color = SongCell.storedColors[viewModel.song] {
                     self?.accessoryFadeOutView.gradientLayer.colors = [color.transparent.cg, color.cg]
                     self?.accessoryBackgroundView.backgroundColor = color
+                    self?.accessoryBackgroundExtensionView.backgroundColor = color
                     self?.dominantColor = color
                     return
                 }
@@ -145,6 +150,7 @@ class SongCell: TableViewCell {
                     UIView.animate { [weak self] in
                         self?.backgroundColorView.backgroundColor = color
                         self?.accessoryBackgroundView.backgroundColor = color
+                        self?.accessoryBackgroundExtensionView.backgroundColor = color
                     }
                     UIView.fadeUpdate(self.accessoryFadeOutView) { [weak self] in
                         self?.accessoryFadeOutView.gradientLayer.colors = [color.transparent.cg, color.cg]
@@ -160,6 +166,7 @@ class SongCell: TableViewCell {
             dominantColor = nil
             (accessoryFadeOutView.gradientLayer).colors = [Asset.Colors.normalCellColor.color.transparent.cg, Asset.Colors.normalCellColor.color.cg]
             accessoryBackgroundView.backgroundColor = Asset.Colors.normalCellColor.color
+            accessoryBackgroundExtensionView.backgroundColor = Asset.Colors.normalCellColor.color
             backgroundColorView.backgroundColor = .clear
         }
         
