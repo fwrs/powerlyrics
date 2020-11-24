@@ -195,6 +195,7 @@ class HomeViewModel: ViewModel {
         
         let likedToday = realmService.likedSongs()
             .filter { Calendar.current.isDateInToday($0.likeDate) }
+            .sorted { $0.likeDate > $1.likeDate }
 
         var likedTodaySection = likedToday
             .prefix(Constants.maxPlaylistPreviewCount)

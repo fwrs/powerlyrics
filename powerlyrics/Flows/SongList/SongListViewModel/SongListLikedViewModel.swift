@@ -40,6 +40,7 @@ class SongListLikedViewModel: SongListViewModel {
         items.replace(
             with: likedSongs
                 .filter { today ? Calendar.current.isDateInToday($0.likeDate) : true }
+                .sorted { $0.likeDate > $1.likeDate }
                 .map {
                     .song(SongCellViewModel(
                         song: $0.asSharedSong
