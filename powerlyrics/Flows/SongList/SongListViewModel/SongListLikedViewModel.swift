@@ -29,8 +29,7 @@ class SongListLikedViewModel: SongListViewModel {
         let likedSongs = realmService.likedSongs()
         
         items.replace(with: likedSongs.map { .song(SongCellViewModel(
-            song: $0.asSharedSong,
-            accessory: .likeLogo
+            song: $0.asSharedSong
         )) }, performDiff: !firstLoad)
         
         firstLoad = false
