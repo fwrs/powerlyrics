@@ -23,10 +23,10 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="yac-oI-iJv">
-                                <rect key="frame" x="120" y="87.5" width="174" height="67.5"/>
+                                <rect key="frame" x="95" y="85" width="224.5" height="72.5"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Welcome to" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cNO-5X-k1x">
-                                        <rect key="frame" x="25.5" y="0.0" width="123" height="27.5"/>
+                                        <rect key="frame" x="50.5" y="0.0" width="123" height="27.5"/>
                                         <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="23"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
@@ -35,7 +35,7 @@
                                         </userDefinedRuntimeAttributes>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="powerlyrics" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Z7z-oG-ccM">
-                                        <rect key="frame" x="0.0" y="27.5" width="174" height="40"/>
+                                        <rect key="frame" x="0.0" y="27.5" width="224.5" height="45"/>
                                         <fontDescription key="fontDescription" name="RobotoMono-Regular" family="Roboto Mono" pointSize="34"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
@@ -63,7 +63,7 @@ for logging in without Spotify.</string>
                                                 <rect key="frame" x="0.0" y="0.0" width="382" height="44"/>
                                                 <subviews>
                                                     <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Name" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="bxv-mv-GEY">
-                                                        <rect key="frame" x="10" y="0.0" width="362" height="44"/>
+                                                        <rect key="frame" x="10" y="0.0" width="369" height="44"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                         <textInputTraits key="textInputTraits" autocapitalizationType="words" returnKeyType="continue" textContentType="name"/>
                                                         <userDefinedRuntimeAttributes>
@@ -77,7 +77,7 @@ for logging in without Spotify.</string>
                                                     <constraint firstAttribute="bottom" secondItem="bxv-mv-GEY" secondAttribute="bottom" id="amZ-fx-r4c"/>
                                                     <constraint firstAttribute="height" constant="44" id="kZo-TH-2yQ"/>
                                                     <constraint firstItem="bxv-mv-GEY" firstAttribute="top" secondItem="0L4-Uy-aMJ" secondAttribute="top" id="p24-dJ-4gh"/>
-                                                    <constraint firstAttribute="trailing" secondItem="bxv-mv-GEY" secondAttribute="trailing" constant="10" id="ypD-G4-I69"/>
+                                                    <constraint firstAttribute="trailing" secondItem="bxv-mv-GEY" secondAttribute="trailing" constant="3" id="ypD-G4-I69"/>
                                                 </constraints>
                                                 <userDefinedRuntimeAttributes>
                                                     <userDefinedRuntimeAttribute type="number" keyPath="squircleCorners">
@@ -177,7 +177,7 @@ for logging in without Spotify.</string>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Fse-X7-fJW" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-49" y="66"/>
+            <point key="canvasLocation" x="-49.275362318840585" y="65.625"/>
         </scene>
     </scenes>
     <resources>
