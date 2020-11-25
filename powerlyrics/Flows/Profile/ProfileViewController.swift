@@ -58,7 +58,7 @@ fileprivate extension Constants {
     }
     
     static let translationYAvatarFunction = { (x: CGFloat) -> CGFloat in
-        let extraAdjustment: CGFloat = UIDevice.current.hasNotch ? x : (7.0 * x - 7.0)
+        let extraAdjustment: CGFloat = UIDevice.current.hasNotch ? (8.125 * pow(x, 2) - 10.125 * x + 3) : (7.0 * x - 7.0)
         return ((-312.831 * pow(x, 4) + 840.079 * pow(x, 3) - 793.935 * pow(x, 2) + 287.687 * x) *
             (UIDevice.current.hasNotch ? 1 : 0.55)) + extraAdjustment }
     static let translationYUserInfoFunction = { (x: CGFloat) -> CGFloat in

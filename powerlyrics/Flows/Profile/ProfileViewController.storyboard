@@ -53,7 +53,7 @@
                                             </constraints>
                                         </view>
                                         <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="Cb1-DC-afP">
-                                            <rect key="frame" x="171.5" y="183" width="71.5" height="47.5"/>
+                                            <rect key="frame" x="171.5" y="181.5" width="71.5" height="47.5"/>
                                             <subviews>
                                                 <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="3" translatesAutoresizingMaskIntoConstraints="NO" id="Ffh-Jq-fYO">
                                                     <rect key="frame" x="0.0" y="0.0" width="71.5" height="25.5"/>
@@ -87,7 +87,7 @@
                                         </stackView>
                                     </subviews>
                                     <constraints>
-                                        <constraint firstItem="Cb1-DC-afP" firstAttribute="top" secondItem="y5l-12-iX5" secondAttribute="bottom" constant="18" id="5z4-mW-jWa"/>
+                                        <constraint firstItem="Cb1-DC-afP" firstAttribute="top" secondItem="y5l-12-iX5" secondAttribute="bottom" constant="16.5" id="5z4-mW-jWa"/>
                                         <constraint firstItem="y5l-12-iX5" firstAttribute="centerX" secondItem="Pmm-RJ-6Mz" secondAttribute="centerX" id="B9D-aj-EAh"/>
                                         <constraint firstItem="y5l-12-iX5" firstAttribute="centerY" secondItem="Pmm-RJ-6Mz" secondAttribute="centerY" multiplier="0.9" id="MPw-kD-j3v"/>
                                         <constraint firstItem="Cb1-DC-afP" firstAttribute="centerX" secondItem="Pmm-RJ-6Mz" secondAttribute="centerX" id="beb-rg-xxj"/>
