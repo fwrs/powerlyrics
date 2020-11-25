@@ -18,6 +18,7 @@ extension Constants {
     static let sectionBegin: Character = "["
     static let sectionEnd: Character = "]"
     static let instrumentalSystemMessage = "This song is an instrumental"
+    static let instrumentalSystemMessage2 = "instrumental"
     static let instrumentalResponse = Strings.Lyrics.instrumentalContent
     
 }
@@ -68,7 +69,10 @@ extension GeniusProvider {
             
             // MARK: - Lyrics parsing
             
-            let result1 = text.contains(Constants.instrumentalSystemMessage) ? [Constants.instrumentalResponse] : text
+            let result1 = (
+                text.contains(Constants.instrumentalSystemMessage) ||
+                    text.clean.lowercased() == Constants.instrumentalSystemMessage2
+            ) ? [Constants.instrumentalResponse] : text
                 .split(separator: Constants.newlineCharacter)
                 .map(\.clean)
                 .joined(separator: String(Constants.newline))
