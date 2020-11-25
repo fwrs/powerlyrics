@@ -103,4 +103,9 @@ struct GenreStatsInfoCellViewModel: Equatable {
     let count: Int
     let genre: RealmLikedSongGenre
     
+    static func == (lhs: GenreStatsInfoCellViewModel, rhs: GenreStatsInfoCellViewModel) -> Bool {
+        (lhs.level == .overwhelming && rhs.level == .overwhelming && lhs.genre == rhs.genre) ||
+            (lhs.level == rhs.level && lhs.count == rhs.count && lhs.genre == rhs.genre)
+    }
+    
 }
