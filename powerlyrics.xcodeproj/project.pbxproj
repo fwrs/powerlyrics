@@ -281,7 +281,6 @@
 		B86D5BFE2529F4BA0026B764 /* SetupInitialViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetupInitialViewController.swift; sourceTree = "<group>"; };
 		B86D5C012529F4C90026B764 /* SetupInitialViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = SetupInitialViewController.storyboard; sourceTree = "<group>"; };
 		B86D5C072529FD4F0026B764 /* SetupCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetupCoordinator.swift; sourceTree = "<group>"; };
-		B86E82A3256566BA00D5E06A /* Tokens.example.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tokens.example.swift; sourceTree = "<group>"; };
 		B86E82A725656CAF00D5E06A /* RealmService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealmService.swift; sourceTree = "<group>"; };
 		B86F6E0725260894003296B0 /* Storyboard+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Storyboard+Ext.swift"; sourceTree = "<group>"; };
 		B86F6E0C25260A03003296B0 /* HomeViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = HomeViewController.storyboard; sourceTree = "<group>"; };
@@ -767,7 +766,6 @@
 				B84813F92543841900CD5638 /* Genius */,
 				B86F6E8C25262237003296B0 /* NetworkAssembly.swift */,
 				B829CC5A254D5CB3007B3C8E /* Tokens.swift */,
-				B86E82A3256566BA00D5E06A /* Tokens.example.swift */,
 			);
 			path = Network;
 			sourceTree = "<group>";

@@ -27,5 +27,4 @@ Pods/
 *.gen.swift
 
 # Project-specific
-Tokens.swift
 Documentation
