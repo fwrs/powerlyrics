@@ -63,7 +63,7 @@ for logging in without Spotify.</string>
                                                 <rect key="frame" x="0.0" y="0.0" width="382" height="44"/>
                                                 <subviews>
                                                     <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Name" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="bxv-mv-GEY">
-                                                        <rect key="frame" x="10" y="0.0" width="369" height="44"/>
+                                                        <rect key="frame" x="10" y="0.0" width="371" height="44"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                         <textInputTraits key="textInputTraits" autocapitalizationType="words" returnKeyType="continue" textContentType="name"/>
                                                         <userDefinedRuntimeAttributes>
@@ -77,7 +77,7 @@ for logging in without Spotify.</string>
                                                     <constraint firstAttribute="bottom" secondItem="bxv-mv-GEY" secondAttribute="bottom" id="amZ-fx-r4c"/>
                                                     <constraint firstAttribute="height" constant="44" id="kZo-TH-2yQ"/>
                                                     <constraint firstItem="bxv-mv-GEY" firstAttribute="top" secondItem="0L4-Uy-aMJ" secondAttribute="top" id="p24-dJ-4gh"/>
-                                                    <constraint firstAttribute="trailing" secondItem="bxv-mv-GEY" secondAttribute="trailing" constant="3" id="ypD-G4-I69"/>
+                                                    <constraint firstAttribute="trailing" secondItem="bxv-mv-GEY" secondAttribute="trailing" constant="1" id="ypD-G4-I69"/>
                                                 </constraints>
                                                 <userDefinedRuntimeAttributes>
                                                     <userDefinedRuntimeAttribute type="number" keyPath="squircleCorners">
@@ -89,7 +89,7 @@ for logging in without Spotify.</string>
                                                 <rect key="frame" x="0.0" y="61" width="382" height="44"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Over 18" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0N7-SJ-2ee">
-                                                        <rect key="frame" x="10" y="11.5" width="311" height="20.5"/>
+                                                        <rect key="frame" x="10" y="11.5" width="313" height="20.5"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                         <nil key="textColor"/>
                                                         <nil key="highlightedColor"/>
@@ -98,13 +98,13 @@ for logging in without Spotify.</string>
                                                         </userDefinedRuntimeAttributes>
                                                     </label>
                                                     <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="E1j-6L-qjZ">
-                                                        <rect key="frame" x="321" y="6.5" width="51" height="31"/>
+                                                        <rect key="frame" x="323" y="6.5" width="51" height="31"/>
                                                     </switch>
                                                 </subviews>
                                                 <color key="backgroundColor" red="0.46274509800000002" green="0.46274509800000002" blue="0.50196078430000002" alpha="0.23999999999999999" colorSpace="custom" customColorSpace="calibratedRGB"/>
                                                 <constraints>
                                                     <constraint firstItem="0N7-SJ-2ee" firstAttribute="leading" secondItem="TGY-LH-lvv" secondAttribute="leading" constant="10" id="0y2-uR-Uvt"/>
-                                                    <constraint firstAttribute="trailing" secondItem="E1j-6L-qjZ" secondAttribute="trailing" constant="12" id="BSc-5G-l99"/>
+                                                    <constraint firstAttribute="trailing" secondItem="E1j-6L-qjZ" secondAttribute="trailing" constant="10" id="BSc-5G-l99"/>
                                                     <constraint firstItem="0N7-SJ-2ee" firstAttribute="centerY" secondItem="TGY-LH-lvv" secondAttribute="centerY" id="MfT-xK-k5g"/>
                                                     <constraint firstAttribute="height" constant="44" id="dnB-ex-STL"/>
                                                     <constraint firstItem="E1j-6L-qjZ" firstAttribute="centerY" secondItem="TGY-LH-lvv" secondAttribute="centerY" id="hly-ep-Smt"/>

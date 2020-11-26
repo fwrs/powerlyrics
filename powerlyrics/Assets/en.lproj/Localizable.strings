@@ -59,7 +59,7 @@
 
 "genreAnalysis.ok.songsLikedPlural" = "%d songs liked";
 "genreAnalysis.ok.songsLikedSingular" = "%d song liked";
-"genreAnalysis.ok" = "Looks like you have some interest in %@, with total of %@.";
+"genreAnalysis.ok" = "Looks like you have some interest in %@, with total of %@ from it.";
 
 "genreAnalysis.good.likedSongsPlural" = "liked %d songs";
 "genreAnalysis.good.likedSongsSingular" = "liked %d song";
