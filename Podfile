@@ -1,5 +1,5 @@
 # Project uses a global platform
-ios_version = '14.2'
+ios_version = '14.0'
 platform :ios, ios_version
 
 target 'powerlyrics' do
