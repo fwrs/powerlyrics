@@ -11,12 +11,14 @@ import KeychainAccess
 // MARK: - KeychainServiceProtocol
 
 protocol KeychainServiceProtocol: class {
+    
     func setEncodable<T: Encodable>(_ value: T?, for key: KeychainService.Key)
     func getDecodable<T: Decodable>(for key: KeychainService.Key) -> T?
     func getString(for key: KeychainService.Key) -> String?
     func setString(_ value: String?, for key: KeychainService.Key)
     func delete(for key: KeychainService.Key)
     func reset()
+    
 }
 
 // MARK: - KeychainService

@@ -70,6 +70,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             FirebaseApp.configure(options: options!)
         }
         
+        FirebaseConfiguration.shared.setLoggerLevel(FirebaseLoggerLevel.min)
+        
         _ = NotificationCenter.default.addObserver(
             forName: .appDidLogout,
             object: nil,

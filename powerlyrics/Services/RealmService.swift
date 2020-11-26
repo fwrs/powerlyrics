@@ -21,6 +21,7 @@ fileprivate extension Constants {
 fileprivate let realm = try! Realm()
 
 protocol RealmServiceProtocol {
+    
     func saveUserData(spotifyUserInfo: SpotifyUserInfoResponse)
     func saveUserData(name: String, over18: Bool, premium: Bool, avatar: SharedImage?, thumbnailAvatar: SharedImage?)
     func saveUserData(name: String, over18: Bool)
@@ -38,6 +39,7 @@ protocol RealmServiceProtocol {
     var userData: RealmAccount? { get }
     var likedSongsCount: Int { get }
     var stats: RealmStats? { get }
+    
 }
 
 // MARK: - RealmService
