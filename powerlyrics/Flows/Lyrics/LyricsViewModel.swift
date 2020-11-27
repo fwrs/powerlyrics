@@ -47,6 +47,14 @@ class LyricsViewModel: ViewModel {
     
     var cleanArtistName: String { song.artistsString.clean.typographized }
     
+    var cleanCompactSongName: String {
+        let fixed = song.name
+            .components(separatedBy: Constants.startingParenthesis)
+            .first.mapEmptyToNil ?? song.name
+        
+        return fixed.clean.typographized
+    }
+    
     var song: SharedSong
     
     var geniusID: Int?

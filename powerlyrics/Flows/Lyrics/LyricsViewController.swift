@@ -459,7 +459,7 @@ extension LyricsViewController: UITableViewDelegate {
         tableView.verticalScrollIndicatorInsets.top = topPadding - safeAreaInsets.top - Constants.navigationBarHeight
         
         if scrollView.contentOffset.y >= -Constants.largeCutoffs.0 {
-            navigationItem.title = songLabel.text.safe.lowercased()
+            navigationItem.title = viewModel.cleanCompactSongName.lowercased()
         } else {
             navigationItem.title = Constants.lyricsTitle
         }
