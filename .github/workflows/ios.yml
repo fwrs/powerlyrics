@@ -14,19 +14,19 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-      - name: Set Default Scheme
+      - name: Set default scheme
         run: |
           scheme_list=$(xcodebuild -list -json | tr -d "\n")
           default=$(echo $scheme_list | ruby -e "require 'json'; puts JSON.parse(STDIN.gets)['project']['targets'][0]")
           echo $default | cat >default
           echo Using default scheme: $default
-      - name: Install Dependencies
+      - name: Install dependencies
         run: |
           pod install
-      - name: Perform Automatic Code Generation with SwiftGen
+      - name: Perform automatic code generation with SwiftGen
         run: |
           Pods/SwiftGen/bin/swiftgen
-      - name: Perform Code Quality Checks with SwiftLint
+      - name: Perform code quality checks with SwiftLint
         run: |
           Pods/SwiftLint/swiftlint --config swiftlint.yml
       - name: Build
