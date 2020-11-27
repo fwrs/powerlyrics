@@ -210,8 +210,8 @@ extension LyricsViewController {
     
     func setupView() {
         
-        songLabel.text = viewModel.song.name
-        artistLabel.text = viewModel.song.artistsString
+        songLabel.text = viewModel.cleanSongName
+        artistLabel.text = viewModel.cleanArtistName
         albumArtImageView.populate(with: viewModel.song.thumbnailAlbumArt, placeholder: albumArtThumbnail)
         backgroundCoverImageView.populate(with: viewModel.song.thumbnailAlbumArt, placeholder: albumArtThumbnail)
     

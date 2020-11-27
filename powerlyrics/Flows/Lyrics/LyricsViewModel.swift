@@ -43,6 +43,10 @@ class LyricsViewModel: ViewModel {
         return (fixedAlbum.clean, fixedArtist.clean)
     }
     
+    var cleanSongName: String { song.name.clean.typographized }
+    
+    var cleanArtistName: String { song.artistsString.clean.typographized }
+    
     var song: SharedSong
     
     var geniusID: Int?
