@@ -421,7 +421,7 @@ extension LyricsViewController {
             self?.likeButton.isUserInteractionEnabled = true
         }.dispose(in: disposeBag)
         
-        viewModel.isLiked.observeNext { [weak self] isLiked in
+        viewModel.isLiked.removeDuplicates().observeNext { [weak self] isLiked in
             guard let self = self else { return }
             UIView.fadeUpdate(self.buttonsStackView) {
                 self.likeButton.setImage(
