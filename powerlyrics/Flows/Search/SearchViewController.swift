@@ -147,8 +147,9 @@ extension SearchViewController {
         
         searchController.searchBar
             .reactive.text
-            .compactMap { $0 }
+            .compactMap { $0?.clean }
             .dropFirst(.one)
+            .removeDuplicates()
             .debounce(for: Constants.buttonThrottleTime, queue: .main)
             .observeNext { [weak self] query in
                 guard let self = self, !self.viewModel.isCancelled.value else { return }
@@ -191,7 +192,6 @@ extension SearchViewController {
                 Haptic.play(Constants.tinyTap)
                 let query = "\(cellViewModel.song.name) \(Constants.dash) \(cellViewModel.song.artists.first.safe)"
                 self.searchController.searchBar.text = query
-                self.searchController.isActive = true
                 self.searchController.searchBar.setShowsCancelButton(true, animated: true)
                 self.viewModel.search(for: query)
             }
