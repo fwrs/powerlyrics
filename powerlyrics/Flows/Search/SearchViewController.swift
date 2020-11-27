@@ -116,6 +116,8 @@ extension SearchViewController {
         tableView.register(SongCell.self)
         tableView.register(SearchAlbumsCell.self)
         
+        tableView.keyboardDismissMode = .interactive
+        
         let appearance = UINavigationBarAppearance()
         appearance.configureWithDefaultBackground()
         navigationItem.scrollEdgeAppearance = appearance
