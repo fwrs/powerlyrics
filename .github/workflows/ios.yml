@@ -20,13 +20,13 @@ jobs:
           default=$(echo $scheme_list | ruby -e "require 'json'; puts JSON.parse(STDIN.gets)['project']['targets'][0]")
           echo $default | cat >default
           echo Using default scheme: $default
-      - name: Install dependencies
+      - name: Install Dependencies
         run: |
           pod install
-      - name: Perform automatic code generation with swiftgen
+      - name: Perform Automatic Code Generation with SwiftGen
         run: |
           Pods/SwiftGen/bin/swiftgen
-      - name: Perform code quality checks with swiftlint
+      - name: Perform Code Quality Checks with SwiftLint
         run: |
           Pods/SwiftLint/swiftlint --config swiftlint.yml
       - name: Build
