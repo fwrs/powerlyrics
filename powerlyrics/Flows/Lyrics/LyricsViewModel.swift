@@ -130,8 +130,8 @@ class LyricsViewModel: ViewModel {
                         } else {
                             self.albumInfo.value = nil
                         }
-                        let artistId = response.response.song.primaryArtist.id
-                        self.realmService.incrementViewedArtistsStat(with: artistId)
+                        let artistID = response.response.song.primaryArtist.id
+                        self.realmService.incrementViewedArtistsStat(with: artistID)
                         self.spotifyURL.value = response.response.song.media?.first { $0.provider == Constants.spotifySystemName }?.url
                         self.description.value = response.response.song.description?.plain
                         
