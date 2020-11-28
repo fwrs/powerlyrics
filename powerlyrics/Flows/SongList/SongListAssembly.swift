@@ -22,10 +22,10 @@ enum SongListFlow: Equatable {
         
         switch self {
         case .findAlbumTracks(let album, _):
-            return album.lowercased()
+            return album.clean.typographized.lowercased()
             
         case .albumTracks(let album):
-            return album.name.lowercased()
+            return album.name.clean.typographized.lowercased()
             
         case .trendingSongs:
             return Strings.SongList.Title.trending

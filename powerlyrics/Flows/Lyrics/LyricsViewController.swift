@@ -15,6 +15,7 @@ fileprivate extension Constants {
     // MARK: - Haptic
     
     static let heartbeatTap = ".-o--.-O"
+    static let heartbeatDelay = 0.13
     
     // MARK: - Numeric
     
@@ -310,7 +311,7 @@ extension LyricsViewController {
                 Haptic.play(Constants.tinyTap)
             } else {
                 self.viewModel.likeSong()
-                Haptic.play(Constants.heartbeatTap, delay: .pointTwo)
+                Haptic.play(Constants.heartbeatTap, delay: Constants.heartbeatDelay)
             }
         }.dispose(in: disposeBag)
         
