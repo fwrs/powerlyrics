@@ -68,21 +68,21 @@ enum GenreStatsInfoLevel {
     func localizedDescription(count: Int, genre: RealmLikedSongGenre) -> String {
         switch self {
         case .low:
-            let songLikedText = count == 1 ?
+            let songLikedText = count == .one ?
                 Strings.GenreAnalysis.Low.songsLikedSingular(count) :
                 Strings.GenreAnalysis.Low.songsLikedPlural(count)
             
             return Strings.GenreAnalysis.low(genre.localizedName, songLikedText)
             
         case .ok:
-            let songLikedText = count == 1 ?
+            let songLikedText = count == .one ?
                 Strings.GenreAnalysis.Ok.songsLikedSingular(count) :
                 Strings.GenreAnalysis.Ok.songsLikedPlural(count)
             
             return Strings.GenreAnalysis.ok(genre.localizedName, songLikedText)
             
         case .good:
-            let likedSongText = count == 1 ?
+            let likedSongText = count == .one ?
                 Strings.GenreAnalysis.Good.likedSongsSingular(count) :
                 Strings.GenreAnalysis.Good.likedSongsPlural(count)
             
