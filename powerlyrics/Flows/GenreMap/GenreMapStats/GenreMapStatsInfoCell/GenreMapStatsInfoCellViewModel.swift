@@ -1,5 +1,5 @@
 //
-//  GenreStatsInfoCellViewModel.swift
+//  GenreMapStatsInfoCellViewModel.swift
 //  powerlyrics
 //
 //  Created by Ilya Kulinkovich on 11/8/20.
@@ -16,9 +16,9 @@ fileprivate extension Constants {
     
 }
 
-// MARK: - GenreStatsInfoLevel
+// MARK: - GenreMapStatsInfoLevel
 
-enum GenreStatsInfoLevel {
+enum GenreMapStatsInfoLevel {
     
     case low
     case ok
@@ -95,15 +95,15 @@ enum GenreStatsInfoLevel {
     
 }
 
-// MARK: - GenreStatsInfoCellViewModel
+// MARK: - GenreMapStatsInfoCellViewModel
 
-struct GenreStatsInfoCellViewModel: Equatable {
+struct GenreMapStatsInfoCellViewModel: Equatable {
     
-    let level: GenreStatsInfoLevel
+    let level: GenreMapStatsInfoLevel
     let count: Int
     let genre: RealmLikedSongGenre
     
-    static func == (lhs: GenreStatsInfoCellViewModel, rhs: GenreStatsInfoCellViewModel) -> Bool {
+    static func == (lhs: GenreMapStatsInfoCellViewModel, rhs: GenreMapStatsInfoCellViewModel) -> Bool {
         (lhs.level == .overwhelming && rhs.level == .overwhelming && lhs.genre == rhs.genre) ||
             (lhs.level == rhs.level && lhs.count == rhs.count && lhs.genre == rhs.genre)
     }

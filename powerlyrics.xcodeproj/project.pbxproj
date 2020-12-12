@@ -82,8 +82,8 @@
 		B84D9A2925279C92000D62BB /* BezierPath+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = B84D9A2825279C92000D62BB /* BezierPath+Ext.swift */; };
 		B84E96B5252E156800B35578 /* GenreMapBackgroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B84E96B4252E156800B35578 /* GenreMapBackgroundView.swift */; };
 		B85116BB2560723300BA1C69 /* SpotifyAlbumSong.swift in Sources */ = {isa = PBXBuildFile; fileRef = B85116BA2560723300BA1C69 /* SpotifyAlbumSong.swift */; };
-		B85116C125607AE600BA1C69 /* GenreStatsEmptyCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B85116BF25607AE600BA1C69 /* GenreStatsEmptyCell.swift */; };
-		B85116C225607AE600BA1C69 /* GenreStatsEmptyCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B85116C025607AE600BA1C69 /* GenreStatsEmptyCell.xib */; };
+		B85116C125607AE600BA1C69 /* GenreMapStatsEmptyCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B85116BF25607AE600BA1C69 /* GenreMapStatsEmptyCell.swift */; };
+		B85116C225607AE600BA1C69 /* GenreMapStatsEmptyCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B85116C025607AE600BA1C69 /* GenreMapStatsEmptyCell.xib */; };
 		B851B71E2554719D00504F45 /* View.swift in Sources */ = {isa = PBXBuildFile; fileRef = B851B71D2554719D00504F45 /* View.swift */; };
 		B8526C6F252689CF005FC7D3 /* ServicesAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8526C6E252689CF005FC7D3 /* ServicesAssembly.swift */; };
 		B85272B82561A31900CC9A4B /* LoadingCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B85272B62561A31900CC9A4B /* LoadingCell.swift */; };
@@ -121,13 +121,13 @@
 		B88366AE2569D07E0051349A /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = B88366AD2569D07E0051349A /* README.md */; };
 		B888BA542529310C00189CFF /* SpotifySong.swift in Sources */ = {isa = PBXBuildFile; fileRef = B888BA532529310C00189CFF /* SpotifySong.swift */; };
 		B889EBB025489554003B51D1 /* MutableObservableArray2D+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = B889EBAF25489554003B51D1 /* MutableObservableArray2D+Ext.swift */; };
-		B891F867255734DB00AE2810 /* GenreStatsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B891F866255734DB00AE2810 /* GenreStatsViewController.swift */; };
-		B891F8752557353300AE2810 /* GenreStatsViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B891F8742557353300AE2810 /* GenreStatsViewController.storyboard */; };
-		B891F8782557358100AE2810 /* GenreStatsAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = B891F8772557358100AE2810 /* GenreStatsAssembly.swift */; };
-		B891F87B255735B700AE2810 /* GenreStatsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B891F87A255735B700AE2810 /* GenreStatsViewModel.swift */; };
-		B891F89825574DB700AE2810 /* GenreStatsInfoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B891F89625574DB700AE2810 /* GenreStatsInfoCell.swift */; };
-		B891F89925574DB700AE2810 /* GenreStatsInfoCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B891F89725574DB700AE2810 /* GenreStatsInfoCell.xib */; };
-		B891F8A025574FBE00AE2810 /* GenreStatsInfoCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B891F89F25574FBE00AE2810 /* GenreStatsInfoCellViewModel.swift */; };
+		B891F867255734DB00AE2810 /* GenreMapStatsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B891F866255734DB00AE2810 /* GenreMapStatsViewController.swift */; };
+		B891F8752557353300AE2810 /* GenreMapStatsViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B891F8742557353300AE2810 /* GenreMapStatsViewController.storyboard */; };
+		B891F8782557358100AE2810 /* GenreMapStatsAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = B891F8772557358100AE2810 /* GenreMapStatsAssembly.swift */; };
+		B891F87B255735B700AE2810 /* GenreMapStatsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B891F87A255735B700AE2810 /* GenreMapStatsViewModel.swift */; };
+		B891F89825574DB700AE2810 /* GenreMapStatsInfoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B891F89625574DB700AE2810 /* GenreMapStatsInfoCell.swift */; };
+		B891F89925574DB700AE2810 /* GenreMapStatsInfoCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B891F89725574DB700AE2810 /* GenreMapStatsInfoCell.xib */; };
+		B891F8A025574FBE00AE2810 /* GenreMapStatsInfoCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B891F89F25574FBE00AE2810 /* GenreMapStatsInfoCellViewModel.swift */; };
 		B8976DA325696C2B008069D5 /* CopyableLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8976DA225696C2B008069D5 /* CopyableLabel.swift */; };
 		B8A0F40E252A438D002268F9 /* GenreMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8A0F40D252A438D002268F9 /* GenreMapView.swift */; };
 		B8A3FF572551D9A500FA589A /* CenteredCollectionViewLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8A3FF562551D9A500FA589A /* CenteredCollectionViewLayout.swift */; };
@@ -265,8 +265,8 @@
 		B84D9A2825279C92000D62BB /* BezierPath+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BezierPath+Ext.swift"; sourceTree = "<group>"; };
 		B84E96B4252E156800B35578 /* GenreMapBackgroundView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenreMapBackgroundView.swift; sourceTree = "<group>"; };
 		B85116BA2560723300BA1C69 /* SpotifyAlbumSong.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpotifyAlbumSong.swift; sourceTree = "<group>"; };
-		B85116BF25607AE600BA1C69 /* GenreStatsEmptyCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenreStatsEmptyCell.swift; sourceTree = "<group>"; };
-		B85116C025607AE600BA1C69 /* GenreStatsEmptyCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GenreStatsEmptyCell.xib; sourceTree = "<group>"; };
+		B85116BF25607AE600BA1C69 /* GenreMapStatsEmptyCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenreMapStatsEmptyCell.swift; sourceTree = "<group>"; };
+		B85116C025607AE600BA1C69 /* GenreMapStatsEmptyCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GenreMapStatsEmptyCell.xib; sourceTree = "<group>"; };
 		B851B71D2554719D00504F45 /* View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = View.swift; sourceTree = "<group>"; };
 		B8526C6E252689CF005FC7D3 /* ServicesAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServicesAssembly.swift; sourceTree = "<group>"; };
 		B85272B62561A31900CC9A4B /* LoadingCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingCell.swift; sourceTree = "<group>"; };
@@ -307,13 +307,13 @@
 		B88366AD2569D07E0051349A /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = SOURCE_ROOT; };
 		B888BA532529310C00189CFF /* SpotifySong.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpotifySong.swift; sourceTree = "<group>"; };
 		B889EBAF25489554003B51D1 /* MutableObservableArray2D+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MutableObservableArray2D+Ext.swift"; sourceTree = "<group>"; };
-		B891F866255734DB00AE2810 /* GenreStatsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenreStatsViewController.swift; sourceTree = "<group>"; };
-		B891F8742557353300AE2810 /* GenreStatsViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = GenreStatsViewController.storyboard; sourceTree = "<group>"; };
-		B891F8772557358100AE2810 /* GenreStatsAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenreStatsAssembly.swift; sourceTree = "<group>"; };
-		B891F87A255735B700AE2810 /* GenreStatsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenreStatsViewModel.swift; sourceTree = "<group>"; };
-		B891F89625574DB700AE2810 /* GenreStatsInfoCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenreStatsInfoCell.swift; sourceTree = "<group>"; };
-		B891F89725574DB700AE2810 /* GenreStatsInfoCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GenreStatsInfoCell.xib; sourceTree = "<group>"; };
-		B891F89F25574FBE00AE2810 /* GenreStatsInfoCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenreStatsInfoCellViewModel.swift; sourceTree = "<group>"; };
+		B891F866255734DB00AE2810 /* GenreMapStatsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenreMapStatsViewController.swift; sourceTree = "<group>"; };
+		B891F8742557353300AE2810 /* GenreMapStatsViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = GenreMapStatsViewController.storyboard; sourceTree = "<group>"; };
+		B891F8772557358100AE2810 /* GenreMapStatsAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenreMapStatsAssembly.swift; sourceTree = "<group>"; };
+		B891F87A255735B700AE2810 /* GenreMapStatsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenreMapStatsViewModel.swift; sourceTree = "<group>"; };
+		B891F89625574DB700AE2810 /* GenreMapStatsInfoCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenreMapStatsInfoCell.swift; sourceTree = "<group>"; };
+		B891F89725574DB700AE2810 /* GenreMapStatsInfoCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GenreMapStatsInfoCell.xib; sourceTree = "<group>"; };
+		B891F89F25574FBE00AE2810 /* GenreMapStatsInfoCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenreMapStatsInfoCellViewModel.swift; sourceTree = "<group>"; };
 		B8976DA225696C2B008069D5 /* CopyableLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CopyableLabel.swift; sourceTree = "<group>"; };
 		B8A0F40D252A438D002268F9 /* GenreMapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenreMapView.swift; sourceTree = "<group>"; };
 		B8A3FF562551D9A500FA589A /* CenteredCollectionViewLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CenteredCollectionViewLayout.swift; sourceTree = "<group>"; };
@@ -602,13 +602,13 @@
 			path = Genius;
 			sourceTree = "<group>";
 		};
-		B85116BE25607ABD00BA1C69 /* GenreStatsEmptyCell */ = {
+		B85116BE25607ABD00BA1C69 /* GenreMapStatsEmptyCell */ = {
 			isa = PBXGroup;
 			children = (
-				B85116BF25607AE600BA1C69 /* GenreStatsEmptyCell.swift */,
-				B85116C025607AE600BA1C69 /* GenreStatsEmptyCell.xib */,
+				B85116BF25607AE600BA1C69 /* GenreMapStatsEmptyCell.swift */,
+				B85116C025607AE600BA1C69 /* GenreMapStatsEmptyCell.xib */,
 			);
-			path = GenreStatsEmptyCell;
+			path = GenreMapStatsEmptyCell;
 			sourceTree = "<group>";
 		};
 		B85272B52561A30300CC9A4B /* LoadingCell */ = {
@@ -779,27 +779,27 @@
 			path = SearchTrendCell;
 			sourceTree = "<group>";
 		};
-		B891F865255734BB00AE2810 /* GenreStats */ = {
+		B891F865255734BB00AE2810 /* GenreMapStats */ = {
 			isa = PBXGroup;
 			children = (
-				B85116BE25607ABD00BA1C69 /* GenreStatsEmptyCell */,
-				B891F89525574D9900AE2810 /* GenreStatsInfoCell */,
-				B891F8772557358100AE2810 /* GenreStatsAssembly.swift */,
-				B891F866255734DB00AE2810 /* GenreStatsViewController.swift */,
-				B891F8742557353300AE2810 /* GenreStatsViewController.storyboard */,
-				B891F87A255735B700AE2810 /* GenreStatsViewModel.swift */,
+				B85116BE25607ABD00BA1C69 /* GenreMapStatsEmptyCell */,
+				B891F89525574D9900AE2810 /* GenreMapStatsInfoCell */,
+				B891F8772557358100AE2810 /* GenreMapStatsAssembly.swift */,
+				B891F866255734DB00AE2810 /* GenreMapStatsViewController.swift */,
+				B891F8742557353300AE2810 /* GenreMapStatsViewController.storyboard */,
+				B891F87A255735B700AE2810 /* GenreMapStatsViewModel.swift */,
 			);
-			path = GenreStats;
+			path = GenreMapStats;
 			sourceTree = "<group>";
 		};
-		B891F89525574D9900AE2810 /* GenreStatsInfoCell */ = {
+		B891F89525574D9900AE2810 /* GenreMapStatsInfoCell */ = {
 			isa = PBXGroup;
 			children = (
-				B891F89625574DB700AE2810 /* GenreStatsInfoCell.swift */,
-				B891F89725574DB700AE2810 /* GenreStatsInfoCell.xib */,
-				B891F89F25574FBE00AE2810 /* GenreStatsInfoCellViewModel.swift */,
+				B891F89625574DB700AE2810 /* GenreMapStatsInfoCell.swift */,
+				B891F89725574DB700AE2810 /* GenreMapStatsInfoCell.xib */,
+				B891F89F25574FBE00AE2810 /* GenreMapStatsInfoCellViewModel.swift */,
 			);
-			path = GenreStatsInfoCell;
+			path = GenreMapStatsInfoCell;
 			sourceTree = "<group>";
 		};
 		B8976DA125696C1F008069D5 /* CopyableLabel */ = {
@@ -924,7 +924,7 @@
 		B8E20CE225272BBA00D0E04C /* GenreMap */ = {
 			isa = PBXGroup;
 			children = (
-				B891F865255734BB00AE2810 /* GenreStats */,
+				B891F865255734BB00AE2810 /* GenreMapStats */,
 				B8A0F40C252A437B002268F9 /* Views */,
 				B8DEAB572527296700C9F96D /* GenreMapCoordinator.swift */,
 				B8E20CF525272C4E00D0E04C /* GenreMapAssembly.swift */,
@@ -1107,10 +1107,10 @@
 				B86F6EAA252624F0003296B0 /* Colors.xcassets in Resources */,
 				B82A6F2625267DA100A567B1 /* RobotoMono-Bold.ttf in Resources */,
 				B88366AE2569D07E0051349A /* README.md in Resources */,
-				B85116C225607AE600BA1C69 /* GenreStatsEmptyCell.xib in Resources */,
+				B85116C225607AE600BA1C69 /* GenreMapStatsEmptyCell.xib in Resources */,
 				B82A6F2125267DA100A567B1 /* RobotoMono-SemiBoldItalic.ttf in Resources */,
 				B82A6F2925267DA100A567B1 /* RobotoMono-SemiBold.ttf in Resources */,
-				B891F8752557353300AE2810 /* GenreStatsViewController.storyboard in Resources */,
+				B891F8752557353300AE2810 /* GenreMapStatsViewController.storyboard in Resources */,
 				B801AB26252FB28D0027B3BC /* ActionCell.xib in Resources */,
 				B8C5EBB42544758200E7FBA1 /* LyricsSectionCell.xib in Resources */,
 				B82A6F2425267DA100A567B1 /* RobotoMono-Italic.ttf in Resources */,
@@ -1143,7 +1143,7 @@
 				B82A6F2C25267DA100A567B1 /* RobotoMono-Regular.ttf in Resources */,
 				B85272B92561A31900CC9A4B /* LoadingCell.xib in Resources */,
 				B85272C82562641F00CC9A4B /* GoogleService-Info.plist in Resources */,
-				B891F89925574DB700AE2810 /* GenreStatsInfoCell.xib in Resources */,
+				B891F89925574DB700AE2810 /* GenreMapStatsInfoCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1267,7 +1267,7 @@
 				B8FB922325683F82005EAB6E /* SongListLikedViewModel.swift in Sources */,
 				B8FB922025683F6E005EAB6E /* SongListViralViewModel.swift in Sources */,
 				B829CC71254D6254007B3C8E /* ProfileAssembly.swift in Sources */,
-				B85116C125607AE600BA1C69 /* GenreStatsEmptyCell.swift in Sources */,
+				B85116C125607AE600BA1C69 /* GenreMapStatsEmptyCell.swift in Sources */,
 				B8227BB1256894C9009E76B5 /* LyricsStoryTopPaddingCell.swift in Sources */,
 				B8526C6F252689CF005FC7D3 /* ServicesAssembly.swift in Sources */,
 				B84814692543930C00CD5638 /* GeniusArtist.swift in Sources */,
@@ -1328,13 +1328,13 @@
 				B8DEAB582527296700C9F96D /* GenreMapCoordinator.swift in Sources */,
 				B84063DC2542EA3C00144CE2 /* SpotifyArtist.swift in Sources */,
 				B81A9F7D2560972200F4575C /* EmptyView.swift in Sources */,
-				B891F8A025574FBE00AE2810 /* GenreStatsInfoCellViewModel.swift in Sources */,
+				B891F8A025574FBE00AE2810 /* GenreMapStatsInfoCellViewModel.swift in Sources */,
 				B8C5EBB32544758200E7FBA1 /* LyricsSectionCell.swift in Sources */,
 				B84813F42543804700CD5638 /* SharedSong.swift in Sources */,
 				B85272BE2561BC5D00CC9A4B /* GradientView.swift in Sources */,
 				B829CC5B254D5CB3007B3C8E /* Tokens.swift in Sources */,
 				B8A3FF572551D9A500FA589A /* CenteredCollectionViewLayout.swift in Sources */,
-				B891F867255734DB00AE2810 /* GenreStatsViewController.swift in Sources */,
+				B891F867255734DB00AE2810 /* GenreMapStatsViewController.swift in Sources */,
 				B82C7D4D2566BF3600578FA7 /* SetupSharedSpotifyViewModel.swift in Sources */,
 				B82C7D502566E60C00578FA7 /* PresenterCoordinator.swift in Sources */,
 				B8F79E72252A0D080060CB14 /* SetupManualViewController.swift in Sources */,
@@ -1352,11 +1352,11 @@
 				B84D9A2525279015000D62BB /* Cell.swift in Sources */,
 				B8C8BCD52525ED6000E55708 /* SceneDelegate.swift in Sources */,
 				B86F6E31252613F7003296B0 /* Optionals+Ext.swift in Sources */,
-				B891F89825574DB700AE2810 /* GenreStatsInfoCell.swift in Sources */,
+				B891F89825574DB700AE2810 /* GenreMapStatsInfoCell.swift in Sources */,
 				B86F6E2E25261364003296B0 /* View+Ext.swift in Sources */,
 				B8227B9525687653009E76B5 /* LyricsStoryAssembly.swift in Sources */,
 				B86F6E8D25262237003296B0 /* NetworkAssembly.swift in Sources */,
-				B891F8782557358100AE2810 /* GenreStatsAssembly.swift in Sources */,
+				B891F8782557358100AE2810 /* GenreMapStatsAssembly.swift in Sources */,
 				B86F6E0825260894003296B0 /* Storyboard+Ext.swift in Sources */,
 				B8B5ED5725422FC9006E9560 /* SpotifyToken.swift in Sources */,
 				B8F79E81252A0D2C0060CB14 /* SetupOfflineAssembly.swift in Sources */,
@@ -1370,7 +1370,7 @@
 				B8C5EBB82544759300E7FBA1 /* LyricsSectionCellViewModel.swift in Sources */,
 				B801AB29252FB2980027B3BC /* ActionCellViewModel.swift in Sources */,
 				B8B5ED5325422FB8006E9560 /* SpotifyProvider.swift in Sources */,
-				B891F87B255735B700AE2810 /* GenreStatsViewModel.swift in Sources */,
+				B891F87B255735B700AE2810 /* GenreMapStatsViewModel.swift in Sources */,
 				B875DE29254C112C005D0C51 /* SearchTrendCell.swift in Sources */,
 				B829CC61254D621C007B3C8E /* ProfileStatsCell.swift in Sources */,
 				B84813FF2543843200CD5638 /* GeniusProvider.swift in Sources */,

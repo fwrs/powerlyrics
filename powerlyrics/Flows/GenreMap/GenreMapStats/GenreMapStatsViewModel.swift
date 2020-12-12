@@ -1,5 +1,5 @@
 //
-//  GenreStatsViewModel.swift
+//  GenreMapStatsViewModel.swift
 //  powerlyrics
 //
 //  Created by Ilya Kulinkovich on 11/7/20.
@@ -9,19 +9,19 @@
 import Bond
 import ReactiveKit
 
-// MARK: - GenreStatsCell
+// MARK: - GenreMapStatsCell
 
-enum GenreStatsCell: Equatable {
+enum GenreMapStatsCell: Equatable {
     
     case empty
-    case genreInfo(GenreStatsInfoCellViewModel)
+    case genreInfo(GenreMapStatsInfoCellViewModel)
     case song(SongCellViewModel, last: Bool = false)
     
 }
 
-// MARK: - GenreStatsViewModel
+// MARK: - GenreMapStatsViewModel
 
-class GenreStatsViewModel: ViewModel {
+class GenreMapStatsViewModel: ViewModel {
     
     // MARK: - DI
     
@@ -33,7 +33,7 @@ class GenreStatsViewModel: ViewModel {
     
     // MARK: - Observables
     
-    let items = MutableObservableArray<GenreStatsCell>()
+    let items = MutableObservableArray<GenreMapStatsCell>()
     
     // MARK: - Init
     
@@ -53,7 +53,7 @@ class GenreStatsViewModel: ViewModel {
         let songs = likedSongs
             .enumerated()
             .map { index, item in
-                GenreStatsCell.song(
+                GenreMapStatsCell.song(
                     SongCellViewModel(song: item.asSharedSong),
                     last: likedSongs.count - .one == index
                 )
@@ -68,7 +68,7 @@ class GenreStatsViewModel: ViewModel {
             ], performDiff: !initial)
         } else {
             items.replace(with: [
-                .genreInfo(GenreStatsInfoCellViewModel(
+                .genreInfo(GenreMapStatsInfoCellViewModel(
                     level: .init(count: songs.count, average: average),
                     count: songs.count,
                     genre: genre

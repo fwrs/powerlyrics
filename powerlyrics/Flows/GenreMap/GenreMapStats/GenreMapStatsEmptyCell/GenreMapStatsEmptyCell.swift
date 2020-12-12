@@ -1,5 +1,5 @@
 //
-//  GenreStatsEmptyCell.swift
+//  GenreMapStatsEmptyCell.swift
 //  powerlyrics
 //
 //  Created by Ilya Kulinkovich on 11/14/20.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-class GenreStatsEmptyCell: TableViewCell {
+class GenreMapStatsEmptyCell: TableViewCell {
 
     // MARK: - Outlets
     

@@ -116,10 +116,10 @@
 
 /* MARK: - Genre stats */
 
-"genreStats.empty.title" = "Nothing here";
-"genreStats.empty.message" = "This genre is feeling\npretty neglected.";
-"genreStats.info.hereSongsPlural" = "Here’s the songs:";
-"genreStats.info.hereSongsSingular" = "Here’s the song:";
+"genreMapStats.empty.title" = "Nothing here";
+"genreMapStats.empty.message" = "This genre is feeling\npretty neglected.";
+"genreMapStats.info.hereSongsPlural" = "Here’s the songs:";
+"genreMapStats.info.hereSongsSingular" = "Here’s the song:";
 
 /* MARK: - Profile */
 

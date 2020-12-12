@@ -1,5 +1,5 @@
 //
-//  GenreStatsInfoCell.swift
+//  GenreMapStatsInfoCell.swift
 //  powerlyrics
 //
 //  Created by Ilya Kulinkovich on 11/8/20.
@@ -14,14 +14,14 @@ fileprivate extension Constants {
     
     static let lineSpacing: CGFloat = 2
     static let boldFont = UIFont.systemFont(ofSize: 18, weight: .bold)
-    static let hereSongsTextPlural = Strings.GenreStats.Info.hereSongsPlural
-    static let hereSongsTextSingular = Strings.GenreStats.Info.hereSongsSingular
+    static let hereSongsTextPlural = Strings.GenreMapStats.Info.hereSongsPlural
+    static let hereSongsTextSingular = Strings.GenreMapStats.Info.hereSongsSingular
     
 }
 
-// MARK: - GenreStatsInfoCell
+// MARK: - GenreMapStatsInfoCell
 
-class GenreStatsInfoCell: TableViewCell {
+class GenreMapStatsInfoCell: TableViewCell {
     
     // MARK: - Outlets
     
@@ -33,7 +33,7 @@ class GenreStatsInfoCell: TableViewCell {
     
     // MARK: - Configure
     
-    func configure(with viewModel: GenreStatsInfoCellViewModel) {
+    func configure(with viewModel: GenreMapStatsInfoCellViewModel) {
         let text = viewModel.level.localizedDescription(count: viewModel.count, genre: viewModel.genre)
         
         let paragraphStyle = NSMutableParagraphStyle()

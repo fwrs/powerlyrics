@@ -1,5 +1,5 @@
 //
-//  GenreMapGenreStatsViewController.swift
+//  GenreMapGenreMapStatsViewController.swift
 //  powerlyrics
 //
 //  Created by Ilya Kulinkovich on 11/7/20.
@@ -25,9 +25,9 @@ fileprivate extension Constants {
     
 }
 
-// MARK: - GenreStatsViewController
+// MARK: - GenreMapStatsViewController
 
-class GenreStatsViewController: ViewController, GenreStatsScene {
+class GenreMapStatsViewController: ViewController, GenreMapStatsScene {
     
     // MARK: - Outlets
     
@@ -41,7 +41,7 @@ class GenreStatsViewController: ViewController, GenreStatsScene {
     
     // MARK: - Instance properties
     
-    var viewModel: GenreStatsViewModel!
+    var viewModel: GenreMapStatsViewModel!
     
     var lastSelectedIndexPath: IndexPath?
     
@@ -104,14 +104,14 @@ class GenreStatsViewController: ViewController, GenreStatsScene {
 
 // MARK: - Setup
 
-extension GenreStatsViewController {
+extension GenreMapStatsViewController {
     
     // MARK: - View
 
     func setupView() {
         
-        tableView.register(GenreStatsEmptyCell.self)
-        tableView.register(GenreStatsInfoCell.self)
+        tableView.register(GenreMapStatsEmptyCell.self)
+        tableView.register(GenreMapStatsInfoCell.self)
         tableView.register(SongCell.self)
         
         tableView.delegate = self
@@ -148,15 +148,15 @@ extension GenreStatsViewController {
             let item = items[indexPath.row]
             switch item {
             case .empty:
-                let cell = tableView.dequeue(GenreStatsEmptyCell.self, indexPath: indexPath)
+                let cell = tableView.dequeue(GenreMapStatsEmptyCell.self, indexPath: indexPath)
                 cell.separatorInset = UIEdgeInsets().with { $0.left = tableView.bounds.width }
                 cell.isUserInteractionEnabled = false
                 cell.selectionStyle = .none
                 return cell
                 
-            case .genreInfo(let genreStatsInfoCellViewModel):
-                let cell = tableView.dequeue(GenreStatsInfoCell.self, indexPath: indexPath)
-                cell.configure(with: genreStatsInfoCellViewModel)
+            case .genreInfo(let genreMapStatsInfoCellViewModel):
+                let cell = tableView.dequeue(GenreMapStatsInfoCell.self, indexPath: indexPath)
+                cell.configure(with: genreMapStatsInfoCellViewModel)
                 cell.isUserInteractionEnabled = false
                 cell.selectionStyle = .none
                 cell.separatorInset = .zero
@@ -189,7 +189,7 @@ extension GenreStatsViewController {
 
 // MARK: - TranslationAnimationView
 
-extension GenreStatsViewController: TranslationAnimationView {
+extension GenreMapStatsViewController: TranslationAnimationView {
     
     var translationViews: [UIView] {
         guard let indexPath = lastSelectedIndexPath,
@@ -203,7 +203,7 @@ extension GenreStatsViewController: TranslationAnimationView {
 
 // MARK: - PanModalPresentable
 
-extension GenreStatsViewController: PanModalPresentable {
+extension GenreMapStatsViewController: PanModalPresentable {
     
     var panScrollable: UIScrollView? {
         tableView
@@ -225,7 +225,7 @@ extension GenreStatsViewController: PanModalPresentable {
 
 // MARK: - UITableViewDelegate
 
-extension GenreStatsViewController: UITableViewDelegate {
+extension GenreMapStatsViewController: UITableViewDelegate {
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         updateNavigationBarAppearance()

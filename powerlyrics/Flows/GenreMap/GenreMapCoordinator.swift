@@ -50,7 +50,7 @@ class GenreMapCoordinator: Coordinator {
     // MARK: - Scenes
     
     func showGenre(_ genre: RealmLikedSongGenre) {
-        let scene = resolver.resolve(GenreStatsScene.self, argument: genre)!
+        let scene = resolver.resolve(GenreMapStatsScene.self, argument: genre)!
         if let tabBarController = router.tabBarController {
             let blurView = UIVisualEffectView(effect: nil)
             
