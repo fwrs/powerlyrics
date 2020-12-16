@@ -32,6 +32,7 @@ class GradientView: UIView {
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         let gradientLayer = layer as! CAGradientLayer
+        
         if UIApplication.shared.userInterfaceLayoutDirection == .leftToRight {
             gradientLayer.startPoint = Constants.gradientBeginPoint
             gradientLayer.endPoint = Constants.gradientEndPoint

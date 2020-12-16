@@ -68,7 +68,6 @@ identifier_name:
       - n
       - j
 
-
 type_name:
   min_length: 2
   max_length: 50

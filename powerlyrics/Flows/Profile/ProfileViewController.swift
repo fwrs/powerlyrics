@@ -188,6 +188,7 @@ extension ProfileViewController {
             shadowFadeView: avatarContainerView,
             imageView: avatarImageView
         )
+        
         self.contextMenuHandler = contextMenuHandler
         let interaction = UIContextMenuInteraction(delegate: contextMenuHandler)
         avatarImageView.addInteraction(interaction)
