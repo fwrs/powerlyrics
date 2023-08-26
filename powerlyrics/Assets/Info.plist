@@ -24,7 +24,7 @@
 			<key>CFBundleTypeRole</key>
 			<string>Editor</string>
 			<key>CFBundleURLName</key>
-			<string>live.ilyusha.powerlyrics</string>
+			<string>io.fwrs.powerlyrics</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
 				<string>powerlyrics</string>
@@ -33,12 +33,18 @@
 	</array>
 	<key>CFBundleVersion</key>
 	<string>1</string>
+	<key>FIREBASE_ANALYTICS_COLLECTION_DEACTIVATED</key>
+	<true/>
+	<key>FirebaseAutomaticScreenReportingEnabled</key>
+	<false/>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
 		<string>spotify</string>
 	</array>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>This application saves requested photos to gallery.</string>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>
@@ -79,11 +85,5 @@
 	</array>
 	<key>UIUserInterfaceStyle</key>
 	<string>Dark</string>
-	<key>NSPhotoLibraryAddUsageDescription</key>
-	<string>This application saves requested photos to gallery.</string>
-	<key>FirebaseAutomaticScreenReportingEnabled</key>
-	<false/>
-	<key>FIREBASE_ANALYTICS_COLLECTION_DEACTIVATED</key>
-	<true/>
 </dict>
 </plist>
