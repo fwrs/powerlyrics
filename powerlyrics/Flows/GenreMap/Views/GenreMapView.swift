@@ -56,9 +56,9 @@ class GenreMapView: UIView {
         shapeLayer.path = path.cgPath
         
         shapeLayer.strokeColor = UIColor.tintColor.cg
-        shapeLayer.fillColor = UIColor.tintColor.withAlphaComponent(.pointThree).cg
+        shapeLayer.fillColor = UIColor.tintColor.withAlphaComponent(0.3).cg
         
-        shapeLayer.lineWidth = .two + .half
+        shapeLayer.lineWidth = 2.5
         shapeLayer.position = .zero
 
         self.layer.addSublayer(shapeLayer)
@@ -67,24 +67,24 @@ class GenreMapView: UIView {
     // MARK: - Helper methods
     
     func radarChart(inset: CGFloat, rect: CGRect, values: [CGFloat]) -> UIBezierPath {
-        let xCenter = rect.origin.x + rect.size.height / .two
-        let yCenter = rect.origin.y + rect.size.width / .two
+        let xCenter = rect.origin.x + rect.size.height / 2
+        let yCenter = rect.origin.y + rect.size.width / 2
         
         let width: CGFloat = rect.size.width - inset
-        let radius: CGFloat = width / .two
+        let radius: CGFloat = width / 2
         
         let vertices = CGFloat(RealmLikedSongGenre.total)
         
-        let theta = .pi * (.two / vertices)
+        let theta = .pi * (2 / vertices)
         
         let path = UIBezierPath()
         
         path.move(to: CGPoint(x: xCenter, y: yCenter - CGFloat(radius * values.first.safe)))
         
-        for i in .one...Int(vertices) {
-            let localRadius = values[i - .one]
-            let x = (radius * localRadius) * sin((vertices - CGFloat(i) - .three) * theta)
-            let y = (radius * localRadius) * cos((vertices - CGFloat(i) - .three) * theta)
+        for i in 1...Int(vertices) {
+            let localRadius = values[i - 1]
+            let x = (radius * localRadius) * sin((vertices - CGFloat(i) - 3) * theta)
+            let y = (radius * localRadius) * cos((vertices - CGFloat(i) - 3) * theta)
             
             let x1: CGFloat = x+xCenter
             let y1: CGFloat = y+yCenter
@@ -97,12 +97,12 @@ class GenreMapView: UIView {
     }
     
     func animatePathChange(fast: Bool = false) {
-        var prevDelay = Double.zero
+        var prevDelay = 0.0
         let group = DispatchGroup()
-        for i in .zero..<RealmLikedSongGenre.total {
+        for i in 0..<RealmLikedSongGenre.total {
             group.enter()
             
-            delay((prevDelay + pow(fast ? .pointThree : .pointThree * .three, Double(i + .one))) / Constants.chartAnimationDelayGrowth) { [weak self] in
+            delay((prevDelay + pow(fast ? 0.3 : 0.3 * 3, Double(i + 1))) / Constants.chartAnimationDelayGrowth) { [weak self] in
                 guard let self = self else { return }
                 
                 let baseInset: CGFloat = Constants.baseInset
@@ -115,7 +115,7 @@ class GenreMapView: UIView {
                 
                 let animation = CABasicAnimation(keyPath: Constants.pathKeyPath)
                 
-                animation.duration = .half
+                animation.duration = 0.5
                 animation.fromValue = self.shapeLayer.presentation()?.path
                 animation.toValue = newPath
                 animation.timingFunction = Constants.chartAnimationTimingFunction
@@ -125,12 +125,12 @@ class GenreMapView: UIView {
                 self.shapeLayer.removeAllAnimations()
                 self.shapeLayer.add(animation, forKey: Constants.pathKeyPath)
                 
-                delay(.half) {
+                delay(0.5) {
                     group.leave()
                 }
             }
             
-            prevDelay += pow(fast ? .pointThree : .pointThree * .three, Double(i + .one))
+            prevDelay += pow(fast ? 0.3 : 0.3 * 3, Double(i + 1))
         }
         
         group.notify(queue: .main) { [weak self] in

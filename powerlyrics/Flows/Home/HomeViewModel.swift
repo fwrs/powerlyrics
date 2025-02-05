@@ -187,7 +187,7 @@ class HomeViewModel: ViewModel {
         
         var trendingSongsSection = trendingSongs.prefix(Constants.maxPlaylistPreviewCount)
             .enumerated()
-            .map { HomeCell.song(SongCellViewModel(song: $1, accessory: .ranking(nth: $0 + .one))) }
+            .map { HomeCell.song(SongCellViewModel(song: $1, accessory: .ranking(nth: $0 + 1))) }
         
         if trendingSongs.count > Constants.maxPlaylistPreviewCount {
             trendingSongsSection.append(.action(ActionCellViewModel(action: .seeTrendingSongs)))
@@ -195,7 +195,7 @@ class HomeViewModel: ViewModel {
         
         var viralSongsSection = viralSongs.prefix(Constants.maxPlaylistPreviewCount)
             .enumerated()
-            .map { HomeCell.song(SongCellViewModel(song: $1, accessory: .ranking(nth: $0 + .one))) }
+            .map { HomeCell.song(SongCellViewModel(song: $1, accessory: .ranking(nth: $0 + 1))) }
         
         if viralSongs.count > Constants.maxPlaylistPreviewCount {
             viralSongsSection.append(.action(ActionCellViewModel(action: .seeViralSongs)))

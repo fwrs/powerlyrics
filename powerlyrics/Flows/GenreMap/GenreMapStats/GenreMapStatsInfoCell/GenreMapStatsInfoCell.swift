@@ -40,7 +40,7 @@ class GenreMapStatsInfoCell: TableViewCell {
         paragraphStyle.lineSpacing = Constants.lineSpacing
 
         let attrString = NSMutableAttributedString(string: text)
-        attrString.addAttribute(.paragraphStyle, value: paragraphStyle, range: NSRange(location: .zero, length: attrString.length))
+        attrString.addAttribute(.paragraphStyle, value: paragraphStyle, range: NSRange(location: 0, length: attrString.length))
         
         attrString.addAttribute(.font, value: Constants.boldFont, range: NSString(string: text).range(of: viewModel.genre.localizedName))
 
@@ -48,7 +48,7 @@ class GenreMapStatsInfoCell: TableViewCell {
 
         emojiLabel.text = viewModel.level.emoji
         descriptionLabel.attributedText = attrString
-        songsLabel.text = viewModel.count == .one ? Constants.hereSongsTextSingular : Constants.hereSongsTextPlural
+        songsLabel.text = viewModel.count == 1 ? Constants.hereSongsTextSingular : Constants.hereSongsTextPlural
     }
     
 }

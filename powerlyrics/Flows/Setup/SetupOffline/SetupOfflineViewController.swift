@@ -98,9 +98,9 @@ class SetupOfflineViewController: ViewController, SetupOfflineScene {
         super.keyboardWillShow(notification: notification)
         
         UIView.animate { [weak self] in
-            self?.brandingStackView.transform = .init(translationX: .zero, y: -(UIScreen.main.bounds.height / Constants.keyboardOffsets.2))
-            self?.formStackView.transform = .init(translationX: .zero, y: -(UIScreen.main.bounds.height / Constants.keyboardOffsets.1))
-            self?.buttonsStackView.transform = .init(translationX: .zero, y: UIScreen.main.bounds.height / Constants.keyboardOffsets.0)
+            self?.brandingStackView.transform = .init(translationX: 0, y: -(UIScreen.main.bounds.height / Constants.keyboardOffsets.2))
+            self?.formStackView.transform = .init(translationX: 0, y: -(UIScreen.main.bounds.height / Constants.keyboardOffsets.1))
+            self?.buttonsStackView.transform = .init(translationX: 0, y: UIScreen.main.bounds.height / Constants.keyboardOffsets.0)
         }
         translationInteractor?.gesture?.isEnabled = false
     }

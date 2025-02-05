@@ -52,7 +52,7 @@ extension UIImageView {
     }
 
     func populate(with newImage: SharedImage?, placeholder: UIImage? = nil, result: ((Result<RetrieveImageResult, KingfisherError>) -> Void)? = nil) {
-        tag = .zero
+        tag = 0
         switch newImage {
         case .local(let localImage):
             image = localImage

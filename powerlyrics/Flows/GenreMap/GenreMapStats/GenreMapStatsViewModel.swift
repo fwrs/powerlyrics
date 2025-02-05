@@ -55,12 +55,12 @@ class GenreMapStatsViewModel: ViewModel {
             .map { index, item in
                 GenreMapStatsCell.song(
                     SongCellViewModel(song: item.asSharedSong),
-                    last: likedSongs.count - .one == index
+                    last: likedSongs.count - 1 == index
                 )
             }
         
         let counts = RealmLikedSongGenre.all.map { Float(realmService.likedSongs(with: $0).count) }
-        let average = counts.reduce(.zero, +) / Float(counts.filter { $0 != .zero }.count)
+        let average = counts.reduce(0, +) / Float(counts.filter { $0 != 0 }.count)
         
         if songs.isEmpty {
             items.replace(with: [

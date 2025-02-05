@@ -44,7 +44,7 @@ fileprivate extension Constants {
     
     static let topPaddingFunction = { (x: CGFloat, safeAreaInsets: UIEdgeInsets) -> CGFloat in
         min(
-            Constants.defaultTopPadding - (UIDevice.current.hasNotch ? .zero : Constants.space20),
+            Constants.defaultTopPadding - (UIDevice.current.hasNotch ? 0 : Constants.space20),
             max(44 + safeAreaInsets.top, -x - 22 + (UIDevice.current.hasNotch ? 0 : 4))
         )
     }
@@ -59,10 +59,15 @@ fileprivate extension Constants {
     
     static let translationYAvatarFunction = { (x: CGFloat) -> CGFloat in
         let extraAdjustment: CGFloat = UIDevice.current.hasNotch ? (8.125 * pow(x, 2) - 10.125 * x + 3) : (7.0 * x - 7.0)
-        return ((-312.831 * pow(x, 4) + 840.079 * pow(x, 3) - 793.935 * pow(x, 2) + 287.687 * x) *
-            (UIDevice.current.hasNotch ? 1 : 0.55)) + extraAdjustment }
+        let component1: CGFloat = -312.831 * pow(x, 4)
+        let component2: CGFloat = 840.079 * pow(x, 3)
+        let component3: CGFloat = 793.935 * pow(x, 2)
+        let component4: CGFloat = 287.687 * x
+        let mult1: CGFloat = component1 + component2 - component3 + component4
+        let mult2: CGFloat = (UIDevice.current.hasNotch ? 1 : 0.55)
+        return (mult1 * mult2) + extraAdjustment }
     static let translationYUserInfoFunction = { (x: CGFloat) -> CGFloat in
-        (287.114 * x - 427.069 * pow(x, 2)) - (UIDevice.current.hasNotch ? .zero : 9) }
+        (287.114 * x - 427.069 * pow(x, 2)) - (UIDevice.current.hasNotch ? 0 : 9) }
     static let avatarHeightFunction = { (x: CGFloat) -> CGFloat in
         (105 - 61 * x) * (UIDevice.current.hasNotch ? 1 : 0.9) }
     static let avatarScaleFunction = { (x: CGFloat) -> CGFloat in
@@ -170,7 +175,7 @@ extension ProfileViewController {
         tableView.register(ProfileBuildCell.self)
         
         tableView.contentInset.top = Constants.defaultTopPadding - safeAreaInsets.top +
-            Constants.space20 + .two - (UIDevice.current.hasNotch ? .zero : Constants.space24)
+            Constants.space20 + 2 - (UIDevice.current.hasNotch ? 0 : Constants.space24)
         
         tableView.delegate = self
         
@@ -277,7 +282,7 @@ extension ProfileViewController: UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        section == tableView.numberOfSections - .two ?
+        section == tableView.numberOfSections - 2 ?
             Constants.space12 :
             (UIDevice.current.hasNotch ? Constants.space20 : Constants.space16)
     }
@@ -289,29 +294,29 @@ extension ProfileViewController: UITableViewDelegate {
         
         tableView.verticalScrollIndicatorInsets.top = topPadding - safeAreaInsets.top
         avatarDimensionConstraint.constant = Constants.avatarHeightFunction(progress)
-        avatarImageView.layer.cornerRadius = avatarDimensionConstraint.constant / .two
+        avatarImageView.layer.cornerRadius = avatarDimensionConstraint.constant / 2
         navigationBarHeightConstraint.constant = topPadding
         
         avatarContainerView.transform = CGAffineTransform(
-            translationX: .zero,
+            translationX: 0,
             y: Constants.translationYAvatarFunction(progress)
         ).scaledBy(x: scale, y: scale)
         
         userInfoStackView.transform = .init(
-            translationX: .zero,
+            translationX: 0,
             y: Constants.translationYUserInfoFunction(progress)
         )
         
-        userInfoStackView.alpha = pow(.one - progress, Constants.space8)
+        userInfoStackView.alpha = pow(1 - progress, Constants.space8)
         
-        delay(shouldDrawShadow ? Constants.tinyDelay : .zero) { [weak self] in
+        delay(shouldDrawShadow ? Constants.tinyDelay : 0) { [weak self] in
             guard let self = self else { return }
             self.avatarContainerView.shadow(
                 color: Constants.albumArtShadowColor,
                 radius: Constants.albumArtShadowRadius,
                 offset: Constants.albumArtShadowOffset,
                 opacity: Constants.defaultShadowOpacity,
-                viewCornerRadius: self.avatarDimensionConstraint.constant / .two
+                viewCornerRadius: self.avatarDimensionConstraint.constant / 2
             )
         }
         

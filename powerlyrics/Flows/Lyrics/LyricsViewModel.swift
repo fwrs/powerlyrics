@@ -121,7 +121,7 @@ class LyricsViewModel: ViewModel {
                     guard let self = self else { return }
                     switch event {
                     case .value(let response):
-                        if let producers = response.response.song.producerArtists?.prefix(.two) {
+                        if let producers = response.response.song.producerArtists?.prefix(2) {
                             self.producers.value = producers.map { $0.name.clean.typographized }
                         }
                         if let album = response.response.song.album, let artist = album.artist {
@@ -163,17 +163,17 @@ class LyricsViewModel: ViewModel {
                             !$0.result.primaryArtist.name.contains(Constants.geniusAuthor) &&
                             !$0.result.primaryArtist.name.contains(Constants.spotifyAuthor)
                     }
-                    guard filteredData.nonEmpty, let url = filteredData[.zero].result.url else {
+                    guard filteredData.nonEmpty, let url = filteredData[0].result.url else {
                         self.endLoading()
                         self.lyricsNotFound.value = true
                         return
                     }
-                    let id = filteredData[.zero].result.id
+                    let id = filteredData[0].result.id
                     self.geniusID = id
                     self.geniusURL = url
                     self.song.geniusID = id
                     self.song.geniusURL = url
-                    self.isLiked.value = self.realmService.findLikedSong(geniusID: filteredData[.zero].result.id) != nil
+                    self.isLiked.value = self.realmService.findLikedSong(geniusID: filteredData[0].result.id) != nil
                     onSongFetch(url, id)
                     
                 case .failed:

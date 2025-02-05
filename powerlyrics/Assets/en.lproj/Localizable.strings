@@ -138,7 +138,7 @@
 "profile.stats.discoveries.singular" = "new discovery";
 "profile.stats.viewedArtists.plural" = "viewed artists";
 "profile.stats.viewedArtists.singular" = "viewed artist";
-"profile.build" = "Build %@ — Powered by RapGenius %@";
+"profile.build" = "Build %@ — Powered by Genius %@";
 
 /* MARK: - Lyrics */
 

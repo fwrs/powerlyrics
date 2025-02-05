@@ -191,8 +191,8 @@ class LyricsViewController: ViewController, LyricsScene {
                 .foregroundColor: highlight ? UIColor.label.withAlphaComponent(Constants.tappedAlbumAlpha) : UIColor.label
             ])
             
-            attrString.addAttribute(.foregroundColor, value: UIColor.secondaryLabel, range: NSRange(location: .zero, length: "\(Constants.fromAlbumText) “".count))
-            attrString.addAttribute(.foregroundColor, value: UIColor.secondaryLabel, range: NSRange(location: text.count - .one, length: .one))
+            attrString.addAttribute(.foregroundColor, value: UIColor.secondaryLabel, range: NSRange(location: 0, length: "\(Constants.fromAlbumText) “".count))
+            attrString.addAttribute(.foregroundColor, value: UIColor.secondaryLabel, range: NSRange(location: text.count - 1, length: 1))
         } else {
             attrString = NSMutableAttributedString(string: Constants.notPartOfAnAlbumText, attributes: [.foregroundColor: UIColor.secondaryLabel])
         }
@@ -248,13 +248,13 @@ extension LyricsViewController {
         albumArtContainerView.shadow(
             color: .black,
             radius: 6,
-            offset: CGSize(width: .zero, height: 3),
+            offset: CGSize(width: 0, height: 3),
             opacity: Constants.defaultShadowOpacity,
             viewCornerRadius: 8,
             viewSquircle: true
         )
         
-        tableView.contentInset = UIEdgeInsets(top: Constants.baseContentInset - safeAreaInsets.top - (UIDevice.current.hasNotch ? .zero : Constants.contentInsetNotchAdjustment), left: .zero, bottom: -safeAreaInsets.bottom, right: .zero)
+        tableView.contentInset = UIEdgeInsets(top: Constants.baseContentInset - safeAreaInsets.top - (UIDevice.current.hasNotch ? 0 : Constants.contentInsetNotchAdjustment), left: 0, bottom: -safeAreaInsets.bottom, right: 0)
         tableView.allowsSelection = false
         tableView.delegate = self
         
@@ -290,7 +290,7 @@ extension LyricsViewController {
         [likeButton, shareButton, safariButton, storyButton].forEach { button in
             button.reactive.controlEvents([.touchDown, .touchDragEnter]).observeNext { _ in
                 UIView.animate(withDuration: Constants.fastAnimationDuration) {
-                    button.alpha = .half
+                    button.alpha = 0.5
                 }
             }.dispose(in: disposeBag)
         }
@@ -339,7 +339,7 @@ extension LyricsViewController {
             self.flowStory?(story)
         }.dispose(in: disposeBag)
         
-        firstInfoLabel.reactive.longPressGesture(minimumPressDuration: .zero).observeNext { [weak self] recognizer in
+        firstInfoLabel.reactive.longPressGesture(minimumPressDuration: 0).observeNext { [weak self] recognizer in
             guard let self = self, let fixedAlbumInfo = self.viewModel.fixedAlbumInfo else { return }
             
             if recognizer.state == .ended || recognizer.state == .cancelled {
@@ -384,7 +384,7 @@ extension LyricsViewController {
             }
         }.dispose(in: disposeBag)
         
-        viewModel.albumInfo.dropFirst(.one).observeNext { [weak self] _ in
+        viewModel.albumInfo.dropFirst(1).observeNext { [weak self] _ in
             guard let self = self else { return }
             
             UIView.fadeUpdate(self.firstInfoLabel) {
@@ -392,14 +392,14 @@ extension LyricsViewController {
             }
         }.dispose(in: disposeBag)
         
-        viewModel.producers.dropFirst(.one).observeNext { [weak self] producers in
+        viewModel.producers.dropFirst(1).observeNext { [weak self] producers in
             guard let self = self, producers.nonEmpty else { return }
             let text = "\(Constants.producedByText) \(producers.joined(separator: " \(Constants.ampersand) "))"
             let attrString = NSMutableAttributedString(string: text, attributes: [.foregroundColor: UIColor.label])
             
-            attrString.addAttribute(.foregroundColor, value: UIColor.secondaryLabel, range: NSRange(location: .zero, length: "\(Constants.producedByText) ".count))
-            if producers.count > .one {
-                attrString.addAttribute(.foregroundColor, value: UIColor.secondaryLabel, range: NSRange(location: "\(Constants.producedByText) ".count + producers.first.safe.count, length: .three))
+            attrString.addAttribute(.foregroundColor, value: UIColor.secondaryLabel, range: NSRange(location: 0, length: "\(Constants.producedByText) ".count))
+            if producers.count > 1 {
+                attrString.addAttribute(.foregroundColor, value: UIColor.secondaryLabel, range: NSRange(location: "\(Constants.producedByText) ".count + producers.first.safe.count, length: 3))
             }
             
             UIView.fadeUpdate(self.secondInfoLabel) {
@@ -407,7 +407,7 @@ extension LyricsViewController {
             }
         }.dispose(in: disposeBag)
         
-        viewModel.isLoading.dropFirst(.one).observeNext { [weak self] isLoading in
+        viewModel.isLoading.dropFirst(1).observeNext { [weak self] isLoading in
             guard let self = self else { return }
             UIView.fadeDisplay(self.activityIndicator, visible: isLoading)
         }.dispose(in: disposeBag)
@@ -418,7 +418,7 @@ extension LyricsViewController {
             }
         }.dispose(in: disposeBag)
         
-        viewModel.isLiked.dropFirst(.one).observeNext { [weak self] _ in
+        viewModel.isLiked.dropFirst(1).observeNext { [weak self] _ in
             self?.likeButton.isUserInteractionEnabled = true
         }.dispose(in: disposeBag)
         
@@ -454,7 +454,7 @@ extension LyricsViewController: TranslationAnimationView {
 extension LyricsViewController: UITableViewDelegate {
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        let total: CGFloat = Constants.baseNavigationBarHeight - (UIDevice.current.hasNotch ? .zero : Constants.contentInsetNotchAdjustment)
+        let total: CGFloat = Constants.baseNavigationBarHeight - (UIDevice.current.hasNotch ? 0 : Constants.contentInsetNotchAdjustment)
         let topPadding = min(total, max(Constants.navigationBarHeight + safeAreaInsets.top - Constants.space14, -scrollView.contentOffset.y + Constants.space12) + Constants.space14)
         navigationBarHeightConstraint.constant = topPadding
         tableView.verticalScrollIndicatorInsets.top = topPadding - safeAreaInsets.top - Constants.navigationBarHeight
@@ -476,7 +476,7 @@ extension LyricsViewController: UITableViewDelegate {
         let songViewAdjustment = pow((topPadding + Constants.cutoffs.1) / total, Constants.space5)
         
         songView.transform = .init(
-            translationX: .zero,
+            translationX: 0,
             y: Constants.songViewTransformYFunction(songViewAdjustment)
         )
     }

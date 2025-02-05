@@ -55,14 +55,14 @@ enum Constants {
     
     // MARK: - Animations
     
-    static let fastAnimationDuration = Double.pointThree / .two
-    static let defaultAnimationDuration = Double.pointThree
-    static let defaultAnimationDelay = Double.pointThree
+    static let fastAnimationDuration = 0.3 / 2
+    static let defaultAnimationDuration = 0.3
+    static let defaultAnimationDelay = 0.3
     
     // MARK: - Album art
     
     static let albumArtShadowRadius: CGFloat = 6
-    static let albumArtShadowOffset = CGSize(width: .zero, height: 3)
+    static let albumArtShadowOffset = CGSize(width: 0, height: 3)
     static let albumArtShadowCornerRadius: CGFloat = 8
     static let albumArtShadowColor = UIColor.black
     
@@ -73,7 +73,7 @@ enum Constants {
     
     // MARK: - Miscellaneous
     
-    static let buttonThrottleTime = Double.pointThree
-    static let defaultShadowOpacity = Float.pointThree
+    static let buttonThrottleTime = 0.3
+    static let defaultShadowOpacity: Float = 0.3
     
 }

@@ -10,7 +10,7 @@ import RealmSwift
 
 class RealmStats: Object {
 
-    @objc dynamic var searches = Int.zero
+    @objc dynamic var searches = 0
     
     let discoveries = List<Int>()
     let viewedArtists = List<Int>()

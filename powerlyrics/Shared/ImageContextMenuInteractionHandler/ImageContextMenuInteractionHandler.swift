@@ -89,8 +89,8 @@ class ImageContextMenuInteractionHandler: NSObject, UIContextMenuInteractionDele
         configurationForMenuAtLocation location: CGPoint
     ) -> UIContextMenuConfiguration? {
         guard imageView?.loaded == true else { return nil }
-        UIView.animate(withDuration: Constants.defaultAnimationDuration, delay: .half) { [weak self] in
-            self?.shadowFadeView?.layer.shadowOpacity = .zero
+        UIView.animate(withDuration: Constants.defaultAnimationDuration, delay: 0.5) { [weak self] in
+            self?.shadowFadeView?.layer.shadowOpacity = 0
         }
         let controller = ImagePreviewController(fullImage, placeholder: imageView?.image)
         return UIContextMenuConfiguration(

@@ -99,14 +99,14 @@ class SongCell: TableViewCell {
     }
     
     override func setHighlighted(_ highlighted: Bool, animated: Bool) {
-        let highlightColor = dominantColor?.adjust(brightnessBy: .oneHalfth, minBrightness: .pointOne) ?? Asset.Colors.highlightCellColor.color
+        let highlightColor = dominantColor?.adjust(brightnessBy: 1.5, minBrightness: 0.1) ?? Asset.Colors.highlightCellColor.color
         let baseColor = dominantColor ?? normalCellColor
-        UIView.animate(withDuration: (highlighted || !animated) ? (Constants.defaultAnimationDuration * .pointOne) : Constants.defaultAnimationDuration) { [weak self] in
+        UIView.animate(withDuration: (highlighted || !animated) ? (Constants.defaultAnimationDuration * 0.1) : Constants.defaultAnimationDuration) { [weak self] in
             self?.backgroundColorView.backgroundColor = highlighted ? highlightColor : (self?.dominantColor).safe
             self?.accessoryBackgroundView.backgroundColor = highlighted ? highlightColor : baseColor
             self?.accessoryBackgroundExtensionView.backgroundColor = highlighted ? highlightColor : baseColor
         }
-        UIView.fadeUpdate(accessoryFadeOutView, duration: (highlighted || !animated) ? (Constants.defaultAnimationDuration * .pointOne) : Constants.defaultAnimationDuration) { [weak self] in
+        UIView.fadeUpdate(accessoryFadeOutView, duration: (highlighted || !animated) ? (Constants.defaultAnimationDuration * 0.1) : Constants.defaultAnimationDuration) { [weak self] in
             self?.accessoryFadeOutView.gradientLayer.colors = highlighted ?
                 [highlightColor.transparent.cg, highlightColor.cg] :
                 [baseColor.transparent.cg, baseColor.cg]
@@ -114,14 +114,14 @@ class SongCell: TableViewCell {
     }
     
     override func setSelected(_ selected: Bool, animated: Bool) {
-        let highlightColor = dominantColor?.adjust(brightnessBy: .oneHalfth, minBrightness: .pointOne) ?? Asset.Colors.highlightCellColor.color
+        let highlightColor = dominantColor?.adjust(brightnessBy: 1.5, minBrightness: 0.1) ?? Asset.Colors.highlightCellColor.color
         let baseColor = dominantColor ?? normalCellColor
-        UIView.animate(withDuration: (selected || !animated) ? (Constants.defaultAnimationDuration * .pointOne) : Constants.defaultAnimationDuration) { [weak self] in
+        UIView.animate(withDuration: (selected || !animated) ? (Constants.defaultAnimationDuration * 0.1) : Constants.defaultAnimationDuration) { [weak self] in
             self?.backgroundColorView.backgroundColor = selected ? highlightColor : (self?.dominantColor).safe
             self?.accessoryBackgroundView.backgroundColor = selected ? highlightColor : baseColor
             self?.accessoryBackgroundExtensionView.backgroundColor = selected ? highlightColor : baseColor
         }
-        UIView.fadeUpdate(accessoryFadeOutView, duration: (selected || !animated) ? (Constants.defaultAnimationDuration * .pointOne) : Constants.defaultAnimationDuration) { [weak self] in
+        UIView.fadeUpdate(accessoryFadeOutView, duration: (selected || !animated) ? (Constants.defaultAnimationDuration * 0.1) : Constants.defaultAnimationDuration) { [weak self] in
             self?.accessoryFadeOutView.gradientLayer.colors = selected ?
                 [highlightColor.transparent.cg, highlightColor.cg] :
                 [baseColor.transparent.cg, baseColor.cg]
@@ -152,7 +152,7 @@ class SongCell: TableViewCell {
                 value.image.getColors(quality: .lowest, { [weak self] colors in
                     guard let self = self else { return }
                     
-                    let color = (colors?.primary.adjust(brightnessBy: .half)).safe
+                    let color = (colors?.primary.adjust(brightnessBy: 0.5)).safe
                     UIView.animate { [weak self] in
                         self?.backgroundColorView.backgroundColor = color
                         self?.accessoryBackgroundView.backgroundColor = color

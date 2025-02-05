@@ -111,15 +111,15 @@ class ProfileViewModel: ViewModel {
             )
         }
         
-        if items[sectionAt: .zero].items[.zero] != ProfileCell.stats(stats.value) {
-            items[sectionAt: .zero].items[.zero] = ProfileCell.stats(stats.value)
+        if items[sectionAt: 0].items[0] != ProfileCell.stats(stats.value) {
+            items[sectionAt: 0].items[0] = ProfileCell.stats(stats.value)
         }
         
         let isSpotifyAccount: Bool? = keychainService.getDecodable(for: .spotifyAuthorizedWithAccount)
         
         items.batchUpdate { property in
             
-            property.replaceItems(ofSectionAt: .one, with: [
+            property.replaceItems(ofSectionAt: 1, with: [
                 isSpotifyAccount == true ?
                     ProfileCell.action(ActionCellViewModel(action: .manageAccount)) :
                     ProfileCell.action(ActionCellViewModel(action: .connectToSpotify)),
@@ -128,7 +128,7 @@ class ProfileViewModel: ViewModel {
                 ProfileCell.action(ActionCellViewModel(action: .signOut))
             ], performDiff: true)
             
-            property.replaceItems(ofSectionAt: .two, with: [
+            property.replaceItems(ofSectionAt: 2, with: [
                 ProfileCell.build(ProfileBuildCellViewModel(text: Constants.footerText))
             ], performDiff: true)
             

@@ -136,7 +136,7 @@ extension SongListViewController {
             self?.tableView.isRefreshing = isRefreshing
         }.dispose(in: disposeBag)
         
-        viewModel.isLoading.dropFirst(.one).observeNext { [weak self] loading in
+        viewModel.isLoading.dropFirst(1).observeNext { [weak self] loading in
             guard let self = self else { return }
             
             UIView.fadeDisplay(self.activityIndicator, visible: loading)
@@ -158,13 +158,13 @@ extension SongListViewController {
             viewModel.isFailed,
             viewModel.isLoadingWithPreview,
             viewModel.couldntFindAlbumError
-        ).dropFirst(.two).map { isEmpty, isLoading, isRefreshing, isFailed, isLoadingWithPreview, couldntFindAlbum in
+        ).dropFirst(2).map { isEmpty, isLoading, isRefreshing, isFailed, isLoadingWithPreview, couldntFindAlbum in
             isEmpty && !isLoading && !isRefreshing && !isFailed && !isLoadingWithPreview && !couldntFindAlbum
         }.removeDuplicates().observeNext { [weak self] isVisible in
             self?.setEmptyView(isVisible: isVisible)
         }.dispose(in: disposeBag)
         
-        viewModel.isFailed.removeDuplicates().dropFirst(.one).observeNext { [weak self] isFailed in
+        viewModel.isFailed.removeDuplicates().dropFirst(1).observeNext { [weak self] isFailed in
             self?.setNoInternetView(isVisible: isFailed) {
                 self?.viewModel.loadData(retry: true)
             }

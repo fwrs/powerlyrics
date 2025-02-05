@@ -8,9 +8,9 @@
 
 struct ProfileStatsCellViewModel: Equatable {
     
-    var likedSongs = Int.zero
-    var searches = Int.zero
-    var discoveries = Int.zero
-    var viewedArtists = Int.zero
+    var likedSongs = 0
+    var searches = 0
+    var discoveries = 0
+    var viewedArtists = 0
     
 }

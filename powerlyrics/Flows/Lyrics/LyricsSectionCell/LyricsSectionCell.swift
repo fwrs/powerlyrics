@@ -76,7 +76,7 @@ extension LyricsSectionCell: UIContextMenuInteractionDelegate {
             UIPasteboard.general.string = text
         }
         
-        UIView.animate(withDuration: .pointOne, delay: .pointOne) { [weak self] in
+        UIView.animate(withDuration: 0.1, delay: 0.1) { [weak self] in
             self?.backgroundColor = .systemBackground
         }
         
@@ -91,7 +91,7 @@ extension LyricsSectionCell: UIContextMenuInteractionDelegate {
     
     func contextMenuInteraction(_ interaction: UIContextMenuInteraction, willEndFor configuration: UIContextMenuConfiguration, animator: UIContextMenuInteractionAnimating?) {
         UIView.animate(
-            withDuration: .oneHalfth * .pointOne,
+            withDuration: 1.6,
             delay: Constants.contextMenuFadeOutDelay
         ) { [weak self] in
             self?.backgroundColor = .clear

@@ -73,7 +73,7 @@ class SearchAlbumsCell: TableViewCell {
     // MARK: - Configure
     
     func configure(with viewModel: SearchAlbumsCellViewModel) {
-        for (index, album) in (.zero..<Int.three).map({ viewModel.albums[safe: $0] }).enumerated() {
+        for (index, album) in (0..<3).map({ viewModel.albums[safe: $0] }).enumerated() {
             if let album = album, album.name.nonEmpty {
                 albumArtImageViews[safe: index]?.populate(with: album.thumbnailAlbumArt)
                 albumNameLabels[safe: index]?.text = album.name
@@ -86,7 +86,7 @@ class SearchAlbumsCell: TableViewCell {
                 albumArrangedSubviews[safe: index]?.isHidden = true
                 albumNameLabels[safe: index]?.text = .init()
             }
-            stackView.spacing = index == .two && album == nil ?
+            stackView.spacing = index == 2 && album == nil ?
                 Constants.twoAlbumsStackViewSpacing :
                 Constants.threeAlbumsStackViewSpacing
         }

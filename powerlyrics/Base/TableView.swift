@@ -26,7 +26,7 @@ class TableView: UITableView {
             if newValue {
                 customRefreshControl?.beginRefreshing()
             } else {
-                delay(.half) { [weak self] in
+                delay(0.5) { [weak self] in
                     self?.customRefreshControl?.endRefreshing()
                 }
             }
@@ -35,21 +35,21 @@ class TableView: UITableView {
     
     // MARK: - Public API
     
-    @discardableResult func setRefreshControl(top: CGFloat = .zero, _ completion: @escaping DefaultAction) -> UIRefreshControl {
+    @discardableResult func setRefreshControl(top: CGFloat = 0, _ completion: @escaping DefaultAction) -> UIRefreshControl {
         if let control = customRefreshControl { return control }
         refreshControlHandle = completion
         let newControl = UIRefreshControl()
         newControl.addTarget(self, action: #selector(refreshControlPulled), for: .valueChanged)
         customRefreshControl = newControl
-        let refreshView = UIView(frame: CGRect(x: .zero, y: top, width: .zero, height: .zero))
+        let refreshView = UIView(frame: CGRect(x: 0, y: top, width: 0, height: 0))
         addSubview(refreshView)
         refreshView.addSubview(newControl)
         return newControl
     }
     
-    @discardableResult func setRefreshControl(top: CGFloat = .zero) -> UIRefreshControl {
+    @discardableResult func setRefreshControl(top: CGFloat = 0) -> UIRefreshControl {
         setRefreshControl(top: top) { [weak self] in
-            delay(.half) {
+            delay(0.5) {
                 self?.set(refreshing: false)
             }
         }

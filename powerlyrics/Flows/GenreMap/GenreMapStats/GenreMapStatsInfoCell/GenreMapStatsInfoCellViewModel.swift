@@ -26,11 +26,11 @@ enum GenreMapStatsInfoLevel {
     case overwhelming
     
     init(count: Int, average: Float) {
-        if count == .one {
+        if count == 1 {
             self = .low
             return
         }
-        if count < .three {
+        if count < 3 {
             self = .ok
             return
         }
@@ -68,21 +68,21 @@ enum GenreMapStatsInfoLevel {
     func localizedDescription(count: Int, genre: RealmLikedSongGenre) -> String {
         switch self {
         case .low:
-            let songLikedText = count == .one ?
+            let songLikedText = count == 1 ?
                 Strings.GenreAnalysis.Low.songsLikedSingular(count) :
                 Strings.GenreAnalysis.Low.songsLikedPlural(count)
             
             return Strings.GenreAnalysis.low(genre.localizedName, songLikedText)
             
         case .ok:
-            let songLikedText = count == .one ?
+            let songLikedText = count == 1 ?
                 Strings.GenreAnalysis.Ok.songsLikedSingular(count) :
                 Strings.GenreAnalysis.Ok.songsLikedPlural(count)
             
             return Strings.GenreAnalysis.ok(genre.localizedName, songLikedText)
             
         case .good:
-            let likedSongText = count == .one ?
+            let likedSongText = count == 1 ?
                 Strings.GenreAnalysis.Good.likedSongsSingular(count) :
                 Strings.GenreAnalysis.Good.likedSongsPlural(count)
             

@@ -58,7 +58,7 @@ class SongListViralViewModel: SongListViewModel {
                         with: trendingSongs.enumerated()
                             .map { .song(SongCellViewModel(
                                 song: $1.asSharedSong,
-                                accessory: .ranking(nth: $0 + .one)
+                                accessory: .ranking(nth: $0 + 1)
                             )) },
                         performDiff: true
                     )

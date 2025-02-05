@@ -12,12 +12,12 @@ import UIKit
 
 fileprivate extension Constants {
     
-    static let colorComponentsCount = Int.four
+    static let colorComponentsCount = 4
     static let maxColorValue: CGFloat = 255
-    static let red = Int.zero
-    static let green = Int.one
-    static let blue = Int.two
-    static let alpha = Int.three
+    static let red = 0
+    static let green = 1
+    static let blue = 2
+    static let alpha = 3
     
 }
 
@@ -42,7 +42,7 @@ extension UIImage {
         
         guard let outputImage = filter.outputImage else { return nil }
         
-        var bitmap = [UInt8](repeating: .zero, count: Constants.colorComponentsCount)
+        var bitmap = [UInt8](repeating: 0, count: Constants.colorComponentsCount)
         let context = CIContext(options: [.workingColorSpace: kCFNull!])
         
         context.render(
@@ -50,10 +50,10 @@ extension UIImage {
             toBitmap: &bitmap,
             rowBytes: Constants.colorComponentsCount,
             bounds: CGRect(
-                x: .zero,
-                y: .zero,
-                width: CGFloat.one,
-                height: CGFloat.one
+                x: 0,
+                y: 0,
+                width: 1,
+                height: 1
             ),
             format: .RGBA8,
             colorSpace: nil
@@ -68,7 +68,7 @@ extension UIImage {
     }
     
     static func from(color: UIColor) -> UIImage {
-        let rect = CGRect(x: .zero, y: .zero, width: CGFloat.one, height: CGFloat.one)
+        let rect = CGRect(x: 0, y: 0, width: 1, height: 1)
         UIGraphicsBeginImageContext(rect.size)
         
         let context = UIGraphicsGetCurrentContext()
@@ -156,14 +156,14 @@ fileprivate extension Double {
         var cValue = mValue - fmin(rFix, fmin(gFix, bFix))
         
         value = mValue
-        saturation = value == .zero ? .zero : cValue / value
+        saturation = value == 0 ? 0 : cValue / value
         
         if minSaturation <= saturation {
             return self
         }
         
-        if cValue == .zero {
-            hue = .zero
+        if cValue == 0 {
+            hue = 0
         } else if rFix == mValue {
             hue = fmod((gFix - bFix) / cValue, 6)
         } else if gFix == mValue {
@@ -172,7 +172,7 @@ fileprivate extension Double {
             hue = 4 + ((rFix - gFix) / cValue)
         }
         
-        if hue < .zero {
+        if hue < 0 {
             hue += 6
         }
         
@@ -184,37 +184,37 @@ fileprivate extension Double {
         case 0...1:
             red = cValue
             green = xValue
-            blue = Double.zero
+            blue = 0
             
         case 1...2:
             red = xValue
             green = cValue
-            blue = Double.zero
+            blue = 0
             
         case 2...3:
-            red = Double.zero
+            red = 0
             green = cValue
             blue = xValue
             
         case 3...4:
-            red = Double.zero
+            red = 0
             green = xValue
             blue = cValue
             
         case 4...5:
             red = xValue
-            green = Double.zero
+            green = 0
             blue = cValue
             
         case 5..<6:
             red = cValue
-            green = Double.zero
+            green = 0
             blue = xValue
             
         default:
-            red = Double.zero
-            green = Double.zero
-            blue = Double.zero
+            red = 0
+            green = 0
+            blue = 0
         }
         
         let mNewValue = value - cValue
@@ -247,7 +247,7 @@ extension UIImage {
         defer {
             UIGraphicsEndImageContext()
         }
-        self.draw(in: CGRect(x: .zero, y: .zero, width: newSize.width, height: newSize.height))
+        self.draw(in: CGRect(x: 0, y: 0, width: newSize.width, height: newSize.height))
         guard let result = UIGraphicsGetImageFromCurrentImageContext() else {
             fatalError("UIImageColors.resizeForUIImageColors failed: UIGraphicsGetImageFromCurrentImageContext returned nil.")
         }
@@ -324,15 +324,15 @@ extension UIImage {
         var proposedEdgeColor: UIImageColorsCounter
         let numberOfItems = sortedColors.count
         if numberOfItems > 0 {
-            proposedEdgeColor = sortedColors.object(at: .zero) as! UIImageColorsCounter
+            proposedEdgeColor = sortedColors.object(at: 0) as! UIImageColorsCounter
         } else {
-            proposedEdgeColor = UIImageColorsCounter(color: .zero, count: .one)
+            proposedEdgeColor = UIImageColorsCounter(color: 0, count: 1)
         }
         
-        if proposedEdgeColor.color.isBlackOrWhite && .zero < sortedColors.count {
+        if proposedEdgeColor.color.isBlackOrWhite && 0 < sortedColors.count {
             for i in 1..<sortedColors.count {
                 let nextProposedEdgeColor = sortedColors.object(at: i) as! UIImageColorsCounter
-                if Double(nextProposedEdgeColor.count)/Double(proposedEdgeColor.count) > .pointThree {
+                if Double(nextProposedEdgeColor.count) / Double(proposedEdgeColor.count) > 0.3 {
                     if !nextProposedEdgeColor.color.isBlackOrWhite {
                         proposedEdgeColor = nextProposedEdgeColor
                         break
@@ -342,7 +342,7 @@ extension UIImage {
                 }
             }
         }
-        proposed[.zero] = proposedEdgeColor.color
+        proposed[0] = proposedEdgeColor.color
         
         enumerator = imageColors.objectEnumerator()
         sortedColors.removeAllObjects()

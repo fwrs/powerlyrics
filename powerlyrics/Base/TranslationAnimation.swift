@@ -104,58 +104,58 @@ class TranslationAnimation: NSObject, UIViewControllerAnimatedTransitioning {
 
         zip(toSnapshots, frames).forEach { snapshot, frame in
             snapshot.frame = frame.0
-            snapshot.alpha = .zero
+            snapshot.alpha = 0
             container.addSubview(snapshot)
         }
         
         fromSnapshots.forEach { container.addSubview($0) }
         if fromVC.translationViews.nonEmpty && toVC.translationViews.nonEmpty {
-            fromVC.translationViews.forEach { $0.alpha = .zero }
-            toVC.translationViews.forEach { $0.alpha = .zero }
+            fromVC.translationViews.forEach { $0.alpha = 0 }
+            toVC.translationViews.forEach { $0.alpha = 0 }
         }
         
         if type == .present {
-            toVCCorrectedView.transform = .init(translationX: toVCCorrectedView.frame.width, y: .zero)
+            toVCCorrectedView.transform = .init(translationX: toVCCorrectedView.frame.width, y: 0)
             if fromVC.completelyMoveAway {
-                toVCCorrectedView.alpha = .zero
+                toVCCorrectedView.alpha = 0
             }
         } else {
             if toVC.completelyMoveAway {
-                toVCCorrectedView.alpha = .zero
+                toVCCorrectedView.alpha = 0
             }
-            toVCCorrectedView.alpha = toVC.completelyMoveAway ? .zero : .half
+            toVCCorrectedView.alpha = toVC.completelyMoveAway ? 0 : 0.5
             toVCCorrectedView.transform = .init(
                 translationX: -(toVCCorrectedView.bounds.width /
                     (toVC.completelyMoveAway ?
-                        .one :
+                        1 :
                         Constants.presentationControllerMoveAwayMultipler)),
-                y: .zero)
+                y: 0)
         }
         
         let animationsClosure = { [weak self] in
             zip(toSnapshots, frames).forEach { snapshot, frame in
                 snapshot.frame = frame.1
-                snapshot.alpha = .one
+                snapshot.alpha = 1
             }
 
             zip(fromSnapshots, frames).forEach { snapshot, frame in
                 snapshot.frame = frame.1
-                snapshot.alpha = (self?.isInNavigationController == true) ? .one : .zero
+                snapshot.alpha = (self?.isInNavigationController == true) ? 1 : 0
             }
 
             if self?.type == .present {
                 toVCCorrectedView.transform = .identity
-                fromVCCorrectedView.alpha = fromVC.completelyMoveAway ? .one : .half
-                fromVCCorrectedView.transform = .init(translationX: -(fromVCCorrectedView.bounds.width / (fromVC.completelyMoveAway ? .one : .three)), y: .zero)
+                fromVCCorrectedView.alpha = fromVC.completelyMoveAway ? 1 : 0.5
+                fromVCCorrectedView.transform = .init(translationX: -(fromVCCorrectedView.bounds.width / (fromVC.completelyMoveAway ? 1 : 3)), y: 0)
                 if fromVC.completelyMoveAway {
-                    toVCCorrectedView.alpha = .one
+                    toVCCorrectedView.alpha = 1
                 }
             } else if self?.type == .dismiss {
-                fromVCCorrectedView.transform = .init(translationX: fromVCCorrectedView.frame.width, y: .zero)
-                toVCCorrectedView.alpha = .one
+                fromVCCorrectedView.transform = .init(translationX: fromVCCorrectedView.frame.width, y: 0)
+                toVCCorrectedView.alpha = 1
                 if toVC.completelyMoveAway {
-                    fromVCCorrectedView.alpha = .zero
-                    toVCCorrectedView.alpha = .one
+                    fromVCCorrectedView.alpha = 0
+                    toVCCorrectedView.alpha = 1
                 }
                 toVCCorrectedView.transform = .identity
             }
@@ -164,19 +164,19 @@ class TranslationAnimation: NSObject, UIViewControllerAnimatedTransitioning {
         let completionClosureDismiss = { (_: Bool) in
             (Array(zip(fromSnapshots, toVC.translationViews)) +
                 Array(zip(toSnapshots, fromVC.translationViews))).forEach { (snapshot, view) in
-                    snapshot.alpha = .one
-                    view.alpha = .one
+                    snapshot.alpha = 1
+                    view.alpha = 1
                     view.isHidden = true
-                    UIView.transition(from: snapshot, to: view, duration: .pointOne, options: [.showHideTransitionViews, .transitionCrossDissolve]) { _ in
+                    UIView.transition(from: snapshot, to: view, duration: 0.1, options: [.showHideTransitionViews, .transitionCrossDissolve]) { _ in
                         snapshot.removeFromSuperview()
                     }
                 }
             
-            delay(.pointOne) {
-                fromVCCorrectedView.alpha = .one
+            delay(0.1) {
+                fromVCCorrectedView.alpha = 1
                 fromVCCorrectedView.transform = .identity
                 
-                toVCCorrectedView.alpha = .one
+                toVCCorrectedView.alpha = 1
                 toVCCorrectedView.transform = .identity
 
                 transitionContext.completeTransition(!transitionContext.transitionWasCancelled)
@@ -186,13 +186,13 @@ class TranslationAnimation: NSObject, UIViewControllerAnimatedTransitioning {
         let completionClosureNormal = { (_: Bool) in
             fromSnapshots.forEach { $0.removeFromSuperview() }
             toSnapshots.forEach { $0.removeFromSuperview() }
-            fromVC.translationViews.forEach { $0.alpha = .one }
-            toVC.translationViews.forEach { $0.alpha = .one }
+            fromVC.translationViews.forEach { $0.alpha = 1 }
+            toVC.translationViews.forEach { $0.alpha = 1 }
             
-            fromVCCorrectedView.alpha = .one
+            fromVCCorrectedView.alpha = 1
             fromVCCorrectedView.transform = .identity
             
-            toVCCorrectedView.alpha = .one
+            toVCCorrectedView.alpha = 1
             toVCCorrectedView.transform = .identity
 
             transitionContext.completeTransition(!transitionContext.transitionWasCancelled)
@@ -209,9 +209,9 @@ class TranslationAnimation: NSObject, UIViewControllerAnimatedTransitioning {
         } else {
             UIView.animate(
                 withDuration: transitionDuration(using: transitionContext),
-                delay: .zero,
-                usingSpringWithDamping: .one,
-                initialSpringVelocity: .zero,
+                delay: 0,
+                usingSpringWithDamping: 1,
+                initialSpringVelocity: 0,
                 options: type == .present ? .curveEaseOut : .curveEaseIn,
                 animations: animationsClosure,
                 completion: type == .present || fromVC.completelyMoveAway || toVC.completelyMoveAway ?
@@ -304,7 +304,7 @@ class TranslationAnimationInteractor: UIPercentDrivenInteractiveTransition {
     @objc private func handleGesture(_ gestureRecognizer: UIScreenEdgePanGestureRecognizer) {
         let translation = gestureRecognizer.translation(in: gestureRecognizer.view!.superview!)
         var progress = (translation.x / ((45.0 * UIScreen.main.bounds.width) / 94 + 9250.0 / 47))
-        progress = CGFloat(fminf(fmaxf(Float(progress), .zero), .one))
+        progress = CGFloat(fminf(fmaxf(Float(progress), 0), 1))
         
         switch gestureRecognizer.state {
         case .began:
@@ -316,7 +316,7 @@ class TranslationAnimationInteractor: UIPercentDrivenInteractiveTransition {
             }
             
         case .changed:
-            shouldCompleteTransition = progress > .pointThree
+            shouldCompleteTransition = progress > 0.3
             update(progress)
             
         case .cancelled:

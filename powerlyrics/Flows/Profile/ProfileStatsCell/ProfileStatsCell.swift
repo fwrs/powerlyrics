@@ -87,22 +87,22 @@ class ProfileStatsCell: TableViewCell {
     func configure(with viewModel: ProfileStatsCellViewModel) {
         
         likedSongsCountLabel.text = String(viewModel.likedSongs)
-        likedSongsDescriptionLabel.text = viewModel.likedSongs == .one ?
+        likedSongsDescriptionLabel.text = viewModel.likedSongs == 1 ?
             Constants.likedSongsText.singular :
             Constants.likedSongsText.plural
         
         searchesCountLabel.text = String(viewModel.searches)
-        searchesDescriptionLabel.text = viewModel.searches == .one ?
+        searchesDescriptionLabel.text = viewModel.searches == 1 ?
             Constants.searchesText.singular :
             Constants.searchesText.plural
         
         discoveriesCountLabel.text = String(viewModel.discoveries)
-        discoveriesDescriptionLabel.text = viewModel.discoveries == .one ?
+        discoveriesDescriptionLabel.text = viewModel.discoveries == 1 ?
             Constants.discoveriesText.singular :
             Constants.discoveriesText.plural
         
         viewedArtistsLabel.text = String(viewModel.viewedArtists)
-        viewedArtistsDescriptionLabel.text = viewModel.viewedArtists == .one ?
+        viewedArtistsDescriptionLabel.text = viewModel.viewedArtists == 1 ?
             Constants.viewedArtistsText.singular :
             Constants.viewedArtistsText.plural
         

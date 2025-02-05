@@ -12,7 +12,7 @@ import Swinject
 
 fileprivate extension Constants {
     
-    static let numberOfTabs = Int.four
+    static let numberOfTabs = 4
     
 }
 
@@ -31,29 +31,30 @@ class TabBarCoordinator: Coordinator {
     
     override func start() {
         let tabBarController = UITabBarController()
+        configureUI(for: tabBarController)
         
-        let routers = [Router(), Router(), Router(), Router()]
+        let routers = Array(repeating: (), count: Constants.numberOfTabs).map { Router() }
         
         childCoordinators = [
             /* Home */
             resolver.resolve(
                 HomeCoordinator.self,
-                argument: routers[.zero]
+                argument: routers[0]
             ),
             /* Search */
             resolver.resolve(
                 SearchCoordinator.self,
-                argument: routers[.one]
+                argument: routers[1]
             ),
             /* GenreMap */
             resolver.resolve(
                 GenreMapCoordinator.self,
-                argument: routers[.two]
+                argument: routers[2]
             ),
             /* Profile */
             resolver.resolve(
                 ProfileCoordinator.self,
-                argument: routers[.three]
+                argument: routers[3]
             )
         ].compactMap { $0 }
         
@@ -69,6 +70,16 @@ class TabBarCoordinator: Coordinator {
             UIView.fadeUpdate(window) { [weak self] in
                 self?.window.rootViewController = tabBarController
             }
+        }
+    }
+    
+    func configureUI(for tabBarController: UITabBarController) {
+        let appearance = UITabBarAppearance()
+        appearance.configureWithDefaultBackground()
+        tabBarController.tabBar.standardAppearance = appearance
+        
+        if #available(iOS 15.0, *) {
+            tabBarController.tabBar.scrollEdgeAppearance = appearance
         }
     }
     

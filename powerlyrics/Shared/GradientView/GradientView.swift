@@ -12,8 +12,8 @@ import UIKit
 
 fileprivate extension Constants {
     
-    static let gradientBeginPoint = CGPoint.zero
-    static let gradientEndPoint = CGPoint(x: CGFloat.one, y: .zero)
+    static let gradientBeginPoint: CGPoint = .zero
+    static let gradientEndPoint = CGPoint(x: 1, y: 0)
     
 }
 

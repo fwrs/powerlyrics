@@ -36,7 +36,7 @@ struct LyricsStoryViewModel {
     func loadData() {
         let fixed = story.typographized.clean
         
-        if fixed.count <= .two {
+        if fixed.count <= 2 {
             items.replace(with: [.empty], performDiff: false)
         } else {
             items.replace(with: [.topPadding] + fixed

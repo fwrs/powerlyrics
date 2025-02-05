@@ -12,8 +12,8 @@ import Moya
 
 fileprivate extension Constants {
     
-    static let trendingSongsPlaylistID = "37i9dQZEVXbMDoHDwVN2tF"
-    static let viralSongsPlaylistID = "37i9dQZEVXbLiRSasKsNU9"
+    static let trendingSongsPlaylistID = "4hMcqod7ERKJ9mtjgdimeV"
+    static let viralSongsPlaylistID = "0chdKQr18NN9WRI355V8BN"
     
     static let refreshTokenCode = "refresh_token"
     static let authorizationCode = "authorization_code"

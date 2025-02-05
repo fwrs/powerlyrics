@@ -29,7 +29,7 @@ fileprivate extension Constants {
     
     static let bearerToken = "Bearer"
     static let authorizationHeader = "Authorization"
-    static let lyricsWrapperSelector = "div[class^='lyrics']"
+    static let lyricsWrapperSelector = "div[data-lyrics-container]"
     static let brSelector = "br"
     static let tagTypeSeparator = "\\\"songRelationships\\\""
     static let htmlEscapedQuoteMark = "&quot;"
@@ -94,7 +94,7 @@ extension GeniusProvider {
                         return result.enumerated().map {
                             SharedLyricsSection(
                                 name: $1.name,
-                                contents: $0 + .one == result.count ? $1.contents + [element] : $1.contents
+                                contents: $0 + 1 == result.count ? $1.contents + [element] : $1.contents
                             )
                         }
                     }
@@ -109,7 +109,7 @@ extension GeniusProvider {
             if let genreRange = Constants.genreRegEx.matches(
                 in: content,
                 options: [],
-                range: NSRange(location: .zero, length: content.count)
+                range: NSRange(location: 0, length: content.count)
             ).max(by: { $0.range.location < $1.range.location })?.range {
                 if let genreText = NSString(string: content)
                     .substring(with: genreRange)

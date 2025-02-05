@@ -166,7 +166,7 @@ extension HomeViewController {
             self?.tableView.isRefreshing = isRefreshing
         }.dispose(in: disposeBag)
         
-        viewModel.isLoading.dropFirst(.one).observeNext { [weak self] isLoading in
+        viewModel.isLoading.dropFirst(1).observeNext { [weak self] isLoading in
             guard let self = self else { return }
             UIView.fadeDisplay(self.activityIndicator, visible: isLoading)
             

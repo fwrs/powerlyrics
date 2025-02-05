@@ -22,7 +22,7 @@ class RealmLikedSong: Object {
     
     @objc private dynamic var genreInt = Constants.unknownGenreID
     
-    @objc dynamic var geniusID = Int.zero
+    @objc dynamic var geniusID = 0
     @objc dynamic var geniusURL: String?
     
     @objc dynamic var name = String()

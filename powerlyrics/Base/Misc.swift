@@ -16,15 +16,11 @@ func delay(_ seconds: TimeInterval, execute: @escaping DefaultAction) {
 
 func times(_ n: Int) -> (DefaultAction) -> Void {
     { execute in
-        for _ in .zero..<n {
+        for _ in 0..<n {
             execute()
         }
     }
 }
-
-let twice = times(.two)
-
-let thrice = times(.three)
 
 extension Collection {
     
@@ -37,7 +33,7 @@ extension Collection {
 extension Haptic {
     
     static func play(_ pattern: String) {
-        Haptic.play(pattern, delay: .pointOne)
+        Haptic.play(pattern, delay: 0.1)
     }
     
 }
@@ -266,11 +262,11 @@ extension Int {
 
 extension UIColor {
     
-    func adjust(hueBy hue: CGFloat = .one, saturationBy saturation: CGFloat = .one, brightnessBy brightness: CGFloat = .one, minBrightness: CGFloat = .zero) -> UIColor {
-        var currentHue = CGFloat.zero
-        var currentSaturation = CGFloat.zero
-        var currentBrigthness = CGFloat.zero
-        var currentAlpha = CGFloat.zero
+    func adjust(hueBy hue: CGFloat = 1, saturationBy saturation: CGFloat = 1, brightnessBy brightness: CGFloat = 1, minBrightness: CGFloat = 0) -> UIColor {
+        var currentHue: CGFloat = 0
+        var currentSaturation: CGFloat = 0
+        var currentBrigthness: CGFloat = 0
+        var currentAlpha: CGFloat = 0
         
         if getHue(&currentHue, saturation: &currentSaturation, brightness: &currentBrigthness, alpha: &currentAlpha) {
             return UIColor(hue: currentHue * hue,
@@ -283,7 +279,7 @@ extension UIColor {
     }
     
     var transparent: UIColor {
-        withAlphaComponent(.zero)
+        withAlphaComponent(0)
     }
     
     var cg: CGColor {
@@ -369,7 +365,7 @@ extension UIAlertController {
         stackView.axis = .horizontal
         stackView.alignment = .center
         vc.preferredContentSize = CGSize(width: label.intrinsicContentSize.width + ExtensionConstants.activityIndicatorDimension + Constants.space8, height: ExtensionConstants.viewHeight)
-        stackView.frame = CGRect(x: .zero, y: .zero, width: label.intrinsicContentSize.width + ExtensionConstants.activityIndicatorDimension + Constants.space8, height: ExtensionConstants.viewHeight)
+        stackView.frame = CGRect(x: 0, y: 0, width: label.intrinsicContentSize.width + ExtensionConstants.activityIndicatorDimension + Constants.space8, height: ExtensionConstants.viewHeight)
         vc.view.addSubview(stackView)
         label.sizeToFit()
         self.setValue(vc, forKey: ExtensionConstants.contentViewControllerKeyPath)
@@ -405,11 +401,11 @@ extension UIView {
         view.layer.removeAnimation(forKey: ExtensionConstants.alphaChangeKeyPath)
         view.isUserInteractionEnabled = false
         let animation = CABasicAnimation(keyPath: ExtensionConstants.opacityKeyPath)
-        animation.fromValue = view.isHidden ? .zero : currentAlpha
+        animation.fromValue = view.isHidden ? 0 : currentAlpha
         if visible {
             view.isHidden = false
         }
-        animation.toValue = visible ? CGFloat.one : CGFloat.zero
+        animation.toValue = visible ? 1 : 0
         animation.duration = duration
         animation.fillMode = .forwards
         CATransaction.setCompletionBlock {
@@ -417,7 +413,7 @@ extension UIView {
             view.isUserInteractionEnabled = true
             completion?()
         }
-        view.alpha = visible ? .one : .zero
+        view.alpha = visible ? 1 : 0
         view.layer.add(animation, forKey: ExtensionConstants.alphaChangeKeyPath)
         CATransaction.commit()
     }
@@ -431,167 +427,11 @@ extension UIView {
     }
     
     class func animate(withDuration duration: TimeInterval, options: UIView.AnimationOptions = [], animations: @escaping () -> Void, completion: ((Bool) -> Void)? = nil) {
-        animate(withDuration: duration, delay: .zero, options: options, animations: animations, completion: completion)
+        animate(withDuration: duration, delay: 0, options: options, animations: animations, completion: completion)
     }
     
     class func animate(options: UIView.AnimationOptions = [], animations: @escaping () -> Void, completion: ((Bool) -> Void)? = nil) {
-        animate(withDuration: Constants.defaultAnimationDuration, delay: .zero, options: options, animations: animations, completion: completion)
-    }
-    
-}
-
-extension Int {
-    
-    static var one: Int {
-        1
-    }
-    
-    static var two: Int {
-        2
-    }
-    
-    static var three: Int {
-        3
-    }
-    
-    static var four: Int {
-        4
-    }
-    
-    static var five: Int {
-        5
-    }
-    
-}
-
-extension Float {
-    
-    static var fourth: Float {
-        0.25
-    }
-    
-    static var half: Float {
-        0.5
-    }
-    
-    static var threeFourths: Float {
-        0.75
-    }
-    
-    static var pointOne: Float {
-        0.1
-    }
-    
-    static var pointTwo: Float {
-        0.2
-    }
-    
-    static var pointThree: Float {
-        0.3
-    }
-    
-    static var one: Float {
-        1
-    }
-    
-    static var oneHalfth: Float {
-        1.5
-    }
-    
-    static var two: Float {
-        2
-    }
-    
-    static var three: Float {
-        3
-    }
-    
-}
-
-extension Double {
-    
-    static var fourth: Double {
-        0.25
-    }
-    
-    static var half: Double {
-        0.5
-    }
-    
-    static var threeFourths: Double {
-        0.75
-    }
-    
-    static var pointOne: Double {
-        0.1
-    }
-    
-    static var pointTwo: Double {
-        0.2
-    }
-    
-    static var pointThree: Double {
-        0.3
-    }
-    
-    static var one: Double {
-        1
-    }
-    
-    static var oneHalfth: Double {
-        1.5
-    }
-    
-    static var two: Double {
-        2
-    }
-    
-    static var three: Double {
-        3
-    }
-    
-}
-
-extension CGFloat {
-    
-    static var fourth: CGFloat {
-        0.25
-    }
-    
-    static var half: CGFloat {
-        0.5
-    }
-    
-    static var threeFourths: CGFloat {
-        0.75
-    }
-    
-    static var pointOne: CGFloat {
-        0.1
-    }
-    
-    static var pointTwo: CGFloat {
-        0.2
-    }
-    
-    static var pointThree: CGFloat {
-        0.3
-    }
-    
-    static var one: CGFloat {
-        1
-    }
-    
-    static var oneHalfth: CGFloat {
-        1.5
-    }
-    
-    static var two: CGFloat {
-        2
-    }
-    
-    static var three: CGFloat {
-        3
+        animate(withDuration: Constants.defaultAnimationDuration, delay: 0, options: options, animations: animations, completion: completion)
     }
     
 }

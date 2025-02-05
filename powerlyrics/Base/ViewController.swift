@@ -164,7 +164,7 @@ class ViewController: UIViewController, UITabBarControllerDelegate {
         if let tableView = safeValue(forKey: "tableView") as? TableView {
             tableView.setContentOffset(
                 CGPoint(
-                    x: .zero,
+                    x: 0,
                     y: -tableView.adjustedContentInset.top
                 ),
                 animated: true
@@ -199,7 +199,7 @@ class ViewController: UIViewController, UITabBarControllerDelegate {
         }
     }
     
-    static var index = Int.zero
+    static var index = 0
     
     func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
         if ViewController.index == tabBarController.selectedIndex {

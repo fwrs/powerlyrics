@@ -44,7 +44,7 @@ class GenreMapViewModel: ViewModel {
         
         let counts = RealmLikedSongGenre.all.map { realmService.likedSongs(with: $0).count }
         
-        if counts.filter({ $0 != .zero }).count < .two {
+        if counts.filter({ $0 != 0 }).count < 2 {
             noData.value = true
             values.value = Constants.baseLikedSongCounts
         } else {

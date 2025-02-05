@@ -98,8 +98,8 @@ class SearchViewController: ViewController, SearchScene {
         super.keyboardWillHide(frame: frame)
         
         UIView.animate { [weak self] in
-            self?.tableView.contentInset.bottom = .zero
-            self?.tableView.verticalScrollIndicatorInsets.bottom = .zero
+            self?.tableView.contentInset.bottom = 0
+            self?.tableView.verticalScrollIndicatorInsets.bottom = 0
         }
     }
         
@@ -120,6 +120,10 @@ extension SearchViewController {
         
         let appearance = UINavigationBarAppearance()
         appearance.configureWithDefaultBackground()
+        appearance.titleTextAttributes = [
+            .font: Constants.titleFont
+        ]
+        appearance.largeTitleTextAttributes = appearance.titleTextAttributes
         navigationItem.scrollEdgeAppearance = appearance
         
         searchController.searchBar.searchTextField.leftView?.tintColor = .secondaryLabel
@@ -148,7 +152,7 @@ extension SearchViewController {
         searchController.searchBar
             .reactive.text
             .compactMap { $0?.clean }
-            .dropFirst(.one)
+            .dropFirst(1)
             .removeDuplicates()
             .debounce(for: Constants.buttonThrottleTime, queue: .main)
             .observeNext { [weak self] query in
@@ -212,14 +216,14 @@ extension SearchViewController {
         
         combineLatest(viewModel.items, viewModel.isLoading, viewModel.isRefreshing, viewModel.isFailed).map { songs, isLoading, isRefreshing, isFailed in
             (!isLoading && !isRefreshing &&
-                (songs.collection.numberOfSections == .zero ||
-                    songs.collection.numberOfItems(inSection: .zero) == .zero)) && !isFailed
+                (songs.collection.numberOfSections == 0 ||
+                    songs.collection.numberOfItems(inSection: 0) == 0)) && !isFailed
         }.removeDuplicates().observeNext { [weak self] isVisible in
             guard let self = self else { return }
             UIView.fadeDisplay(self.noResultsView, visible: isVisible)
         }.dispose(in: disposeBag)
         
-        viewModel.trendsLoading.dropFirst(.one).observeNext(with: { [weak self] isLoading in
+        viewModel.trendsLoading.dropFirst(1).observeNext(with: { [weak self] isLoading in
             guard let self = self else { return }
             UIView.fadeDisplay(self.trendsActivityIndicator, visible: isLoading)
         }).dispose(in: disposeBag)
@@ -236,10 +240,10 @@ extension SearchViewController {
                 self.tableView.isScrollEnabled = false
             }
             
-            UIView.fadeDisplay(self.activityIndicator, visible: loading, duration: .pointOne)
+            UIView.fadeDisplay(self.activityIndicator, visible: loading, duration: 0.1)
             
-            UIView.animate(withDuration: .pointOne, delay: .zero, options: .curveEaseOut) {
-                self.tableView.alpha = loading ? .pointThree : .one
+            UIView.animate(withDuration: 0.1, delay: 0, options: .curveEaseOut) {
+                self.tableView.alpha = loading ? 0.3 : 1
             } completion: { _ in
                 if !loading {
                     self.tableView.isUserInteractionEnabled = true

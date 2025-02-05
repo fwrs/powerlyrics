@@ -141,11 +141,11 @@ class LyricsCoordinator: Coordinator {
 extension LyricsCoordinator: UIViewControllerTransitioningDelegate {
     
     func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-        TranslationAnimation(type: .dismiss, duration: .half, interactionController: (dismissed as? TranslationAnimationView)?.translationInteractor)
+        TranslationAnimation(type: .dismiss, duration: 0.5, interactionController: (dismissed as? TranslationAnimationView)?.translationInteractor)
     }
     
     func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-        TranslationAnimation(type: .present, duration: .half)
+        TranslationAnimation(type: .present, duration: 0.5)
     }
     
     func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {
@@ -173,12 +173,12 @@ extension LyricsCoordinator: UINavigationControllerDelegate {
     func navigationController(_ navigationController: UINavigationController, animationControllerFor operation: UINavigationController.Operation, from fromVC: UIViewController, to toVC: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         switch operation {
         case .push:
-            return TranslationAnimation(type: .present, duration: .half, isInNavigationController: true)
+            return TranslationAnimation(type: .present, duration: 0.5, isInNavigationController: true)
         
         case .pop:
             return TranslationAnimation(
                 type: .dismiss,
-                duration: .half,
+                duration: 0.5,
                 interactionController: (fromVC as? TranslationAnimationView)?.translationInteractor,
                 isInNavigationController: true
             )

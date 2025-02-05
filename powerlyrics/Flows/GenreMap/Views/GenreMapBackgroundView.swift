@@ -34,7 +34,7 @@ class GenreMapBackgroundView: UIView {
         
         octagon(context: context, inset: Constants.baseInset, rect: rect)
         octagon(context: context, inset: Constants.baseInset + Constants.extraInset, rect: rect)
-        octagon(context: context, inset: Constants.baseInset + .two * Constants.extraInset, rect: rect)
+        octagon(context: context, inset: Constants.baseInset + 2 * Constants.extraInset, rect: rect)
     }
     
     // MARK: - Helper methods
@@ -42,11 +42,11 @@ class GenreMapBackgroundView: UIView {
     func octagon(context: CGContext!, inset: CGFloat, rect: CGRect) {
         context.setLineWidth(Constants.lineWidth)
         
-        let xCenter = rect.origin.x + rect.size.height / .two
-        let yCenter = rect.origin.y + rect.size.width / .two
+        let xCenter = rect.origin.x + rect.size.height / 2
+        let yCenter = rect.origin.y + rect.size.width / 2
         
         let width: CGFloat = rect.size.width - inset
-        let radius: CGFloat = width / .two
+        let radius: CGFloat = width / 2
         
         context.setFillColor(Constants.edgeColor)
         
@@ -54,11 +54,11 @@ class GenreMapBackgroundView: UIView {
         
         context.setStrokeColor(Constants.edgeColor)
         
-        let theta = .pi * (.two / vertices)
+        let theta = .pi * (2 / vertices)
         
         context.move(to: CGPoint(x: xCenter, y: CGFloat(radius)+yCenter))
         
-        for i in .one...Int(vertices) {
+        for i in 1...Int(vertices) {
             let x = radius * sin(CGFloat(i) * theta)
             let y = radius * cos(CGFloat(i) * theta)
             
@@ -74,11 +74,11 @@ class GenreMapBackgroundView: UIView {
     func guidingLines(context: CGContext!, inset: CGFloat, rect: CGRect) {
         context.setLineWidth(Constants.lineWidth)
         
-        let xCenter = rect.origin.x + rect.size.height / .two
-        let yCenter = rect.origin.y + rect.size.width / .two
+        let xCenter = rect.origin.x + rect.size.height / 2
+        let yCenter = rect.origin.y + rect.size.width / 2
         
         let width: CGFloat = rect.size.width - inset
-        let radius: CGFloat = width / .two
+        let radius: CGFloat = width / 2
         
         context.setFillColor(Constants.guidingLineColor)
         
@@ -86,9 +86,9 @@ class GenreMapBackgroundView: UIView {
         
         context.setStrokeColor(Constants.guidingLineColor)
         
-        let theta = .pi * (.two / vertices)
+        let theta = .pi * (2 / vertices)
         
-        for i in .one...Int(vertices) {
+        for i in 1...Int(vertices) {
             let x = radius * sin(CGFloat(i) * theta)
             let y = radius * cos(CGFloat(i) * theta)
             
