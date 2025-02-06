@@ -91,7 +91,7 @@ extension LyricsSectionCell: UIContextMenuInteractionDelegate {
     
     func contextMenuInteraction(_ interaction: UIContextMenuInteraction, willEndFor configuration: UIContextMenuConfiguration, animator: UIContextMenuInteractionAnimating?) {
         UIView.animate(
-            withDuration: 1.6,
+            withDuration: 0.15,
             delay: Constants.contextMenuFadeOutDelay
         ) { [weak self] in
             self?.backgroundColor = .clear
